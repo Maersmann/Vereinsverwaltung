@@ -1,0 +1,45 @@
+﻿<Fluent:RibbonWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:local="clr-namespace:UI.Desktop"
+        xmlns:Fluent="urn:fluent-ribbon"
+        xmlns:UI="clr-namespace:Vereinsverwaltung.Logic.UI;assembly=Logic.UI"
+        x:Class="Vereinsverwaltung.UI.Desktop.MainView"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" 
+        DataContext="{Binding Main ,Source={StaticResource Locator}}">
+
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <command:EventToCommand Command="{Binding OpenConnectionCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Fluent:Ribbon Grid.Row="0">
+
+            <!--Tabs-->
+            <Fluent:RibbonTabItem Header="Allgemein">
+                <Fluent:RibbonGroupBox Header="" >
+                    <Fluent:Button Header="New"  />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid Grid.Row="1">
+            <Frame x:Name="Container"  NavigationUIVisibility="Hidden"  />
+        </Grid>
+    </Grid>
+
+
+</Fluent:RibbonWindow>
