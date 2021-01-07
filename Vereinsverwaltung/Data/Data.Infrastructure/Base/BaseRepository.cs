@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Vereinsverwaltung.Data.Repository.Base
+namespace Vereinsverwaltung.Data.Infrastructure.Base
 {
     public class BaseRepository
     {

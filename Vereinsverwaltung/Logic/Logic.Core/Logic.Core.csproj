@@ -49,9 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\Data.API\Data.Repository.csproj">
-      <Project>{cbcfd503-dcf1-4381-8554-6088a886f59e}</Project>
-      <Name>Data.Repository</Name>
+    <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">
+      <Project>{9742e7e0-e88e-4923-a778-18f432d1151e}</Project>
+      <Name>Data.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data\Data.Model\Data.Entity.csproj">
       <Project>{96b5abf1-b481-4adc-b42e-49fc1839e15f}</Project>
