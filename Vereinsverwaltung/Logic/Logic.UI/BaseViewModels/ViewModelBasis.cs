@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 {
-    public class ViewModelBasis : ViewModelBase, INotifyDataErrorInfo
+    public class ViewModelBasis : ViewModelBase
     {
         public ViewModelBasis()
         {
@@ -23,9 +23,6 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
         public string Title { get; protected set; }
 
         public ICommand CloseCommand { get; set; }
-
-        public readonly Dictionary<string, ICollection<string>>
-            ValidationErrors = new Dictionary<string, ICollection<string>>();
 
         protected virtual void ExecuteCloseCommand()
         {
@@ -51,43 +48,7 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             }
         }
 
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-        public void RaiseErrorsChanged(string propertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        }
 
-        public System.Collections.IEnumerable GetErrors(string propertyName)
-        {
-            if (string.IsNullOrEmpty(propertyName)
-                || !ValidationErrors.ContainsKey(propertyName))
-                return null;
-
-            return ValidationErrors[propertyName];
-        }
-
-        public bool HasErrors
-        {
-            get { return ValidationErrors.Count > 0; }
-        }
-
-        protected void AddValidateInfo(Boolean inValid, String inPropertyKey, ICollection<string> inValidationErrors)
-        {
-            if (!inValid)
-            {
-
-                ValidationErrors[inPropertyKey] = inValidationErrors;
-
-                RaiseErrorsChanged(inPropertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(inPropertyKey))
-            {
-
-                ValidationErrors.Remove(inPropertyKey);
-
-                RaiseErrorsChanged(inPropertyKey);
-            }
-        }
 
 
     }

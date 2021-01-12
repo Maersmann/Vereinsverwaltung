@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 {
-    public class ViewModelStammdaten : ViewModelBasis
+    public class ViewModelStammdaten : ViewModelValidate
     {
         public ICommand SaveCommand { get; protected set; }
 

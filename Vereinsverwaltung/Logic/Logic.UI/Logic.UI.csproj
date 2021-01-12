@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="BaseViewModels\ViewModelBasis.cs" />
     <Compile Include="BaseViewModels\ViewModelStammdaten.cs" />
+    <Compile Include="BaseViewModels\ViewModelValidate.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MitgliederViewModels\MitgliederStammdatenViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
