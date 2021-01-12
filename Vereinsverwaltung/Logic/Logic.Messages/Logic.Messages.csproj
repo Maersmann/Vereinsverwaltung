@@ -44,6 +44,8 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BaseMessages\OpenViewMessage.cs" />
+    <Compile Include="BaseMessages\StammdatenGespeichertMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,8 @@ using Vereinsverwaltung.Logic.Core;
 using Vereinsverwaltung.Logic.UI.BaseViewModels;
 using System;
 using System.Windows.Input;
+using Vereinsverwaltung.Logic.Messages.BaseMessages;
+using Vereinsverwaltung.Data.Types;
 
 namespace Vereinsverwaltung.Logic.UI
 {
@@ -12,12 +14,13 @@ namespace Vereinsverwaltung.Logic.UI
     {
         public MainViewModel()
         {
-            Title = "Aktienübersicht";
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
+            OpenMitgliederStammdatenCommand = new RelayCommand(() => ExecuteOpenMitgliederStammdatenCommand());
         }
 
-
+        
         public ICommand OpenConnectionCommand { get; private set; }
+        public ICommand OpenMitgliederStammdatenCommand { get; private set; }
 
 
 
@@ -25,6 +28,10 @@ namespace Vereinsverwaltung.Logic.UI
         {
             var db = new DatabaseAPI();
             db.AktualisereDatenbank();
+        }
+        private void ExecuteOpenMitgliederStammdatenCommand()
+        {
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewMitlgiederStammdaten });
         }
 
     }

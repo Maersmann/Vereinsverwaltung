@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Vereinsverwaltung.Data.Types;
+using Vereinsverwaltung.Logic.Messages.BaseMessages;
+using Vereinsverwaltung.UI.Desktop.Mitglieder;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -22,10 +25,28 @@ namespace Vereinsverwaltung.UI.Desktop
     public partial class MainView
     {
 
-
         public MainView()
         {
+            Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
+
             InitializeComponent();
+        }
+
+        private void ReceiveOpenViewMessage(OpenViewMessage m)
+        {
+            Naviagtion(m.ViewType);
+        }
+
+        public void Naviagtion(ViewType inType)
+        {
+            switch (inType)
+            {
+                case ViewType.viewMitlgiederStammdaten:
+                    new MitgliedStammdatenView().ShowDialog();
+                    break;
+                default:
+                    break;
+            }
         }
 
     }

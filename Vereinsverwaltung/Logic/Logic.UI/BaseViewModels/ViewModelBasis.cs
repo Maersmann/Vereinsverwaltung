@@ -22,7 +22,7 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 
         public string Title { get; protected set; }
 
-        public ICommand CloseCommand { get; private set; }
+        public ICommand CloseCommand { get; set; }
 
         public readonly Dictionary<string, ICollection<string>>
             ValidationErrors = new Dictionary<string, ICollection<string>>();
@@ -71,6 +71,23 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             get { return ValidationErrors.Count > 0; }
         }
 
+        protected void AddValidateInfo(Boolean inValid, String inPropertyKey, ICollection<string> inValidationErrors)
+        {
+            if (!inValid)
+            {
+
+                ValidationErrors[inPropertyKey] = inValidationErrors;
+
+                RaiseErrorsChanged(inPropertyKey);
+            }
+            else if (ValidationErrors.ContainsKey(inPropertyKey))
+            {
+
+                ValidationErrors.Remove(inPropertyKey);
+
+                RaiseErrorsChanged(inPropertyKey);
+            }
+        }
 
 
     }

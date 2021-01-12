@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Vereinsverwaltung.Data.Model.MitgliederEntitys;
 
 namespace Vereinsverwaltung.Data.Infrastructure
 {
-    public class RepositoryBase : DbContext
+    public class Repository : DbContext
     {
+        public DbSet<Mitglied> Mitglieder { get; set; }
 
-
-        public RepositoryBase() : base() { this.Database.Migrate(); }
+        public Repository() : base() { this.Database.Migrate(); }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -159,6 +159,7 @@
     <Compile Include="BaseViewModels\ViewModelBasis.cs" />
     <Compile Include="BaseViewModels\ViewModelStammdaten.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="MitgliederViewModels\MitgliederStammdatenViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
@@ -182,10 +183,6 @@
     <ProjectReference Include="..\Logic.Messages\Logic.Messages.csproj">
       <Project>{d8f93673-9e8e-4f2e-8b59-82d3abb3bb59}</Project>
       <Name>Logic.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logic.Models\Logic.Models.csproj">
-      <Project>{c57d4b4a-936c-49f4-bdae-cb36093755e6}</Project>
-      <Name>Logic.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -46,7 +46,9 @@
     </Compile>
     <Compile Include="DatabaseAPI.cs" />
     <Compile Include="Interfaces\IValidierung.cs" />
+    <Compile Include="MitgliedAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validierungen\MitgliederStammdatenValidierung.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">

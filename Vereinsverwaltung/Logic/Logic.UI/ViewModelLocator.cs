@@ -16,6 +16,8 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
+using System;
+using Vereinsverwaltung.Logic.UI.MitgliederViewModels;
 
 namespace Vereinsverwaltung.Logic.UI
 {
@@ -40,11 +42,16 @@ namespace Vereinsverwaltung.Logic.UI
                 // Create run time view services and models                
             }
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<MitgliederStammdatenViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public MitgliederStammdatenViewModel MitgliederStammdaten => ServiceLocator.Current.GetInstance<MitgliederStammdatenViewModel>();
 
-
+        internal static void CleanUpMitgliederStammdatenView()
+        {
+            ServiceLocator.Current.GetInstance<MitgliederStammdatenViewModel>().Cleanup();
+        }
 
         public static void Cleanup()
         {

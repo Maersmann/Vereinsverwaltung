@@ -7,7 +7,7 @@ namespace Vereinsverwaltung.Data.Infrastructure.Base
 {
     public class BaseRepository
     {
-        protected readonly RepositoryBase repo;
+        protected readonly Repository repo;
         public BaseRepository()
         {
             repo = GlobalVariables.GetRepoBase();
