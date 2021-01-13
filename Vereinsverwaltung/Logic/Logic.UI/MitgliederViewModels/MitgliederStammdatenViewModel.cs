@@ -59,11 +59,6 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Mitgliedsnr ist schon vorhanden" });
             }
         }
-
-        protected override void ExecuteCloseCommand()
-        {
-            Cleanup();
-        }
         #endregion
 
         #region Bindings
@@ -208,7 +203,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             return isValid;
         }
         #endregion
-
+        
         public override void Cleanup()
         {
             mitglied = new Mitglied();
