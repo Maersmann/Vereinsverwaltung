@@ -16,13 +16,12 @@ namespace Vereinsverwaltung.Logic.UI
         {
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
             OpenMitgliederStammdatenCommand = new RelayCommand(() => ExecuteOpenMitgliederStammdatenCommand());
+            OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecutOpenMitgliederUebersichtCommand());
         }
 
-        
         public ICommand OpenConnectionCommand { get; private set; }
         public ICommand OpenMitgliederStammdatenCommand { get; private set; }
-
-
+        public RelayCommand OpenMitgliederUebersichtCommand { get; private set; }
 
         private void ExecuteOpenConnectionCommand()
         {
@@ -32,6 +31,11 @@ namespace Vereinsverwaltung.Logic.UI
         private void ExecuteOpenMitgliederStammdatenCommand()
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewMitlgiederStammdaten });
+        }
+
+        private void ExecutOpenMitgliederUebersichtCommand()
+        {
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewMitgliederUebersicht });
         }
 
     }

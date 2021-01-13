@@ -46,6 +46,8 @@
     </Compile>
     <Compile Include="BaseMessages\OpenViewMessage.cs" />
     <Compile Include="BaseMessages\StammdatenGespeichertMessage.cs" />
+    <Compile Include="MitgliederMessages\MitgliedEntferntMessage.cs" />
+    <Compile Include="MitgliederMessages\OpenMitgliederStammdatenMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

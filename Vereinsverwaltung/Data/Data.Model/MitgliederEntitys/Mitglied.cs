@@ -24,5 +24,24 @@ namespace Vereinsverwaltung.Data.Model.MitgliederEntitys
         [Column("Strasse")]
         public String Straße { get; set; }
         public int? Mitgliedsnr { get; set; }
+
+
+        [NotMapped]
+        public int? Alter
+        {
+            get
+            {
+                if (!Eintrittsdatum.HasValue)
+                    return null;
+                else
+                {
+                    int years = DateTime.Now.Year - Eintrittsdatum.Value.Year;
+                    var birthday = Eintrittsdatum.Value.AddYears(years);
+                    if (DateTime.Now.CompareTo(birthday) < 0) { years--; }
+                    return years;
+                }
+            }
+        }
+
     }
 }

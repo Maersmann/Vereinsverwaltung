@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +11,33 @@ namespace Vereinsverwaltung.Logic.Core
 {
     public class MitgliedAPI
     {
+        private MitgliedRepository repo;
+        public MitgliedAPI()
+        {
+            repo = new MitgliedRepository();
+        }
         public void Speichern(Mitglied inMitglied)
         {
-            var repo = new MitgliedRepository();
             if ( inMitglied.Mitgliedsnr.HasValue && repo.VorhandenByMitgliedsNr( inMitglied.Mitgliedsnr.GetValueOrDefault()))
             {
                 throw new MitgliedMitMitgliedsNrVorhanden();
             }
             repo.Speichern(inMitglied);
+        }
+
+        public ObservableCollection<Mitglied> LadeAlle()
+        {
+            return repo.LadeAlle();
+        }
+
+        public void Entfernen(int inID)
+        {
+            repo.Entfernen(inID);
+        }
+
+        public Mitglied Lade(int inID)
+        {
+            return repo.LadeByID(inID);
         }
     }
 

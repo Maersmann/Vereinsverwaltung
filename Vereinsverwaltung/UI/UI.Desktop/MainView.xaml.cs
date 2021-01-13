@@ -25,11 +25,14 @@ namespace Vereinsverwaltung.UI.Desktop
     public partial class MainView
     {
 
+        private static MitgliederUebersichtView mitgliederUebersichtView;
+
         public MainView()
         {
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
 
             InitializeComponent();
+            Naviagtion(ViewType.viewMitgliederUebersicht);
         }
 
         private void ReceiveOpenViewMessage(OpenViewMessage m)
@@ -43,6 +46,10 @@ namespace Vereinsverwaltung.UI.Desktop
             {
                 case ViewType.viewMitlgiederStammdaten:
                     new MitgliedStammdatenView().ShowDialog();
+                    break;
+                case ViewType.viewMitgliederUebersicht:
+                    mitgliederUebersichtView = mitgliederUebersichtView ?? new MitgliederUebersichtView();
+                    Container.NavigationService.Navigate(mitgliederUebersichtView);
                     break;
                 default:
                     break;

@@ -6,10 +6,5 @@ using System.Threading.Tasks;
 
 namespace Vereinsverwaltung.Data.Types
 {
-    public enum ViewType
-    {
-        viewMitlgiederStammdaten,
-        viewMitgliederUebersicht
-    }
-    
+    public enum State { Neu, Bearbeiten };
 }

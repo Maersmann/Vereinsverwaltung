@@ -18,6 +18,8 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
     {
         private Mitglied mitglied;
 
+        private int mitgliedsID { set { mitglied.ID = value; } } 
+
         public MitgliederStammdatenViewModel()
         {
             mitglied = new Mitglied();
@@ -28,6 +30,21 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             ValidateVorname("");
         }
 
+        public void ZeigeMitglied(int inMitgliedID)
+        {
+
+            var Mitglied = new MitgliedAPI().Lade(inMitgliedID);
+            Name = Mitglied.Name;
+            Vorname = Mitglied.Vorname;
+            Eintrittsdatum = Mitglied.Eintrittsdatum;
+            Geburtstag = Mitglied.Geburtstag;
+            Mitgliedsnr = Mitglied.Mitgliedsnr;
+            Ort = Mitglied.Ort;
+            Strasse = Mitglied.Straße;
+            mitglied = Mitglied;    
+        }
+
+        #region Commands
         protected override void ExecuteSaveCommand()
         {
             var API = new MitgliedAPI();
@@ -45,9 +62,11 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
 
         protected override void ExecuteCloseCommand()
         {
-            ViewModelLocator.CleanUpMitgliederStammdatenView();
+            Cleanup();
         }
+        #endregion
 
+        #region Bindings
         public String Name
         {
             get { return mitglied.Name; }
@@ -146,6 +165,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
                 }
             }
         }
+        #endregion
 
         #region Validierung
         private bool ValidateName(string inName)

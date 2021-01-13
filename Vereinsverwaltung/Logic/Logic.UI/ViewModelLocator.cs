@@ -43,15 +43,12 @@ namespace Vereinsverwaltung.Logic.UI
             }
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<MitgliederStammdatenViewModel>();
+            SimpleIoc.Default.Register<MitgliederUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public MitgliederStammdatenViewModel MitgliederStammdaten => ServiceLocator.Current.GetInstance<MitgliederStammdatenViewModel>();
-
-        internal static void CleanUpMitgliederStammdatenView()
-        {
-            ServiceLocator.Current.GetInstance<MitgliederStammdatenViewModel>().Cleanup();
-        }
+        public MitgliederUebersichtViewModel MitgliederUebersichtView => ServiceLocator.Current.GetInstance<MitgliederUebersichtViewModel>();
 
         public static void Cleanup()
         {

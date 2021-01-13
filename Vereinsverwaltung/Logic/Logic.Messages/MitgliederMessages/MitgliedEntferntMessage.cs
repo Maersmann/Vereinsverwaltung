@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Data.Types
+namespace Vereinsverwaltung.Logic.Messages.MitgliederMessages
 {
-    public enum ViewType
+    public class MitgliedEntferntMessage
     {
-        viewMitlgiederStammdaten,
-        viewMitgliederUebersicht
     }
-    
 }

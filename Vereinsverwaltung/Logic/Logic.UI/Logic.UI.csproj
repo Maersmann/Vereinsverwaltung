@@ -161,6 +161,7 @@
     <Compile Include="BaseViewModels\ViewModelValidate.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MitgliederViewModels\MitgliederStammdatenViewModel.cs" />
+    <Compile Include="MitgliederViewModels\MitgliederUebersichtViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
