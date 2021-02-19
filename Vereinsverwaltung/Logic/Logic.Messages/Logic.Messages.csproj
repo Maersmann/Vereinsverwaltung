@@ -44,6 +44,9 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BaseMessages\AktualisiereViewMessage.cs" />
+    <Compile Include="BaseMessages\BaseStammdatenMessage.cs" />
+    <Compile Include="BaseMessages\ExceptionMessage.cs" />
     <Compile Include="BaseMessages\OpenViewMessage.cs" />
     <Compile Include="BaseMessages\StammdatenGespeichertMessage.cs" />
     <Compile Include="MitgliederMessages\MitgliedEntferntMessage.cs" />

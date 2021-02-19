@@ -4,12 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Vereinsverwaltung.Data.Types;
 
 namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 {
     public class ViewModelStammdaten : ViewModelValidate
     {
+        protected State state;
+        protected bool LoadAktie;
         public ICommand SaveCommand { get; protected set; }
+
+        public ViewModelStammdaten()
+        {
+            LoadAktie = false;
+        }
 
         protected bool CanExecuteSaveCommand()
         {

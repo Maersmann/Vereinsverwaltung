@@ -16,7 +16,7 @@
             <RowDefinition Height="45px" />
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="0" Margin="5" Width="auto"  ItemsSource="{Binding Mitglieder}" SelectedItem="{Binding SelectedMitglied, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid Grid.Row="0" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname }" Width="auto"/>

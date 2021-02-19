@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Model.MitgliederEntitys;
+using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Core;
 using Vereinsverwaltung.Logic.Core.Validierungen;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
@@ -56,8 +57,10 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             catch (MitgliedMitMitgliedsNrVorhanden)
 
             {
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Mitgliedsnr ist schon vorhanden" });
+                SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
+                return;
             }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewMitgliederUebersicht);
         }
         #endregion
 

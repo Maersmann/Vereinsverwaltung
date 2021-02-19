@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
 namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 {
@@ -20,6 +21,7 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             CloseCommand = new RelayCommand(() => ExecuteCloseCommand());
         }
 
+        protected string messageToken;
         public string Title { get; protected set; }
 
         public ICommand CloseCommand { get; set; }
@@ -27,6 +29,11 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
         protected virtual void ExecuteCloseCommand()
         {
             Cleanup(); 
+        }
+
+        public void SendExceptionMessage(string inException)
+        {
+            Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage {  Message = inException });
         }
 
 

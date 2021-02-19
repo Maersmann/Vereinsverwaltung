@@ -43,12 +43,7 @@ namespace Vereinsverwaltung.UI.Desktop.Mitglieder
                 }
                 
             }
-            bool? Result = view.ShowDialog();
-
-            if ((Result.GetValueOrDefault(false)) && (this.DataContext is MitgliederUebersichtViewModel modelUebersicht))
-            {
-                modelUebersicht.LoadData();
-            }
+            view.ShowDialog();
         }
 
         private void ReceiveMitgliedEntferntMessage()

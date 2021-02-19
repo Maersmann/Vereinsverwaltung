@@ -51,5 +51,16 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             }
         }
 
+        protected void DeleteValidateInfo(string inPropertyKey)
+        {
+            if (ValidationErrors.ContainsKey(inPropertyKey))
+            {
+
+                ValidationErrors.Remove(inPropertyKey);
+
+                RaiseErrorsChanged(inPropertyKey);
+            }
+        }
+
     }
 }
