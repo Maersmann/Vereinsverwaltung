@@ -9,7 +9,8 @@ namespace Vereinsverwaltung.Data.Types
     public enum ViewType
     {
         viewMitlgiederStammdaten,
-        viewMitgliederUebersicht
+        viewMitgliederUebersicht,
+        viewMitgliederImport
     }
     
 }

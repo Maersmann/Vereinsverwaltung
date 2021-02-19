@@ -192,6 +192,10 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Mitglieder\MitgliederImportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Mitglieder\MitgliederUebersichtView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +210,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mitglieder\MitgliederImportView.xaml.cs">
+      <DependentUpon>MitgliederImportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mitglieder\MitgliederUebersichtView.xaml.cs">
       <DependentUpon>MitgliederUebersichtView.xaml</DependentUpon>
     </Compile>

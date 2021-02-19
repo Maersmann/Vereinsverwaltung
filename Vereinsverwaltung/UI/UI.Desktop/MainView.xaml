@@ -31,7 +31,8 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Allgemein">
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
-                    <Fluent:Button Header="Stammdaten" Command="{Binding OpenMitgliederStammdatenCommand}"  />
+                    <Fluent:Button Header="Stammdaten" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  />
+                    <Fluent:Button Header="Import" Command="{Binding OpenMitgliederImportCommand}" Width="60"  />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

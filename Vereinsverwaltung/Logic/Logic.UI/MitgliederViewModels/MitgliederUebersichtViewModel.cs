@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Vereinsverwaltung.Data.Model.MitgliederEntitys;
 using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core;
+using Vereinsverwaltung.Logic.Core.MitgliederCore;
 using Vereinsverwaltung.Logic.Messages.MitgliederMessages;
 using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
@@ -21,6 +21,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
 
         public MitgliederUebersichtViewModel()
         {
+            Title = "Übersicht Mitglieder";
             RegisterAktualisereViewMessage(ViewType.viewMitgliederUebersicht);
             LoadData();
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());

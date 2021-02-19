@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Model.MitgliederEntitys;
 using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core;
+using Vereinsverwaltung.Logic.Core.MitgliederCore;
 using Vereinsverwaltung.Logic.Core.Validierungen;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
 using Vereinsverwaltung.Logic.UI.BaseViewModels;
@@ -19,16 +19,12 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
     {
         private Mitglied mitglied;
 
-        private int mitgliedsID { set { mitglied.ID = value; } } 
-
         public MitgliederStammdatenViewModel()
         {
+            Title = "Stammdaten Mitglied";
             mitglied = new Mitglied();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-            ValidateEintrittsdatum(null);
-            ValidateGeburtstag(null);
-            ValidateName("");
-            ValidateVorname("");
+            Cleanup();
         }
 
         public void ZeigeMitglied(int inMitgliedID)
@@ -42,7 +38,8 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             Mitgliedsnr = Mitglied.Mitgliedsnr;
             Ort = Mitglied.Ort;
             Strasse = Mitglied.Straße;
-            mitglied = Mitglied;    
+            mitglied = Mitglied;
+            state = State.Bearbeiten;
         }
 
         #region Commands
@@ -51,11 +48,18 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             var API = new MitgliedAPI();
             try
             {
-                API.Speichern(mitglied);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied gespeichert" });
+                if (state.Equals(State.Neu))
+                { 
+                    API.Speichern(mitglied);
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied gespeichert" });
+                }
+                else
+                {
+                    API.Aktualisieren(mitglied);
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied aktualisiert" });
+                }
             }
             catch (MitgliedMitMitgliedsNrVorhanden)
-
             {
                 SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
                 return;
@@ -215,6 +219,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             ValidateGeburtstag(null);
             ValidateName("");
             ValidateVorname("");
+            state = State.Neu;
         }
     }
 }

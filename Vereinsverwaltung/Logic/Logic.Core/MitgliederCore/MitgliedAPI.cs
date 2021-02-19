@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Infrastructure.Mitglieder;
 using Vereinsverwaltung.Data.Model.MitgliederEntitys;
 
-namespace Vereinsverwaltung.Logic.Core
+namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 {
     public class MitgliedAPI
     {
-        private MitgliedRepository repo;
+        private readonly MitgliedRepository repo;
         public MitgliedAPI()
         {
             repo = new MitgliedRepository();
@@ -38,6 +38,11 @@ namespace Vereinsverwaltung.Logic.Core
         public Mitglied Lade(int inID)
         {
             return repo.LadeByID(inID);
+        }
+
+        public void Aktualisieren(Mitglied mitglied)
+        {
+            repo.Speichern(mitglied);
         }
     }
 

@@ -15,12 +15,14 @@ namespace Vereinsverwaltung.Logic.UI
         public MainViewModel()
         {
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
-            OpenMitgliederStammdatenCommand = new RelayCommand(() => ExecuteOpenMitgliederStammdatenCommand());
-            OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecutOpenMitgliederUebersichtCommand());
+            OpenMitgliederStammdatenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitlgiederStammdaten));
+            OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
+            OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
         }
 
         public ICommand OpenConnectionCommand { get; private set; }
         public ICommand OpenMitgliederStammdatenCommand { get; private set; }
+        public ICommand OpenMitgliederImportCommand { get; private set; }
         public RelayCommand OpenMitgliederUebersichtCommand { get; private set; }
 
         private void ExecuteOpenConnectionCommand()
@@ -28,14 +30,9 @@ namespace Vereinsverwaltung.Logic.UI
             var db = new DatabaseAPI();
             db.AktualisereDatenbank();
         }
-        private void ExecuteOpenMitgliederStammdatenCommand()
+        private void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewMitlgiederStammdaten });
-        }
-
-        private void ExecutOpenMitgliederUebersichtCommand()
-        {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewMitgliederUebersicht });
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
         }
 
     }

@@ -12,10 +12,7 @@ namespace Vereinsverwaltung.Data.Infrastructure.Mitglieder
     {
         public void Speichern(Mitglied inMitglied)
         {
-
-            if (inMitglied.ID != 0)
-                repo.Mitglieder.Update(inMitglied);
-            else
+            if (inMitglied.ID == 0)
                 repo.Mitglieder.Add(inMitglied);
 
             repo.SaveChanges();
