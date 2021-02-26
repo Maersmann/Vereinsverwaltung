@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Vereinsverwaltung.Data.Model.MitgliederEntitys;
+using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 
 namespace Vereinsverwaltung.Data.Infrastructure
 {

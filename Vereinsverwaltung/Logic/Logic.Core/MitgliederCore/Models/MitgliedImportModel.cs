@@ -1,36 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Types.MitgliederTypes;
 
-namespace Vereinsverwaltung.Data.Entitys.MitgliederEntitys
+namespace Vereinsverwaltung.Logic.Core.MitgliederCore.Models
 {
-    [Table("Mitglied")]
-    public class Mitglied
+    public class MitgliedImportModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-
         public string Name { get; set; }
         public string Vorname { get; set; }
         public DateTime? Eintrittsdatum { get; set; }
         public DateTime? Geburtstag { get; set; }
         public String Ort { get; set; }
-
-        [Column("Strasse")]
         public String Straße { get; set; }
-        public int? Mitgliedsnr { get; set; }
-
-        [EnumDataType(typeof(MitgliedStatus))]
-        public MitgliedStatus MitgliedStatus { get; set; }
-
-
-        [NotMapped]
+        public int Mitgliedsnr { get; set; }
+        public MitgliedImportStateTypes State { get; set; }
         public int? Alter
         {
             get
@@ -46,6 +32,5 @@ namespace Vereinsverwaltung.Data.Entitys.MitgliederEntitys
                 }
             }
         }
-
     }
 }

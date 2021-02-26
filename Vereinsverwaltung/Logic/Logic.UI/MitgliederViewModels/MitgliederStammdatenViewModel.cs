@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.MitgliederEntitys;
+using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Core.MitgliederCore;
 using Vereinsverwaltung.Logic.Core.Validierungen;

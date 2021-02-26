@@ -52,6 +52,7 @@
     <Compile Include="Interfaces\IValidierung.cs" />
     <Compile Include="MitgliederCore\MitgliedAPI.cs" />
     <Compile Include="MitgliederCore\MitgliederImport.cs" />
+    <Compile Include="MitgliederCore\Models\MitgliedImportModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validierungen\MitgliederStammdatenValidierung.cs" />
   </ItemGroup>

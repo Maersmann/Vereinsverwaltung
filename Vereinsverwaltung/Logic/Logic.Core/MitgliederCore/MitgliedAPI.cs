@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Infrastructure.Mitglieder;
-using Vereinsverwaltung.Data.Model.MitgliederEntitys;
+using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 
 namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 {
@@ -16,13 +16,23 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
         {
             repo = new MitgliedRepository();
         }
-        public void Speichern(Mitglied inMitglied)
+        public void Speichern(Mitglied mitglied)
         {
-            if ( inMitglied.Mitgliedsnr.HasValue && repo.VorhandenByMitgliedsNr( inMitglied.Mitgliedsnr.GetValueOrDefault()))
+            if (mitglied.Mitgliedsnr.HasValue && repo.VorhandenByMitgliedsNr(mitglied.Mitgliedsnr.GetValueOrDefault()))
             {
                 throw new MitgliedMitMitgliedsNrVorhanden();
             }
-            repo.Speichern(inMitglied);
+            repo.Speichern(mitglied);
+        }
+
+        public void Aktualisieren(Mitglied mitglied)
+        {
+            repo.Speichern(mitglied);
+        }
+
+        public ObservableCollection<Mitglied> LadeAlleAktiven()
+        {
+            return repo.LadeAlleAktiven();
         }
 
         public ObservableCollection<Mitglied> LadeAlle()
@@ -30,19 +40,33 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
             return repo.LadeAlle();
         }
 
-        public void Entfernen(int inID)
+        public ObservableCollection<Mitglied> LadeAlleAnhandMitgliedsNr( IList<int> mitgliedsnr )
         {
-            repo.Entfernen(inID);
+            return repo.LadeAlleAnhandMitgliedsNr(mitgliedsnr);
         }
 
-        public Mitglied Lade(int inID)
+        public List<int> LadeAlleAktivenMitgliedsNr()
         {
-            return repo.LadeByID(inID);
+            var mitglieder = new List<int>();
+
+            LadeAlleAktiven().ToList().ForEach(m => { mitglieder.Add(m.Mitgliedsnr.Value); });
+
+            return mitglieder;
         }
 
-        public void Aktualisieren(Mitglied mitglied)
+        public void Entfernen(int id)
         {
-            repo.Speichern(mitglied);
+            repo.Entfernen(id);
+        }
+
+        public Mitglied Lade(int id)
+        {
+            return repo.LadeByID(id);
+        }
+
+        public Mitglied LadeByMitgliedsNr(int mitgliedsnr)
+        {
+            return repo.LadeByMitgliedsNr(mitgliedsnr);
         }
     }
 

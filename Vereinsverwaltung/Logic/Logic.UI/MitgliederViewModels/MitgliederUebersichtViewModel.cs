@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Model.MitgliederEntitys;
+using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Core.MitgliederCore;
 using Vereinsverwaltung.Logic.Messages.MitgliederMessages;
@@ -44,7 +44,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
 
         public override void LoadData()
         {
-            itemList = new MitgliedAPI().LadeAlle();
+            itemList = new MitgliedAPI().LadeAlleAktiven();
             this.RaisePropertyChanged("ItemList");
         }
 

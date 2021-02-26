@@ -16,6 +16,12 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 
         protected T selectedItem;
 
+        public ViewModelUebersicht()
+        {
+            itemList = new ObservableCollection<T>();
+        }
+
+
         public void RegisterAktualisereViewMessage(ViewType inViewType)
         {
             Messenger.Default.Register<AktualisiereViewMessage>(this, inViewType, m => ReceiveAktualisiereViewMessage());
