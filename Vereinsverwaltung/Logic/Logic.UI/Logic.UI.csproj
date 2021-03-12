@@ -151,20 +151,42 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AuswahlViewModels\MitgliedAuswahlViewModel.cs" />
+    <Compile Include="AuswahlViewModels\SchluesselAuswahlViewModel.cs" />
+    <Compile Include="AuswahlViewModels\SchluesselbesitzerAuswahlViewModel.cs" />
+    <Compile Include="AuswahlViewModels\SchluesselzuteilungAuswahlViewModel.cs" />
+    <Compile Include="BaseViewModels\ViewModelAuswahl.cs" />
     <Compile Include="BaseViewModels\ViewModelBasis.cs" />
+    <Compile Include="BaseViewModels\ViewModelLoadData.cs" />
+    <Compile Include="BaseViewModels\ViewModelSchluesselverwaltungUebersicht.cs" />
     <Compile Include="BaseViewModels\ViewModelStammdaten.cs" />
     <Compile Include="BaseViewModels\ViewModelUebersicht.cs" />
     <Compile Include="BaseViewModels\ViewModelValidate.cs" />
+    <Compile Include="InterfaceViewModels\ISchluesselzuteilungStammdatenViewModel.cs" />
+    <Compile Include="InterfaceViewModels\IViewModelStammdaten.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MitgliederViewModels\MitgliederImportViewModel.cs" />
     <Compile Include="MitgliederViewModels\MitgliederStammdatenViewModel.cs" />
     <Compile Include="MitgliederViewModels\MitgliederUebersichtViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselbesitzerStammdatenViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselbesitzerUebersichtViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselRueckgabeStammdatenViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselStammdatenViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselUebersichtViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselverteilungBesitzerUebersichtDetailViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselverteilungBesitzerUebersichtViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselverteilungFreieSchluesselUebersichtViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselverteilungSchluesselUebersichtDetailViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselverteilungSchluesselUebersichtViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselzuteilungHistoryUebersichtViewModel.cs" />
+    <Compile Include="SchluesselverwaltungViewModels\SchluesselzuteilungStammdatenViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>

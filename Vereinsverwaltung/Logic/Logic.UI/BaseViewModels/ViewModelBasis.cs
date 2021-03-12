@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
@@ -18,22 +19,40 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
     {
         public ViewModelBasis()
         {
-            CloseCommand = new RelayCommand(() => ExecuteCloseCommand());
+            CleanUpCommand = new RelayCommand(() => ExecuteCleanUpCommand());
+            this.CloseWindowCommand = new RelayCommand<Window>(this.ExecuteCloseWindowCommand);
         }
 
         protected string messageToken;
         public string Title { get; protected set; }
+        public string MessageToken { set { messageToken = value; } }
 
-        public ICommand CloseCommand { get; set; }
+        public ICommand CleanUpCommand { get; set; }
+        public RelayCommand<Window> CloseWindowCommand { get; private set; }
 
-        protected virtual void ExecuteCloseCommand()
+        protected virtual void ExecuteCleanUpCommand()
         {
             Cleanup(); 
         }
 
+        protected void ExecuteCloseWindowCommand(Window window)
+        {
+            if (window != null)
+            {
+                window.Close();
+            }
+        }
+
+
+
         public void SendExceptionMessage(string inException)
         {
             Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage {  Message = inException });
+        }
+
+        public void SendInformationMessage(string informationMessage)
+        {
+            Messenger.Default.Send<InformationMessage>(new InformationMessage { Message = informationMessage });
         }
 
 

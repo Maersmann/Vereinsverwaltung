@@ -12,33 +12,29 @@ using Vereinsverwaltung.Logic.Core.MitgliederCore;
 using Vereinsverwaltung.Logic.Core.Validierungen;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
 using Vereinsverwaltung.Logic.UI.BaseViewModels;
+using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
 
 namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
 {
-    public class MitgliederStammdatenViewModel : ViewModelStammdaten
+    public class MitgliederStammdatenViewModel : ViewModelStammdaten<Mitglied>, IViewModelStammdaten
     {
-        private Mitglied mitglied;
+
 
         public MitgliederStammdatenViewModel()
         {
             Title = "Stammdaten Mitglied";
-            mitglied = new Mitglied();
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-            Cleanup();
         }
 
-        public void ZeigeMitglied(int inMitgliedID)
+        public void ZeigeStammdatenAn(int id)
         {
-
-            var Mitglied = new MitgliedAPI().Lade(inMitgliedID);
+            var Mitglied = new MitgliedAPI().Lade(id);
             Name = Mitglied.Name;
-            Vorname = Mitglied.Vorname;
             Eintrittsdatum = Mitglied.Eintrittsdatum;
             Geburtstag = Mitglied.Geburtstag;
             Mitgliedsnr = Mitglied.Mitgliedsnr;
             Ort = Mitglied.Ort;
             Strasse = Mitglied.Straße;
-            mitglied = Mitglied;
+            data = Mitglied;
             state = State.Bearbeiten;
         }
 
@@ -50,13 +46,13 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             {
                 if (state.Equals(State.Neu))
                 { 
-                    API.Speichern(mitglied);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied gespeichert" });
+                    API.Speichern(data);
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied gespeichert" }, StammdatenTypes.mitglied);
                 }
                 else
                 {
-                    API.Aktualisieren(mitglied);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied aktualisiert" });
+                    API.Aktualisieren(data);
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied aktualisiert" }, StammdatenTypes.mitglied);
                 }
             }
             catch (MitgliedMitMitgliedsNrVorhanden)
@@ -64,89 +60,75 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
                 SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
                 return;
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewMitgliederUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
         }
         #endregion
 
         #region Bindings
         public String Name
         {
-            get { return mitglied.Name; }
+            get { return data.Name; }
             set
             {
 
-                if ( !string.Equals(mitglied.Name, value))
+                if ( !string.Equals(data.Name, value))
                 {
                     ValidateName(value);
-                    mitglied.Name = value;
+                    data.Name = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-        public String Vorname
-        {
-            get { return mitglied.Vorname; }
-            set
-            {
 
-                if ( !string.Equals(mitglied.Vorname, value))
-                {
-                    ValidateVorname(value);
-                    mitglied.Vorname = value;
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
         public String Ort
         {
-            get { return mitglied.Ort; }
+            get { return data.Ort; }
             set
             {
 
-                if ( !string.Equals(mitglied.Ort, value))
+                if ( !string.Equals(data.Ort, value))
                 {
-                    mitglied.Ort = value;
+                    data.Ort = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         public String Strasse
         {
-            get { return mitglied.Straße; }
+            get { return data.Straße; }
             set
             {
 
-                if ( !string.Equals(mitglied.Straße, value))
+                if ( !string.Equals(data.Straße, value))
                 {
-                    mitglied.Straße = value;
+                    data.Straße = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         public int? Mitgliedsnr
         {
-            get { return mitglied.Mitgliedsnr; }
+            get { return data.Mitgliedsnr; }
             set
             {
-                if ( !string.Equals(mitglied.Mitgliedsnr, value))
+                if ( !string.Equals(data.Mitgliedsnr, value))
                 {
-                    mitglied.Mitgliedsnr = value;
+                    data.Mitgliedsnr = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         public DateTime? Eintrittsdatum
         {
-            get { return mitglied.Eintrittsdatum; }
+            get { return data.Eintrittsdatum; }
             set
             {
 
-                if ( !string.Equals(mitglied.Eintrittsdatum, value))
+                if ( !string.Equals(data.Eintrittsdatum, value))
                 {
                     ValidateEintrittsdatum(value);
-                    mitglied.Eintrittsdatum = value;
+                    data.Eintrittsdatum = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -154,14 +136,14 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
         }
         public DateTime? Geburtstag
         {
-            get { return mitglied.Geburtstag; }
+            get { return data.Geburtstag; }
             set
             {
                 
-                if ( !string.Equals(mitglied.Geburtstag, value))
+                if ( !string.Equals(data.Geburtstag, value))
                 {
                     ValidateGeburtstag(value);
-                    mitglied.Geburtstag = value;
+                    data.Geburtstag = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -170,40 +152,30 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
         #endregion
 
         #region Validierung
-        private bool ValidateName(string inName)
+        private bool ValidateName(string name)
         {
             var Validierung = new MitgliederStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateName(inName, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateString(name, "" , out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Name", validationErrors);
             return isValid;
         }
-        private bool ValidateVorname(string inVorname)
+        private bool ValidateEintrittsdatum(DateTime? eintrittsdatum)
         {
             var Validierung = new MitgliederStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateName(inVorname, out ICollection<string> validationErrors);
-
-            AddValidateInfo(isValid, "Vorname", validationErrors);
-
-            return isValid;
-        }
-        private bool ValidateEintrittsdatum(DateTime? inEintrittsdatum)
-        {
-            var Validierung = new MitgliederStammdatenValidierung();
-
-            bool isValid = Validierung.ValidateDatum(inEintrittsdatum, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDatum(eintrittsdatum, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Eintrittsdatum", validationErrors);
 
             return isValid;
         }
-        private bool ValidateGeburtstag(DateTime? inGeburtstag)
+        private bool ValidateGeburtstag(DateTime? geburtstag)
         {
             var Validierung = new MitgliederStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateDatum(inGeburtstag, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDatum(geburtstag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Geburtstag", validationErrors);
 
@@ -213,12 +185,11 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
         
         public override void Cleanup()
         {
-            mitglied = new Mitglied();
+            data = new Mitglied();
             this.RaisePropertyChanged();
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);
             ValidateName("");
-            ValidateVorname("");
             state = State.Neu;
         }
     }

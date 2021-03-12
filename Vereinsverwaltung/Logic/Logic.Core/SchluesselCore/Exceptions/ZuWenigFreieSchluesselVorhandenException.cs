@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Logic.Messages.MitgliederMessages
+namespace Vereinsverwaltung.Logic.Core.SchluesselCore.Exceptions
 {
-    public class MitgliedEntferntMessage
+    public class ZuWenigFreieSchluesselVorhandenException : Exception
     {
     }
 }

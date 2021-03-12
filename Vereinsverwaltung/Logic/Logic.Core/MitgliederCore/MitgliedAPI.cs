@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Infrastructure.Mitglieder;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
+using Vereinsverwaltung.Logic.Core.Interfaces;
 
 namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 {
-    public class MitgliedAPI
+    public class MitgliedAPI : IAPI<Mitglied>
     {
         private readonly MitgliedRepository repo;
         public MitgliedAPI()
@@ -22,11 +23,13 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
             {
                 throw new MitgliedMitMitgliedsNrVorhanden();
             }
+            new ClassMitglied().SetMitgliedStatus(mitglied);
             repo.Speichern(mitglied);
         }
 
         public void Aktualisieren(Mitglied mitglied)
         {
+            new ClassMitglied().SetMitgliedStatus(mitglied);
             repo.Speichern(mitglied);
         }
 

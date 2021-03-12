@@ -9,6 +9,8 @@ namespace Vereinsverwaltung.Logic.Messages.BaseMessages
 {
     public class BaseStammdatenMessage
     {
+        public StammdatenTypes Stammdaten { get; set; }
         public State State { get; set; }
+        public int? ID { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using System.Windows.Input;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Core.MitgliederCore;
-using Vereinsverwaltung.Logic.Messages.MitgliederMessages;
+using Vereinsverwaltung.Logic.Messages.BaseMessages;
 using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
 namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
@@ -22,64 +22,25 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
         public MitgliederUebersichtViewModel()
         {
             Title = "Übersicht Mitglieder";
-            RegisterAktualisereViewMessage(ViewType.viewMitgliederUebersicht);
-            LoadData();
-            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
-            
+            RegisterAktualisereViewMessage(StammdatenTypes.mitglied);    
         }
-
-        public string MessageToken { set { messageToken = value; } }
-
-        #region Commands
-        private void ExecuteNeuCommand()
-        {
-            Messenger.Default.Send<OpenMitgliederStammdatenMessage>(new OpenMitgliederStammdatenMessage {  State = State.Neu, MitgliedID = null  });
-        }
-        private void ExecuteBearbeitenCommand()
-        {
-            Messenger.Default.Send<OpenMitgliederStammdatenMessage>(new OpenMitgliederStammdatenMessage {  State = State.Bearbeiten, MitgliedID = selectedItem.ID });
-        }
+        protected override int GetID() { return selectedItem.ID; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
         public override void LoadData()
         {
-            itemList = new MitgliedAPI().LadeAlleAktiven();
-            this.RaisePropertyChanged("ItemList");
+            itemList = new MitgliedAPI().LadeAlle();
+            base.LoadData();
         }
 
-        private void ExecuteEntfernenCommand()
+        #region Commands
+
+        protected override void ExecuteEntfernenCommand()
         {
             new MitgliedAPI().Entfernen(selectedItem.ID);
-            itemList.Remove(selectedItem);
-            this.RaisePropertyChanged("ItemList");
-
+            SendInformationMessage("Mitglied gelöscht");
+            base.ExecuteEntfernenCommand();
         }
-        private bool CanExecuteCommand()
-        {
-            return selectedItem != null;
-        }
-        #endregion
-
-        #region Bindings
-        public override Mitglied SelectedItem
-        {
-            get
-            {
-                return selectedItem;
-            }
-            set
-            {
-                selectedItem = value;
-                this.RaisePropertyChanged();
-                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-            }
-        }
-        public ICommand NeuCommand { get; private set; }
-        public ICommand BearbeitenCommand { get; private set; }
-        public ICommand EntfernenCommand { get; private set; }
-
         #endregion
     }
 }

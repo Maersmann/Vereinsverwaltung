@@ -8,5 +8,6 @@ namespace Vereinsverwaltung.Logic.Messages.BaseMessages
 {
     public class AktualisiereViewMessage
     {
+        public int? ID { get; set; }
     }
 }

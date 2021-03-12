@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Messages.MitgliederMessages;
 using Vereinsverwaltung.Logic.UI.MitgliederViewModels;
 
 namespace Vereinsverwaltung.UI.Desktop.Mitglieder
@@ -27,28 +26,6 @@ namespace Vereinsverwaltung.UI.Desktop.Mitglieder
         public MitgliederUebersichtView()
         {
             InitializeComponent();
-
-            Messenger.Default.Register<OpenMitgliederStammdatenMessage>(this, m => ReceiveOpenMitgliederStammdatenMessage(m));
-            Messenger.Default.Register<MitgliedEntferntMessage>(this, m => ReceiveMitgliedEntferntMessage());
-        }
-
-        private void ReceiveOpenMitgliederStammdatenMessage(OpenMitgliederStammdatenMessage m)
-        {
-            var view = new MitgliedStammdatenView();
-            if (view.DataContext is MitgliederStammdatenViewModel model)
-            {
-                if (m.State == State.Bearbeiten)
-                {
-                    model.ZeigeMitglied(m.MitgliedID.Value);
-                }
-                
-            }
-            view.ShowDialog();
-        }
-
-        private void ReceiveMitgliedEntferntMessage()
-        {
-            MessageBox.Show("Mitglied entfernt.");
         }
     }
 }

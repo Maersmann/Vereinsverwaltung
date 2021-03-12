@@ -1,38 +1,36 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
 namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 {
-    public class ViewModelUebersicht<T> : ViewModelBasis
+    public class ViewModelUebersicht<T> : ViewModelLoadData
     {
         protected ObservableCollection<T> itemList;
-
         protected T selectedItem;
 
         public ViewModelUebersicht()
         {
             itemList = new ObservableCollection<T>();
-        }
-
-
-        public void RegisterAktualisereViewMessage(ViewType inViewType)
-        {
-            Messenger.Default.Register<AktualisiereViewMessage>(this, inViewType, m => ReceiveAktualisiereViewMessage());
-        }
-
-        private void ReceiveAktualisiereViewMessage()
-        {
+            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
+            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
+            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             LoadData();
-        }
+        }    
 
-        public virtual void LoadData() { }
+        protected virtual int GetID() { return 0; }
+        protected virtual StammdatenTypes GetStammdatenType() { return 0; }
+
+
 
         public virtual T SelectedItem
         {
@@ -44,15 +42,39 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             {
                 selectedItem = value;
                 this.RaisePropertyChanged();
+                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
             }
         }
-
         public IEnumerable<T> ItemList
         {
             get
             {
                 return itemList;
             }
+        }
+
+        protected bool CanExecuteCommand()
+        {
+            return selectedItem != null;
+        }
+
+        public ICommand NeuCommand { get; protected set; }
+        public ICommand BearbeitenCommand { get; protected set; }
+        public ICommand EntfernenCommand { get; protected set; }
+
+        protected virtual void ExecuteEntfernenCommand()
+        {
+            itemList.Remove(selectedItem);
+            this.RaisePropertyChanged("ItemList");
+        }
+        protected virtual void ExecuteBearbeitenCommand()
+        {
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Bearbeiten, ID = GetID(), Stammdaten = GetStammdatenType() });
+        }
+        protected virtual void ExecuteNeuCommand()
+        {
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, Stammdaten = GetStammdatenType() });
         }
     }
 }

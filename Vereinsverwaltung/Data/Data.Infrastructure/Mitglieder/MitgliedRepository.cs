@@ -11,10 +11,10 @@ namespace Vereinsverwaltung.Data.Infrastructure.Mitglieder
 {
     public class MitgliedRepository: BaseRepository
     {
-        public void Speichern(Mitglied inMitglied)
+        public void Speichern(Mitglied mitglied)
         {
-            if (inMitglied.ID == 0)
-                repo.Mitglieder.Add(inMitglied);
+            if (mitglied.ID == 0)
+                repo.Mitglieder.Add(mitglied);
 
             repo.SaveChanges();
         }

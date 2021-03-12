@@ -10,7 +10,13 @@ namespace Vereinsverwaltung.Data.Types
     {
         viewMitlgiederStammdaten,
         viewMitgliederUebersicht,
-        viewMitgliederImport
+        viewMitgliederImport,
+        viewSchluesselStammdaten,
+        viewSchluesselUebersicht,
+        viewSchluesselbesitzerUebersicht,
+        viewZuteilungSchluesselbesitzerUebersicht,
+        viewZuteilungSchluesselUebersicht,
+        viewZuteilungFreieAnzahlUebersicht
     }
     
 }

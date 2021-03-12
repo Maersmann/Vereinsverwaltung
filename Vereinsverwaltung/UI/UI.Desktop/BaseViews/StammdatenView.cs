@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
 namespace Vereinsverwaltung.UI.Desktop.BaseViews
@@ -13,10 +14,15 @@ namespace Vereinsverwaltung.UI.Desktop.BaseViews
     {
         public StammdatenView()
         {
-            Messenger.Default.Register<StammdatenGespeichertMessage>(this, m => ReceiveNeueDividendeGespeichertMessage(m));
+            this.Unloaded += Window_Unloaded;           
+        }
+        
+        public void RegisterStammdatenGespeichertMessage(StammdatenTypes types)
+        {
+            Messenger.Default.Register<StammdatenGespeichertMessage>(this, types, m => ReceiveStmmdatenGespeichertMessage(m));
         }
 
-        private void ReceiveNeueDividendeGespeichertMessage(StammdatenGespeichertMessage m)
+        private void ReceiveStmmdatenGespeichertMessage(StammdatenGespeichertMessage m)
         {
             if (m.Erfolgreich)
             {
@@ -29,7 +35,7 @@ namespace Vereinsverwaltung.UI.Desktop.BaseViews
             }
         }
 
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        protected virtual void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<StammdatenGespeichertMessage>(this);
         }

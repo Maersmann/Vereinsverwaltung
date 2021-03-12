@@ -26,6 +26,9 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime?>("AusgetretenAm")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime?>("Eintrittsdatum")
                         .HasColumnType("timestamp without time zone");
 
@@ -54,6 +57,159 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Mitglied");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluessel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Ausgegeben")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Beschreibung")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Bestand")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Bezeichnung")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Nummer")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Schluessel");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("MitgliedID")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MitgliedID")
+                        .IsUnique();
+
+                    b.ToTable("Schluesselbesitzer");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselzuteilung", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Anzahl")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ErhaltenAm")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("SchluesselID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SchluesselbesitzerID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SchluesselID");
+
+                    b.HasIndex("SchluesselbesitzerID");
+
+                    b.ToTable("Schluesselzuteilung");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.SchluesselzuteilungHistory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Anzahl")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Datum")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("SchluesselID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SchluesselbesitzerID")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("SchluesselzuteilungID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SchluesselID");
+
+                    b.HasIndex("SchluesselbesitzerID");
+
+                    b.HasIndex("SchluesselzuteilungID");
+
+                    b.ToTable("SchluesselzuteilungHistory");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", b =>
+                {
+                    b.HasOne("Vereinsverwaltung.Data.Entitys.MitgliederEntitys.Mitglied", "Mitglied")
+                        .WithOne("Schluesselbesitzer")
+                        .HasForeignKey("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", "MitgliedID");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselzuteilung", b =>
+                {
+                    b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluessel", "Schluessel")
+                        .WithMany("Verteilung")
+                        .HasForeignKey("SchluesselID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", "Schluesselbesitzer")
+                        .WithMany("Verteilung")
+                        .HasForeignKey("SchluesselbesitzerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.SchluesselzuteilungHistory", b =>
+                {
+                    b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluessel", "Schluessel")
+                        .WithMany()
+                        .HasForeignKey("SchluesselID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", "Schluesselbesitzer")
+                        .WithMany()
+                        .HasForeignKey("SchluesselbesitzerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselzuteilung", "Schluesselzuteilung")
+                        .WithMany()
+                        .HasForeignKey("SchluesselzuteilungID");
                 });
 #pragma warning restore 612, 618
         }

@@ -23,6 +23,7 @@ namespace Vereinsverwaltung.UI.Desktop.Mitglieder
         public MitgliedStammdatenView()
         {
             InitializeComponent();
+            RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.mitglied);
         }
     }
 }

@@ -176,7 +176,78 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Auswahl\MitgliedAuswahlView.xaml.cs">
+      <DependentUpon>MitgliedAuswahlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Auswahl\SchluesselAuswahlView.xaml.cs">
+      <DependentUpon>SchluesselAuswahlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Auswahl\SchluesselbesitzerAuswahlView.xaml.cs">
+      <DependentUpon>SchluesselbesitzerAuswahlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Auswahl\SchluesselzuteilungAuswahlView.xaml.cs">
+      <DependentUpon>SchluesselzuteilungAuswahlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BaseViews\StammdatenView.cs" />
+    <Compile Include="Schluesselverwaltung\Core\SchluesselzuteilungHistoryUebersichtHelper.cs" />
+    <Compile Include="Schluesselverwaltung\Pages\SchluesselverteilungBesitzerUebersichtPage.xaml.cs">
+      <DependentUpon>SchluesselverteilungBesitzerUebersichtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\Pages\SchluesselverteilungSchluesselUebersichtPage.xaml.cs">
+      <DependentUpon>SchluesselverteilungSchluesselUebersichtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselbesitzerStammdatenView.xaml.cs">
+      <DependentUpon>SchluesselbesitzerStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselbesitzerUebersichtView.xaml.cs">
+      <DependentUpon>SchluesselbesitzerUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselRueckgabeStammdatenView.xaml.cs">
+      <DependentUpon>SchluesselRueckgabeStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselStammdatenView.xaml.cs">
+      <DependentUpon>SchluesselStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselUebersichtView.xaml.cs">
+      <DependentUpon>SchluesselUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselverteilungBesitzerUebersichtDetailView.xaml.cs">
+      <DependentUpon>SchluesselverteilungBesitzerUebersichtDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselverteilungBesitzerUebersichtView.xaml.cs">
+      <DependentUpon>SchluesselverteilungBesitzerUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselverteilungFreieSchluesselUebersichtView.xaml.cs">
+      <DependentUpon>SchluesselverteilungFreieSchluesselUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselverteilungSchluesselUebersichtDetailView.xaml.cs">
+      <DependentUpon>SchluesselverteilungSchluesselUebersichtDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselverteilungSchluesselUebersichtView.xaml.cs">
+      <DependentUpon>SchluesselverteilungSchluesselUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselzuteilungHistoryUebersichtView.xaml.cs">
+      <DependentUpon>SchluesselzuteilungHistoryUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schluesselverwaltung\SchluesselzuteilungStammdatenView.xaml.cs">
+      <DependentUpon>SchluesselzuteilungStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Auswahl\MitgliedAuswahlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Auswahl\SchluesselAuswahlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Auswahl\SchluesselbesitzerAuswahlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Auswahl\SchluesselzuteilungAuswahlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -207,6 +278,62 @@
     <Page Include="Resources\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Schluesselverwaltung\Pages\SchluesselverteilungBesitzerUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\Pages\SchluesselverteilungSchluesselUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselbesitzerStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselbesitzerUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselRueckgabeStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselverteilungBesitzerUebersichtDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselverteilungBesitzerUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselverteilungFreieSchluesselUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselverteilungSchluesselUebersichtDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselverteilungSchluesselUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselzuteilungHistoryUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schluesselverwaltung\SchluesselzuteilungStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -259,7 +386,16 @@
       <Name>Logic.UI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\bearbeiten.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add.png" />
+    <Resource Include="Resources\entfernen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\entfernen_klein.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

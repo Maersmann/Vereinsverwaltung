@@ -44,14 +44,22 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AuswahlMessages\OpenMitgliedAuswahlMessage.cs" />
+    <Compile Include="AuswahlMessages\OpenSchluesselAuswahlMessage.cs" />
+    <Compile Include="AuswahlMessages\OpenSchluesselbesitzerAuswahlMessage.cs" />
+    <Compile Include="AuswahlMessages\OpenSchluesselzuteilungAuswahlMessage.cs" />
     <Compile Include="BaseMessages\AktualisiereViewMessage.cs" />
     <Compile Include="BaseMessages\BaseStammdatenMessage.cs" />
     <Compile Include="BaseMessages\ExceptionMessage.cs" />
+    <Compile Include="BaseMessages\InformationMessage.cs" />
     <Compile Include="BaseMessages\OpenViewMessage.cs" />
     <Compile Include="BaseMessages\StammdatenGespeichertMessage.cs" />
-    <Compile Include="MitgliederMessages\MitgliedEntferntMessage.cs" />
-    <Compile Include="MitgliederMessages\OpenMitgliederStammdatenMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchluesselMessages\LoadSchluesselverteilungBesitzerDetailMessage.cs" />
+    <Compile Include="SchluesselMessages\LoadSchluesselverteilungSchluesselDetailMessage.cs" />
+    <Compile Include="SchluesselMessages\OpenSchluesselRueckgabeMessage.cs" />
+    <Compile Include="SchluesselMessages\OpenSchluesselzuteilungHistoryUebersichtMessage.cs" />
+    <Compile Include="SchluesselMessages\OpenSchluesselzuteilungMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">

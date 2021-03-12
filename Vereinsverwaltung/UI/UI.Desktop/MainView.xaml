@@ -29,10 +29,21 @@
         <Fluent:Ribbon Grid.Row="0">
 
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="Allgemein">
+            <Fluent:RibbonTabItem Header="Mitglieder">
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
-                    <Fluent:Button Header="Stammdaten" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  />
+                    <Fluent:Button Header="Übersicht" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  />
                     <Fluent:Button Header="Import" Command="{Binding OpenMitgliederImportCommand}" Width="60"  />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Schlüssel">
+                <Fluent:RibbonGroupBox Header="Stammdaten" >
+                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenSchluesselUebersichtCommand}" Width="60"  />
+                    <Fluent:Button Header="Besitzer" Command="{Binding OpenSchluesselbesitzerUebersichtCommand}" Width="60"  />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Zuteilung" >
+                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenZuteilungSchluesselUebersichtCommand}" Width="60"  />
+                    <Fluent:Button Header="Besitzer" Command="{Binding OpenZuteilungSchluesselbesitzerUebersichtCommand}" Width="60"  />
+                    <Fluent:Button Header="Freie Schlüssel" Command="{Binding OpenZuteilungFreieAnzahlUbersichtCommand}" Width="60"  />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

@@ -12,11 +12,11 @@
                     Height="468.105" Width="357.917"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
-                    DataContext="{Binding MitgliederStammdaten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
+                    DataContext="{Binding MitgliederStammdaten ,Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CloseCommand}"/>
+            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
@@ -46,14 +46,14 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Nachname</Label>
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Name</Label>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Mitglieds-Nr</Label>
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Geburtstag</Label>
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Eintrittsdatum</Label>
             <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Wohnort</Label>
             <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Straße</Label>
 
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }"  >
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }"  >
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -69,7 +69,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Mitgliedsnr, Mode=TwoWay, TargetNullValue='' }" >
+            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Mitgliedsnr, Mode=TwoWay, TargetNullValue='' }" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
@@ -108,7 +108,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </DatePicker>
-            <TextBox Grid.Row="4"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Ort, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+            <TextBox Grid.Row="4"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Ort, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -124,7 +124,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="5"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Strasse, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+            <TextBox Grid.Row="5"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Strasse, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>

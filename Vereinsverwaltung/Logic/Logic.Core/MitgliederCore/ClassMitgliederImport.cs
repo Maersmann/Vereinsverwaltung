@@ -13,7 +13,7 @@ using Vereinsverwaltung.Logic.Core.MitgliederCore.Models;
 
 namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 {
-    public class MitgliederImport
+    public class ClassMitgliederImport
     {
         public ObservableCollection<MitgliedImportModel> StartImport( string path )
         {
@@ -64,6 +64,7 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
                 var Mitglied = API.LadeByMitgliedsNr(m.Mitgliedsnr);
                 Mitglied.MitgliedStatus = MitgliedStatus.Ehemalig;
                 Mitglied.Mitgliedsnr = null;
+                Mitglied.AusgetretenAm = DateTime.Now;
                 API.Aktualisieren(Mitglied);
             });
 

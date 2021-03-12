@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vereinsverwaltung.Data.Model.SchluesselEntitys;
 using Vereinsverwaltung.Data.Types.MitgliederTypes;
 
 namespace Vereinsverwaltung.Data.Entitys.MitgliederEntitys
@@ -28,6 +29,9 @@ namespace Vereinsverwaltung.Data.Entitys.MitgliederEntitys
 
         [EnumDataType(typeof(MitgliedStatus))]
         public MitgliedStatus MitgliedStatus { get; set; }
+        public DateTime? AusgetretenAm { get; set; }
+
+        public virtual Schluesselbesitzer Schluesselbesitzer { get; set; }
 
 
         [NotMapped]

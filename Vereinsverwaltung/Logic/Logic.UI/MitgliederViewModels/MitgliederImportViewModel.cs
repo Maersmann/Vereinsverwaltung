@@ -35,17 +35,17 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                itemList = new MitgliederImport().StartImport(openFileDialog.FileName);
+                itemList = new ClassMitgliederImport().StartImport(openFileDialog.FileName);
                 this.RaisePropertyChanged("ItemList");
             }
         }
 
         private void ExecuteSaveCommand()
         {
-            new MitgliederImport().Uebernahme(itemList);
+            new ClassMitgliederImport().Uebernahme(itemList);
             itemList.Clear();
             this.RaisePropertyChanged("ItemList");
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewMitgliederUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
         }
         #endregion
 
