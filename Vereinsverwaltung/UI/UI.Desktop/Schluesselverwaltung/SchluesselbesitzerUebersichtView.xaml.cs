@@ -24,7 +24,7 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
     /// </summary>
     public partial class SchluesselbesitzerUebersichtView : UserControl
     {
-        private SchluesselzuteilungHistoryUebersichtHelper helper;
+        private readonly SchluesselzuteilungHistoryUebersichtHelper helper;
         public SchluesselbesitzerUebersichtView()
         {
             InitializeComponent();

@@ -69,6 +69,7 @@
     <Compile Include="SchluesselCore\SchluesselverteilungAPI.cs" />
     <Compile Include="SchluesselCore\SchluesselzuteilungAPI.cs" />
     <Compile Include="SchluesselCore\SchluesselzuteilungHistoryAPI.cs" />
+    <Compile Include="SchnurschiessenCore\SchnurAPI.cs" />
     <Compile Include="Validierungen\Base\BaseValidierung.cs" />
     <Compile Include="Validierungen\MitgliederStammdatenValidierung.cs" />
   </ItemGroup>

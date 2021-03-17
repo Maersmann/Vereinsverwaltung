@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 using Vereinsverwaltung.Data.Model.SchluesselEntitys;
+using Vereinsverwaltung.Data.Model.SchnurEntitys;
 
 namespace Vereinsverwaltung.Data.Infrastructure
 {
@@ -14,6 +15,7 @@ namespace Vereinsverwaltung.Data.Infrastructure
         public DbSet<Schluesselbesitzer> Schluesselbesitzer { get; set; }
         public DbSet<Schluesselzuteilung> Schluesselverteilung { get; set; }
         public DbSet<SchluesselzuteilungHistory> SchluesselzuteilungHistory { get; set; }
+        public DbSet<Schnur> Schnuere { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }
 

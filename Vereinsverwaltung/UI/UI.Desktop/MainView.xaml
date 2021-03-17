@@ -10,7 +10,7 @@
         xmlns:UI="clr-namespace:Vereinsverwaltung.Logic.UI;assembly=Logic.UI"
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" 
+        Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" IsAutomaticCollapseEnabled="False"
         DataContext="{Binding Main ,Source={StaticResource Locator}}">
 
 
@@ -26,7 +26,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Fluent:Ribbon Grid.Row="0">
+        <Fluent:Ribbon Grid.Row="0" AutomaticStateManagement="True">
+
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage>
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="Schnurschießen">
+                            <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden"  />
+                        </Fluent:BackstageTabItem>
+                        
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
 
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Mitglieder">

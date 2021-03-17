@@ -21,6 +21,7 @@ using Vereinsverwaltung.UI.Desktop.BaseViews;
 using Vereinsverwaltung.UI.Desktop.Mitglieder;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Pages;
+using Vereinsverwaltung.UI.Desktop.Schnurschiessen.Pages;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -48,6 +49,8 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
 
             Naviagtion(ViewType.viewMitgliederUebersicht);
+
+            SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
         }
 
         private void ReceiveInformationMessage(InformationMessage m)

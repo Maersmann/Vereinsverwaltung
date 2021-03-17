@@ -187,6 +187,7 @@
     <Compile Include="SchluesselverwaltungViewModels\SchluesselverteilungSchluesselUebersichtViewModel.cs" />
     <Compile Include="SchluesselverwaltungViewModels\SchluesselzuteilungHistoryUebersichtViewModel.cs" />
     <Compile Include="SchluesselverwaltungViewModels\SchluesselzuteilungStammdatenViewModel.cs" />
+    <Compile Include="SchnurschiessenViewModels\SchnurstammdatenViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>

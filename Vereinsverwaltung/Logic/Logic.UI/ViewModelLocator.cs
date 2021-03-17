@@ -20,6 +20,7 @@ using System;
 using Vereinsverwaltung.Logic.UI.AuswahlViewModels;
 using Vereinsverwaltung.Logic.UI.MitgliederViewModels;
 using Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels;
+using Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels;
 
 namespace Vereinsverwaltung.Logic.UI
 {
@@ -63,6 +64,7 @@ namespace Vereinsverwaltung.Logic.UI
             SimpleIoc.Default.Register<SchluesselRueckgabeStammdatenViewModel>();
             SimpleIoc.Default.Register<SchluesselzuteilungAuswahlViewModel>();
             SimpleIoc.Default.Register<SchluesselzuteilungHistoryUebersichtViewModel>();
+            SimpleIoc.Default.Register<SchnurstammdatenViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -85,6 +87,7 @@ namespace Vereinsverwaltung.Logic.UI
         public SchluesselRueckgabeStammdatenViewModel SchluesselRueckgabeStammdaten => ServiceLocator.Current.GetInstance<SchluesselRueckgabeStammdatenViewModel>();
         public SchluesselzuteilungAuswahlViewModel SchluesselzuteilungAuswahl => ServiceLocator.Current.GetInstance<SchluesselzuteilungAuswahlViewModel>();
         public SchluesselzuteilungHistoryUebersichtViewModel SchluesselzuteilungHistoryUebersicht => ServiceLocator.Current.GetInstance<SchluesselzuteilungHistoryUebersichtViewModel>();
+        public SchnurstammdatenViewModel Schnurstammdaten => ServiceLocator.Current.GetInstance<SchnurstammdatenViewModel>();
         public static void Cleanup()
         {
 
