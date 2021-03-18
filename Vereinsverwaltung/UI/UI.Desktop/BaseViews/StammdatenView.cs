@@ -24,15 +24,11 @@ namespace Vereinsverwaltung.UI.Desktop.BaseViews
 
         private void ReceiveStmmdatenGespeichertMessage(StammdatenGespeichertMessage m)
         {
+            if (!m.Message.Trim().Equals(""))
+                MessageBox.Show(m.Message);
+
             if (m.Erfolgreich)
-            {
-                MessageBox.Show(m.Message);
                 DialogResult = true;
-            }
-            else
-            {
-                MessageBox.Show(m.Message);
-            }
         }
 
         protected virtual void Window_Unloaded(object sender, RoutedEventArgs e)

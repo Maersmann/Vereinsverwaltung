@@ -22,7 +22,7 @@ namespace Vereinsverwaltung.Data.Model.SchluesselEntitys
         
         public virtual Schluessel Schluessel { get; set; }
         public virtual Schluesselbesitzer Schluesselbesitzer { get; set; }
-
+        public virtual SchluesselzuteilungHistory SchluesselzuteilungHistory { get; set; }
 
     }
 }

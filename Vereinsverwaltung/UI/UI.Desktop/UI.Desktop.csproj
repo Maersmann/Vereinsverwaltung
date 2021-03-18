@@ -40,6 +40,9 @@
   <PropertyGroup>
     <StartupObject>UI.Desktop.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
@@ -238,6 +241,9 @@
     <Compile Include="Schnurschiessen\SchnurstammdatenView.xaml.cs">
       <DependentUpon>SchnurstammdatenView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Schnurschiessen\SchnurUebersichtView.xaml.cs">
+      <DependentUpon>SchnurUebersichtView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Auswahl\MitgliedAuswahlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -349,6 +355,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Schnurschiessen\SchnurUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mitglieder\MitgliederImportView.xaml.cs">
@@ -410,7 +420,19 @@
   <ItemGroup>
     <Resource Include="Resources\entfernen_klein.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\key.png" />
+    <Resource Include="Resources\person.png" />
+    <Resource Include="Resources\person_list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\import.png" />
+    <Resource Include="Resources\key_free.png" />
+    <Resource Include="Resources\key_list.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

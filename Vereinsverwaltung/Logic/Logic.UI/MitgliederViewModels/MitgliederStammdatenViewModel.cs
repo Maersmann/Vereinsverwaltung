@@ -20,7 +20,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
     {
 
 
-        public MitgliederStammdatenViewModel()
+        public MitgliederStammdatenViewModel() : base(new MitgliedAPI())
         {
             Title = "Stammdaten Mitglied";
         }
@@ -37,30 +37,19 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             data = Mitglied;
             state = State.Bearbeiten;
         }
-
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.mitglied;
         #region Commands
         protected override void ExecuteSaveCommand()
         {
-            var API = new MitgliedAPI();
             try
             {
-                if (state.Equals(State.Neu))
-                { 
-                    API.Speichern(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied gespeichert" }, StammdatenTypes.mitglied);
-                }
-                else
-                {
-                    API.Aktualisieren(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Mitglied aktualisiert" }, StammdatenTypes.mitglied);
-                }
+                base.ExecuteSaveCommand();
             }
             catch (MitgliedMitMitgliedsNrVorhanden)
             {
                 SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
                 return;
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
         }
         #endregion
 

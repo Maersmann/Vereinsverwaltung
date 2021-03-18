@@ -22,7 +22,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
 {
     public class SchluesselbesitzerStammdatenViewModel : ViewModelStammdaten<Schluesselbesitzer>, IViewModelStammdaten
     {
-        public SchluesselbesitzerStammdatenViewModel()
+        public SchluesselbesitzerStammdatenViewModel() : base(new SchluesselbesitzerAPI())
         {
             messageToken = "SchluesselbesitzerStammdaten";
             Title = "Schlüsselbesitzer Stammdaten";  
@@ -40,6 +40,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
             this.RaisePropertyChanged("Mitgliedsnr");
             state = State.Bearbeiten;
         }
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselbesitzer;
 
 
         #region Bindings
@@ -79,25 +80,14 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         #region Commands
         protected override void ExecuteSaveCommand()
         {
-            var API = new SchluesselbesitzerAPI();
             try
             {
-                if (state.Equals(State.Neu))
-                {
-                    API.Speichern(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schlüsselbesitzer gespeichert" }, StammdatenTypes.schluesselbesitzer);
-                }
-                else
-                {
-                    API.Aktualisieren(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schlüsselbesitzer aktualisiert" },StammdatenTypes.schluesselbesitzer);
-                }
+                base.ExecuteSaveCommand();
             }
             catch (Exception)
             {
                 return;
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselbesitzer);
         }
 
         private void ExcecuteMitgliedHinterlegenCommand()

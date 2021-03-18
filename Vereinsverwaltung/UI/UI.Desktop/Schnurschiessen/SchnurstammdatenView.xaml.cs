@@ -24,6 +24,7 @@ namespace Vereinsverwaltung.UI.Desktop.Schnurschiessen
         public SchnurstammdatenView()
         {
             InitializeComponent();
+            RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.schnur);
         }
     }
 }

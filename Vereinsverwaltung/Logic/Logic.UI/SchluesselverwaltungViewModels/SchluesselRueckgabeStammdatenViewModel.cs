@@ -25,7 +25,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         private int id;
         private bool schluesselAusgewaehlt;
 
-        public SchluesselRueckgabeStammdatenViewModel()
+        public SchluesselRueckgabeStammdatenViewModel() : base()
         {
             Cleanup();
             Title = "Schlüsselrückgabe";
@@ -38,6 +38,8 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
             this.typ = typ;
             this.id = id;
         }
+
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselrueckgabe;
 
         #region Bindings
         public String SchluesselBez => data.Schluesselbezeichnung;
@@ -126,15 +128,6 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
         #region Validierung
-        private bool ValidateBezeichnung(string bezeichnung, string fieldname, string messagefieldname)
-        {
-            var Validierung = new BaseValidierung();
-
-            bool isValid = Validierung.ValidateString(bezeichnung, messagefieldname, out ICollection<string> validationErrors);
-
-            AddValidateInfo(isValid, fieldname, validationErrors);
-            return isValid;
-        }
 
         private bool ValidateAnzahl(int? anzahl, string fieldname)
         {

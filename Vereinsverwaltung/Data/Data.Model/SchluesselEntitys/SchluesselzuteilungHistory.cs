@@ -19,6 +19,7 @@ namespace Vereinsverwaltung.Data.Model.SchluesselEntitys
 
         public int SchluesselID { get; set; }
         public int SchluesselbesitzerID { get; set; }
+        [ForeignKey("asd")]
         public int? SchluesselzuteilungID { get; set; }
 
         public DateTime Datum { get; set; }

@@ -21,6 +21,7 @@ using Vereinsverwaltung.UI.Desktop.BaseViews;
 using Vereinsverwaltung.UI.Desktop.Mitglieder;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Pages;
+using Vereinsverwaltung.UI.Desktop.Schnurschiessen;
 using Vereinsverwaltung.UI.Desktop.Schnurschiessen.Pages;
 
 namespace Vereinsverwaltung.UI.Desktop
@@ -123,6 +124,9 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case StammdatenTypes.schluesselbesitzer:
                     view = new SchluesselbesitzerStammdatenView();
+                    break;
+                case StammdatenTypes.schnur:
+                    view = new SchnurstammdatenView();
                     break;
                 default:
                     break;

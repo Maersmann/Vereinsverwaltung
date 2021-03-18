@@ -12,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
 
-namespace Vereinsverwaltung.UI.Desktop.Schnurschiessen.Pages
+namespace Vereinsverwaltung.UI.Desktop.Schnurschiessen
 {
     /// <summary>
-    /// Interaktionslogik für SchnuroptionPage.xaml
+    /// Interaktionslogik für SchnurUebersichtView.xaml
     /// </summary>
-    public partial class SchnuroptionPage : Page
+    public partial class SchnurUebersichtView : UserControl
     {
-        public SchnuroptionPage()
+        public SchnurUebersichtView()
         {
             InitializeComponent();
-            ContainerUp.NavigationService.Navigate(new SchnurUebersichtView());
-            //ContainerDown.NavigationService.Navigate(new SchluesselverteilungBesitzerUebersichtDetailView());
         }
     }
 }

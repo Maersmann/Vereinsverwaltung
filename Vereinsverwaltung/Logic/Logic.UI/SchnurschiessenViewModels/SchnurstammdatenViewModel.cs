@@ -18,39 +18,35 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 {
     public class SchnurstammdatenViewModel : ViewModelStammdaten<Schnur>, IViewModelStammdaten
     {
-        public SchnurstammdatenViewModel()
+        public SchnurstammdatenViewModel() : base(new SchnurAPI())
         {
             Title = "Schnur Stammdaten";
         }
 
         public void ZeigeStammdatenAn(int id)
         {
-            throw new NotImplementedException();
+            var Schnur = new SchnurAPI().Lade(id);
+            Bezeichnung = Schnur.Bezeichnung;
+            Schnurtyp = Schnur.Schnurtyp;
+            data = Schnur;
+            state = State.Bearbeiten;
         }
+
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnur;
 
         #region Commands
         protected override void ExecuteSaveCommand()
         {
-            var API = new SchnurAPI();
             try
             {
-                if (state.Equals(State.Neu))
-                {
-                    API.Speichern(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schnur gespeichert" }, StammdatenTypes.schnur);
-                }
-                else
-                {
-                    API.Aktualisieren(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schnur aktualisiert" }, StammdatenTypes.schnur);
-                }
+                base.ExecuteSaveCommand();       
             }
             catch (Exception)
             {
                 SendExceptionMessage("Nummer ist schon vorhanden");
                 return;
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schnur);
+           
         }
         #endregion
 

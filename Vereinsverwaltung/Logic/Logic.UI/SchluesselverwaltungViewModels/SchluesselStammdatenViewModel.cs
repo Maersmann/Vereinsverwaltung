@@ -18,7 +18,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
 {
     public class SchluesselStammdatenViewModel : ViewModelStammdaten<Schluessel>, IViewModelStammdaten
     {
-        public SchluesselStammdatenViewModel()
+        public SchluesselStammdatenViewModel() : base(new SchluesselAPI())
         {
             Title = "Schlüssel Stammdaten";
         }
@@ -34,29 +34,20 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
             state = State.Bearbeiten;
         }
 
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluessel;
+
         #region Commands
         protected override void ExecuteSaveCommand()
         {
-            var API = new SchluesselAPI();
             try
             {
-                if (state.Equals(State.Neu))
-                {
-                    API.Speichern(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schlüssel gespeichert" }, StammdatenTypes.schluessel);
-                }
-                else
-                {
-                    API.Aktualisieren(data);
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schlüssel aktualisiert" }, StammdatenTypes.schluessel);
-                }
+                base.ExecuteSaveCommand();
             }
             catch (SchluesselNummerIstSchonVorhandenException)
             {
                 SendExceptionMessage("Nummer ist schon vorhanden");
                 return;
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluessel);
         }
         #endregion
 

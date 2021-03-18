@@ -9,6 +9,7 @@
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:UI="clr-namespace:Vereinsverwaltung.Logic.UI;assembly=Logic.UI"
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
+        Icon="Resources/icon.ico"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" IsAutomaticCollapseEnabled="False"
         DataContext="{Binding Main ,Source={StaticResource Locator}}">
@@ -34,7 +35,6 @@
                         <Fluent:BackstageTabItem Header="Schnurschießen">
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden"  />
                         </Fluent:BackstageTabItem>
-                        
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
@@ -42,19 +42,19 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Mitglieder">
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
-                    <Fluent:Button Header="Übersicht" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  />
-                    <Fluent:Button Header="Import" Command="{Binding OpenMitgliederImportCommand}" Width="60"  />
+                    <Fluent:Button Header="Übersicht" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png"  />
+                    <Fluent:Button Header="Import" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"   />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="Schlüssel">
                 <Fluent:RibbonGroupBox Header="Stammdaten" >
-                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenSchluesselUebersichtCommand}" Width="60"  />
-                    <Fluent:Button Header="Besitzer" Command="{Binding OpenSchluesselbesitzerUebersichtCommand}" Width="60"  />
+                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenSchluesselUebersichtCommand}" Width="60" LargeIcon="Resources/key.png" />
+                    <Fluent:Button Header="Besitzer" Command="{Binding OpenSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person.png" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Zuteilung" >
-                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenZuteilungSchluesselUebersichtCommand}" Width="60"  />
-                    <Fluent:Button Header="Besitzer" Command="{Binding OpenZuteilungSchluesselbesitzerUebersichtCommand}" Width="60"  />
-                    <Fluent:Button Header="Freie Schlüssel" Command="{Binding OpenZuteilungFreieAnzahlUbersichtCommand}" Width="60"  />
+                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenZuteilungSchluesselUebersichtCommand}" Width="60"  LargeIcon="Resources/key_list.png"  />
+                    <Fluent:Button Header="Besitzer" Command="{Binding OpenZuteilungSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person_list.png" />
+                    <Fluent:Button Header="Freie Schlüssel" Command="{Binding OpenZuteilungFreieAnzahlUbersichtCommand}" Width="60"  LargeIcon="Resources/key_free.png"  />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

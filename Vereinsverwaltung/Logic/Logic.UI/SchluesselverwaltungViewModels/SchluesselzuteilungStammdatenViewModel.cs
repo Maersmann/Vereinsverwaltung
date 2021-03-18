@@ -23,7 +23,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
     {
         private SchluesselzuteilungTypes auswahlTypes;
 
-        public SchluesselzuteilungStammdatenViewModel()
+        public SchluesselzuteilungStammdatenViewModel() : base()
         {
             Title = "Schlüsselzuteilung";
             OpenAuswahlSchluesselCommand = new DelegateCommand(this.ExecuteOpenAuswahlSchluesselCommand, this.CanExecuteOpenAuswahlSchluesselCommand);

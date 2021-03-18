@@ -166,9 +166,28 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
 
                     b.HasIndex("SchluesselbesitzerID");
 
-                    b.HasIndex("SchluesselzuteilungID");
+                    b.HasIndex("SchluesselzuteilungID")
+                        .IsUnique();
 
                     b.ToTable("SchluesselzuteilungHistory");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnur", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Bezeichnung")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Schnurtyp")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Schnur");
                 });
 
             modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", b =>
@@ -208,8 +227,8 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselzuteilung", "Schluesselzuteilung")
-                        .WithMany()
-                        .HasForeignKey("SchluesselzuteilungID");
+                        .WithOne("SchluesselzuteilungHistory")
+                        .HasForeignKey("Vereinsverwaltung.Data.Model.SchluesselEntitys.SchluesselzuteilungHistory", "SchluesselzuteilungID");
                 });
 #pragma warning restore 612, 618
         }

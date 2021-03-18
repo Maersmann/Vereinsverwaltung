@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using GalaSoft.MvvmLight.Messaging;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Vereinsverwaltung.Data.Types;
+using Vereinsverwaltung.Logic.Core.Interfaces;
+using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
 namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 {
@@ -14,6 +17,7 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
         protected T data;
         protected State state;
         protected bool LoadAktie;
+        private readonly IAPI<T> api;
         public ICommand SaveCommand { get; protected set; }
 
         public ViewModelStammdaten()
@@ -22,6 +26,13 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
+        public ViewModelStammdaten(IAPI<T> api) : this()
+        {
+            this.api = api;
+        }
+
+
+        protected virtual StammdatenTypes GetStammdatenTyp() { return 0; }
 
         protected virtual bool CanExecuteSaveCommand()
         {
@@ -30,7 +41,17 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 
         protected virtual void ExecuteSaveCommand()
         {
-            throw new NotImplementedException();
+            if (state.Equals(State.Neu))
+            {
+                api.Speichern(data);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+            }
+            else
+            {
+                api.Aktualisieren(data);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktualisiert" }, GetStammdatenTyp());
+            }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
         }
     }
 }
