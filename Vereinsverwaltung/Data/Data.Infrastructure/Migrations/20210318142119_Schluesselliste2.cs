@@ -41,21 +41,7 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                         column: x => x.SchluesselzuteilungID,
                         principalTable: "Schluesselzuteilung",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Schnur",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Bezeichnung = table.Column<string>(nullable: true),
-                    Schnurtyp = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Schnur", x => x.ID);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -79,9 +65,6 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "SchluesselzuteilungHistory");
-
-            migrationBuilder.DropTable(
-                name: "Schnur");
         }
     }
 }

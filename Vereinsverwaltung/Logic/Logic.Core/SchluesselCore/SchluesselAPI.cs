@@ -50,9 +50,8 @@ namespace Vereinsverwaltung.Logic.Core.SchluesselCore
         public void Speichern(Schluessel entity)
         {
             if (repo.IstSchluesselNummerVorhanden(entity.Nummer))
-            {
                 throw new SchluesselNummerIstSchonVorhandenException();
-            }
+
             repo.Speichern(entity);
         }
 

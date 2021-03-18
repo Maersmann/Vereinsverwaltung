@@ -23,6 +23,11 @@ namespace Vereinsverwaltung.Data.Infrastructure.SchnurschiessenRepos
             return new ObservableCollection<Schnur>(repo.Schnuere.OrderBy(o => o.ID).ToList());
         }
 
+        public ObservableCollection<Schnur> LadeAlleSichtbaren()
+        {
+            return new ObservableCollection<Schnur>(repo.Schnuere.Where(w => w.Sichtbar).OrderBy(o => o.ID).ToList());
+        }
+
         public void Entfernen(int id)
         {
             repo.Schnuere.Remove(repo.Schnuere.Find(id));
@@ -33,6 +38,5 @@ namespace Vereinsverwaltung.Data.Infrastructure.SchnurschiessenRepos
         {
             return repo.Schnuere.Where(a => a.ID == id).First();
         }
-
     }
 }

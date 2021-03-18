@@ -238,6 +238,12 @@
     <Compile Include="Schnurschiessen\Pages\SchnuroptionPage.xaml.cs">
       <DependentUpon>SchnuroptionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Schnurschiessen\SchnurauszeichnungStammdatenView.xaml.cs">
+      <DependentUpon>SchnurauszeichnungStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Schnurschiessen\SchnurauszeichnungUebersichtView.xaml.cs">
+      <DependentUpon>SchnurauszeichnungUebersichtView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Schnurschiessen\SchnurstammdatenView.xaml.cs">
       <DependentUpon>SchnurstammdatenView.xaml</DependentUpon>
     </Compile>
@@ -348,6 +354,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Schnurschiessen\Pages\SchnuroptionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schnurschiessen\SchnurauszeichnungStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Schnurschiessen\SchnurauszeichnungUebersichtView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

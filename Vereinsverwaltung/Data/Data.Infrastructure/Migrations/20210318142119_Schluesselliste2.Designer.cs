@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vereinsverwaltung.Data.Infrastructure;
@@ -9,9 +10,10 @@ using Vereinsverwaltung.Data.Infrastructure;
 namespace Vereinsverwaltung.Data.Infrastructure.Migrations
 {
     [DbContext(typeof(Repository))]
-    partial class RepositoryModelSnapshot : ModelSnapshot
+    [Migration("20210318142119_Schluesselliste2")]
+    partial class Schluesselliste2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,55 +174,6 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                     b.ToTable("SchluesselzuteilungHistory");
                 });
 
-            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnur", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Bezeichnung")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Schnurtyp")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("Sichtbar")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Schnur");
-                });
-
-            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnurauszeichnung", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Bezeichnung")
-                        .HasColumnType("text");
-
-                    b.Property<int>("HauptteilID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Rangfolge")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ZusatzID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("HauptteilID");
-
-                    b.HasIndex("ZusatzID");
-
-                    b.ToTable("Schnurauszeichnung");
-                });
-
             modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", b =>
                 {
                     b.HasOne("Vereinsverwaltung.Data.Entitys.MitgliederEntitys.Mitglied", "Mitglied")
@@ -260,19 +213,6 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                     b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselzuteilung", "Schluesselzuteilung")
                         .WithOne("SchluesselzuteilungHistory")
                         .HasForeignKey("Vereinsverwaltung.Data.Model.SchluesselEntitys.SchluesselzuteilungHistory", "SchluesselzuteilungID");
-                });
-
-            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnurauszeichnung", b =>
-                {
-                    b.HasOne("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnur", "Hauptteil")
-                        .WithMany()
-                        .HasForeignKey("HauptteilID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnur", "Zusatz")
-                        .WithMany()
-                        .HasForeignKey("ZusatzID");
                 });
 #pragma warning restore 612, 618
         }

@@ -52,6 +52,7 @@
     <Compile Include="SchluesselEntitys\SchluesselzuteilungHistory.cs" />
     <Compile Include="SchluesselEntitys\Schluesselzuteilung.cs" />
     <Compile Include="SchnurEntitys\Schnur.cs" />
+    <Compile Include="SchnurEntitys\Schnurauszeichnungen.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data.Types\Data.Types.csproj">

@@ -10,8 +10,8 @@ using Vereinsverwaltung.Data.Infrastructure;
 namespace Vereinsverwaltung.Data.Infrastructure.Migrations
 {
     [DbContext(typeof(Repository))]
-    [Migration("20210318102621_Schluesselliste2")]
-    partial class Schluesselliste2
+    [Migration("20210318143501_Schnur1")]
+    partial class Schnur1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -187,9 +187,40 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                     b.Property<int>("Schnurtyp")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("Sichtbar")
+                        .HasColumnType("boolean");
+
                     b.HasKey("ID");
 
                     b.ToTable("Schnur");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnurauszeichnung", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Bezeichnung")
+                        .HasColumnType("text");
+
+                    b.Property<int>("HauptteilID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Rangfolge")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ZusatzID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("HauptteilID");
+
+                    b.HasIndex("ZusatzID");
+
+                    b.ToTable("Schnurauszeichnung");
                 });
 
             modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselbesitzer", b =>
@@ -231,6 +262,19 @@ namespace Vereinsverwaltung.Data.Infrastructure.Migrations
                     b.HasOne("Vereinsverwaltung.Data.Model.SchluesselEntitys.Schluesselzuteilung", "Schluesselzuteilung")
                         .WithOne("SchluesselzuteilungHistory")
                         .HasForeignKey("Vereinsverwaltung.Data.Model.SchluesselEntitys.SchluesselzuteilungHistory", "SchluesselzuteilungID");
+                });
+
+            modelBuilder.Entity("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnurauszeichnung", b =>
+                {
+                    b.HasOne("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnur", "Hauptteil")
+                        .WithMany()
+                        .HasForeignKey("HauptteilID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vereinsverwaltung.Data.Model.SchnurEntitys.Schnur", "Zusatz")
+                        .WithMany()
+                        .HasForeignKey("ZusatzID");
                 });
 #pragma warning restore 612, 618
         }

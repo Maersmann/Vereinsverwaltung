@@ -64,8 +64,10 @@ namespace Vereinsverwaltung.Logic.UI
             SimpleIoc.Default.Register<SchluesselRueckgabeStammdatenViewModel>();
             SimpleIoc.Default.Register<SchluesselzuteilungAuswahlViewModel>();
             SimpleIoc.Default.Register<SchluesselzuteilungHistoryUebersichtViewModel>();
-            SimpleIoc.Default.Register<SchnurstammdatenViewModel>();
+            SimpleIoc.Default.Register<SchnurStammdatenViewModel>();
             SimpleIoc.Default.Register<SchnurUebersichtViewModel>();
+            SimpleIoc.Default.Register<SchnurauszeichnungStammdatenViewModel>();
+            SimpleIoc.Default.Register<SchnurauszeichnungUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -88,8 +90,10 @@ namespace Vereinsverwaltung.Logic.UI
         public SchluesselRueckgabeStammdatenViewModel SchluesselRueckgabeStammdaten => ServiceLocator.Current.GetInstance<SchluesselRueckgabeStammdatenViewModel>();
         public SchluesselzuteilungAuswahlViewModel SchluesselzuteilungAuswahl => ServiceLocator.Current.GetInstance<SchluesselzuteilungAuswahlViewModel>();
         public SchluesselzuteilungHistoryUebersichtViewModel SchluesselzuteilungHistoryUebersicht => ServiceLocator.Current.GetInstance<SchluesselzuteilungHistoryUebersichtViewModel>();
-        public SchnurstammdatenViewModel Schnurstammdaten => ServiceLocator.Current.GetInstance<SchnurstammdatenViewModel>();
+        public SchnurStammdatenViewModel Schnurstammdaten => ServiceLocator.Current.GetInstance<SchnurStammdatenViewModel>();
         public SchnurUebersichtViewModel SchnurUebersicht => ServiceLocator.Current.GetInstance<SchnurUebersichtViewModel>();
+        public SchnurauszeichnungStammdatenViewModel SchnurauszeichnungStammdaten => ServiceLocator.Current.GetInstance<SchnurauszeichnungStammdatenViewModel>();
+        public SchnurauszeichnungUebersichtViewModel SchnurauszeichnungUebersicht => ServiceLocator.Current.GetInstance<SchnurauszeichnungUebersichtViewModel>();
         public static void Cleanup()
         {
 

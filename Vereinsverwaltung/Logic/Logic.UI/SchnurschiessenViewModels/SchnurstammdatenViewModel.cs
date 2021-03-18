@@ -16,9 +16,9 @@ using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
 
 namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurstammdatenViewModel : ViewModelStammdaten<Schnur>, IViewModelStammdaten
+    public class SchnurStammdatenViewModel : ViewModelStammdaten<Schnur>, IViewModelStammdaten
     {
-        public SchnurstammdatenViewModel() : base(new SchnurAPI())
+        public SchnurStammdatenViewModel() : base(new SchnurAPI())
         {
             Title = "Schnur Stammdaten";
         }

@@ -13,6 +13,7 @@ namespace Vereinsverwaltung.Data.Types
         schluessel,
         schluesselzuteilung,
         schluesselrueckgabe,
-        schnur
+        schnur,
+        schnurauszeichnung
     }
 }

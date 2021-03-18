@@ -9,7 +9,7 @@
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:UI="clr-namespace:Vereinsverwaltung.Logic.UI;assembly=Logic.UI"
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
-        Icon="Resources/icon.ico"
+        Icon="Resources/icon.ico" 
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" IsAutomaticCollapseEnabled="False"
         DataContext="{Binding Main ,Source={StaticResource Locator}}">
@@ -30,11 +30,13 @@
         <Fluent:Ribbon Grid.Row="0" AutomaticStateManagement="True">
 
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage>
+                <Fluent:Backstage >
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="Schnurschießen">
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden"  />
                         </Fluent:BackstageTabItem>
+                        <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Schliessen"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>

@@ -128,6 +128,9 @@ namespace Vereinsverwaltung.UI.Desktop
                 case StammdatenTypes.schnur:
                     view = new SchnurstammdatenView();
                     break;
+                case StammdatenTypes.schnurauszeichnung:
+                    view = new SchnurauszeichnungStammdatenView();
+                    break;
                 default:
                     break;
             }

@@ -38,8 +38,14 @@ namespace Vereinsverwaltung.Logic.Core.SchnurschiessenCore
             return repo.LadeAlle();
         }
 
+        public ObservableCollection<Schnur> LadeAlleSichtbaren()
+        {
+            return repo.LadeAlleSichtbaren();
+        }
+
         public void Speichern(Schnur entity)
         {
+            entity.Sichtbar = true;
             repo.Speichern(entity);
         }
     }

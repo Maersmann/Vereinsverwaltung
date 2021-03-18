@@ -16,6 +16,7 @@ namespace Vereinsverwaltung.Data.Infrastructure
         public DbSet<Schluesselzuteilung> Schluesselverteilung { get; set; }
         public DbSet<SchluesselzuteilungHistory> SchluesselzuteilungHistory { get; set; }
         public DbSet<Schnur> Schnuere { get; set; }
+        public DbSet<Schnurauszeichnung> Schnurauszeichnungen { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }
 

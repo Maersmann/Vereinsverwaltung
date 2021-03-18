@@ -24,7 +24,7 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 
         public override void LoadData()
         {
-            itemList = new SchnurAPI().LadeAlle();
+            itemList = new SchnurAPI().LadeAlleSichtbaren();
             this.RaisePropertyChanged("ItemList");
         }
 

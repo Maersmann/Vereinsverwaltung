@@ -31,7 +31,6 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
         protected virtual StammdatenTypes GetStammdatenType() { return 0; }
 
 
-
         public virtual T SelectedItem
         {
             get
@@ -67,6 +66,7 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
         {
             itemList.Remove(selectedItem);
             this.RaisePropertyChanged("ItemList");
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenType());
         }
         protected virtual void ExecuteBearbeitenCommand()
         {

@@ -10,22 +10,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
+using Vereinsverwaltung.UI.Desktop.BaseViews;
 
-namespace Vereinsverwaltung.UI.Desktop.Schnurschiessen.Pages
+namespace Vereinsverwaltung.UI.Desktop.Schnurschiessen
 {
     /// <summary>
-    /// Interaktionslogik für SchnuroptionPage.xaml
+    /// Interaktionslogik für SchnurauszeichnungStammdatenView.xaml
     /// </summary>
-    public partial class SchnuroptionPage : Page
+    public partial class SchnurauszeichnungStammdatenView : StammdatenView
     {
-        public SchnuroptionPage()
+        public SchnurauszeichnungStammdatenView()
         {
             InitializeComponent();
-            ContainerUp.NavigationService.Navigate(new SchnurUebersichtView());
-            ContainerDown.NavigationService.Navigate(new SchnurauszeichnungUebersichtView());
+            RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.schnurauszeichnung);
         }
     }
 }
