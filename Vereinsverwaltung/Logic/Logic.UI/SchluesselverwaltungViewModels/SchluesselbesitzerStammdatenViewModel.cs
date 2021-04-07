@@ -101,7 +101,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
             {
                 data.MitgliedID = id;
                 data.Mitglied = new MitgliedAPI().Lade(id);
-                Name = data.Mitglied.Name;
+                Name = data.Mitglied.Vorname + " " + data.Mitglied.Name;
                 ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
                 this.RaisePropertyChanged("KeinMitgliedHinterlegt");
                 this.RaisePropertyChanged("Mitgliedsnr");

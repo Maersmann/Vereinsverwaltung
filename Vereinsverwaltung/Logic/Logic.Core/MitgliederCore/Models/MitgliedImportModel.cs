@@ -32,5 +32,16 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore.Models
                 }
             }
         }
+
+        public Geschlecht Geschlecht { get; set; }
+
+        public MitgliedImportModel()
+        {
+            Straße = "";
+            Ort = "";
+            Geschlecht = Geschlecht.maennlich;
+            Vorname = "";
+            Name = "";
+        }
     }
 }

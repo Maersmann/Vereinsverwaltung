@@ -44,6 +44,7 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="MitgliederTypes\Geschlecht.cs" />
     <Compile Include="SchluesselverwaltungTypes\SchluesselzuteilungTypes.cs" />
     <Compile Include="Converter\EnumDescriptionTypeConverter.cs" />
     <Compile Include="MitgliederTypes\MitgliedImportStateTypes.cs" />

@@ -45,6 +45,7 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ImportEntitys\MitgliedImportHistory.cs" />
     <Compile Include="MitgliederEntitys\Mitglied.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchluesselEntitys\Schluessel.cs" />

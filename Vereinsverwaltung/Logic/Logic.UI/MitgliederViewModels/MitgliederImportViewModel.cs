@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Vereinsverwaltung.Data.Model.ImportEntitys;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Core.MitgliederCore;
 using Vereinsverwaltung.Logic.Core.MitgliederCore.Models;
@@ -17,9 +18,11 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
 {
     public class MitgliederImportViewModel : ViewModelUebersicht<MitgliedImportModel>
     {
+        private MitgliedImportHistory history;
         public MitgliederImportViewModel()
         {
             Title = "Import Mitglieder";
+            history = new MitgliedImportHistory();
             ImportCommand = new RelayCommand(() => ExecuteImportCommand());
             SaveCommand = new RelayCommand(() => ExecuteSaveCommand());
         }
@@ -35,14 +38,14 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                itemList = new ClassMitgliederImport().StartImport(openFileDialog.FileName);
+                itemList = new ClassMitgliederImport(history).StartImport(openFileDialog.FileName);
                 this.RaisePropertyChanged("ItemList");
             }
         }
 
         private void ExecuteSaveCommand()
         {
-            new ClassMitgliederImport().Uebernahme(itemList);
+            new ClassMitgliederImport(history).Uebernahme(itemList);   
             itemList.Clear();
             this.RaisePropertyChanged("ItemList");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);

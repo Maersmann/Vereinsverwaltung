@@ -34,6 +34,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             Mitgliedsnr = Mitglied.Mitgliedsnr;
             Ort = Mitglied.Ort;
             Strasse = Mitglied.Straße;
+            Vorname = Mitglied.Vorname;
             data = Mitglied;
             state = State.Bearbeiten;
         }
@@ -63,6 +64,22 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
                 if ( !string.Equals(data.Name, value))
                 {
                     ValidateName(value);
+                    data.Name = value;
+                    this.RaisePropertyChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public String Vorname
+        {
+            get { return data.Vorname; }
+            set
+            {
+
+                if (!string.Equals(data.Vorname, value))
+                {
+                    ValidateVorName(value);
                     data.Name = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -150,6 +167,17 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             AddValidateInfo(isValid, "Name", validationErrors);
             return isValid;
         }
+
+        private bool ValidateVorName(string name)
+        {
+            var Validierung = new MitgliederStammdatenValidierung();
+
+            bool isValid = Validierung.ValidateString(name, "", out ICollection<string> validationErrors);
+
+            AddValidateInfo(isValid, "Vorname", validationErrors);
+            return isValid;
+        }
+
         private bool ValidateEintrittsdatum(DateTime? eintrittsdatum)
         {
             var Validierung = new MitgliederStammdatenValidierung();
@@ -179,6 +207,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);
             ValidateName("");
+            ValidateVorName(""); 
             state = State.Neu;
         }
     }

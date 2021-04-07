@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
+using Vereinsverwaltung.Data.Model.ImportEntitys;
 using Vereinsverwaltung.Data.Model.SchluesselEntitys;
 using Vereinsverwaltung.Data.Model.SchnurEntitys;
 
@@ -17,6 +18,7 @@ namespace Vereinsverwaltung.Data.Infrastructure
         public DbSet<SchluesselzuteilungHistory> SchluesselzuteilungHistory { get; set; }
         public DbSet<Schnur> Schnuere { get; set; }
         public DbSet<Schnurauszeichnung> Schnurauszeichnungen { get; set; }
+        public DbSet<MitgliedImportHistory> MitgliedImportHistory { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }
 

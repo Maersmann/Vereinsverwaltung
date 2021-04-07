@@ -28,13 +28,14 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Width="100" Margin="3" Grid.Column="0"  Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding ImportCommand, Mode=OneWay}" Content="Import" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button Width="100" Margin="3" Grid.Column="1"  Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding SaveCommand, Mode=OneWay}" Content="Speichern" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Width="100" Margin="3,3,30,3" Grid.Column="0"  Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding ImportCommand, Mode=OneWay}" Content="Import" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <Button Width="100" Margin="30,3,3,3" Grid.Column="1"  Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding SaveCommand, Mode=OneWay}" Content="Speichern" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         </Grid>
 
         <DataGrid Grid.Row="2" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
+                <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="auto"/>
                 <DataGridTextColumn Header="Mitglieds-Nr" Binding="{Binding Mitgliedsnr }" Width="auto"/>
                 <DataGridTextColumn Header="Eintrittsdatum" Binding="{Binding Eintrittsdatum,  StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Geburtstag" Binding="{Binding Geburtstag,  StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto"/>

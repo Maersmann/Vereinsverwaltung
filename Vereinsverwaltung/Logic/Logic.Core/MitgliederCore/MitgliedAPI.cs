@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Infrastructure.Mitglieder;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 using Vereinsverwaltung.Logic.Core.Interfaces;
+using Vereinsverwaltung.Logic.Core.SchluesselCore;
+using Vereinsverwaltung.Logic.Core.SchluesselCore.Exceptions;
 
 namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 {
@@ -19,10 +21,10 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
         }
         public void Speichern(Mitglied mitglied)
         {
-            if (mitglied.Mitgliedsnr.HasValue && repo.VorhandenByMitgliedsNr(mitglied.Mitgliedsnr.GetValueOrDefault()))
-            {
-                throw new MitgliedMitMitgliedsNrVorhanden();
-            }
+            //if (mitglied.Mitgliedsnr.HasValue && repo.VorhandenByMitgliedsNr(mitglied.Mitgliedsnr.GetValueOrDefault()))
+            //{
+            //    throw new MitgliedMitMitgliedsNrVorhanden();
+            //}
             new ClassMitglied().SetMitgliedStatus(mitglied);
             repo.Speichern(mitglied);
         }
@@ -59,6 +61,9 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 
         public void Entfernen(int id)
         {
+            if (new SchluesselzuteilungAPI().EintraegeFuerSchluesselbesitzervorhanden(id))
+                throw new SchluesselbesitzerSindSchluesselZugeteiltException();
+
             repo.Entfernen(id);
         }
 

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Core.MitgliederCore;
+using Vereinsverwaltung.Logic.Core.SchluesselCore.Exceptions;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
 using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
@@ -37,7 +38,15 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
 
         protected override void ExecuteEntfernenCommand()
         {
-            new MitgliedAPI().Entfernen(selectedItem.ID);
+            try
+            {
+                new MitgliedAPI().Entfernen(selectedItem.ID);
+            }
+            catch (SchluesselbesitzerSindSchluesselZugeteiltException)
+            {
+                SendExceptionMessage("Mitglied kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Zugeteilter Schlüssel vorhanden");
+                return;
+            }
             SendInformationMessage("Mitglied gelöscht");
             base.ExecuteEntfernenCommand();
         }

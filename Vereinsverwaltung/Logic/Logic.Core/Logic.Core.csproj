@@ -49,6 +49,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DatabaseAPI.cs" />
+    <Compile Include="ImportHistoryCore\ImportMitgliederAPI.cs" />
     <Compile Include="Interfaces\IAPI.cs" />
     <Compile Include="Interfaces\IValidierung.cs" />
     <Compile Include="MitgliederCore\ClassMitglied.cs" />

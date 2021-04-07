@@ -8,15 +8,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
+using Vereinsverwaltung.Data.Model.ImportEntitys;
 using Vereinsverwaltung.Data.Types.MitgliederTypes;
+using Vereinsverwaltung.Logic.Core.ImportHistoryCore;
 using Vereinsverwaltung.Logic.Core.MitgliederCore.Models;
 
 namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 {
     public class ClassMitgliederImport
     {
+        private MitgliedImportHistory history;
+        public ClassMitgliederImport(MitgliedImportHistory mitgliedImportHistory)
+        {
+            history = mitgliedImportHistory;
+        }
+
         public ObservableCollection<MitgliedImportModel> StartImport( string path )
         {
+            history.EingelesenAm = DateTime.Now;
+
             var importList = new ObservableCollection<MitgliedImportModel>();
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
             {
@@ -35,20 +45,31 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 
                             var Mitglied = new MitgliedImportModel
                             {
-                                Mitgliedsnr = Convert.ToInt32(reader.GetString(0)),
-                                Name = reader.GetString(1),
-                                Straße = reader.GetString(2),
-                                Ort = reader.GetString(4),
-                                Eintrittsdatum = reader.GetDateTime(5)
+                                Mitgliedsnr = Convert.ToInt32(reader.GetString(1)),
+                                Name = reader.GetString(4),
+                                Vorname = reader.GetString(3),
+                                Straße = reader.GetString(8),
+                                Ort = reader.GetString(10),
+                                Eintrittsdatum = Convert.ToDateTime(reader.GetString(13))
+
                             };
-                            if (!reader.IsDBNull(6))
-                                Mitglied.Geburtstag = reader.GetDateTime(6);
+                            if (!reader.IsDBNull(12))
+                            Mitglied.Geburtstag = Convert.ToDateTime(reader.GetString(12));
+                       
+                            if (!reader.IsDBNull(2) && reader.GetString(2).Equals("Frau"))
+                                Mitglied.Geschlecht = Geschlecht.weiblich;
+
+                            if (Mitglied.Straße is null) Mitglied.Straße = "";
+                            if (Mitglied.Ort is null) Mitglied.Ort = "";
 
                             importList.Add(Mitglied);
                         }
                     } while (reader.NextResult());
                 }
             }
+
+            history.GesamtEingelesen = importList.Count();
+
             CheckList(importList);
 
             return importList;
@@ -73,7 +94,16 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 
             MitgliederList.ToList().ForEach(m => {
                 if (m.State.Equals(MitgliedImportStateTypes.New))
-                    API.Speichern(new Mitglied { Eintrittsdatum = m.Eintrittsdatum, Geburtstag = m.Geburtstag, Mitgliedsnr = m.Mitgliedsnr, Name = m.Name, Ort = m.Ort, Straße = m.Straße, Vorname = m.Vorname, MitgliedStatus = MitgliedStatus.Aktiv});
+                {
+                    try
+                    {
+                        API.Speichern(new Mitglied { Eintrittsdatum = m.Eintrittsdatum, Geburtstag = m.Geburtstag, Mitgliedsnr = m.Mitgliedsnr, Name = m.Name, Ort = m.Ort, Straße = m.Straße, Vorname = m.Vorname, MitgliedStatus = MitgliedStatus.Aktiv, Geschlecht = m.Geschlecht });
+                    }
+                    catch (MitgliedMitMitgliedsNrVorhanden)
+                    {
+
+                    }
+            }
                 else if (m.State.Equals(MitgliedImportStateTypes.Update))
                 {
                     var Mitglied = API.LadeByMitgliedsNr(m.Mitgliedsnr);
@@ -84,11 +114,13 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
                     Mitglied.Ort = m.Ort;
                     Mitglied.Straße = m.Straße;
                     Mitglied.MitgliedStatus = MitgliedStatus.Aktiv;
-                    Mitglied.Vorname = Mitglied.Vorname;
+                    Mitglied.Vorname = m.Vorname;
+                    Mitglied.Geschlecht = m.Geschlecht;
          
                     API.Aktualisieren(Mitglied);
                 }
             });
+            new ImportMitgliederAPI().Speichern(history);
         }
 
         private void CheckList(IList<MitgliedImportModel> models)
@@ -100,16 +132,21 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
             {
                var Mitglied = MitgliedAPI.LadeByMitgliedsNr(m.Mitgliedsnr);
                 if (Mitglied == null)
+                {
+                    history.AnzahlNeu++;
                     m.State = MitgliedImportStateTypes.New;
+                }
                 else
                 {
                     MitgliedNrList.Remove(m.Mitgliedsnr);
 
                     if (!Mitglied.Eintrittsdatum.Equals(m.Eintrittsdatum) && (!Mitglied.Geburtstag.Equals(m.Geburtstag)))
                     {
+                        history.AnzahlNeu++;
+                        history.AnzahlEhemalig++;
                         m.State = MitgliedImportStateTypes.New;
-                        var MitgliedModel = new MitgliedImportModel 
-                        { 
+                        var MitgliedModel = new MitgliedImportModel
+                        {
                             Eintrittsdatum = Mitglied.Eintrittsdatum,
                             Geburtstag = Mitglied.Geburtstag,
                             Mitgliedsnr = Mitglied.Mitgliedsnr.Value,
@@ -117,7 +154,8 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
                             Ort = Mitglied.Ort,
                             State = MitgliedImportStateTypes.Former,
                             Straße = Mitglied.Straße,
-                            Vorname = Mitglied.Vorname 
+                            Vorname = Mitglied.Vorname,
+                            Geschlecht = Mitglied.Geschlecht
                         };
 
                         var Item = models.Where(w => w.Mitgliedsnr.Equals(MitgliedModel.Mitgliedsnr) && w.Geburtstag.Equals(MitgliedModel.Geburtstag) && w.Eintrittsdatum.Equals(MitgliedModel.Eintrittsdatum)).FirstOrDefault();
@@ -135,9 +173,13 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
 
                     {
                         m.State = MitgliedImportStateTypes.Update;
+                        history.AnzahlAenderung++;
                     }
                     else
+                    {
+                        history.AnzahlKeineAenderung++;
                         m.State = MitgliedImportStateTypes.NoUpdate;
+                    }
                 }
             });
 
@@ -153,7 +195,8 @@ namespace Vereinsverwaltung.Logic.Core.MitgliederCore
                     Ort = mg.Ort,
                     State = MitgliedImportStateTypes.Former,
                     Straße = mg.Straße,
-                    Vorname = mg.Vorname
+                    Vorname = mg.Vorname,
+                    Geschlecht = mg.Geschlecht
                 };
 
                 models.Add(MitgliedModel);

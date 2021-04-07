@@ -29,6 +29,8 @@ namespace Vereinsverwaltung.Data.Entitys.MitgliederEntitys
 
         [EnumDataType(typeof(MitgliedStatus))]
         public MitgliedStatus MitgliedStatus { get; set; }
+        [EnumDataType(typeof(Geschlecht))]
+        public Geschlecht Geschlecht { get; set; }
         public DateTime? AusgetretenAm { get; set; }
 
         public virtual Schluesselbesitzer Schluesselbesitzer { get; set; }
@@ -51,5 +53,14 @@ namespace Vereinsverwaltung.Data.Entitys.MitgliederEntitys
             }
         }
 
+
+        public Mitglied()
+        {
+            Straße = "";
+            Ort = "";
+            Geschlecht = Geschlecht.maennlich;
+            Vorname = "";
+            Name = "";
+        }
     }
 }
