@@ -7,6 +7,7 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:local="clr-namespace:UI.Desktop"
         xmlns:Fluent="urn:fluent-ribbon"
+        x:Name="Main"
         xmlns:UI="clr-namespace:Vereinsverwaltung.Logic.UI;assembly=Logic.UI"
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
         Icon="Resources/icon.ico" 
@@ -36,7 +37,7 @@
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden"  />
                         </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
-                        <Fluent:Button Header="Schliessen"/>
+                        <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
