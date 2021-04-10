@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Core.MitgliederCore;
@@ -14,9 +15,12 @@ namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
 {
     public class MitgliedAuswahlViewModel : ViewModelAuswahl<Mitglied>
     {
+        private string filtertext;
+
         public MitgliedAuswahlViewModel()
         {
             Title = "Auswahl Mitglied";
+            filtertext = "";
             LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.mitglied);
         }
@@ -27,6 +31,7 @@ namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
             else return selectedItem.ID;
         }
 
+
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
         public override void LoadData()
@@ -34,5 +39,28 @@ namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
             itemList = new MitgliedAPI().LadeAlleAktiven();
             base.LoadData();
         }
+
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is Mitglied mitglied)
+            {
+                var MitgliedsNr = Convert.ToString(mitglied.Mitgliedsnr);
+                return mitglied.Fullname.Contains(filtertext) || MitgliedsNr.Contains(filtertext);
+            }
+            return true;
+        }
+
+        #region Bindings
+        public String FilterText
+        { 
+            get => this.filtertext; 
+            set
+            {
+                this.filtertext = value;
+                this.RaisePropertyChanged();
+                _customerView.Refresh();
+            }
+        }
+        #endregion
     }
 }

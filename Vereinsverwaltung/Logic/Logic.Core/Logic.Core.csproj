@@ -57,6 +57,7 @@
     <Compile Include="MitgliederCore\ClassMitgliederImport.cs" />
     <Compile Include="MitgliederCore\Models\MitgliedImportModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchluesselCore\Exceptions\MitgliedHatSchonEinBesitzerDatensatzException.cs" />
     <Compile Include="SchluesselCore\Exceptions\SchluesselbesitzerSindSchluesselZugeteiltException.cs" />
     <Compile Include="SchluesselCore\Exceptions\SchluesselIstZugeteiltException.cs" />
     <Compile Include="SchluesselCore\Exceptions\SchluesselNummerIstSchonVorhandenException.cs" />

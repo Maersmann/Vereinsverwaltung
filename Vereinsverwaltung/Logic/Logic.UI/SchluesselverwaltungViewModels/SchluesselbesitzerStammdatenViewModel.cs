@@ -99,6 +99,11 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         {
             if (confirmed)
             {
+                if (new SchluesselbesitzerAPI().MitgliedSchonVorhanden(id))
+                {
+                    this.SendInformationMessage("Mitglied hat schon ein Datensatz");
+                    return;
+                }
                 data.MitgliedID = id;
                 data.Mitglied = new MitgliedAPI().Lade(id);
                 Name = data.Mitglied.Vorname + " " + data.Mitglied.Name;

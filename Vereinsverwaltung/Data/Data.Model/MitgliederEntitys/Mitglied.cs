@@ -53,6 +53,8 @@ namespace Vereinsverwaltung.Data.Entitys.MitgliederEntitys
             }
         }
 
+        [NotMapped]
+        public string Fullname => Vorname + " " + Name;
 
         public Mitglied()
         {

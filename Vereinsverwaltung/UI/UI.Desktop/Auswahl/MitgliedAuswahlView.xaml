@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Height="400" Width="auto" SizeToContent="Width"  
+        Background="{DynamicResource MaterialDesignPaper}"
+        Height="600" Width="500"  
         DataContext="{Binding MitgliedAuswahl ,Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>
@@ -30,14 +31,35 @@
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title}" />
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="false" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Mitglieds-Nr" Binding="{Binding Mitgliedsnr}" Width="auto"/>
-                <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="auto"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
-                <DataGridTextColumn Header="Eintritt" Binding="{Binding Eintrittsdatum, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50px"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50px"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Suche:</Label>
+                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Margin="10,10" >
+                    <materialDesign:HintAssist.Hint>Mitglieds-Nr, Vorname, Name</materialDesign:HintAssist.Hint>
+                </TextBox>
+            </Grid>
+
+            <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding ItemCollection}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="false" IsReadOnly="True" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mitglieds-Nr" Binding="{Binding Mitgliedsnr}" Width="auto"/>
+                    <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="auto"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
+                    <DataGridTextColumn Header="Eintritt" Binding="{Binding Eintrittsdatum, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
+
+
 
         <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NewItemCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10" Height="40" Width="40">
             <Image Source="../Resources/add.png" Stretch="None"/>

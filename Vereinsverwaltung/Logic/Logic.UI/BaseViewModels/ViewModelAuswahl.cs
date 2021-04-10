@@ -4,9 +4,11 @@ using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using Vereinsverwaltung.Data.Types;
 using Vereinsverwaltung.Logic.Messages.BaseMessages;
@@ -15,10 +17,13 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 {
     public class ViewModelAuswahl<T> : ViewModelLoadData
     {
+        protected ICollectionView _customerView;
         public ViewModelAuswahl()
         {
             itemList = new ObservableCollection<T>();
             NewItemCommand = new RelayCommand(this.ExcecuteNewItemCommand);
+            _customerView = CollectionViewSource.GetDefaultView(ItemList);
+            _customerView.Filter = OnFilterTriggered;
         }
 
         public virtual T SelectedItem
@@ -40,10 +45,25 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
                 return itemList;
             }
         }
+        public ICollectionView ItemCollection { get { return _customerView; } }
+
+       
 
         protected virtual void ExcecuteNewItemCommand()
         {
             Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, Stammdaten = GetStammdatenType() });
+        }
+
+        protected virtual bool OnFilterTriggered(object item)
+        {
+            return true;
+        }
+
+        public override void LoadData()
+        {
+            _customerView = (CollectionView)CollectionViewSource.GetDefaultView(ItemList);
+            _customerView.Filter = OnFilterTriggered;
+            base.LoadData();
         }
 
         public ICommand NewItemCommand { get; set; }

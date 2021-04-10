@@ -43,7 +43,16 @@ namespace Vereinsverwaltung.Logic.Core.SchluesselCore
 
         public void Speichern(Schluesselbesitzer entity)
         {
+            if (entity.MitgliedID.HasValue)
+            {
+                if (repo.HatMitgliedEinDatensatz(entity.MitgliedID.Value))
+                    throw new MitgliedHatSchonEinBesitzerDatensatzException();
+            }
+
             repo.Speichern(entity);
         }
+
+        public bool MitgliedSchonVorhanden(int mitgliedID) => repo.HatMitgliedEinDatensatz(mitgliedID);
+
     }
 }

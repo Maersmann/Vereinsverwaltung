@@ -37,5 +37,10 @@ namespace Vereinsverwaltung.Data.Infrastructure.SchluesselRepos
         {
             return repo.Schluesselbesitzer.Where(a => a.ID == id).First();
         }
+
+        public bool HatMitgliedEinDatensatz(int value)
+        {
+            return repo.Schluesselbesitzer.Where(m => m.MitgliedID.Equals(value)).FirstOrDefault() != null; ;
+        }
     }
 }
