@@ -1,32 +1,32 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using Data.Model.MitgliederModels;
+using Data.Types;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core.Validierungen;
+using Logic.UI.BaseViewModels;
+using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.MitgliederCore;
-using Vereinsverwaltung.Logic.Core.Validierungen;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
-using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
+namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederStammdatenViewModel : ViewModelStammdaten<Mitglied>, IViewModelStammdaten
+    public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliedStammdatenModel>, IViewModelStammdaten
     {
 
 
-        public MitgliederStammdatenViewModel() : base(new MitgliedAPI())
+        public MitgliederStammdatenViewModel() 
         {
             Title = "Stammdaten Mitglied";
         }
 
         public void ZeigeStammdatenAn(int id)
         {
+            // Todo: Request
+            /*
             var Mitglied = new MitgliedAPI().Lade(id);
             Name = Mitglied.Name;
             Eintrittsdatum = Mitglied.Eintrittsdatum;
@@ -37,11 +37,14 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             Vorname = Mitglied.Vorname;
             data = Mitglied;
             state = State.Bearbeiten;
+            */
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.mitglied;
         #region Commands
         protected override void ExecuteSaveCommand()
         {
+            // Todo: Request
+            /*
             try
             {
                 base.ExecuteSaveCommand();
@@ -51,6 +54,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
                 SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
                 return;
             }
+            */
         }
         #endregion
 
@@ -80,7 +84,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
                 if (!string.Equals(data.Vorname, value))
                 {
                     ValidateVorName(value);
-                    data.Name = value;
+                    data.Vorname = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -202,7 +206,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
         
         public override void Cleanup()
         {
-            data = new Mitglied();
+            data = new MitgliedStammdatenModel();
             this.RaisePropertyChanged();
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);

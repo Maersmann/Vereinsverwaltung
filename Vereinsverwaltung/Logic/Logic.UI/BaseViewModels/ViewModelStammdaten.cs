@@ -1,4 +1,6 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.BaseMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -6,18 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.Interfaces;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
-namespace Vereinsverwaltung.Logic.UI.BaseViewModels
+namespace Logic.UI.BaseViewModels
 {
     public class ViewModelStammdaten<T> : ViewModelValidate
     {
         protected T data;
         protected State state;
         protected bool LoadAktie;
-        private readonly IAPI<T> api;
         public ICommand SaveCommand { get; protected set; }
 
         public ViewModelStammdaten()
@@ -25,10 +23,6 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             LoadAktie = false;
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
-        }
-        public ViewModelStammdaten(IAPI<T> api) : this()
-        {
-            this.api = api;
         }
 
 
@@ -41,6 +35,7 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
 
         protected virtual void ExecuteSaveCommand()
         {
+            /*
             if (state.Equals(State.Neu))
             {
                 api.Speichern(data);
@@ -51,6 +46,7 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
                 api.Aktualisieren(data);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktualisiert" }, GetStammdatenTyp());
             }
+            */
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
         }
     }

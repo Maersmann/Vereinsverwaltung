@@ -1,19 +1,18 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.BaseMessages;
+using Logic.Messages.SchluesselMessages;
+using Logic.UI.BaseViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.Messages.SchluesselMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungBesitzerUebersichtDetailViewModel : ViewModelUebersicht<Schluesselzuteilung>
+    public class SchluesselverteilungBesitzerUebersichtDetailViewModel : ViewModelUebersicht<SchluesselverteilungBesitzerUebersichtDetailModel>
     {
         private int besitzerid;
         public SchluesselverteilungBesitzerUebersichtDetailViewModel()
@@ -37,17 +36,23 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
 
         public override void LoadData(int id)
         {
+            // Todo: Request
+            /*
             itemList = new SchluesselzuteilungAPI().LadeAlleFuerBesitzer(id);
             this.RaisePropertyChanged("ItemList");
+            */
         }
 
         #region Commands
         protected override void ExecuteEntfernenCommand()
         {
+            // Todo: Request
+            /*
             new SchluesselverteilungAPI().EntferneZuteilung(selectedItem.ID);
             SendInformationMessage("Eintrag gelöscht");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
             base.ExecuteEntfernenCommand();
+            */
         }
         #endregion
     }

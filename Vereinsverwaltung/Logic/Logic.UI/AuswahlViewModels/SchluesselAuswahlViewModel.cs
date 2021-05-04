@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Data.Model.AuswahlModels;
+using Data.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
+using Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
+namespace Logic.UI.AuswahlViewModels
 {
-    public class SchluesselAuswahlViewModel : ViewModelAuswahl<Schluessel>
+    public class SchluesselAuswahlViewModel : ViewModelAuswahl<SchluesselAuswahlModels>
     {
         public SchluesselAuswahlViewModel()
         {
@@ -29,8 +28,9 @@ namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
 
         public override void LoadData()
         {
-            itemList = new SchluesselAPI().LadeAlle();
-            base.LoadData();
+//Todo: Request
+            //itemList = new SchluesselAPI().LadeAlle();
+            //base.LoadData();
         }
     }
 }

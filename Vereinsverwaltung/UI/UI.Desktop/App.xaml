@@ -7,7 +7,7 @@
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:UI="clr-namespace:Vereinsverwaltung.Logic.UI;assembly=Logic.UI">
+             xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

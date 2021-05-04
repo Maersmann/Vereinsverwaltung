@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using Data.Model.MitgliederModels;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;
@@ -8,16 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.MitgliederCore;
-using Vereinsverwaltung.Logic.Core.SchluesselCore.Exceptions;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
+using Logic.UI.BaseViewModels;
+using Data.Types;
+using Logic.Core;
+using System.Net.Http;
 
-namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
+namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederUebersichtViewModel : ViewModelUebersicht<Mitglied>
+    public class MitgliederUebersichtViewModel : ViewModelUebersicht<MitgliederUebersichtModel>
     {
 
         public MitgliederUebersichtViewModel()
@@ -28,9 +27,14 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
         protected override int GetID() { return selectedItem.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
-        public override void LoadData()
+        public async override void LoadData()
         {
-            itemList = new MitgliedAPI().LadeAlle();
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.GetAsync("https://localhost:5001/api/Mitglieder");
+                if (resp2.IsSuccessStatusCode)
+                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<MitgliederUebersichtModel>>();
+            }
             base.LoadData();
         }
 
@@ -38,6 +42,8 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
 
         protected override void ExecuteEntfernenCommand()
         {
+            // Todo: Request
+            /*
             try
             {
                 new MitgliedAPI().Entfernen(selectedItem.ID);
@@ -49,6 +55,7 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
             }
             SendInformationMessage("Mitglied gelöscht");
             base.ExecuteEntfernenCommand();
+            */
         }
         #endregion
     }

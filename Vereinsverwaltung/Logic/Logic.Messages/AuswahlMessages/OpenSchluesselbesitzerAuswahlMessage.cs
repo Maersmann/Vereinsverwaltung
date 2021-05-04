@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Logic.Messages.AuswahlMessages
+namespace Logic.Messages.AuswahlMessages
 {
     public class OpenSchluesselbesitzerAuswahlMessage
     {

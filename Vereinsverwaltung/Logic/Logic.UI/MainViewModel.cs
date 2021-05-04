@@ -1,20 +1,22 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Vereinsverwaltung.Logic.Core;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
+using Logic.UI.BaseViewModels;
 using System;
 using System.Windows.Input;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Data.Types;
+using Data.Types;
+using Logic.Messages.BaseMessages;
+using Logic.Core;
 
-namespace Vereinsverwaltung.Logic.UI
+namespace Logic.UI
 {
     public class MainViewModel : ViewModelBasis
     {
         public MainViewModel()
         {
-            OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
+            Title = "Vereinsverwaltung";
+            GlobalVariables.ServerIsOnline = false;
+            OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederStammdatenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitlgiederStammdaten));
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
@@ -25,7 +27,6 @@ namespace Vereinsverwaltung.Logic.UI
             OpenZuteilungFreieAnzahlUbersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZuteilungFreieAnzahlUebersicht));
         }
 
-        public ICommand OpenConnectionCommand { get; private set; }
         public ICommand OpenMitgliederStammdatenCommand { get; private set; }
         public ICommand OpenMitgliederImportCommand { get; private set; }
         public ICommand OpenMitgliederUebersichtCommand { get; private set; }
@@ -33,16 +34,19 @@ namespace Vereinsverwaltung.Logic.UI
         public ICommand OpenSchluesselbesitzerUebersichtCommand { get; private set; }
         public ICommand OpenZuteilungSchluesselbesitzerUebersichtCommand { get; private set; }
         public ICommand OpenZuteilungSchluesselUebersichtCommand { get; private set; }
-
         public ICommand OpenZuteilungFreieAnzahlUbersichtCommand { get; private set; }
-        private void ExecuteOpenConnectionCommand()
-        {
-            var db = new DatabaseAPI();
-            db.AktualisereDatenbank();
-        }
+        public ICommand OpenStartingViewCommand { get; private set; }
+
+        public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
+
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
+        }
+
+        private void ExecuteOpenStartingViewCommand()
+        {
+            Messenger.Default.Send<OpenStartingViewMessage>(new OpenStartingViewMessage { });
         }
 
     }

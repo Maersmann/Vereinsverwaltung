@@ -1,5 +1,7 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using Data.Types;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.BaseMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
-namespace Vereinsverwaltung.Logic.UI.BaseViewModels
+namespace Logic.UI.BaseViewModels
 {
     public class ViewModelAuswahl<T> : ViewModelLoadData
     {

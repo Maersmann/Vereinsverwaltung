@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Aktien.Logic.Messages.Base;
+using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

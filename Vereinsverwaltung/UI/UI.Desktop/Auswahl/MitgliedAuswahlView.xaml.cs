@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Vereinsverwaltung.Logic.Messages.AuswahlMessages;
 
 namespace Vereinsverwaltung.UI.Desktop.Auswahl
 {

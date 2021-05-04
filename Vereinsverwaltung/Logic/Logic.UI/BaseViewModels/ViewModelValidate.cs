@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Logic.UI.BaseViewModels
+namespace Logic.UI.BaseViewModels
 {
     public class ViewModelValidate : ViewModelBasis, INotifyDataErrorInfo
     {

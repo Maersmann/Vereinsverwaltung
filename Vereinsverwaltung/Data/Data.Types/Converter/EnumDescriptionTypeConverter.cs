@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Data.Types.Converter
+namespace Data.Types.Converter
 {
     public class EnumDescriptionTypeConverter : EnumConverter
     {

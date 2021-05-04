@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Data.Model.AuswahlModels;
+using Data.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
+using Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
+namespace Logic.UI.AuswahlViewModels
 {
-    public class SchluesselbesitzerAuswahlViewModel : ViewModelAuswahl<Schluesselbesitzer>
+    public class SchluesselbesitzerAuswahlViewModel : ViewModelAuswahl<SchluesselbesitzerAuswahlModel>
     {
         public SchluesselbesitzerAuswahlViewModel()
         {
@@ -29,7 +28,8 @@ namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
 
         public override void LoadData()
         {
-            itemList = new SchluesselbesitzerAPI().LadeAlle();
+            // Todo: Request
+            //itemList = new SchluesselbesitzerAPI().LadeAlle();
             base.LoadData();
         }
     }

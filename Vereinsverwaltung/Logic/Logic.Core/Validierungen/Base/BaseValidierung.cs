@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Logic.Core.Validierungen.Base
+namespace Logic.Core.Validierungen.Base
 {
     public class BaseValidierung
     {

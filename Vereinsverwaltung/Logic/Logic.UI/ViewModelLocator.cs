@@ -17,12 +17,12 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using Vereinsverwaltung.Logic.UI.AuswahlViewModels;
-using Vereinsverwaltung.Logic.UI.MitgliederViewModels;
-using Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels;
-using Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels;
+using Logic.UI.AuswahlViewModels;
+using Logic.UI.MitgliederViewModels;
+using Logic.UI.SchluesselverwaltungViewModels;
+using Logic.UI.SchnurschiessenViewModels;
 
-namespace Vereinsverwaltung.Logic.UI
+namespace Logic.UI
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -94,6 +94,7 @@ namespace Vereinsverwaltung.Logic.UI
         public SchnurUebersichtViewModel SchnurUebersicht => ServiceLocator.Current.GetInstance<SchnurUebersichtViewModel>();
         public SchnurauszeichnungStammdatenViewModel SchnurauszeichnungStammdaten => ServiceLocator.Current.GetInstance<SchnurauszeichnungStammdatenViewModel>();
         public SchnurauszeichnungUebersichtViewModel SchnurauszeichnungUebersicht => ServiceLocator.Current.GetInstance<SchnurauszeichnungUebersichtViewModel>();
+        public StartingProgrammViewModel StartingProgramm => new StartingProgrammViewModel();
         public static void Cleanup()
         {
 

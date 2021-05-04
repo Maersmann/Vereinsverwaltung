@@ -1,5 +1,11 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core.Validierungen.Base;
+using Logic.Messages.AuswahlMessages;
+using Logic.UI.BaseViewModels;
+using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -7,22 +13,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.MitgliederCore;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.Core.Validierungen.Base;
-using Vereinsverwaltung.Logic.Messages.AuswahlMessages;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
-using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselbesitzerStammdatenViewModel : ViewModelStammdaten<Schluesselbesitzer>, IViewModelStammdaten
+    public class SchluesselbesitzerStammdatenViewModel : ViewModelStammdaten<SchluesselbesitzerStammdatenModel>, IViewModelStammdaten
     {
-        public SchluesselbesitzerStammdatenViewModel() : base(new SchluesselbesitzerAPI())
+        public SchluesselbesitzerStammdatenViewModel() 
         {
             messageToken = "SchluesselbesitzerStammdaten";
             Title = "Schlüsselbesitzer Stammdaten";  
@@ -32,13 +28,15 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
 
         public void ZeigeStammdatenAn(int id)
         {
-            var besitzer = new SchluesselbesitzerAPI().Lade(id);
+            // Todo: Request
+            /*var besitzer = new SchluesselbesitzerAPI().Lade(id);
             Name = besitzer.Name;
             data = besitzer;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
             this.RaisePropertyChanged("KeinMitgliedHinterlegt");
             this.RaisePropertyChanged("Mitgliedsnr");
             state = State.Bearbeiten;
+            */
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselbesitzer;
 
@@ -66,13 +64,10 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         { 
             get
             {
-                if (data.Mitglied == null)
-                    return null;
-                else
-                    return data.Mitglied.Mitgliedsnr;
+                return data.MitgliedsNr;
             }
         }
-        public bool KeinMitgliedHinterlegt { get => !data.MitgliedID.HasValue; }
+        public bool KeinMitgliedHinterlegt => false;// Todo: !data.MitgliedID.HasValue();
         public ICommand MitgliedHinterlegenCommand { get; set; }
         public ICommand DeleteMitgliedDataCommand { get; set; }
         #endregion
@@ -99,6 +94,8 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         {
             if (confirmed)
             {
+                // Todo: Request
+                /*
                 if (new SchluesselbesitzerAPI().MitgliedSchonVorhanden(id))
                 {
                     this.SendInformationMessage("Mitglied hat schon ein Datensatz");
@@ -110,6 +107,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
                 ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
                 this.RaisePropertyChanged("KeinMitgliedHinterlegt");
                 this.RaisePropertyChanged("Mitgliedsnr");
+                */
             }
         }
 
@@ -121,7 +119,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         private void ExecuteDeleteMitgliedDataCommand()
         {
             data.MitgliedID = null;
-            data.Mitglied = new Mitglied();
+            //data.Mitglied = new Mitglied();
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
             this.RaisePropertyChanged("Mitgliedsnr");
             Name = "";
@@ -145,7 +143,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
 
         public override void Cleanup()
         {
-            data = new Schluesselbesitzer { };
+            data = new SchluesselbesitzerStammdatenModel { };
             Name = "";
             state = State.Neu;
         }

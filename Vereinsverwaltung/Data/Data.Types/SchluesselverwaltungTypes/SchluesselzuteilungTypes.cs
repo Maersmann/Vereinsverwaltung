@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes
+namespace Data.Types.SchluesselverwaltungTypes
 {
     public enum SchluesselzuteilungTypes
     {

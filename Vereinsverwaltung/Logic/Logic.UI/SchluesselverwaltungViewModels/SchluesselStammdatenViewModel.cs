@@ -1,30 +1,29 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Core.Validierungen.Base;
+using Logic.UI.BaseViewModels;
+using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.Core.SchluesselCore.Exceptions;
-using Vereinsverwaltung.Logic.Core.Validierungen.Base;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
-using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselStammdatenViewModel : ViewModelStammdaten<Schluessel>, IViewModelStammdaten
+    public class SchluesselStammdatenViewModel : ViewModelStammdaten<SchluesselStammdatenModel>, IViewModelStammdaten
     {
-        public SchluesselStammdatenViewModel() : base(new SchluesselAPI())
+        public SchluesselStammdatenViewModel() 
         {
             Title = "Schlüssel Stammdaten";
         }
 
         public void ZeigeStammdatenAn(int id)
         {
+            // Todo: Request
+            /*
             var Schluessel = new SchluesselAPI().Lade(id);
             Nummer = Schluessel.Nummer;
             Beschreibung = Schluessel.Beschreibung;
@@ -32,6 +31,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
             Bestand = Schluessel.Bestand;
             data = Schluessel;
             state = State.Bearbeiten;
+            */
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluessel;
@@ -39,6 +39,8 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         #region Commands
         protected override void ExecuteSaveCommand()
         {
+            //Todo: Request
+            /*
             try
             {
                 base.ExecuteSaveCommand();
@@ -48,6 +50,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
                 SendExceptionMessage("Nummer ist schon vorhanden");
                 return;
             }
+            */
         }
         #endregion
 
@@ -144,7 +147,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
 
         public override void Cleanup()
         {
-            data = new Schluessel();
+            data = new SchluesselStammdatenModel();
             Nummer = null;
             Bestand = null;
             Beschreibung = "";

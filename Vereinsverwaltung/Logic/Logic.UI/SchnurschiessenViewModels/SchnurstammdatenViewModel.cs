@@ -1,35 +1,36 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Data.Model.SchnurrschiessenModels;
+using Data.Types;
+using Data.Types.SchnurschiessenTypes;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Core.Validierungen.Base;
+using Logic.UI.BaseViewModels;
+using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchnurEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Data.Types.SchnurschiessenTypes;
-using Vereinsverwaltung.Logic.Core.SchnurschiessenCore;
-using Vereinsverwaltung.Logic.Core.Validierungen.Base;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
-using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
+namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurStammdatenViewModel : ViewModelStammdaten<Schnur>, IViewModelStammdaten
+    public class SchnurStammdatenViewModel : ViewModelStammdaten<SchnurstammdatenModel>, IViewModelStammdaten
     {
-        public SchnurStammdatenViewModel() : base(new SchnurAPI())
+        public SchnurStammdatenViewModel()
         {
             Title = "Schnur Stammdaten";
         }
 
         public void ZeigeStammdatenAn(int id)
         {
+            // Todo: Request
+            /*
             var Schnur = new SchnurAPI().Lade(id);
             Bezeichnung = Schnur.Bezeichnung;
             Schnurtyp = Schnur.Schnurtyp;
             data = Schnur;
             state = State.Bearbeiten;
+            */
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnur;
@@ -109,7 +110,7 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 
         public override void Cleanup()
         {
-            data = new Schnur();
+            data = new SchnurstammdatenModel();
             Bezeichnung = "";
             Schnurtyp = Data.Types.SchnurschiessenTypes.Schnurtypes.schnur;
             state = State.Neu;

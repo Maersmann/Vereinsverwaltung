@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Logic.Messages.SchluesselMessages
+namespace Logic.Messages.SchluesselMessages
 {
     public class OpenSchluesselzuteilungMessage
     { 

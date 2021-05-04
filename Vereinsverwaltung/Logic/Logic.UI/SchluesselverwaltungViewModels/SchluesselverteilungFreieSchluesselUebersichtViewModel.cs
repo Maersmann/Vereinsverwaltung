@@ -1,21 +1,19 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types;
+using Data.Types.SchluesselverwaltungTypes;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.UI.BaseViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.Messages.SchluesselMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungFreieSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<Schluessel>
+    public class SchluesselverteilungFreieSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungFreieSchluesselUebersichtModel>
     {
         public SchluesselverteilungFreieSchluesselUebersichtViewModel()
         {
@@ -29,8 +27,11 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Schluessel; }
         public override void LoadData()
         {
+            // Todo: Request
+            /*
             itemList = new SchluesselAPI().LadeAlleFreien();
             this.RaisePropertyChanged("ItemList");
+            */
         }
     }
 }

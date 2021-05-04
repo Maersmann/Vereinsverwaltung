@@ -1,12 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.SchluesselMessages;
+using Logic.UI.SchluesselverwaltungViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Vereinsverwaltung.Logic.Messages.SchluesselMessages;
-using Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels;
 
 namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Core
 {

@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.SchluesselMessages;
+using Logic.UI.SchluesselverwaltungViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vereinsverwaltung.Logic.Messages.SchluesselMessages;
-using Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Core;
 
 namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung

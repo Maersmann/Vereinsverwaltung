@@ -13,8 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.UI.MitgliederViewModels;
 
 namespace Vereinsverwaltung.UI.Desktop.Mitglieder
 {

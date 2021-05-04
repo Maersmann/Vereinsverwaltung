@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes;
+using Data.Types.SchluesselverwaltungTypes;
 
-namespace Vereinsverwaltung.Logic.Messages.SchluesselMessages
+namespace Logic.Messages.SchluesselMessages
 {
     public class OpenSchluesselzuteilungHistoryUebersichtMessage
     {

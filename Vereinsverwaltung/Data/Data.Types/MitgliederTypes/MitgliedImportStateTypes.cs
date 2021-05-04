@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Types.Converter;
+using Data.Types.Converter;
 
-namespace Vereinsverwaltung.Data.Types.MitgliederTypes
+namespace Data.Types.MitgliederTypes
 {
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum MitgliedImportStateTypes

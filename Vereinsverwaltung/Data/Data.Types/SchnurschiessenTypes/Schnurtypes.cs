@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Types.Converter;
+using Data.Types.Converter;
 
-namespace Vereinsverwaltung.Data.Types.SchnurschiessenTypes
+namespace Data.Types.SchnurschiessenTypes
 {
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum Schnurtypes

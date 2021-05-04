@@ -28,16 +28,6 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\UI\UI.Desktop\UI.Desktop.csproj">
-      <Name>UI.Desktop</Name>
-      <Project>{cf571fb9-dd5b-4c89-914b-d785fd4dfb38}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Image" />
   </ItemGroup>
   <ItemGroup>

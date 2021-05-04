@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.AuswahlMessages;
+using Logic.UI.AuswahlViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Vereinsverwaltung.Logic.Messages.AuswahlMessages;
-using Vereinsverwaltung.Logic.UI.AuswahlViewModels;
 using Vereinsverwaltung.UI.Desktop.Auswahl;
 using Vereinsverwaltung.UI.Desktop.BaseViews;
 

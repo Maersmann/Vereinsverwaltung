@@ -1,18 +1,17 @@
-﻿using Prism.Commands;
+﻿using Data.Model.SchnurrschiessenModels;
+using Data.Types;
+using Logic.Messages.BaseMessages;
+using Logic.UI.BaseViewModels;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchnurEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.SchnurschiessenCore;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
+namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurauszeichnungUebersichtViewModel : ViewModelUebersicht<Schnurauszeichnung>
+    public class SchnurauszeichnungUebersichtViewModel : ViewModelUebersicht<SchnurauszeichnungUebersichtModel>
     {
         public SchnurauszeichnungUebersichtViewModel()
         {
@@ -33,13 +32,18 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 
         public override void LoadData()
         {
+            // Todo: Request
+            /*
             itemList = new SchnurauszeichnungAPI().LadeAlle();
             this.RaisePropertyChanged("ItemList");
+            */
         }
 
         #region Commands
         protected override void ExecuteEntfernenCommand()
         {
+            // Todo: Request
+            /*
             try
             {
                 new SchnurauszeichnungAPI().Entfernen(selectedItem.ID);
@@ -52,11 +56,14 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 
             SendInformationMessage("Auszeichnung gelöscht");
             base.ExecuteEntfernenCommand();
+            */
         }
 
         private bool CanExecuteNeuCommand()
         {
-            return new SchnurAPI().LadeAlleSichtbaren().Count > 0;
+            // Todo: Request
+            // return new SchnurAPI().LadeAlleSichtbaren().Count > 0;
+            return false;
         }
 
         #endregion

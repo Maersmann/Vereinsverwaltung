@@ -1,4 +1,7 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.BaseMessages;
+using Logic.UI.InterfaceViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
-using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
+using UI.Desktop;
 using Vereinsverwaltung.UI.Desktop.BaseViews;
 using Vereinsverwaltung.UI.Desktop.Mitglieder;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
@@ -48,8 +48,9 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
             Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
+            Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage(m));
 
-            Naviagtion(ViewType.viewMitgliederUebersicht);
+            //Naviagtion(ViewType.viewMitgliederUebersicht);
 
             SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
         }
@@ -144,6 +145,13 @@ namespace Vereinsverwaltung.UI.Desktop
 
             }
             view.ShowDialog();
+        }
+
+        private void ReceiceOpenStartingViewMessage(OpenStartingViewMessage m)
+        {
+            var view = new StartingProgrammView();
+            view.ShowDialog();
+
         }
     }
 

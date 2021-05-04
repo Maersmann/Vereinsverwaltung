@@ -5,15 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using Vereinsverwaltung.Data.Entitys.MitgliederEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.MitgliederCore;
-using Vereinsverwaltung.Logic.Messages.AuswahlMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
+using Data.Types;
+using Logic.UI.BaseViewModels;
+using Data.Model.AuswahlModels;
 
-namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
+namespace Logic.UI.AuswahlViewModels
 {
-    public class MitgliedAuswahlViewModel : ViewModelAuswahl<Mitglied>
+    public class MitgliedAuswahlViewModel : ViewModelAuswahl<MitgliedAuswahlModel>
     {
         private string filtertext;
 
@@ -36,17 +34,23 @@ namespace Vereinsverwaltung.Logic.UI.AuswahlViewModels
 
         public override void LoadData()
         {
+            // Todo: Request
+            /*
             itemList = new MitgliedAPI().LadeAlleAktiven();
             base.LoadData();
+            */
         }
 
         protected override bool OnFilterTriggered(object item)
         {
+            // Todo: Request
+            /*
             if (item is Mitglied mitglied)
             {
                 var MitgliedsNr = Convert.ToString(mitglied.Mitgliedsnr);
                 return mitglied.Fullname.Contains(filtertext) || MitgliedsNr.Contains(filtertext);
             }
+            */
             return true;
         }
 

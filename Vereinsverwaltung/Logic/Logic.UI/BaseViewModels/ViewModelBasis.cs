@@ -1,19 +1,21 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
-namespace Vereinsverwaltung.Logic.UI.BaseViewModels
+namespace Logic.UI.BaseViewModels
 {
     public class ViewModelBasis : ViewModelBase
     {
@@ -21,11 +23,14 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
         {
             CleanUpCommand = new RelayCommand(() => ExecuteCleanUpCommand());
             this.CloseWindowCommand = new RelayCommand<Window>(this.ExecuteCloseWindowCommand);
+            SetConnection();
         }
 
         protected string messageToken;
         public string Title { get; protected set; }
         public string MessageToken { set { messageToken = value; } }
+
+        protected HttpClient Client { get; set; }
 
         public ICommand CleanUpCommand { get; set; }
         public RelayCommand<Window> CloseWindowCommand { get; private set; }
@@ -74,7 +79,14 @@ namespace Vereinsverwaltung.Logic.UI.BaseViewModels
             }
         }
 
-
+        private void SetConnection()
+        {
+            Client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:5001/")
+            };
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/json"));
+        }
 
 
     }

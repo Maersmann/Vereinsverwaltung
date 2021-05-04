@@ -1,21 +1,20 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types;
+using Data.Types.SchluesselverwaltungTypes;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.SchluesselMessages;
+using Logic.UI.BaseViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.Core.SchluesselCore.Models;
-using Vereinsverwaltung.Logic.Messages.SchluesselMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungBesitzerUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselzuteilungBesitzerModel>
+    public class SchluesselverteilungBesitzerUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungBesitzerUebersichtModel>
     {
         public SchluesselverteilungBesitzerUebersichtViewModel()
         {
@@ -29,13 +28,16 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Besitzer; }
         public override void LoadData()
         {
+            // Todo: Request
+            /*
             itemList = new SchluesselverteilungAPI().LadeVerteilungSchluesselbesitzer();
             this.RaisePropertyChanged("ItemList");
+            */
         }
 
         #region Bindings
 
-        public override SchluesselzuteilungBesitzerModel SelectedItem 
+        public override SchluesselverteilungBesitzerUebersichtModel SelectedItem 
         { 
             get => base.SelectedItem;
             set

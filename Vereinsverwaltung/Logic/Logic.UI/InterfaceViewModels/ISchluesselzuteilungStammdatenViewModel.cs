@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vereinsverwaltung.Logic.UI.InterfaceViewModels
+namespace Logic.UI.InterfaceViewModels
 {
     public interface ISchluesselzuteilungStammdatenViewModel
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Types;
+using Data.Types;
 
-namespace Vereinsverwaltung.Logic.Messages.BaseMessages
+namespace Logic.Messages.BaseMessages
 {
     public class OpenViewMessage
     {

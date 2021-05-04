@@ -1,5 +1,7 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using Data.Model.MitgliederModels;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.UI.BaseViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -7,22 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Model.ImportEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.MitgliederCore;
-using Vereinsverwaltung.Logic.Core.MitgliederCore.Models;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
+namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederImportViewModel : ViewModelUebersicht<MitgliedImportModel>
+    public class MitgliederImportViewModel : ViewModelUebersicht<MitgliederImportModel>
     {
-        private MitgliedImportHistory history;
         public MitgliederImportViewModel()
         {
             Title = "Import Mitglieder";
-            history = new MitgliedImportHistory();
             ImportCommand = new RelayCommand(() => ExecuteImportCommand());
             SaveCommand = new RelayCommand(() => ExecuteSaveCommand());
         }
@@ -35,20 +29,26 @@ namespace Vereinsverwaltung.Logic.UI.MitgliederViewModels
         #region Commands
         private void ExecuteImportCommand()
         {
+            // Todo: Request
+            /*
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 itemList = new ClassMitgliederImport(history).StartImport(openFileDialog.FileName);
                 this.RaisePropertyChanged("ItemList");
             }
+            */
         }
 
         private void ExecuteSaveCommand()
         {
+            //Todo: Request
+            /*
             new ClassMitgliederImport(history).Uebernahme(itemList);   
             itemList.Clear();
             this.RaisePropertyChanged("ItemList");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
+            */
         }
         #endregion
 

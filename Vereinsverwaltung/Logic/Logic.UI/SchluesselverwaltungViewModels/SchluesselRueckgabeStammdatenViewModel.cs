@@ -1,5 +1,11 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types;
+using Data.Types.SchluesselverwaltungTypes;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core.Validierungen.Base;
+using Logic.Messages.AuswahlMessages;
+using Logic.UI.BaseViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -7,17 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.Core.SchluesselCore.Exceptions;
-using Vereinsverwaltung.Logic.Core.SchluesselCore.Models;
-using Vereinsverwaltung.Logic.Core.Validierungen.Base;
-using Vereinsverwaltung.Logic.Messages.AuswahlMessages;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
     public class SchluesselRueckgabeStammdatenViewModel : ViewModelStammdaten<SchluesselRueckgabeStammdatenModel>
     {
@@ -82,6 +79,8 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         #region Commands
         protected override void ExecuteSaveCommand()
         {
+            //Todo: Request
+            /*
             var API = new SchluesselverteilungAPI();
             try
             {
@@ -95,6 +94,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
                 return;
             }
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
+            */
         }
 
 
@@ -114,6 +114,8 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         {
             if (confirmed)
             {
+                // Todo: Request
+                /*
                 var zuteilung = new SchluesselzuteilungAPI().Lade(id);
                 data.SchluesselzuteilungID = id;
                 data.Schluesselbezeichnung = zuteilung.Schluessel.Bezeichnung;
@@ -123,6 +125,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
                 this.RaisePropertyChanged("Schluesselbesitzer");
                 schluesselAusgewaehlt = true;
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                */
             }
         }
         #endregion

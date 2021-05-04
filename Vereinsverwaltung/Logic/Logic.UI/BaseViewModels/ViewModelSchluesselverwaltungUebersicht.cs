@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes;
-using Vereinsverwaltung.Logic.Messages.SchluesselMessages;
+using Data.Types.SchluesselverwaltungTypes;
+using Logic.Messages.SchluesselMessages;
 
-namespace Vereinsverwaltung.Logic.UI.BaseViewModels
+namespace Logic.UI.BaseViewModels
 {
     public class ViewModelSchluesselverwaltungUebersicht<T> : ViewModelUebersicht<T>
     {

@@ -1,28 +1,28 @@
-﻿using Prism.Commands;
+﻿using Data.Model.SchnurrschiessenModels;
+using Data.Types;
+using Logic.Core.Validierungen.Base;
+using Logic.UI.BaseViewModels;
+using Logic.UI.InterfaceViewModels;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchnurEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.SchnurschiessenCore;
-using Vereinsverwaltung.Logic.Core.SchnurschiessenCore.Exceptions;
-using Vereinsverwaltung.Logic.Core.Validierungen.Base;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
-using Vereinsverwaltung.Logic.UI.InterfaceViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
+namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurauszeichnungStammdatenViewModel : ViewModelStammdaten<Schnurauszeichnung>, IViewModelStammdaten
+    public class SchnurauszeichnungStammdatenViewModel : ViewModelStammdaten<SchnurauszeichnungStammdatenModel>, IViewModelStammdaten
     {
-        public SchnurauszeichnungStammdatenViewModel() : base(new SchnurauszeichnungAPI())
+        public SchnurauszeichnungStammdatenViewModel()
         {
             Title = "Schnurauszeichung Stammdaten";
         }
 
         public void ZeigeStammdatenAn(int id)
         {
+            // Todo: Request
+            /*
             var Auszeichnung = new SchnurauszeichnungAPI().Lade(id);
             Bezeichnung = Auszeichnung.Bezeichnung;
             Rangfolge = Auszeichnung.Rangfolge;
@@ -30,6 +30,7 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
             Zusatz = Auszeichnung.Zusatz;
             data = Auszeichnung;
             state = State.Bearbeiten;
+            */
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnurauszeichnung;
@@ -37,6 +38,8 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
         #region Commands
         protected override void ExecuteSaveCommand()
         {
+            // Todo: Request
+            /*
             data.HauptteilID = data.Hauptteil.ID;
             data.ZusatzID = data.Zusatz.ID;
             try
@@ -48,7 +51,7 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
                 SendExceptionMessage("Rangfolge ist schon vorhanden");
                 return;
             }
-
+            */
         }
         #endregion
 
@@ -86,9 +89,11 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
                 }
             }
         }
-
+        // Todo: Request
+        /*
         public IEnumerable<Schnur> Schnuere => new SchnurAPI().LadeAlleSichtbaren();
         public IEnumerable<Schnur> SchnuereZusatz => new SchnurAPI().LadeAlle();
+        
         public Schnur Hauptteil
         {
             get { return data.Hauptteil; }
@@ -116,6 +121,7 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
                 }
             }
         }
+        */
         #endregion
 
         #region Validierung
@@ -143,7 +149,7 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 
         public override void Cleanup()
         {
-            data = new Schnurauszeichnung();
+            data = new SchnurauszeichnungStammdatenModel();
             Bezeichnung = "";
             Rangfolge = null;
             state = State.Neu;

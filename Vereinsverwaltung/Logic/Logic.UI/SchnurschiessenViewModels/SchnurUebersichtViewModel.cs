@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Data.Model.SchnurrschiessenModels;
+using Data.Types;
+using Logic.UI.BaseViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchnurEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Core.SchnurschiessenCore;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
+namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurUebersichtViewModel : ViewModelUebersicht<Schnur>
+    public class SchnurUebersichtViewModel : ViewModelUebersicht<SchnurUebersichtModel>
     {
         public SchnurUebersichtViewModel()
         {
@@ -24,13 +23,18 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 
         public override void LoadData()
         {
+            // Todo: Request
+            /*
             itemList = new SchnurAPI().LadeAlleSichtbaren();
             this.RaisePropertyChanged("ItemList");
+            */
         }
 
         #region Commands
         protected override void ExecuteEntfernenCommand()
         {
+            // Todo: Request
+            /*
             try
             {
                 new SchnurAPI().Entfernen(selectedItem.ID);
@@ -43,6 +47,7 @@ namespace Vereinsverwaltung.Logic.UI.SchnurschiessenViewModels
 
             SendInformationMessage("Schnur gelöscht");
             base.ExecuteEntfernenCommand();
+            */
         }
 
         #endregion

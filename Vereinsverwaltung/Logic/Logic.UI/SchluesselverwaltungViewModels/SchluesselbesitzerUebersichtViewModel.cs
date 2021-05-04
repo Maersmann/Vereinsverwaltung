@@ -1,5 +1,10 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types;
+using Data.Types.SchluesselverwaltungTypes;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.SchluesselMessages;
+using Logic.UI.BaseViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -7,17 +12,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.Core.SchluesselCore.Exceptions;
-using Vereinsverwaltung.Logic.Messages.SchluesselMessages;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselbesitzerUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<Schluesselbesitzer>
+    public class SchluesselbesitzerUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselbesitzerUebersichtModel>
     {
         public SchluesselbesitzerUebersichtViewModel()
         {
@@ -33,14 +31,17 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Besitzer; }
         public override void LoadData()
         {
+            // Todo: Request
+            /*
             itemList = new SchluesselbesitzerAPI().LadeAlle();
             this.RaisePropertyChanged("ItemList");
+            */
         }
 
         #region Bindings
         public ICommand OpenHistorieCommand { get; set; }
 
-        public override Schluesselbesitzer SelectedItem
+        public override SchluesselbesitzerUebersichtModel SelectedItem
         {
             get => base.SelectedItem;
             set
@@ -54,6 +55,8 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
         #region Commands
         protected override void ExecuteEntfernenCommand()
         {
+            // Todo: Request
+            /*
             try
             {
                 new SchluesselbesitzerAPI().Entfernen(selectedItem.ID);
@@ -65,6 +68,7 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
             }          
             SendInformationMessage("Schlüsselbesitzer gelöscht");
             base.ExecuteEntfernenCommand();
+            */
         }
 
         private void ExecuteOpenHistorieCommand()

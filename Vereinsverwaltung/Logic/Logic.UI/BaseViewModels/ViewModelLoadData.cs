@@ -1,13 +1,14 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
 
-namespace Vereinsverwaltung.Logic.UI.BaseViewModels
+
+namespace Logic.UI.BaseViewModels
 {
     public class ViewModelLoadData : ViewModelBasis
     {

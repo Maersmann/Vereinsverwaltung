@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Vereinsverwaltung.Data.Types;
-using Vereinsverwaltung.Logic.Messages.BaseMessages;
+using Data.Types;
+using Logic.Messages.BaseMessages;
 
 namespace Vereinsverwaltung.UI.Desktop.BaseViews
 {

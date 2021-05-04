@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Data.Model.SchluesselverwaltungModels;
+using Data.Types.SchluesselverwaltungTypes;
+using Logic.UI.BaseViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vereinsverwaltung.Data.Model.SchluesselEntitys;
-using Vereinsverwaltung.Data.Types.SchluesselverwaltungTypes;
-using Vereinsverwaltung.Logic.Core.SchluesselCore;
-using Vereinsverwaltung.Logic.UI.BaseViewModels;
 
-namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
+namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselzuteilungHistoryUebersichtViewModel : ViewModelUebersicht<SchluesselzuteilungHistory>
+    public class SchluesselzuteilungHistoryUebersichtViewModel : ViewModelUebersicht<SchluesselzuteilungHistoryUebersichtModel>
     {
         private SchluesselzuteilungTypes auswahlTypes;
         private int id;
@@ -29,11 +28,14 @@ namespace Vereinsverwaltung.Logic.UI.SchluesselverwaltungViewModels
 
         public override void LoadData()
         {
+            // Todo: Request
+            /*
             if (auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer))
                 itemList = new SchluesselzuteilungHistoryAPI().LadeAlleFuerBesitzer(id);
             else
                 itemList = new SchluesselzuteilungHistoryAPI().LadeAlleFuerSchluessel(id);
             base.LoadData();
+            */
         }
     }
 }
