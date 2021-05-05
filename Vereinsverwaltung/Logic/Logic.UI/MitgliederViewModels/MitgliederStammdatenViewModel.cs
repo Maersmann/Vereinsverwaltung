@@ -2,19 +2,23 @@
 using Data.Types;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Core.Validierungen;
+using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliedStammdatenModel>, IViewModelStammdaten
+    public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliederModel>, IViewModelStammdaten
     {
 
 
@@ -23,38 +27,45 @@ namespace Logic.UI.MitgliederViewModels
             Title = "Stammdaten Mitglied";
         }
 
-        public void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAn(int id)
         {
-            // Todo: Request
-            /*
-            var Mitglied = new MitgliedAPI().Lade(id);
-            Name = Mitglied.Name;
-            Eintrittsdatum = Mitglied.Eintrittsdatum;
-            Geburtstag = Mitglied.Geburtstag;
-            Mitgliedsnr = Mitglied.Mitgliedsnr;
-            Ort = Mitglied.Ort;
-            Strasse = Mitglied.Straße;
-            Vorname = Mitglied.Vorname;
-            data = Mitglied;
+            LoadAktie = true;
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.GetAsync($"https://localhost:5001/api/Mitglieder/{id}");
+                if (resp2.IsSuccessStatusCode)
+                    data = await resp2.Content.ReadAsAsync<MitgliederModel>();
+            }
+            Name = data.Name;
+            Eintrittsdatum = data.Eintrittsdatum;
+            Geburtstag = data.Geburtstag;
+            Mitgliedsnr = data.Mitgliedsnr;
+            Ort = data.Ort;
+            Strasse = data.Straße;
+            Vorname = data.Vorname;
             state = State.Bearbeiten;
-            */
+            LoadAktie = false;
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.mitglied;
         #region Commands
-        protected override void ExecuteSaveCommand()
+        protected async override void ExecuteSaveCommand()
         {
-            // Todo: Request
-            /*
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                base.ExecuteSaveCommand();
+                HttpResponseMessage resp2 = await Client.PostAsJsonAsync("https://localhost:5001/api/Mitglieder", data);
+
+
+                if (resp2.IsSuccessStatusCode)
+                {
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                }
+                else if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
+                    return;
+                }
             }
-            catch (MitgliedMitMitgliedsNrVorhanden)
-            {
-                SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
-                return;
-            }
-            */
         }
         #endregion
 
@@ -65,7 +76,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if ( !string.Equals(data.Name, value))
+                if (LoadAktie || !string.Equals(data.Name, value))
                 {
                     ValidateName(value);
                     data.Name = value;
@@ -81,7 +92,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (!string.Equals(data.Vorname, value))
+                if (LoadAktie || !string.Equals(data.Vorname, value))
                 {
                     ValidateVorName(value);
                     data.Vorname = value;
@@ -97,7 +108,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if ( !string.Equals(data.Ort, value))
+                if (LoadAktie || !string.Equals(data.Ort, value))
                 {
                     data.Ort = value;
                     this.RaisePropertyChanged();
@@ -110,7 +121,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if ( !string.Equals(data.Straße, value))
+                if (LoadAktie || !string.Equals(data.Straße, value))
                 {
                     data.Straße = value;
                     this.RaisePropertyChanged();
@@ -122,7 +133,7 @@ namespace Logic.UI.MitgliederViewModels
             get { return data.Mitgliedsnr; }
             set
             {
-                if ( !string.Equals(data.Mitgliedsnr, value))
+                if (LoadAktie || !string.Equals(data.Mitgliedsnr, value))
                 {
                     data.Mitgliedsnr = value;
                     this.RaisePropertyChanged();
@@ -135,7 +146,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if ( !string.Equals(data.Eintrittsdatum, value))
+                if (LoadAktie || !string.Equals(data.Eintrittsdatum, value))
                 {
                     ValidateEintrittsdatum(value);
                     data.Eintrittsdatum = value;
@@ -150,7 +161,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
                 
-                if ( !string.Equals(data.Geburtstag, value))
+                if (LoadAktie || !string.Equals(data.Geburtstag, value))
                 {
                     ValidateGeburtstag(value);
                     data.Geburtstag = value;
@@ -206,7 +217,7 @@ namespace Logic.UI.MitgliederViewModels
         
         public override void Cleanup()
         {
-            data = new MitgliedStammdatenModel();
+            data = new MitgliederModel();
             this.RaisePropertyChanged();
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);

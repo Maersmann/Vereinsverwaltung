@@ -23,7 +23,7 @@
 
         <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Vorname" Binding="{Binding Name}" Width="auto"/>
+                <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="auto"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
                 <DataGridTextColumn Header="Mitglieds-Nr" Binding="{Binding Mitgliedsnr }" Width="auto"/>
                 <DataGridTextColumn Header="Eintrittsdatum" Binding="{Binding Eintrittsdatum,  StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto"/>

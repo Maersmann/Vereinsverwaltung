@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data.Model.MitgliederModels
 {
-    public class MitgliederUebersichtModel
+    public class MitgliederModel
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -16,5 +16,23 @@ namespace Data.Model.MitgliederModels
         public String Straße { get; set; }
         public int? Mitgliedsnr { get; set; }
         public MitgliedStatus MitgliedStatus { get; set; }
+
+        public int? Alter
+        {
+            get
+            {
+                if (!Geburtstag.HasValue)
+                    return null;
+                else
+                {
+                    int years = DateTime.Now.Year - Geburtstag.Value.Year;
+                    var birthday = Geburtstag.Value.AddYears(years);
+                    if (DateTime.Now.CompareTo(birthday) < 0) { years--; }
+                    return years;
+                }
+            }
+        }
+
+        public string Fullname => Vorname + " " + Name;
     }
 }

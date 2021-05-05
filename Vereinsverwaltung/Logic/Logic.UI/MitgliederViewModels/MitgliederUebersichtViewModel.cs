@@ -13,10 +13,11 @@ using Logic.UI.BaseViewModels;
 using Data.Types;
 using Logic.Core;
 using System.Net.Http;
+using System.Net;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederUebersichtViewModel : ViewModelUebersicht<MitgliederUebersichtModel>
+    public class MitgliederUebersichtViewModel : ViewModelUebersicht<MitgliederModel>
     {
 
         public MitgliederUebersichtViewModel()
@@ -33,29 +34,28 @@ namespace Logic.UI.MitgliederViewModels
             {
                 HttpResponseMessage resp2 = await Client.GetAsync("https://localhost:5001/api/Mitglieder");
                 if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<MitgliederUebersichtModel>>();
+                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<MitgliederModel>>();
             }
             base.LoadData();
         }
 
         #region Commands
 
-        protected override void ExecuteEntfernenCommand()
+        protected async override void ExecuteEntfernenCommand()
         {
-            // Todo: Request
-            /*
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                new MitgliedAPI().Entfernen(selectedItem.ID);
-            }
-            catch (SchluesselbesitzerSindSchluesselZugeteiltException)
-            {
-                SendExceptionMessage("Mitglied kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Zugeteilter Schlüssel vorhanden");
-                return;
+                HttpResponseMessage resp2 = await Client.DeleteAsync($"https://localhost:5001/api/Mitglieder/{selectedItem.ID}");
+                if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage("Mitglied kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Zugeteilter Schlüssel vorhanden");
+                    return;
+                }
+
             }
             SendInformationMessage("Mitglied gelöscht");
             base.ExecuteEntfernenCommand();
-            */
+         
         }
         #endregion
     }
