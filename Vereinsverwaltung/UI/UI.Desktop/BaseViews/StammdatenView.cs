@@ -8,7 +8,7 @@ using System.Windows;
 using Data.Types;
 using Logic.Messages.BaseMessages;
 
-namespace Vereinsverwaltung.UI.Desktop.BaseViews
+namespace UI.Desktop.BaseViews
 {
     public class StammdatenView : Window
     {

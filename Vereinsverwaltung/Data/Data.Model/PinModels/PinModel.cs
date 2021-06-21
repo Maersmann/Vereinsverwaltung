@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Model.SchnurrschiessenModels
+namespace Data.Model.PinModels
 {
-    public class SchnurUebersichtModel
+    public class PinModel
     {
         public int ID { get; set; }
+        public string Bezeichnung { get; set; }
     }
 }

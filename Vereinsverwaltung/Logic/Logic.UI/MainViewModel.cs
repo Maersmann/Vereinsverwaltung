@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Data.Types;
 using Logic.Messages.BaseMessages;
 using Logic.Core;
+using Logic.Core.OptionenLogic;
 
 namespace Logic.UI
 {
@@ -25,6 +26,10 @@ namespace Logic.UI
             OpenZuteilungSchluesselbesitzerUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZuteilungSchluesselbesitzerUebersicht));
             OpenZuteilungSchluesselUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZuteilungSchluesselUebersicht));
             OpenZuteilungFreieAnzahlUbersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZuteilungFreieAnzahlUebersicht));
+            NeuePinAusgabeCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.pinAusgabe));
+            LadePinAusgabeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewPinAusgabeUebersicht));
+            AuswertungPinAusgabeTagCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTag));
+            AuswertungPinAusgabeTagStundeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTagStunde));           
         }
 
         public ICommand OpenMitgliederStammdatenCommand { get; private set; }
@@ -36,6 +41,11 @@ namespace Logic.UI
         public ICommand OpenZuteilungSchluesselUebersichtCommand { get; private set; }
         public ICommand OpenZuteilungFreieAnzahlUbersichtCommand { get; private set; }
         public ICommand OpenStartingViewCommand { get; private set; }
+        public ICommand LadePinAusgabeCommand { get; private set; }
+        public ICommand NeuePinAusgabeCommand { get; private set; }
+        public ICommand AuswertungPinAusgabeTagCommand { get; private set; }
+        public ICommand AuswertungPinAusgabeTagStundeCommand { get; private set; }
+        
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
@@ -44,8 +54,23 @@ namespace Logic.UI
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
         }
 
+        private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
+        {
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage {Stammdaten  = stammdaten, State = State.Neu});
+        }
+
         private void ExecuteOpenStartingViewCommand()
         {
+            var backendlogic = new BackendLogic();
+            if (!backendlogic.IstINIVorhanden())
+            {
+                Messenger.Default.Send<OpenKonfigurationViewMessage>(new OpenKonfigurationViewMessage { });
+            }
+            backendlogic.LoadData();
+            GlobalVariables.BackendServer_IP = backendlogic.GetBackendIP();
+            GlobalVariables.BackendServer_URL = backendlogic.GetURL();
+            GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
+
             Messenger.Default.Send<OpenStartingViewMessage>(new OpenStartingViewMessage { });
         }
 

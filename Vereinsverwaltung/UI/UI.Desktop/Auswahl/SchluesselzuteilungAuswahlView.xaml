@@ -37,8 +37,8 @@
             </DataGrid.Resources>
             
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Schluessel.Bezeichnung}" />
-                <DataGridTextColumn Header="Name" Binding="{Binding Schluesselbesitzer.Name}" Width="auto"/>
+                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding SchluesselBezeichnung}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding SchluesselbesitzerName}" Width="auto"/>
                 <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl }" Width="auto"/>
                 <DataGridTextColumn Header="Erhalten Am" Binding="{Binding ErhaltenAm, StringFormat=dd.MM.yyyy}" Width="auto"/>
             </DataGrid.Columns>

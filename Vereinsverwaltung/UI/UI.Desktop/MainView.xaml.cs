@@ -17,12 +17,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UI.Desktop;
-using Vereinsverwaltung.UI.Desktop.BaseViews;
+using UI.Desktop.BaseViews;
+using UI.Desktop.Mitglieder;
 using Vereinsverwaltung.UI.Desktop.Mitglieder;
-using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
+using UI.Desktop.Schluesselverwaltung;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Pages;
 using Vereinsverwaltung.UI.Desktop.Schnurschiessen;
 using Vereinsverwaltung.UI.Desktop.Schnurschiessen.Pages;
+using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
+using UI.Desktop.Schnurschiessen;
+using UI.Desktop.Pin;
+using UI.Desktop.Auswertungen;
+using UI.Desktop.Konfiguration;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -39,7 +45,7 @@ namespace Vereinsverwaltung.UI.Desktop
         private static SchluesselverteilungBesitzerUebersichtPage schluesselzuteilungBesitzerUebersicht;
         private static SchluesselverteilungSchluesselUebersichtPage schluesselverteilungSchluesselUebersicht;
         private static SchluesselverteilungFreieSchluesselUebersichtView schluesselverteilungFreieSchluesselUebersicht;
-
+        private static PinAusgabeUebersichtView pinAusgabeUebersichtView;
         public MainView()
         {
             InitializeComponent();
@@ -48,11 +54,14 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
             Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
-            Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage(m));
+            Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
+            Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
+            Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
+        }
 
-            //Naviagtion(ViewType.viewMitgliederUebersicht);
-
-            SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
+        private void ReceiceCloseApplicationMessage()
+        {
+            Application.Current.Shutdown();
         }
 
         private void ReceiveInformationMessage(InformationMessage m)
@@ -78,34 +87,43 @@ namespace Vereinsverwaltung.UI.Desktop
                     new MitgliedStammdatenView().ShowDialog();
                     break;
                 case ViewType.viewMitgliederUebersicht:
-                    mitgliederUebersichtView = mitgliederUebersichtView ?? new MitgliederUebersichtView();
+                    mitgliederUebersichtView ??= new MitgliederUebersichtView();
                     Container.NavigationService.Navigate(mitgliederUebersichtView);
                     break;
                 case ViewType.viewMitgliederImport:
-                    mitgliederImportView = mitgliederImportView ?? new MitgliederImportView();
+                    mitgliederImportView ??= new MitgliederImportView();
                     Container.NavigationService.Navigate(mitgliederImportView);
                     break;
                 case ViewType.viewSchluesselUebersicht:
-                    schluesselUebersicht = schluesselUebersicht ?? new SchluesselUebersichtView();
+                    schluesselUebersicht ??= new SchluesselUebersichtView();
                     Container.NavigationService.Navigate(schluesselUebersicht);
                     break;
                 case ViewType.viewSchluesselbesitzerUebersicht:
-                    schluesselbesitzerUebersicht = schluesselbesitzerUebersicht ?? new SchluesselbesitzerUebersichtView();
+                    schluesselbesitzerUebersicht ??= new SchluesselbesitzerUebersichtView();
                     Container.NavigationService.Navigate(schluesselbesitzerUebersicht);
                     break;
                 case ViewType.viewZuteilungSchluesselbesitzerUebersicht:
-                    schluesselzuteilungBesitzerUebersicht = schluesselzuteilungBesitzerUebersicht ?? new SchluesselverteilungBesitzerUebersichtPage();
+                    schluesselzuteilungBesitzerUebersicht ??= new SchluesselverteilungBesitzerUebersichtPage();
                     Container.NavigationService.Navigate(schluesselzuteilungBesitzerUebersicht);
                     break;
                 case ViewType.viewZuteilungSchluesselUebersicht:
-                    schluesselverteilungSchluesselUebersicht = schluesselverteilungSchluesselUebersicht ?? new SchluesselverteilungSchluesselUebersichtPage();
+                    schluesselverteilungSchluesselUebersicht ??= new SchluesselverteilungSchluesselUebersichtPage();
                     Container.NavigationService.Navigate(schluesselverteilungSchluesselUebersicht);
                     break;
                 case ViewType.viewZuteilungFreieAnzahlUebersicht:
-                    schluesselverteilungFreieSchluesselUebersicht = schluesselverteilungFreieSchluesselUebersicht ?? new SchluesselverteilungFreieSchluesselUebersichtView();
+                    schluesselverteilungFreieSchluesselUebersicht ??= new SchluesselverteilungFreieSchluesselUebersichtView();
                     Container.NavigationService.Navigate(schluesselverteilungFreieSchluesselUebersicht);
                     break;
-                    
+                case ViewType.viewPinAusgabeUebersicht:
+                    pinAusgabeUebersichtView ??= new PinAusgabeUebersichtView();
+                    Container.NavigationService.Navigate(pinAusgabeUebersichtView);
+                    break;
+                case ViewType.viewAuswertungPinAusgabeTag:
+                    Container.NavigationService.Navigate(new PinAusgabeAuswertungTagView());
+                    break;
+                case ViewType.viewAuswertungPinAusgabeTagStunde:    
+                    Container.NavigationService.Navigate(new PinAusgabeAuswertungTagStundeView());
+                    break;
                 default:
                     break;
             }
@@ -132,6 +150,9 @@ namespace Vereinsverwaltung.UI.Desktop
                 case StammdatenTypes.schnurauszeichnung:
                     view = new SchnurauszeichnungStammdatenView();
                     break;
+                case StammdatenTypes.pinAusgabe:
+                    view = new PinAusgabeStammdatenView();
+                    break;
                 default:
                     break;
             }
@@ -147,11 +168,16 @@ namespace Vereinsverwaltung.UI.Desktop
             view.ShowDialog();
         }
 
-        private void ReceiceOpenStartingViewMessage(OpenStartingViewMessage m)
+        private void ReceiceOpenKonfigurationViewMessage()
+        {
+            new KonfigurationView().ShowDialog();
+        }
+
+        private void ReceiceOpenStartingViewMessage()
         {
             var view = new StartingProgrammView();
             view.ShowDialog();
-
+            SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
         }
     }
 

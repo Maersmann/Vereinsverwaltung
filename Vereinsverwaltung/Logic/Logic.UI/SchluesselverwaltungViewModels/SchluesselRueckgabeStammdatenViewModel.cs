@@ -3,13 +3,17 @@ using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
+using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -77,24 +81,31 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
         #region Commands
-        protected override void ExecuteSaveCommand()
+        protected async override void ExecuteSaveCommand()
         {
-            //Todo: Request
-            /*
-            var API = new SchluesselverteilungAPI();
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                API.ErhalteSchluesselZurueck(data.SchluesselzuteilungID, data.Anzahl, data.RueckgabeAm);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Rückgabe gespeichert" }, StammdatenTypes.schluesselrueckgabe);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/rueckgabe", data);
+
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Rückgabe gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
+                }
+                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage("Es werden zu viele Schlüssel zurückgegeben");
+                    return;
+                }
+                else
+                {
+                    SendExceptionMessage("Fehler: Rückgabe Schlüssel" + Environment.NewLine + resp.StatusCode);
+                    return;
+                }
 
             }
-            catch (ZuVieleSchlüsselZurueckgegeben)
-            {
-                SendExceptionMessage("Es werden zu viele Schlüssel zurückgegeben");
-                return;
-            }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
-            */
         }
 
 
@@ -110,22 +121,27 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
         #region Callback
-        private void OpenSchluesselzuteilungAuswahlCallback(bool confirmed, int id)
+        private async void OpenSchluesselzuteilungAuswahlCallback(bool confirmed, int id)
         {
             if (confirmed)
             {
-                // Todo: Request
-                /*
-                var zuteilung = new SchluesselzuteilungAPI().Lade(id);
-                data.SchluesselzuteilungID = id;
-                data.Schluesselbezeichnung = zuteilung.Schluessel.Bezeichnung;
-                data.SchluesselbesitzerName = zuteilung.Schluesselbesitzer.Name;
-                Anzahl = zuteilung.Anzahl;
-                this.RaisePropertyChanged("SchluesselBez");
-                this.RaisePropertyChanged("Schluesselbesitzer");
-                schluesselAusgewaehlt = true;
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                */
+                LoadData = true;
+                if (GlobalVariables.ServerIsOnline)
+                {
+                    HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{id}");
+                    if (resp2.IsSuccessStatusCode)
+                    { 
+                        var resData = await resp2.Content.ReadAsAsync<SchluesselzuteilungModel>();
+                        data.SchluesselzuteilungID = id;
+                        data.Schluesselbezeichnung = resData.SchluesselBezeichnung;
+                        data.SchluesselbesitzerName = resData.SchluesselbesitzerName;
+                        Anzahl = resData.Anzahl;
+                        this.RaisePropertyChanged("SchluesselBez");
+                        this.RaisePropertyChanged("Schluesselbesitzer");
+                        schluesselAusgewaehlt = true;
+                        ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    }
+                }
             }
         }
         #endregion

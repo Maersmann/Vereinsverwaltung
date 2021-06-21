@@ -25,8 +25,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Rangfolge" Binding="{Binding Rangfolge}" Width="auto"/>
                 <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}" Width="auto"/>
-                <DataGridTextColumn Header="Hauptteil" Binding="{Binding Hauptteil.Bezeichnung}" Width="auto"/>
-                <DataGridTextColumn Header="Zusatz" Binding="{Binding Zusatz.Bezeichnung}" Width="auto"/>
+                <DataGridTextColumn Header="Hauptteil" Binding="{Binding HauptteilBezeichnung}" Width="auto"/>
+                <DataGridTextColumn Header="Zusatz" Binding="{Binding ZusatzBezeichnung}" Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>
 

@@ -1,22 +1,26 @@
-﻿using Data.Model.SchluesselverwaltungModels;
+﻿using Data.Model.MitgliederModels;
+using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
+using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselbesitzerStammdatenViewModel : ViewModelStammdaten<SchluesselbesitzerStammdatenModel>, IViewModelStammdaten
+    public class SchluesselbesitzerStammdatenViewModel : ViewModelStammdaten<SchluesselbesitzerModel>, IViewModelStammdaten
     {
         public SchluesselbesitzerStammdatenViewModel() 
         {
@@ -26,17 +30,22 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             DeleteMitgliedDataCommand = new DelegateCommand(this.ExecuteDeleteMitgliedDataCommand, this.CanExecuteDeleteMitgliedDataCommand);
         }
 
-        public void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAn(int id)
         {
-            // Todo: Request
-            /*var besitzer = new SchluesselbesitzerAPI().Lade(id);
-            Name = besitzer.Name;
-            data = besitzer;
+            LoadData = true;
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
+                if (resp2.IsSuccessStatusCode)
+                    data = await resp2.Content.ReadAsAsync<SchluesselbesitzerModel>();
+            }
+
+            Name = data.Name;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
             this.RaisePropertyChanged("KeinMitgliedHinterlegt");
             this.RaisePropertyChanged("Mitgliedsnr");
             state = State.Bearbeiten;
-            */
+            
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselbesitzer;
 
@@ -50,7 +59,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             }
             set
             {
-                if(!string.Equals(data.Name,value))
+                if( LoadData || !string.Equals(data.Name,value))
                 {
                     ValidateName(value);
                     data.Name = value;
@@ -67,21 +76,29 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 return data.MitgliedsNr;
             }
         }
-        public bool KeinMitgliedHinterlegt => false;// Todo: !data.MitgliedID.HasValue();
+        public bool KeinMitgliedHinterlegt { get { return !data.MitgliedID.HasValue; } }
         public ICommand MitgliedHinterlegenCommand { get; set; }
         public ICommand DeleteMitgliedDataCommand { get; set; }
         #endregion
 
         #region Commands
-        protected override void ExecuteSaveCommand()
+        protected async override void ExecuteSaveCommand()
         {
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                base.ExecuteSaveCommand();
-            }
-            catch (Exception)
-            {
-                return;
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer", data);
+
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                }
+                else
+                {
+                    SendExceptionMessage("Fehler: Speicher Besitzer" + Environment.NewLine+ resp.StatusCode);
+                    return;
+                }
             }
         }
 
@@ -90,24 +107,35 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Messenger.Default.Send<OpenMitgliedAuswahlMessage>(new OpenMitgliedAuswahlMessage(OpenMitgliedAuswahlCallback), messageToken);
         }
 
-        private void OpenMitgliedAuswahlCallback(bool confirmed, int id)
+        private async void OpenMitgliedAuswahlCallback(bool confirmed, int id)
         {
             if (confirmed)
             {
-                // Todo: Request
-                /*
-                if (new SchluesselbesitzerAPI().MitgliedSchonVorhanden(id))
+                if (GlobalVariables.ServerIsOnline)
                 {
-                    this.SendInformationMessage("Mitglied hat schon ein Datensatz");
-                    return;
+                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/Mitglied/{id}");
+                    if (resp.IsSuccessStatusCode)
+                    {
+                        if (await resp.Content.ReadAsAsync<bool>())
+                        { 
+                            this.SendInformationMessage("Mitglied hat schon ein Datensatz");
+                            return;
+                        }
+                    }
+                    
+                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
+             
+                    if (resp.IsSuccessStatusCode)
+                    { 
+                        var Mitglied = await resp.Content.ReadAsAsync<MitgliederModel>();
+                        data.MitgliedID = id;          
+                        Name = Mitglied.Vorname + " " + Mitglied.Name;
+                        data.MitgliedsNr = Mitglied.Mitgliedsnr;
+                        ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
+                        this.RaisePropertyChanged("KeinMitgliedHinterlegt");
+                        this.RaisePropertyChanged("Mitgliedsnr");
+                    }
                 }
-                data.MitgliedID = id;
-                data.Mitglied = new MitgliedAPI().Lade(id);
-                Name = data.Mitglied.Vorname + " " + data.Mitglied.Name;
-                ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-                this.RaisePropertyChanged("KeinMitgliedHinterlegt");
-                this.RaisePropertyChanged("Mitgliedsnr");
-                */
             }
         }
 
@@ -119,7 +147,6 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         private void ExecuteDeleteMitgliedDataCommand()
         {
             data.MitgliedID = null;
-            //data.Mitglied = new Mitglied();
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
             this.RaisePropertyChanged("Mitgliedsnr");
             Name = "";
@@ -143,7 +170,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public override void Cleanup()
         {
-            data = new SchluesselbesitzerStammdatenModel { };
+            data = new SchluesselbesitzerModel { };
             Name = "";
             state = State.Neu;
         }

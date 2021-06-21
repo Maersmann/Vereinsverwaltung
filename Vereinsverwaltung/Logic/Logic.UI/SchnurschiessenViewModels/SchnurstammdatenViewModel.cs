@@ -2,52 +2,63 @@
 using Data.Types;
 using Data.Types.SchnurschiessenTypes;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Core.Validierungen.Base;
+using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurStammdatenViewModel : ViewModelStammdaten<SchnurstammdatenModel>, IViewModelStammdaten
+    public class SchnurStammdatenViewModel : ViewModelStammdaten<SchnurModel>, IViewModelStammdaten
     {
         public SchnurStammdatenViewModel()
         {
             Title = "Schnur Stammdaten";
         }
 
-        public void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAn(int id)
         {
-            // Todo: Request
-            /*
-            var Schnur = new SchnurAPI().Lade(id);
-            Bezeichnung = Schnur.Bezeichnung;
-            Schnurtyp = Schnur.Schnurtyp;
-            data = Schnur;
+            LoadData = true;
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
+                if (resp2.IsSuccessStatusCode)
+                    data = await resp2.Content.ReadAsAsync<SchnurModel>();
+            }
+            Bezeichnung = data.Bezeichnung;
+            Schnurtyp = data.Schnurtyp;
             state = State.Bearbeiten;
-            */
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnur;
 
         #region Commands
-        protected override void ExecuteSaveCommand()
+        protected async override void ExecuteSaveCommand()
         {
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                base.ExecuteSaveCommand();       
-            }
-            catch (Exception)
-            {
-                SendExceptionMessage("Nummer ist schon vorhanden");
-                return;
-            }
-           
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur", data);
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                }
+                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage("Nummer ist schon vorhanden");
+                    return;
+                }
+            }           
         }
         #endregion
 
@@ -61,7 +72,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             }
             set
             {
-                if (!string.Equals(data.Bezeichnung, value))
+                if ( LoadData || !string.Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
@@ -83,7 +94,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             get { return data.Schnurtyp; }
             set
             {
-                if (LoadAktie || (this.data.Schnurtyp != value))
+                if (LoadData || (this.data.Schnurtyp != value))
                 {
                     this.data.Schnurtyp = value;
                     this.RaisePropertyChanged();
@@ -110,7 +121,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public override void Cleanup()
         {
-            data = new SchnurstammdatenModel();
+            data = new SchnurModel();
             Bezeichnung = "";
             Schnurtyp = Data.Types.SchnurschiessenTypes.Schnurtypes.schnur;
             state = State.Neu;

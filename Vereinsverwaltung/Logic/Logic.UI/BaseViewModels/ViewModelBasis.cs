@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace Logic.UI.BaseViewModels
             Cleanup(); 
         }
 
-        protected void ExecuteCloseWindowCommand(Window window)
+        protected virtual void ExecuteCloseWindowCommand(Window window)
         {
             if (window != null)
             {
@@ -81,9 +82,18 @@ namespace Logic.UI.BaseViewModels
 
         private void SetConnection()
         {
-            Client = new HttpClient
+            string url;
+            if (GlobalVariables.BackendServer_IP == null || GlobalVariables.BackendServer_IP.Equals(""))
+                url = "https://localhost:5003";
+            else
+                url = GlobalVariables.BackendServer_URL;
+            HttpClientHandler clientHandler = new HttpClientHandler
             {
-                BaseAddress = new Uri("https://localhost:5001/")
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+            Client = new HttpClient(clientHandler)
+            {
+                BaseAddress = new Uri(url + "/")
             };
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/json"));
         }

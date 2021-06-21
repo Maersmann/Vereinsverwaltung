@@ -13,9 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Vereinsverwaltung.UI.Desktop.Auswahl;
-using Vereinsverwaltung.UI.Desktop.BaseViews;
+using UI.Desktop.BaseViews;
 
-namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
+namespace UI.Desktop.Schluesselverwaltung
 {
     /// <summary>
     /// Interaktionslogik für SchluesselStammdaten.xaml

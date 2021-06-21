@@ -68,7 +68,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Zuteilen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OpenZuteilungCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                            <Button Content="Zuteilen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OpenZuteilungCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding CanZuteilen}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

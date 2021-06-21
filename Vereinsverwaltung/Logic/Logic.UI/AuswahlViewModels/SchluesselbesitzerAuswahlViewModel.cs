@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Logic.UI.BaseViewModels;
+using System.Net.Http;
+using Logic.Core;
+using System.Collections.ObjectModel;
 
 namespace Logic.UI.AuswahlViewModels
 {
@@ -26,10 +29,14 @@ namespace Logic.UI.AuswahlViewModels
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselbesitzer; }
 
-        public override void LoadData()
+        public async override void LoadData()
         {
-            // Todo: Request
-            //itemList = new SchluesselbesitzerAPI().LadeAlle();
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer");
+                if (resp2.IsSuccessStatusCode)
+                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchluesselbesitzerAuswahlModel>>();
+            }
             base.LoadData();
         }
     }

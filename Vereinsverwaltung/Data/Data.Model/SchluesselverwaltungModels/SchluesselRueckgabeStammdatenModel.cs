@@ -10,5 +10,6 @@ namespace Data.Model.SchluesselverwaltungModels
         public string SchluesselbesitzerName { get; set; }
         public int Anzahl { get; set; }
         public DateTime RueckgabeAm { get; set; }
+        public int SchluesselzuteilungID { get; set; }
     }
 }

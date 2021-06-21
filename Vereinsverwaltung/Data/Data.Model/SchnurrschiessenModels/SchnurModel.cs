@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Data.Model.SchnurrschiessenModels
 {
-    public class SchnurstammdatenModel
+    public class SchnurModel
     {
-        public string Bezeichnung { get; set; }
+        public int ID { get; set; }
+        public String Bezeichnung { get; set; }
         public Schnurtypes Schnurtyp { get; set; }
+        public Boolean Sichtbar { get; set; }
     }
 }

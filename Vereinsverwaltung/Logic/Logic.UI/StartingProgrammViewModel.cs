@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
+using Logic.UI.Helper;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -22,7 +23,7 @@ namespace Logic.UI
 
         private void ExecuteCheckServerIsOnlineCommand()
         {
-            CheckServerIsOnline();
+            new BackendHelper().CheckServerIsOnline();
             if (GlobalVariables.ServerIsOnline)
             {
                 ViewModelLocator locator = new ViewModelLocator();
@@ -35,19 +36,5 @@ namespace Logic.UI
 
         public ICommand CheckServerIsOnlineCommand { get; private set; }
 
-        public void CheckServerIsOnline()
-        {
-            using TcpClient tcpClient = new TcpClient();
-            try
-            {
-                tcpClient.Connect("127.0.0.1", 5001);
-                GlobalVariables.ServerIsOnline = true;
-            }
-            catch (Exception e)
-            {
-                GlobalVariables.ServerIsOnline = false;
-                SendExceptionMessage("Backend ist nicht erreichbar" + Environment.NewLine + e.Message);
-            }
-        }
     }
 }

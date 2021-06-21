@@ -16,7 +16,10 @@ namespace Data.Types
         viewSchluesselbesitzerUebersicht,
         viewZuteilungSchluesselbesitzerUebersicht,
         viewZuteilungSchluesselUebersicht,
-        viewZuteilungFreieAnzahlUebersicht
+        viewZuteilungFreieAnzahlUebersicht,
+        viewPinAusgabeUebersicht,
+        viewAuswertungPinAusgabeTag,
+        viewAuswertungPinAusgabeTagStunde
     }
     
 }

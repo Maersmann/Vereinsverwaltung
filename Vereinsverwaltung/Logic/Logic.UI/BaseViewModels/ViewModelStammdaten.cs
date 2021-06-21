@@ -15,12 +15,12 @@ namespace Logic.UI.BaseViewModels
     {
         protected T data;
         protected State state;
-        protected bool LoadAktie;
+        protected bool LoadData;
         public ICommand SaveCommand { get; protected set; }
 
         public ViewModelStammdaten()
         {
-            LoadAktie = false;
+            LoadData = false;
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
@@ -35,19 +35,7 @@ namespace Logic.UI.BaseViewModels
 
         protected virtual void ExecuteSaveCommand()
         {
-            /*
-            if (state.Equals(State.Neu))
-            {
-                api.Speichern(data);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-            }
-            else
-            {
-                api.Aktualisieren(data);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktualisiert" }, GetStammdatenTyp());
-            }
-            */
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+
         }
     }
 }

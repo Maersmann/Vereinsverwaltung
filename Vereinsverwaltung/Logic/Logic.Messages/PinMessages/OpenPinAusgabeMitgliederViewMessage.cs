@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Model.SchluesselverwaltungModels
+namespace Logic.Messages.PinMessages
 {
-    public class SchluesselUebersichtModel
+    public class OpenPinAusgabeMitgliederViewMessage
     {
         public int ID { get; set; }
     }

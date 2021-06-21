@@ -13,14 +13,11 @@ using System.Windows.Input;
 
 namespace Logic.UI.BaseViewModels
 {
-    public class ViewModelUebersicht<T> : ViewModelLoadData
+    public class ViewModelUebersicht<T> : ViewModelLoadData<T>
     {
-        protected ObservableCollection<T> itemList;
-        protected T selectedItem;
-
+       
         public ViewModelUebersicht()
         {
-            itemList = new ObservableCollection<T>();
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
@@ -31,7 +28,7 @@ namespace Logic.UI.BaseViewModels
         protected virtual StammdatenTypes GetStammdatenType() { return 0; }
 
 
-        public virtual T SelectedItem
+        public override T SelectedItem
         {
             get
             {
@@ -43,13 +40,6 @@ namespace Logic.UI.BaseViewModels
                 this.RaisePropertyChanged();
                 ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-            }
-        }
-        public IEnumerable<T> ItemList
-        {
-            get
-            {
-                return itemList;
             }
         }
 

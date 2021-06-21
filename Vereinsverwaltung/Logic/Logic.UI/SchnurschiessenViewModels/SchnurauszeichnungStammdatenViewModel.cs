@@ -1,57 +1,86 @@
 ﻿using Data.Model.SchnurrschiessenModels;
 using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Core.Validierungen.Base;
+using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurauszeichnungStammdatenViewModel : ViewModelStammdaten<SchnurauszeichnungStammdatenModel>, IViewModelStammdaten
+    public class SchnurauszeichnungStammdatenViewModel : ViewModelStammdaten<SchnurauszeichnungModel>, IViewModelStammdaten
     {
+        private IList<SchnurModel> alleSichtbarenSchnuere;
+        private IList<SchnurModel> alleSchnuere;
         public SchnurauszeichnungStammdatenViewModel()
         {
+            alleSichtbarenSchnuere = new List<SchnurModel>();
+            alleSchnuere = new List<SchnurModel>();
             Title = "Schnurauszeichung Stammdaten";
+            LoadSchnuere();
         }
 
-        public void ZeigeStammdatenAn(int id)
+        private async void LoadSchnuere()
         {
-            // Todo: Request
-            /*
-            var Auszeichnung = new SchnurauszeichnungAPI().Lade(id);
-            Bezeichnung = Auszeichnung.Bezeichnung;
-            Rangfolge = Auszeichnung.Rangfolge;
-            Hauptteil = Auszeichnung.Hauptteil;
-            Zusatz = Auszeichnung.Zusatz;
-            data = Auszeichnung;
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur");
+                if (resp.IsSuccessStatusCode)
+                    alleSchnuere = await resp.Content.ReadAsAsync<ObservableCollection<SchnurModel>>();
+
+                alleSichtbarenSchnuere = alleSchnuere.Where(s => s.Sichtbar).ToList();
+            }
+            this.RaisePropertyChanged("Schnuere");
+            this.RaisePropertyChanged("SchnuereZusatz");
+        }
+
+        public async void ZeigeStammdatenAn(int id)
+        {
+            LoadData = true;
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<SchnurauszeichnungModel>();
+            }
+            Bezeichnung = data.Bezeichnung;
+            Rangfolge = data.Rangfolge;
+            Hauptteil = alleSichtbarenSchnuere.First(s => s.ID == data.HauptteilID);
+            Zusatz = alleSchnuere.FirstOrDefault(s => s.ID == data.ZusatzID);
             state = State.Bearbeiten;
-            */
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnurauszeichnung;
 
         #region Commands
-        protected override void ExecuteSaveCommand()
+        protected async override void ExecuteSaveCommand()
         {
-            // Todo: Request
-            /*
-            data.HauptteilID = data.Hauptteil.ID;
-            data.ZusatzID = data.Zusatz.ID;
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                base.ExecuteSaveCommand();
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung", data);
+                data.HauptteilID = Hauptteil.ID;
+                data.ZusatzID = Zusatz.ID;
+                if (resp.IsSuccessStatusCode)
+                {
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                }
+                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage("Rangfolge ist schon vorhanden");
+                    return;
+                }
             }
-            catch (RangfolgeSchonVorhandenException)
-            {
-                SendExceptionMessage("Rangfolge ist schon vorhanden");
-                return;
-            }
-            */
         }
         #endregion
 
@@ -65,7 +94,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             }
             set
             {
-                if (!string.Equals(data.Bezeichnung, value))
+                if (LoadData || !string.Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
@@ -80,7 +109,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             get => data.Rangfolge;
             set
             {
-                if (!string.Equals(data.Rangfolge, value))
+                if (LoadData || !string.Equals(data.Rangfolge, value))
                 {
                     ValidateZahl(value, "Rangfolge");
                     data.Rangfolge = value.GetValueOrDefault(0);
@@ -89,39 +118,46 @@ namespace Logic.UI.SchnurschiessenViewModels
                 }
             }
         }
-        // Todo: Request
-        /*
-        public IEnumerable<Schnur> Schnuere => new SchnurAPI().LadeAlleSichtbaren();
-        public IEnumerable<Schnur> SchnuereZusatz => new SchnurAPI().LadeAlle();
-        
-        public Schnur Hauptteil
+
+        public IEnumerable<SchnurModel> Schnuere => alleSichtbarenSchnuere;
+        public IEnumerable<SchnurModel> SchnuereZusatz => alleSchnuere;
+
+
+        public SchnurModel Hauptteil
         {
-            get { return data.Hauptteil; }
+            get
+            { 
+                var schnur = alleSichtbarenSchnuere.FirstOrDefault(s => s.ID == data.HauptteilID);
+                if (alleSichtbarenSchnuere.Count == 0)
+                    schnur = new SchnurModel();
+                else if (schnur == null)
+                    schnur = alleSichtbarenSchnuere.First();
+                return schnur;
+            }
             set
             {
-                if (LoadAktie || (this.data.Hauptteil != value))
+                if (LoadData || (this.data.HauptteilID != value.ID))
                 {
-                    this.data.Hauptteil = value;
+                    this.data.HauptteilID = value.ID;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public Schnur Zusatz
+        public SchnurModel Zusatz
         {
-            get { return data.Zusatz; }
+            get { return alleSchnuere.FirstOrDefault(s => s.ID == data.ZusatzID); }
             set
             {
-                if (LoadAktie || (this.data.Zusatz != value))
+                if (LoadData || (this.data.ZusatzID != value.ID))
                 {
-                    this.data.Zusatz = value;
+                    this.data.ZusatzID = value.ID;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-        */
         #endregion
 
         #region Validierung
@@ -149,7 +185,10 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public override void Cleanup()
         {
-            data = new SchnurauszeichnungStammdatenModel();
+            data = new SchnurauszeichnungModel
+            {
+                ZusatzID = 1
+            };
             Bezeichnung = "";
             Rangfolge = null;
             state = State.Neu;

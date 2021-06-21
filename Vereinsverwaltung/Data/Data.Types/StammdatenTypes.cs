@@ -14,6 +14,7 @@ namespace Data.Types
         schluesselzuteilung,
         schluesselrueckgabe,
         schnur,
-        schnurauszeichnung
+        schnurauszeichnung,
+        pinAusgabe
     }
 }

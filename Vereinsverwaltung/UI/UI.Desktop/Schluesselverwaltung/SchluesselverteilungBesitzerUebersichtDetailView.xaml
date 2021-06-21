@@ -23,7 +23,7 @@
 
         <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Schluessel.Bezeichnung}" Width="auto"/>
+                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding SchluesselBezeichnung}" Width="auto"/>
                 <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl }" Width="auto"/>
                 <DataGridTextColumn Header="Erhalten Am" Binding="{Binding ErhaltenAm, StringFormat=dd.MM.yyyy}" Width="auto"/>
             </DataGrid.Columns>

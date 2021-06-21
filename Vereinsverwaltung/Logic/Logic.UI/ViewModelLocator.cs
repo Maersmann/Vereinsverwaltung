@@ -21,6 +21,10 @@ using Logic.UI.AuswahlViewModels;
 using Logic.UI.MitgliederViewModels;
 using Logic.UI.SchluesselverwaltungViewModels;
 using Logic.UI.SchnurschiessenViewModels;
+using Logic.UI.PinViewModels;
+using Logic.UI.AuswertungenViewModels;
+using Logic.UI.OptionenViewModels;
+using Logic.UI.KonfigruationViewModels;
 
 namespace Logic.UI
 {
@@ -66,8 +70,8 @@ namespace Logic.UI
             SimpleIoc.Default.Register<SchluesselzuteilungHistoryUebersichtViewModel>();
             SimpleIoc.Default.Register<SchnurStammdatenViewModel>();
             SimpleIoc.Default.Register<SchnurUebersichtViewModel>();
-            SimpleIoc.Default.Register<SchnurauszeichnungStammdatenViewModel>();
             SimpleIoc.Default.Register<SchnurauszeichnungUebersichtViewModel>();
+            SimpleIoc.Default.Register<BackendSettingsViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -92,9 +96,17 @@ namespace Logic.UI
         public SchluesselzuteilungHistoryUebersichtViewModel SchluesselzuteilungHistoryUebersicht => ServiceLocator.Current.GetInstance<SchluesselzuteilungHistoryUebersichtViewModel>();
         public SchnurStammdatenViewModel Schnurstammdaten => ServiceLocator.Current.GetInstance<SchnurStammdatenViewModel>();
         public SchnurUebersichtViewModel SchnurUebersicht => ServiceLocator.Current.GetInstance<SchnurUebersichtViewModel>();
-        public SchnurauszeichnungStammdatenViewModel SchnurauszeichnungStammdaten => ServiceLocator.Current.GetInstance<SchnurauszeichnungStammdatenViewModel>();
+        public SchnurauszeichnungStammdatenViewModel SchnurauszeichnungStammdaten => new SchnurauszeichnungStammdatenViewModel();
         public SchnurauszeichnungUebersichtViewModel SchnurauszeichnungUebersicht => ServiceLocator.Current.GetInstance<SchnurauszeichnungUebersichtViewModel>();
         public StartingProgrammViewModel StartingProgramm => new StartingProgrammViewModel();
+        public PinAusgabeStammdatenViewModel PinAusgabeStammdaten => new PinAusgabeStammdatenViewModel();
+        public PinAusgabeUebersichtViewModel PinAusgabeUebersicht => new PinAusgabeUebersichtViewModel();
+        public PinAusgabeMitgliedUebersichtViewModel PinAusgabeMitgliedUebersicht => new PinAusgabeMitgliedUebersichtViewModel();
+        public PinAusgabeAuswertungTagViewModel PinAusgabeAuswertungTag => new PinAusgabeAuswertungTagViewModel();
+        public PinAusgabeAuswertungTagStundeViewModel PinAusgabeAuswertungTagStunde => new PinAusgabeAuswertungTagStundeViewModel();
+        public BackendSettingsViewModel BackendSettings => ServiceLocator.Current.GetInstance<BackendSettingsViewModel>();
+        public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
+        public PinAusgabeAuswahlViewModel PinAusgabeAuswahl => new PinAusgabeAuswahlViewModel();
         public static void Cleanup()
         {
 

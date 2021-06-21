@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Schluesselverwaltung;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Core;
 
 namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
@@ -24,7 +25,7 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
     /// </summary>
     public partial class SchluesselUebersichtView : UserControl
     {
-        private SchluesselzuteilungHistoryUebersichtHelper helper;
+        private readonly SchluesselzuteilungHistoryUebersichtHelper helper;
         public SchluesselUebersichtView()
         {
             InitializeComponent();

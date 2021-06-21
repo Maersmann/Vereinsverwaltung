@@ -1,8 +1,10 @@
 ﻿using Data.Model.MitgliederModels;
+using Data.Types;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.ImportHelper;
+using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
 using Microsoft.Win32;
 using System;
@@ -49,39 +51,29 @@ namespace Logic.UI.MitgliederViewModels
                         }
                            
                     });
-               
-                   // itemList = new ClassMitgliederImport(history).StartImport(openFileDialog.FileName);
-                    //
                 }
-              
-
-
-                /*
-                if (resp2.IsSuccessStatusCode)
-                {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
-                }
-                else if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
-                {
-                    SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
-                    return;
-                }
-                */
-            }
-
-            
+            }         
         }
 
-        private void ExecuteSaveCommand()
+        private async void ExecuteSaveCommand()
         {
-            //Todo: Request
-            /*
-            new ClassMitgliederImport(history).Uebernahme(itemList);   
-            itemList.Clear();
-            this.RaisePropertyChanged("ItemList");
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
-            */
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", itemList);
+
+
+                if (resp2.IsSuccessStatusCode)
+                {
+                    itemList.Clear();
+                    this.RaisePropertyChanged("ItemList");
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
+                }
+                else
+                {
+                    SendExceptionMessage("Fehler Import/Save"+  Environment.NewLine + resp2.StatusCode);
+                    return;
+                }
+            }
         }
         #endregion
 

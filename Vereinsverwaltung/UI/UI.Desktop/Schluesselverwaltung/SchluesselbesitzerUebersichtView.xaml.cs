@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Schluesselverwaltung;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Core;
 
 namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung

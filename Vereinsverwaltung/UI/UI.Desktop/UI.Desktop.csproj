@@ -5,10 +5,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <AssemblyName>Vereinsverwaltung</AssemblyName>
+    <Authors>Märsmann</Authors>
+    <Company>Märsmann</Company>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\add.png" />
+    <None Remove="Resources\auswertungStundeTag.png" />
+    <None Remove="Resources\auswertungTag.png" />
     <None Remove="Resources\bearbeiten.png" />
     <None Remove="Resources\entfernen.png" />
     <None Remove="Resources\entfernen_klein.png" />
@@ -19,6 +24,8 @@
     <None Remove="Resources\key_list.png" />
     <None Remove="Resources\person.png" />
     <None Remove="Resources\person_list.png" />
+    <None Remove="Resources\pin_load.png" />
+    <None Remove="Resources\pin_new.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +44,8 @@
 
   <ItemGroup>
     <Resource Include="Resources\add.png" />
+    <Resource Include="Resources\auswertungStundeTag.png" />
+    <Resource Include="Resources\auswertungTag.png" />
     <Resource Include="Resources\bearbeiten.png" />
     <Resource Include="Resources\entfernen.png" />
     <Resource Include="Resources\entfernen_klein.png" />
@@ -45,6 +54,8 @@
     <Resource Include="Resources\key.png" />
     <Resource Include="Resources\key_free.png" />
     <Resource Include="Resources\key_list.png" />
+    <Resource Include="Resources\pin_load.png" />
+    <Resource Include="Resources\pin_new.png" />
     <Resource Include="Resources\person.png" />
     <Resource Include="Resources\person_list.png" />
   </ItemGroup>

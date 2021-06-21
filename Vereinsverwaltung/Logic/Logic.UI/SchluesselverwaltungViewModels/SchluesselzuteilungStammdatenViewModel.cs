@@ -2,21 +2,26 @@
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
+using Logic.Messages.BaseMessages;
 using Logic.UI.BaseViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselzuteilungStammdatenViewModel : ViewModelStammdaten<SchluesselzuteilungStammdatenModel>, ISchluesselzuteilungStammdatenViewModel
+    public class SchluesselzuteilungStammdatenViewModel : ViewModelStammdaten<SchluesselzuteilungModel>, ISchluesselzuteilungStammdatenViewModel
     {
         private SchluesselzuteilungTypes auswahlTypes;
 
@@ -25,36 +30,49 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Title = "Schlüsselzuteilung";
             OpenAuswahlSchluesselCommand = new DelegateCommand(this.ExecuteOpenAuswahlSchluesselCommand, this.CanExecuteOpenAuswahlSchluesselCommand);
             OpenAuswahlBesitzerCommand = new DelegateCommand(this.ExecuteOpenAuswahlBesitzerCommand, this.CanOpenAuswahlBesitzerCommand);
+            Cleanup();
         }
 
-        public void BySchluesselID(int schluesselID)
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselzuteilung;
+
+        public async void BySchluesselID(int schluesselID)
         {
-            // Todo: Request
-            /*
-            data.SchluesselID = schluesselID;
-            data.Schluessel = new SchluesselAPI().Lade(schluesselID);
-            auswahlTypes = SchluesselzuteilungTypes.Besitzer;
-            ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
-            ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
-            ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Besitzer");
-            this.RaisePropertyChanged("SchluesselBez");
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            */
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{schluesselID}");
+                if (resp.IsSuccessStatusCode)
+                {
+                    var resData = await resp.Content.ReadAsAsync<SchluesselModel>();
+                    data.SchluesselID = resData.ID;
+                    data.SchluesselBezeichnung = resData.Bezeichnung;
+                    auswahlTypes = SchluesselzuteilungTypes.Besitzer;
+                    ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
+                    ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Besitzer");
+                    this.RaisePropertyChanged("SchluesselBez");
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }    
+            }
         }
 
-        public void BySchluesselbesitzerID(int schluesselbesitzerID)
+        public async void BySchluesselbesitzerID(int schluesselbesitzerID)
         {
-            // Todo: Request
-            /*
-            data.SchluesselbesitzerID = schluesselbesitzerID;
-            data.Schluesselbesitzer = new SchluesselbesitzerAPI().Lade(schluesselbesitzerID);
-            auswahlTypes = SchluesselzuteilungTypes.Schluessel;
-            ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
-            ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
-            ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
-            this.RaisePropertyChanged("Schluesselbesitzer");
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            */
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{schluesselbesitzerID}");
+                if (resp.IsSuccessStatusCode)
+                {
+                    var resData = await resp.Content.ReadAsAsync<SchluesselbesitzerModel>();
+                    data.SchluesselbesitzerID = resData.ID;
+                    data.SchluesselbesitzerName = resData.Name;
+                    auswahlTypes = SchluesselzuteilungTypes.Schluessel;
+                    ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
+                    ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
+                    this.RaisePropertyChanged("Schluesselbesitzer");
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
         }
 
         #region Bindings
@@ -108,24 +126,30 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
         #region Commands
-        protected override void ExecuteSaveCommand()
+        protected async override void ExecuteSaveCommand()
         {
-            // Todo: Request
-            /*
-            var API = new SchluesselverteilungAPI();
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                API.TeileSchluesselZu(data);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schlüsselzuteilung gespeichert" }, StammdatenTypes.schluesselzuteilung);
-           
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/new", data);
+
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                }
+                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage("Es sind zu wenig Schlüssel frei");
+                    return;
+                }
+                else
+                {
+                    SendExceptionMessage("Fehler: Speicher Verteilung" + Environment.NewLine + resp.StatusCode);
+                    return;
+                }
+
             }
-            catch (ZuWenigFreieSchluesselVorhandenException)
-            {
-                SendExceptionMessage("Es sind zu wenig Schlüssel frei");
-                return;
-            }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
-            */
         }
         private bool CanOpenAuswahlBesitzerCommand()
         {
@@ -149,32 +173,42 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
         #region Callback
-        private void OpenSchluesselbesitzerAuswahlCallback(bool confirmed, int id)
+        private async void OpenSchluesselbesitzerAuswahlCallback(bool confirmed, int id)
         {
             if (confirmed)
             {
-                // Todo: Request
-                /*
-                data.Schluesselbesitzer = new SchluesselbesitzerAPI().Lade(id);
-                data.SchluesselbesitzerID = data.Schluesselbesitzer.ID;
-                ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Schlüssel");
-                this.RaisePropertyChanged("Schluesselbesitzer");
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                */
+                if (GlobalVariables.ServerIsOnline)
+                {
+                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
+                    if (resp.IsSuccessStatusCode)
+                    {
+                        var resData = await resp.Content.ReadAsAsync<SchluesselbesitzerModel>();;
+                        data.SchluesselbesitzerID = resData.ID;
+                        data.SchluesselbesitzerName = resData.Name;
+                        ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Schlüssel");
+                        this.RaisePropertyChanged("Schluesselbesitzer");
+                        ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    }
+                }
             }
         }
-        private void OpenSchluesselAuswahlCallback(bool confirmed, int id)
+        private async void OpenSchluesselAuswahlCallback(bool confirmed, int id)
         {
             if (confirmed)
             {
-                // Todo: Request
-                /*
-                data.Schluessel = new SchluesselAPI().Lade(id);
-                data.SchluesselID = data.Schluessel.ID;
-                ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
-                this.RaisePropertyChanged("SchluesselBez");
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                */
+                if (GlobalVariables.ServerIsOnline)
+                {
+                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
+                    if (resp.IsSuccessStatusCode)
+                    {
+                        var resData = await resp.Content.ReadAsAsync<SchluesselModel>();
+                        data.SchluesselID = resData.ID;
+                        data.SchluesselBezeichnung = resData.Bezeichnung;
+                        ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
+                        this.RaisePropertyChanged("SchluesselBez");
+                        ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    }
+                }
             }
         }
         #endregion
@@ -213,7 +247,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public override void Cleanup()
         {
-            data = new SchluesselzuteilungStammdatenModel { };
+            data = new SchluesselzuteilungModel();
             ErhaltenAm = DateTime.Now;
             Anzahl = null;
             state = State.Neu;

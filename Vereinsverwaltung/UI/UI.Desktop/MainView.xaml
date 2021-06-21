@@ -7,6 +7,7 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:local="clr-namespace:UI.Desktop"
         xmlns:Fluent="urn:fluent-ribbon"
+        xmlns:optionen="clr-namespace:UI.Desktop.Optionen"
         x:Name="Main"
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
         Icon="Resources/icon.ico" 
@@ -32,8 +33,11 @@
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage >
                     <Fluent:BackstageTabControl>
-                        <Fluent:BackstageTabItem Header="Schnurschießen">
+                        <Fluent:BackstageTabItem Header="Schnurschießen"  >
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  />
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Backend-Settings">
+                            <optionen:BackendSettingsView/>
                         </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
                         <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
@@ -59,6 +63,19 @@
                     <Fluent:Button Header="Freie Schlüssel" Command="{Binding OpenZuteilungFreieAnzahlUbersichtCommand}" Width="60"  LargeIcon="Resources/key_free.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Pins">
+                <Fluent:RibbonGroupBox Header="Ausgabe" >
+                    <Fluent:Button Header="Neu" Command="{Binding NeuePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_new.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Lade" Command="{Binding LadePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_load.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Auswertungen">
+                <Fluent:RibbonGroupBox Header="Pin Ausgabe" >
+                    <Fluent:Button Header="Tag" Command="{Binding AuswertungPinAusgabeTagCommand}" Width="60"  LargeIcon="Resources/auswertungTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Tag / Stunde" Command="{Binding AuswertungPinAusgabeTagStundeCommand}" Width="60"  LargeIcon="Resources/auswertungStundeTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
         </Fluent:Ribbon>
 
         <Grid Grid.Row="1">

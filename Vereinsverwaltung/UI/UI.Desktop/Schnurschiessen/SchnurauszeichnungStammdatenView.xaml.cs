@@ -11,9 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Vereinsverwaltung.UI.Desktop.BaseViews;
+using UI.Desktop.BaseViews;
 
-namespace Vereinsverwaltung.UI.Desktop.Schnurschiessen
+namespace UI.Desktop.Schnurschiessen
 {
     /// <summary>
     /// Interaktionslogik für SchnurauszeichnungStammdatenView.xaml

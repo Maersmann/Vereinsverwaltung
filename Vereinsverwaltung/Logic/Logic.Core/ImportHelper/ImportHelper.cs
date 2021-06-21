@@ -17,8 +17,12 @@ namespace Logic.Core.ImportHelper
             content.Add(new StreamContent(stream), "file", filename);
             message.Method = HttpMethod.Post;
             message.Content = content;
-            message.RequestUri = new Uri("https://localhost:5001/api/ImportMitglieder/Mitglieder/Loading");
-            var client = HttpClientFactory.Create();
+            message.RequestUri = new Uri(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Loading");
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+            var client = HttpClientFactory.Create(clientHandler);
             return await client.SendAsync(message);
         }
     }

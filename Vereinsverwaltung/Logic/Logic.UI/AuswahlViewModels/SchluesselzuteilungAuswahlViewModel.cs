@@ -1,11 +1,14 @@
 ﻿using Data.Model.AuswahlModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
+using Logic.Core;
 using Logic.UI.BaseViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,16 +43,20 @@ namespace Logic.UI.AuswahlViewModels
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselzuteilung; }
 
-        public override void LoadData()
+        public async override void LoadData()
         {
-            // Todo: Request
-            /*
-            if (auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer))
-                itemList = new SchluesselzuteilungAPI().LadeAlleFuerBesitzer(id);
-            else
-                itemList = new SchluesselzuteilungAPI().LadeAlleFuerSchluessel(id);
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp;
+                if (auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer))
+                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel");
+                else
+                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer");
+
+                if (resp.IsSuccessStatusCode)
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungAuswahlModel>>();
+            }
             base.LoadData();
-            */
         }
 
     }

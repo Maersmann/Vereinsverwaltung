@@ -8,6 +8,9 @@ using System.Windows.Data;
 using Data.Types;
 using Logic.UI.BaseViewModels;
 using Data.Model.AuswahlModels;
+using Logic.Core;
+using System.Net.Http;
+using System.Collections.ObjectModel;
 
 namespace Logic.UI.AuswahlViewModels
 {
@@ -32,25 +35,24 @@ namespace Logic.UI.AuswahlViewModels
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
-        public override void LoadData()
+        public async override void LoadData()
         {
-            // Todo: Request
-            /*
-            itemList = new MitgliedAPI().LadeAlleAktiven();
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder");
+                if (resp2.IsSuccessStatusCode)
+                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<MitgliedAuswahlModel>>();
+            }
             base.LoadData();
-            */
         }
 
         protected override bool OnFilterTriggered(object item)
         {
-            // Todo: Request
-            /*
-            if (item is Mitglied mitglied)
+            if (item is MitgliedAuswahlModel mitglied)
             {
                 var MitgliedsNr = Convert.ToString(mitglied.Mitgliedsnr);
                 return mitglied.Fullname.Contains(filtertext) || MitgliedsNr.Contains(filtertext);
             }
-            */
             return true;
         }
 

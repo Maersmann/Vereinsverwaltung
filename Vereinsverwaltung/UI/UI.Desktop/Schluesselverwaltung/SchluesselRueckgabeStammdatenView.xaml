@@ -1,5 +1,5 @@
-﻿<src:StammdatenView xmlns:src="clr-namespace:Vereinsverwaltung.UI.Desktop.BaseViews"
-                    x:Class="Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.SchluesselRueckgabeStammdatenView"
+﻿<src:StammdatenView xmlns:src="clr-namespace:UI.Desktop.BaseViews"
+                    x:Class="UI.Desktop.Schluesselverwaltung.SchluesselRueckgabeStammdatenView"
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -75,7 +75,7 @@
                         </TextBox>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1"  >
-                        <TextBox  HorizontalAlignment="Center" VerticalAlignment="Center" Width="106" IsReadOnly="True" IsEnabled="false" Text="{Binding Schluesselbesitzer, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}">
+                        <TextBox  HorizontalAlignment="Center" VerticalAlignment="Center" Width="106" IsReadOnly="True" IsEnabled="false" Text="{Binding Schluesselbesitzer, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" Cursor="IBeam">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
                                     <StackPanel>

@@ -32,7 +32,7 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync("https://localhost:5001/api/Mitglieder");
+                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder");
                 if (resp2.IsSuccessStatusCode)
                     itemList = await resp2.Content.ReadAsAsync<ObservableCollection<MitgliederModel>>();
             }
@@ -45,13 +45,12 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.DeleteAsync($"https://localhost:5001/api/Mitglieder/{selectedItem.ID}");
+                HttpResponseMessage resp2 = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{selectedItem.ID}");
                 if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("Mitglied kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Zugeteilter Schlüssel vorhanden");
                     return;
                 }
-
             }
             SendInformationMessage("Mitglied gelöscht");
             base.ExecuteEntfernenCommand();

@@ -3,19 +3,23 @@ using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.BaseViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselUebersichtModel>
+    public class SchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselModel>
     {
         public SchluesselUebersichtViewModel()
         {
@@ -30,20 +34,22 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluessel; }
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Schluessel; }
 
-        public override void LoadData()
+        public async override void LoadData()
         {
-            // Todo: Request
-            /*
-            itemList = new SchluesselAPI().LadeAlle();
-            this.RaisePropertyChanged("ItemList");
-            */
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel");
+                if (resp2.IsSuccessStatusCode)
+                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchluesselModel>>();
+            }
+            base.LoadData();
         }
 
 
         #region Bindings
         public ICommand OpenHistorieCommand { get; set; }
 
-        public override SchluesselUebersichtModel SelectedItem 
+        public override SchluesselModel SelectedItem 
         { 
             get => base.SelectedItem;
             set
@@ -55,23 +61,20 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
         #region Commands
-        protected override void ExecuteEntfernenCommand()
+        protected async override void ExecuteEntfernenCommand()
         {
-            // Todo: Request
-            /*
-            try
+            if (GlobalVariables.ServerIsOnline)
             {
-                new SchluesselAPI().Entfernen(selectedItem.ID);
+                HttpResponseMessage resp2 = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{selectedItem.ID}");
+
+                if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage("Schlüssel kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Schlüssel ist Besitzer zugeordnet");
+                    return;
+                }
+                SendInformationMessage("Schlüssel gelöscht");
+                base.ExecuteEntfernenCommand();
             }
-            catch (SchluesselIstZugeteiltException)
-            {
-                SendExceptionMessage("Schlüssel kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Schlüssel ist Besitzer zugeordnet");
-                return;
-            }
-            
-            SendInformationMessage("Schlüssel gelöscht");
-            base.ExecuteEntfernenCommand();
-            */
         }
 
         private void ExecuteOpenHistorieCommand()

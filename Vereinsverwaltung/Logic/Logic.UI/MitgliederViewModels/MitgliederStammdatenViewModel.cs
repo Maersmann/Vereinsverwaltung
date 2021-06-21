@@ -29,10 +29,10 @@ namespace Logic.UI.MitgliederViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadAktie = true;
+            LoadData = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync($"https://localhost:5001/api/Mitglieder/{id}");
+                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
                 if (resp2.IsSuccessStatusCode)
                     data = await resp2.Content.ReadAsAsync<MitgliederModel>();
             }
@@ -44,7 +44,7 @@ namespace Logic.UI.MitgliederViewModels
             Strasse = data.Straße;
             Vorname = data.Vorname;
             state = State.Bearbeiten;
-            LoadAktie = false;
+            LoadData = false;
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.mitglied;
         #region Commands
@@ -52,17 +52,21 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.PostAsJsonAsync("https://localhost:5001/api/Mitglieder", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", data);
 
-
-                if (resp2.IsSuccessStatusCode)
+                if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 902)
                 {
-                    SendExceptionMessage("Mitgliedsnr ist schon vorhanden");
+                    SendExceptionMessage("MitgliedsNr ist schon vergeben");
+                    return;
+                }
+                else
+                {
+                    SendExceptionMessage("Fehler beim Speichern!" + Environment.NewLine + resp.StatusCode);
                     return;
                 }
             }
@@ -76,7 +80,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (LoadAktie || !string.Equals(data.Name, value))
+                if (LoadData || !string.Equals(data.Name, value))
                 {
                     ValidateName(value);
                     data.Name = value;
@@ -92,7 +96,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (LoadAktie || !string.Equals(data.Vorname, value))
+                if (LoadData || !string.Equals(data.Vorname, value))
                 {
                     ValidateVorName(value);
                     data.Vorname = value;
@@ -108,7 +112,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (LoadAktie || !string.Equals(data.Ort, value))
+                if (LoadData || !string.Equals(data.Ort, value))
                 {
                     data.Ort = value;
                     this.RaisePropertyChanged();
@@ -121,7 +125,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (LoadAktie || !string.Equals(data.Straße, value))
+                if (LoadData || !string.Equals(data.Straße, value))
                 {
                     data.Straße = value;
                     this.RaisePropertyChanged();
@@ -133,7 +137,7 @@ namespace Logic.UI.MitgliederViewModels
             get { return data.Mitgliedsnr; }
             set
             {
-                if (LoadAktie || !string.Equals(data.Mitgliedsnr, value))
+                if (LoadData || !string.Equals(data.Mitgliedsnr, value))
                 {
                     data.Mitgliedsnr = value;
                     this.RaisePropertyChanged();
@@ -146,7 +150,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (LoadAktie || !string.Equals(data.Eintrittsdatum, value))
+                if (LoadData || !string.Equals(data.Eintrittsdatum, value))
                 {
                     ValidateEintrittsdatum(value);
                     data.Eintrittsdatum = value;
@@ -161,7 +165,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
                 
-                if (LoadAktie || !string.Equals(data.Geburtstag, value))
+                if (LoadData || !string.Equals(data.Geburtstag, value))
                 {
                     ValidateGeburtstag(value);
                     data.Geburtstag = value;

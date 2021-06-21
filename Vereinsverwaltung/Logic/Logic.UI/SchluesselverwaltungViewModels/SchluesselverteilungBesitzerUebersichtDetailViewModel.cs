@@ -1,18 +1,22 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.BaseViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungBesitzerUebersichtDetailViewModel : ViewModelUebersicht<SchluesselverteilungBesitzerUebersichtDetailModel>
+    public class SchluesselverteilungBesitzerUebersichtDetailViewModel : ViewModelUebersicht<SchluesselzuteilungModel>
     {
         private int besitzerid;
         public SchluesselverteilungBesitzerUebersichtDetailViewModel()
@@ -34,25 +38,32 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 LoadData(besitzerid);
         }
 
-        public override void LoadData(int id)
+        public async override void LoadData(int id)
         {
-            // Todo: Request
-            /*
-            itemList = new SchluesselzuteilungAPI().LadeAlleFuerBesitzer(id);
-            this.RaisePropertyChanged("ItemList");
-            */
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel");
+                if (resp.IsSuccessStatusCode)
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungModel>>();
+            }
+            base.LoadData();
         }
 
         #region Commands
-        protected override void ExecuteEntfernenCommand()
+        protected async override void ExecuteEntfernenCommand()
         {
-            // Todo: Request
-            /*
-            new SchluesselverteilungAPI().EntferneZuteilung(selectedItem.ID);
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{selectedItem.ID}");
+                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                {
+                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    return;
+                }
+            }
             SendInformationMessage("Eintrag gelöscht");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
             base.ExecuteEntfernenCommand();
-            */
         }
         #endregion
     }
