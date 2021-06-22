@@ -1,11 +1,14 @@
 ﻿using Data.Model.AuswertungModels.PinAusgabeAuswertungModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Logic.Core;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.BaseViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
@@ -43,6 +46,24 @@ namespace Logic.UI.AuswertungenViewModels
                     this.RaisePropertyChanged(nameof(Abgeschlossen));
                     this.RaisePropertyChanged(nameof(Verteilt));
                     this.RaisePropertyChanged(nameof(Offen));
+                    var values = new ChartValues<int>();
+                    Labels = new String[Data.Auswertung.Count];
+                    int index = 0;
+                    Data.Auswertung.OrderBy(s => s.Tag).ToList().ForEach(a =>
+                    {
+                        values.Add(a.Anzahl);
+                        Labels[index] = a.Tag.ToString("dd.MM HH:mm");
+                        index++;
+                    });
+                    SeriesCollection = new SeriesCollection
+                    {
+
+                        new ColumnSeries{ Values = values, Title="Anzahl" }
+                    };
+
+                    this.RaisePropertyChanged(nameof(SeriesCollection));
+                    this.RaisePropertyChanged(nameof(Labels));
+                    this.RaisePropertyChanged(nameof(Formatter));
                 }
                     
             }
