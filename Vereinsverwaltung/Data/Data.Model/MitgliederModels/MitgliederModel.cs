@@ -16,6 +16,8 @@ namespace Data.Model.MitgliederModels
         public String Straße { get; set; }
         public int? Mitgliedsnr { get; set; }
         public MitgliedStatus MitgliedStatus { get; set; }
+        public Geschlecht Geschlecht { get; set; }
+        public DateTime? Austrittsdatum { get; set; }
 
         public int? Alter
         {
