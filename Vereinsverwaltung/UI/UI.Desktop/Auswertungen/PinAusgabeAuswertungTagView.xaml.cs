@@ -30,7 +30,10 @@ namespace UI.Desktop.Auswertungen
 
         private void ReceiveOpenPinAusgabeAuswahlMessage(OpenPinAusgabeAuswahlMessage m)
         {
-            var view = new PinAusgabeAuswahlView();
+            var view = new PinAusgabeAuswahlView
+            {
+                Owner = Application.Current.MainWindow
+            };
             view.ShowDialog();
             if (view.DataContext is PinAusgabeAuswahlViewModel model)
             {

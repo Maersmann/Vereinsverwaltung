@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Height="400" Width="auto" SizeToContent="Width"  
+        Height="400" Width="auto" SizeToContent="Width" ShowInTaskbar="False"
         DataContext="{Binding SchluesselAuswahl ,Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>

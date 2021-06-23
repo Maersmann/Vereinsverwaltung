@@ -165,6 +165,7 @@ namespace Vereinsverwaltung.UI.Desktop
                 }
 
             }
+            view.Owner = this;
             view.ShowDialog();
         }
 
