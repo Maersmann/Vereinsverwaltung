@@ -33,7 +33,10 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
 
         private void ReceiveOpenSchluesselRueckgabeMessage(OpenSchluesselRueckgabeMessage m)
         {
-            var view = new SchluesselRueckgabeStammdatenView();
+            var view = new SchluesselRueckgabeStammdatenView()
+            {
+                Owner = Application.Current.MainWindow
+            };
 
             if (view.DataContext is SchluesselRueckgabeStammdatenViewModel model)
             {
@@ -44,7 +47,10 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
 
         private void ReceiveOpenSchluesselzuteilungMessage(OpenSchluesselzuteilungMessage m)
         {
-            var view = new SchluesselzuteilungStammdatenView();
+            var view = new SchluesselzuteilungStammdatenView()
+            {
+                Owner = Application.Current.MainWindow
+            };
 
             if (view.DataContext is SchluesselzuteilungStammdatenViewModel model)
             {

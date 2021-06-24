@@ -1,5 +1,6 @@
 ﻿using Data.Model.MitgliederModels;
 using Data.Types;
+using Data.Types.MitgliederTypes;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
@@ -38,11 +39,13 @@ namespace Logic.UI.MitgliederViewModels
             }
             Name = data.Name;
             Eintrittsdatum = data.Eintrittsdatum;
+            Austrittsdatum = data.Austrittsdatum;
             Geburtstag = data.Geburtstag;
             Mitgliedsnr = data.Mitgliedsnr;
             Ort = data.Ort;
             Strasse = data.Straße;
             Vorname = data.Vorname;
+            Geschlecht = data.Geschlecht;
             state = State.Bearbeiten;
             LoadData = false;
         }
@@ -159,6 +162,20 @@ namespace Logic.UI.MitgliederViewModels
                 }
             }
         }
+
+        public DateTime? Austrittsdatum
+        {
+            get { return data.Austrittsdatum; }
+            set
+            {
+
+                if (LoadData || !string.Equals(data.Austrittsdatum, value))
+                {
+                    data.Austrittsdatum = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
         public DateTime? Geburtstag
         {
             get { return data.Geburtstag; }
@@ -171,6 +188,26 @@ namespace Logic.UI.MitgliederViewModels
                     data.Geburtstag = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public IEnumerable<Geschlecht> Geschlechter
+        {
+            get
+            {
+                return Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
+            }
+        }
+        public Geschlecht Geschlecht
+        {
+            get { return data.Geschlecht; }
+            set
+            {
+                if (LoadData || (this.data.Geschlecht != value))
+                {
+                    this.data.Geschlecht = value;
+                    this.RaisePropertyChanged();
                 }
             }
         }

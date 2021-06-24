@@ -97,7 +97,7 @@ namespace Logic.UI.PinViewModels
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Rueckgaengig", SelectedItem );
                 if ((int)resp.StatusCode == 901)
                 {
-                    SendExceptionMessage("Mitglied hat Pin schon erhalten");
+                    SendExceptionMessage("Mitglied hat Pin schon zurückgegeben");
                 }
                 else if (!resp.IsSuccessStatusCode)
                 {

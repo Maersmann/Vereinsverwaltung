@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.1.0</Version>
+    <Authors>Märsmann</Authors>
+    <Product>Vereinsverwaltung</Product>
   </PropertyGroup>
 
   <ItemGroup>

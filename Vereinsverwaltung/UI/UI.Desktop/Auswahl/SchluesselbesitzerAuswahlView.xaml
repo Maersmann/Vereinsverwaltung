@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Height="336.48" Width="432.653"
+        Height="336.48" Width="432.653" ShowInTaskbar="False"
         DataContext="{Binding SchluesselbesitzerAuswahl ,Source={StaticResource Locator}}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">

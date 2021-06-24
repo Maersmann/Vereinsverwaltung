@@ -11,7 +11,7 @@
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="298.66" Width="357.917"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    ResizeMode="NoResize"
+                    ResizeMode="NoResize" ShowInTaskbar="False"
                     DataContext="{Binding SchnurauszeichnungStammdaten ,Source={StaticResource Locator}}" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">

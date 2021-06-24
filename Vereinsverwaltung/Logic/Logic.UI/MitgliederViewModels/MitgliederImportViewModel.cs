@@ -1,4 +1,5 @@
-﻿using Data.Model.MitgliederModels;
+﻿using Data.Model.ImportModel;
+using Data.Model.MitgliederModels;
 using Data.Types;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -22,6 +23,7 @@ namespace Logic.UI.MitgliederViewModels
 {
     public class MitgliederImportViewModel : ViewModelUebersicht<MitgliederImportModel>
     {
+        MitgliedImportHistoryModel data;
         public MitgliederImportViewModel()
         {
             Title = "Import Mitglieder";
@@ -46,7 +48,8 @@ namespace Logic.UI.MitgliederViewModels
                     { 
                         if (task.Result.IsSuccessStatusCode)
                         {
-                            itemList = await task.Result.Content.ReadAsAsync<ObservableCollection<MitgliederImportModel>>();
+                            data = await task.Result.Content.ReadAsAsync<MitgliedImportHistoryModel>();
+                            itemList = data.Importlist;
                             this.RaisePropertyChanged("ItemList");
                         }
                            
@@ -59,7 +62,7 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", itemList);
+                HttpResponseMessage resp2 = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
 
 
                 if (resp2.IsSuccessStatusCode)

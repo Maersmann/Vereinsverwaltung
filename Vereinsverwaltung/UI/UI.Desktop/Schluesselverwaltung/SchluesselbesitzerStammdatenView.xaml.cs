@@ -38,7 +38,10 @@ namespace UI.Desktop.Schluesselverwaltung
 
         private void ReceiveOpenMitgliedAuswahlMessage(OpenMitgliedAuswahlMessage m)
         {
-            var view = new MitgliedAuswahlView();
+            var view = new MitgliedAuswahlView
+            {
+                Owner = Application.Current.MainWindow
+            };
             view.ShowDialog();
             if (view.DataContext is MitgliedAuswahlViewModel model)
             {

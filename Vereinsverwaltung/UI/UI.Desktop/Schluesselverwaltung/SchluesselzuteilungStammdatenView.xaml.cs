@@ -35,7 +35,10 @@ namespace UI.Desktop.Schluesselverwaltung
 
         private void ReceiveOpenSchluesselAuswahlMessage(OpenSchluesselAuswahlMessage m)
         {
-            var view = new SchluesselAuswahlView();
+            var view = new SchluesselAuswahlView()
+            {
+                Owner = Application.Current.MainWindow
+            };
             view.ShowDialog();
             if (view.DataContext is SchluesselAuswahlViewModel model)
             {
@@ -48,7 +51,10 @@ namespace UI.Desktop.Schluesselverwaltung
 
         private void ReceiveOpenSchluesselbesitzerAuswahlMessage(OpenSchluesselbesitzerAuswahlMessage m)
         {
-            var view = new SchluesselbesitzerAuswahlView();
+            var view = new SchluesselbesitzerAuswahlView()
+            {
+                Owner = Application.Current.MainWindow
+            };
             view.ShowDialog();
             if (view.DataContext is SchluesselbesitzerAuswahlViewModel model)
             {

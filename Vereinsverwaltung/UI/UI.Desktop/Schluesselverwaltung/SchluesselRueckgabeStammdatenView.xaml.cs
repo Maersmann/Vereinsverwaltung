@@ -34,7 +34,10 @@ namespace UI.Desktop.Schluesselverwaltung
 
         private void ReceiveOpenSchluesselzuteilungAuswahlMessage(OpenSchluesselzuteilungAuswahlMessage m)
         {
-            var view = new SchluesselzuteilungAuswahlView();
+            var view = new SchluesselzuteilungAuswahlView()
+            {
+                Owner = Application.Current.MainWindow
+            };
             if (view.DataContext is SchluesselzuteilungAuswahlViewModel model)
             {
                 model.SetAuswahlState(m.ID, m.AuswahlTypes);
