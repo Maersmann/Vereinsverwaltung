@@ -8,6 +8,7 @@
     <AssemblyName>Vereinsverwaltung</AssemblyName>
     <Authors>Märsmann</Authors>
     <Company>Märsmann</Company>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
