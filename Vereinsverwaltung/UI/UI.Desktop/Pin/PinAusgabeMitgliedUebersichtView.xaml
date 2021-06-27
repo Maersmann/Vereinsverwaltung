@@ -42,7 +42,7 @@
                     <ColumnDefinition Width="180px"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Suche:</Label>
-                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Delay=1000 }" Margin="10,10" Cursor="IBeam" >
+                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Delay=500 }" Margin="10,10" Cursor="IBeam" >
                     <materialDesign:HintAssist.Hint>Mitglieds-Nr, Vorname, Name</materialDesign:HintAssist.Hint>
                 </TextBox>
                 <CheckBox Grid.Column="2" Content="Zeige nur Nicht Erhalten" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding ZeigeNurNichtErhalten, Mode=TwoWay}"/>
