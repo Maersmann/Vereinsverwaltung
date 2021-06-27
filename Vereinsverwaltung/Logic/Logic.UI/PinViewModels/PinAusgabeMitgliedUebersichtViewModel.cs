@@ -50,9 +50,9 @@ namespace Logic.UI.PinViewModels
             {
                 var MitgliedsNr = Convert.ToString(mitglied.Mitglied.Mitgliedsnr);
                 if (zeigeNurNichtErhalten)
-                    return (mitglied.Mitglied.Fullname.Contains(filtertext) || MitgliedsNr.Contains(filtertext)) && !mitglied.Erhalten;
+                    return (mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext)) && !mitglied.Erhalten;
                 else
-                    return mitglied.Mitglied.Fullname.Contains(filtertext) || MitgliedsNr.Contains(filtertext);
+                    return mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext);
             }
             return true;
         }
@@ -97,7 +97,7 @@ namespace Logic.UI.PinViewModels
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Rueckgaengig", SelectedItem );
                 if ((int)resp.StatusCode == 901)
                 {
-                    SendExceptionMessage("Mitglied hat Pin schon zurückgegeben");
+                    SendExceptionMessage($"{SelectedItem.Mitglied.Fullname} hat den Pin schon zurückgegeben");
                 }
                 else if (!resp.IsSuccessStatusCode)
                 {
@@ -122,7 +122,7 @@ namespace Logic.UI.PinViewModels
                 {
                     if ((int)resp.StatusCode == 900)
                     {
-                        SendExceptionMessage("Mitglied hat Pin schon erhalten");
+                        SendExceptionMessage($"{SelectedItem.Mitglied.Fullname} hat den Pin schon erhalten");
                     }
                     else
                     { 
