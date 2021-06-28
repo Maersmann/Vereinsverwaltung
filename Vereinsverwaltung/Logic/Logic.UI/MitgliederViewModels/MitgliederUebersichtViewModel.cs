@@ -23,7 +23,7 @@ namespace Logic.UI.MitgliederViewModels
         public MitgliederUebersichtViewModel()
         {
             Title = "Übersicht Mitglieder";
-            RegisterAktualisereViewMessage(StammdatenTypes.mitglied);    
+            //RegisterAktualisereViewMessage(StammdatenTypes.mitglied);    
         }
         protected override int GetID() { return selectedItem.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }

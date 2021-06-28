@@ -30,7 +30,8 @@ namespace Logic.UI.PinViewModels
             filtertext = "";
             zeigeNurNichtErhalten = true;
         }
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return selectedItem.Mitglied.ID; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
         public async override void LoadData(int id)
         {
