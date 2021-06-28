@@ -30,7 +30,8 @@ namespace Logic.UI.PinViewModels
             filtertext = "";
             zeigeNurNichtErhalten = true;
         }
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return selectedItem.Mitglied.ID; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
         public async override void LoadData(int id)
         {
@@ -91,51 +92,62 @@ namespace Logic.UI.PinViewModels
 
         private async void ExcecuteRueckgaengigCommand()
         {
-            
-            if (GlobalVariables.ServerIsOnline)
+            try
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Rueckgaengig", SelectedItem );
-                if ((int)resp.StatusCode == 901)
+                if (GlobalVariables.ServerIsOnline)
                 {
-                    SendExceptionMessage($"{SelectedItem.Mitglied.Fullname} hat den Pin schon zurückgegeben");
+                    HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Rueckgaengig", SelectedItem);
+                    if ((int)resp.StatusCode == 901)
+                    {
+                        SendExceptionMessage($"{SelectedItem.Mitglied.Fullname} hat den Pin schon zurückgegeben");
+                    }
+                    else if (!resp.IsSuccessStatusCode)
+                    {
+                        SendExceptionMessage("Fehler: Pin Rückgängig bei ID: " + SelectedItem.Mitglied.Fullname + Environment.NewLine + await resp.Content.ReadAsStringAsync());
+                        return;
+                    }
+                    var content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
+                    selectedItem.Erhalten = content.Erhalten;
+                    selectedItem.ErhaltenAm = content.ErhaltenAm;
+                    base.LoadData();
                 }
-                else if (!resp.IsSuccessStatusCode)
-                {
-                    SendExceptionMessage("Fehler: Pin Rückgängig bei ID: " + SelectedItem.Mitglied.Fullname + Environment.NewLine + await resp.Content.ReadAsStringAsync());
-                    return;
-                }
-                var content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
-                selectedItem.Erhalten = content.Erhalten;
-                selectedItem.ErhaltenAm = content.ErhaltenAm;
-                base.LoadData();
-
             }
+            catch (Exception e)
+            {
+                SendExceptionMessage(e.Message); ;
+            }
+            
         }
         private async void ExecuteErhaltenCommand()
         {
-            
-            if (GlobalVariables.ServerIsOnline)
+            try
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Erhalten", SelectedItem);
-
-                if (!resp.IsSuccessStatusCode)
+                if (GlobalVariables.ServerIsOnline)
                 {
-                    if ((int)resp.StatusCode == 900)
+                    HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Erhalten", SelectedItem);
+
+                    if (!resp.IsSuccessStatusCode)
                     {
-                        SendExceptionMessage($"{SelectedItem.Mitglied.Fullname} hat den Pin schon erhalten");
+                        if ((int)resp.StatusCode == 900)
+                        {
+                            SendExceptionMessage($"{SelectedItem.Mitglied.Fullname} hat den Pin schon erhalten");
+                        }
+                        else
+                        {
+                            SendExceptionMessage("Fehler: Pin Erhalten bei ID: " + SelectedItem.Mitglied.Fullname + Environment.NewLine + await resp.Content.ReadAsStringAsync());
+                            return;
+                        }
                     }
-                    else
-                    { 
-                        SendExceptionMessage("Fehler: Pin Erhalten bei ID: " + SelectedItem.Mitglied.Fullname + Environment.NewLine + await resp.Content.ReadAsStringAsync());
-                        return;
-                    }
+                    var content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
+                    selectedItem.Erhalten = content.Erhalten;
+                    selectedItem.ErhaltenAm = content.ErhaltenAm;
+                    base.LoadData();
                 }
-                var content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
-                selectedItem.Erhalten = content.Erhalten;
-                selectedItem.ErhaltenAm = content.ErhaltenAm;
-                base.LoadData();
             }
-            
+            catch (Exception e)
+            {
+                SendExceptionMessage(e.Message);
+            }           
         }
 
         protected override void ExecuteCleanUpCommand()
