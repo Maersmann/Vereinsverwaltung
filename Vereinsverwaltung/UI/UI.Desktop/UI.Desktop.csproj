@@ -8,7 +8,7 @@
     <AssemblyName>Vereinsverwaltung</AssemblyName>
     <Authors>Märsmann</Authors>
     <Company>Märsmann</Company>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
