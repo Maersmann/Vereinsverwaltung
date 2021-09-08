@@ -33,9 +33,9 @@ namespace Logic.UI.AuswahlViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchluesselbesitzerAuswahlModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer");
+                if (resp.IsSuccessStatusCode)
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselbesitzerAuswahlModel>>();
             }
             base.LoadData();
         }

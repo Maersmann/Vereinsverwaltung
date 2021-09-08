@@ -42,9 +42,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer");
+                if (resp.IsSuccessStatusCode)
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungModel>>();
             }
             base.LoadData();
         }
@@ -55,9 +55,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Eintrag konnte nicht gelöscht werden.");
                     return;
                 }
             }

@@ -35,15 +35,15 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             LoadData = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<SchluesselbesitzerModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<SchluesselbesitzerModel>();
             }
 
             Name = data.Name;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-            this.RaisePropertyChanged("KeinMitgliedHinterlegt");
-            this.RaisePropertyChanged("Mitgliedsnr");
+            RaisePropertyChanged("KeinMitgliedHinterlegt");
+            RaisePropertyChanged("Mitgliedsnr");
             state = State.Bearbeiten;
             
         }
@@ -88,15 +88,19 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer", data);
 
-
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
+                else if ((int)resp.StatusCode == 904)
+                {
+                    SendExceptionMessage("Mitglied ist schon vergeben");
+                    return;
+                }
                 else
                 {
-                    SendExceptionMessage("Fehler: Speicher Besitzer" + Environment.NewLine+ resp.StatusCode);
+                    SendExceptionMessage("Besitzer konnte nicht gespeichert werden.");
                     return;
                 }
             }
@@ -118,7 +122,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     {
                         if (await resp.Content.ReadAsAsync<bool>())
                         { 
-                            this.SendInformationMessage("Mitglied hat schon ein Datensatz");
+                            SendInformationMessage("Mitglied hat schon ein Datensatz");
                             return;
                         }
                     }
@@ -126,14 +130,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
              
                     if (resp.IsSuccessStatusCode)
-                    { 
-                        var Mitglied = await resp.Content.ReadAsAsync<MitgliederModel>();
-                        data.MitgliedID = id;          
+                    {
+                        MitgliederModel Mitglied = await resp.Content.ReadAsAsync<MitgliederModel>();
+                        data.MitgliedID = id;     
                         Name = Mitglied.Vorname + " " + Mitglied.Name;
                         data.MitgliedsNr = Mitglied.Mitgliedsnr;
                         ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-                        this.RaisePropertyChanged("KeinMitgliedHinterlegt");
-                        this.RaisePropertyChanged("Mitgliedsnr");
+                        RaisePropertyChanged("KeinMitgliedHinterlegt");
+                        RaisePropertyChanged("Mitgliedsnr");
                     }
                 }
             }
@@ -148,7 +152,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             data.MitgliedID = null;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-            this.RaisePropertyChanged("Mitgliedsnr");
+            this.RaisePropertyChanged(nameof(Mitgliedsnr));
             Name = "";
             this.RaisePropertyChanged("KeinMitgliedHinterlegt");
         }

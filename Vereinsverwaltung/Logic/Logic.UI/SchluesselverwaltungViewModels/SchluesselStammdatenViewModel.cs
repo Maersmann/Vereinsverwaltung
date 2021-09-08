@@ -29,9 +29,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             LoadData = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<SchluesselModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<SchluesselModel>();
             }
 
             Nummer = data.Nummer;
@@ -57,14 +57,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 906)
                 {
                     SendExceptionMessage("Nummer ist schon vorhanden");
                     return;
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler: Speicher Schlüssel" + Environment.NewLine + resp.StatusCode);
+                    SendExceptionMessage("Schlüssel konnte nicht gespeichert werden.");
                     return;
                 }
 

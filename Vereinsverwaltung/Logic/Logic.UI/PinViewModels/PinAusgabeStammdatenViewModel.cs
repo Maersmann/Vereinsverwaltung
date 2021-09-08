@@ -33,9 +33,9 @@ namespace Logic.UI.PinViewModels
             LoadData = true; 
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<PinAusgabeModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<PinAusgabeModel>();
             }
 
             Bezeichnung = data.Bezeichnung;
@@ -51,7 +51,11 @@ namespace Logic.UI.PinViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 data.PinID = data.Pin.ID;
-                if (!data.Option.NurAktive) data.Option.Stichtag = null;
+                if (!data.Option.NurAktive)
+                {
+                    data.Option.Stichtag = null;
+                }
+
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", data);
 
                 if (resp.IsSuccessStatusCode)
@@ -61,7 +65,7 @@ namespace Logic.UI.PinViewModels
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler: Speicher Pin Ausgabe" + Environment.NewLine + await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Pin konnte nicht gespeichert werden.");
                     return;
                 }
 
@@ -155,7 +159,7 @@ namespace Logic.UI.PinViewModels
                 if (resp.IsSuccessStatusCode)
                     pins = await resp.Content.ReadAsAsync<ObservableCollection<PinModel>>();
                 else
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Pin-Arten konnten nicht gelade werden");
             }
 
             this.RaisePropertyChanged(nameof(Pins));

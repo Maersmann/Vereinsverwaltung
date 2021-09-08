@@ -30,9 +30,9 @@ namespace Logic.UI.SchnurschiessenViewModels
             LoadData = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<SchnurModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<SchnurModel>();
             }
             Bezeichnung = data.Bezeichnung;
             Schnurtyp = data.Schnurtyp;
@@ -53,9 +53,9 @@ namespace Logic.UI.SchnurschiessenViewModels
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage("Nummer ist schon vorhanden");
+                    SendExceptionMessage("Schnur konnte nicht gespeichert werden.");
                     return;
                 }
             }           
@@ -64,7 +64,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         #region Bindings
 
-        public String Bezeichnung
+        public string Bezeichnung
         {
             get
             {

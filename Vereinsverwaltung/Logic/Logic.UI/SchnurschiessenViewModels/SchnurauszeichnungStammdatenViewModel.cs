@@ -75,7 +75,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 909)
                 {
                     SendExceptionMessage("Rangfolge ist schon vorhanden");
                     return;

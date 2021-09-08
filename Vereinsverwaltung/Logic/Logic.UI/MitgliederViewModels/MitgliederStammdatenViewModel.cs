@@ -33,9 +33,9 @@ namespace Logic.UI.MitgliederViewModels
             LoadData = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<MitgliederModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<MitgliederModel>();
             }
             Name = data.Name;
             Eintrittsdatum = data.Eintrittsdatum;
@@ -69,7 +69,7 @@ namespace Logic.UI.MitgliederViewModels
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler beim Speichern!" + Environment.NewLine + resp.StatusCode);
+                    SendExceptionMessage("Mitglied konnte nicht gespeichert werden.");
                     return;
                 }
             }
@@ -77,7 +77,7 @@ namespace Logic.UI.MitgliederViewModels
         #endregion
 
         #region Bindings
-        public String Name
+        public string Name
         {
             get { return data.Name; }
             set

@@ -138,14 +138,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 902)
                 {
                     SendExceptionMessage("Es sind zu wenig Schlüssel frei");
                     return;
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler: Speicher Verteilung" + Environment.NewLine + resp.StatusCode);
+                    SendExceptionMessage("Schlüsselzuteilung konnte nicht gespeichert werden.");
                     return;
                 }
 

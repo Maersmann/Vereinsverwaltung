@@ -45,14 +45,19 @@ namespace Logic.UI.MitgliederViewModels
                 if (openFileDialog.ShowDialog() == true)
                 {
                     await new ImportHelper().PostFile( openFileDialog.FileName ).ContinueWith(async task =>
-                    { 
+                    {
                         if (task.Result.IsSuccessStatusCode)
                         {
                             data = await task.Result.Content.ReadAsAsync<MitgliedImportHistoryModel>();
                             itemList = data.Importlist;
                             this.RaisePropertyChanged("ItemList");
                         }
-                           
+                        else
+                        {
+                            SendExceptionMessage("Import-Datei konnte nicht eingelesen werden");
+                            return;
+                        }
+
                     });
                 }
             }         
@@ -62,18 +67,18 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
 
 
-                if (resp2.IsSuccessStatusCode)
+                if (resp.IsSuccessStatusCode)
                 {
                     itemList.Clear();
-                    this.RaisePropertyChanged("ItemList");
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
+                    RaisePropertyChanged("ItemList");
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler Import/Save"+  Environment.NewLine + resp2.StatusCode);
+                    SendExceptionMessage("Mitglieder konnten nicht gespeichert werden.");
                     return;
                 }
             }

@@ -55,9 +55,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Eintrag konnte nicht gelöscht werden.");
                     return;
                 }
             }

@@ -34,9 +34,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchluesselverteilungBesitzerUebersichtModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer");
+                if (resp.IsSuccessStatusCode)
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselverteilungBesitzerUebersichtModel>>();
             }
             base.LoadData();
         }

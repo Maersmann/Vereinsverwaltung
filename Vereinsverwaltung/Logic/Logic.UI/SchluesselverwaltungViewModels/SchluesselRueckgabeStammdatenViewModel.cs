@@ -94,14 +94,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 907)
                 {
                     SendExceptionMessage("Es werden zu viele Schlüssel zurückgegeben");
                     return;
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler: Rückgabe Schlüssel" + Environment.NewLine + resp.StatusCode);
+                    SendExceptionMessage("Schlüsselrückgabe konnte nicht gespeichert werden.");
                     return;
                 }
 
@@ -128,16 +128,16 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 LoadData = true;
                 if (GlobalVariables.ServerIsOnline)
                 {
-                    HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{id}");
-                    if (resp2.IsSuccessStatusCode)
-                    { 
-                        var resData = await resp2.Content.ReadAsAsync<SchluesselzuteilungModel>();
+                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{id}");
+                    if (resp.IsSuccessStatusCode)
+                    {
+                        SchluesselzuteilungModel resData = await resp.Content.ReadAsAsync<SchluesselzuteilungModel>();
                         data.SchluesselzuteilungID = id;
                         data.Schluesselbezeichnung = resData.SchluesselBezeichnung;
                         data.SchluesselbesitzerName = resData.SchluesselbesitzerName;
                         Anzahl = resData.Anzahl;
-                        this.RaisePropertyChanged("SchluesselBez");
-                        this.RaisePropertyChanged("Schluesselbesitzer");
+                        RaisePropertyChanged("SchluesselBez");
+                        RaisePropertyChanged("Schluesselbesitzer");
                         schluesselAusgewaehlt = true;
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }

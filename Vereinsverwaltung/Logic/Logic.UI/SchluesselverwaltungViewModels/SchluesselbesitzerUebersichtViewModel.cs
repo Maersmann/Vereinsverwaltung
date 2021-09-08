@@ -37,9 +37,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchluesselbesitzerModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer");
+                if (resp.IsSuccessStatusCode)
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselbesitzerModel>>();
             }
             base.LoadData();
         }
@@ -63,8 +63,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{selectedItem.ID}");
-                if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{selectedItem.ID}");
+                if ((int)resp.StatusCode == 903)
                 {
                     SendExceptionMessage("Besitzer kann nicht gelöscht werden" + Environment.NewLine +  Environment.NewLine + "Besitzer sind Schlüssel zugeordnet");
                     return;

@@ -35,13 +35,15 @@ namespace Logic.UI.AuswahlViewModels
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
-        public async override void LoadData()
+        public override async void LoadData()
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<MitgliedAuswahlModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder");
+                if (resp.IsSuccessStatusCode)
+                {
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<MitgliedAuswahlModel>>();
+                }
             }
             base.LoadData();
         }
@@ -57,13 +59,13 @@ namespace Logic.UI.AuswahlViewModels
         }
 
         #region Bindings
-        public String FilterText
+        public string FilterText
         { 
-            get => this.filtertext; 
+            get => filtertext;
             set
             {
-                this.filtertext = value;
-                this.RaisePropertyChanged();
+                filtertext = value;
+                RaisePropertyChanged();
                 _customerView.Refresh();
             }
         }

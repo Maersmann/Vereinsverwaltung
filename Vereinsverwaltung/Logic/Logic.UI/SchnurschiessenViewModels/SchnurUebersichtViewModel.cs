@@ -29,9 +29,9 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/sichtbar");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchnurModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/sichtbar");
+                if (resp.IsSuccessStatusCode)
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchnurModel>>();
             }
             base.LoadData();
         }
@@ -44,7 +44,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/{selectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Schnur konnte nicht gelöscht werden.");
                     return;
                 }
             }

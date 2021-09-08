@@ -54,9 +54,9 @@ namespace Logic.UI.SchnurschiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Auszeichnung konnte nicht gelöscht werden.");
                     return;
                 }
             }
@@ -75,9 +75,9 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/CanNew");
-                if (resp2.IsSuccessStatusCode)
-                    canNew = await resp2.Content.ReadAsAsync<bool>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/CanNew");
+                if (resp.IsSuccessStatusCode)
+                    canNew = await resp.Content.ReadAsAsync<bool>();
             }
             ((DelegateCommand)NeuCommand).RaiseCanExecuteChanged();
         }
