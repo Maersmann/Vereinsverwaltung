@@ -1,11 +1,13 @@
 ﻿using Data.Types;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -25,6 +27,8 @@ namespace Logic.UI.BaseViewModels
             _customerView = CollectionViewSource.GetDefaultView(ItemList);
             _customerView.Filter = OnFilterTriggered;
         }
+
+        protected virtual string GetREST_API() { return ""; }
         public void RegisterAktualisereViewMessage(StammdatenTypes stammdaten)
         {
             typ = stammdaten;
@@ -39,12 +43,22 @@ namespace Logic.UI.BaseViewModels
                 LoadData();
         }
 
-        public virtual void LoadData() 
+        public async void LoadData()
         {
+            if (GlobalVariables.ServerIsOnline)
+            {
+                DataIsLoading = true;
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + GetREST_API());
+                if (resp.IsSuccessStatusCode)
+                {
+                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<T>>();
+                }
+                DataIsLoading = false;
+            }
             _customerView = (CollectionView)CollectionViewSource.GetDefaultView(itemList);
             _customerView.Filter = OnFilterTriggered;
-            this.RaisePropertyChanged("ItemCollection");
-            this.RaisePropertyChanged("ItemList"); 
+            RaisePropertyChanged("ItemCollection");
+            RaisePropertyChanged("ItemList");
         }
         public virtual void LoadData(int id) 
         {
@@ -68,7 +82,7 @@ namespace Logic.UI.BaseViewModels
             set
             {
                 selectedItem = value;
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
             }
         }
         public IEnumerable<T> ItemList

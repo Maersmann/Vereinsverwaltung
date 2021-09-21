@@ -33,14 +33,18 @@ namespace Logic.UI.PinViewModels
         protected override int GetID() { return selectedItem.Mitglied.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
 
-        public async override void LoadData(int id)
+        public override async void LoadData(int id)
         {
             this.id = id;
             if (GlobalVariables.ServerIsOnline)
             {
+                DataIsLoading = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Mitglieder/LoadAllForAusgabe/{this.id}");
                 if (resp.IsSuccessStatusCode)
+                {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<PinAusgabeMitgliedUebersichtModel>>();
+                }
+                DataIsLoading = false;
             }
             base.LoadData();
         }
@@ -49,11 +53,10 @@ namespace Logic.UI.PinViewModels
         {
             if (item is PinAusgabeMitgliedUebersichtModel mitglied)
             {
-                var MitgliedsNr = Convert.ToString(mitglied.Mitglied.Mitgliedsnr);
-                if (zeigeNurNichtErhalten)
-                    return (mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext)) && !mitglied.Erhalten;
-                else
-                    return mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext);
+                string MitgliedsNr = Convert.ToString(mitglied.Mitglied.Mitgliedsnr);
+                return zeigeNurNichtErhalten
+                    ? (mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext)) && !mitglied.Erhalten
+                    : mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext);
             }
             return true;
         }
@@ -106,7 +109,7 @@ namespace Logic.UI.PinViewModels
                         SendExceptionMessage("Fehler: Pin Rückgängig bei ID: " + SelectedItem.Mitglied.Fullname + Environment.NewLine + await resp.Content.ReadAsStringAsync());
                         return;
                     }
-                    var content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
+                    PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
                     selectedItem.Erhalten = content.Erhalten;
                     selectedItem.ErhaltenAm = content.ErhaltenAm;
                     base.LoadData();
@@ -138,7 +141,7 @@ namespace Logic.UI.PinViewModels
                             return;
                         }
                     }
-                    var content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
+                    PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
                     selectedItem.Erhalten = content.Erhalten;
                     selectedItem.ErhaltenAm = content.ErhaltenAm;
                     base.LoadData();
@@ -152,7 +155,7 @@ namespace Logic.UI.PinViewModels
 
         protected override void ExecuteCleanUpCommand()
         {
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe);
+            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe);
         }
         #endregion
     }

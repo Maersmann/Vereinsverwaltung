@@ -28,25 +28,10 @@ namespace Logic.UI.AuswahlViewModels
 
         public int? MitgliedID() 
         {
-            if (selectedItem == null) return null;
-            else return selectedItem.ID;
+            return selectedItem == null ? null : (int?)selectedItem.ID;
         }
-
-
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
-
-        public override async void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder");
-                if (resp.IsSuccessStatusCode)
-                {
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<MitgliedAuswahlModel>>();
-                }
-            }
-            base.LoadData();
-        }
+        protected override string GetREST_API() { return $"/api/Mitglieder"; }
 
         protected override bool OnFilterTriggered(object item)
         {

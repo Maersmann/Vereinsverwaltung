@@ -5,14 +5,8 @@ using Logic.Core;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.BaseViewModels;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
@@ -35,16 +29,21 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         protected override void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
         {
-                LoadData(besitzerid);
+            LoadData(besitzerid);
         }
 
-        public async override void LoadData(int id)
+        public override async void LoadData(int id)
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                DataIsLoading = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel");
                 if (resp.IsSuccessStatusCode)
+                {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungModel>>();
+                }
+
+                DataIsLoading = false;
             }
             base.LoadData();
         }

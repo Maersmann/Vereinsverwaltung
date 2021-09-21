@@ -38,13 +38,18 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             LoadData(schluesselid);
         }
 
-        public async override void LoadData(int id)
+        public override async void LoadData(int id)
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                DataIsLoading = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer");
                 if (resp.IsSuccessStatusCode)
+                {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungModel>>();
+                }
+
+                DataIsLoading = false;
             }
             base.LoadData();
         }

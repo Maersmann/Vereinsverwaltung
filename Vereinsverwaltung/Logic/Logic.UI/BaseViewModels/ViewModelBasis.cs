@@ -20,16 +20,18 @@ namespace Logic.UI.BaseViewModels
 {
     public class ViewModelBasis : ViewModelBase
     {
+        private bool dataIsLoading;
         public ViewModelBasis()
         {
+            DataIsLoading = false;
             CleanUpCommand = new RelayCommand(() => ExecuteCleanUpCommand());
-            this.CloseWindowCommand = new RelayCommand<Window>(this.ExecuteCloseWindowCommand);
+            this.CloseWindowCommand = new RelayCommand<Window>(ExecuteCloseWindowCommand);
             SetConnection();
         }
 
         protected string messageToken;
         public string Title { get; protected set; }
-        public string MessageToken { set { messageToken = value; } }
+        public string MessageToken { set => messageToken = value; }
 
         protected HttpClient Client { get; set; }
 
@@ -38,9 +40,8 @@ namespace Logic.UI.BaseViewModels
 
         protected virtual void ExecuteCleanUpCommand()
         {
-            Cleanup(); 
+            Cleanup();
         }
-
         protected virtual void ExecuteCloseWindowCommand(Window window)
         {
             if (window != null)
@@ -49,6 +50,15 @@ namespace Logic.UI.BaseViewModels
             }
         }
 
+        public bool DataIsLoading
+        {
+            set
+            {
+                dataIsLoading = value;
+                RaisePropertyChanged();
+            }
+            get => dataIsLoading;
+        }
 
 
         public void SendExceptionMessage(string inException)

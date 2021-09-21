@@ -22,22 +22,13 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Title = "History Verteilung";
         }
 
+        protected override string GetREST_API() { return $"/api/schluesselverwaltung/history?id={id}&type={auswahlTypes}"; }
+
         public void SetAuswahlState(int id, SchluesselzuteilungTypes auswahlTypes)
         {
             this.auswahlTypes = auswahlTypes;
             this.id = id;
             LoadData();
-        }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/history?id={id}&type={auswahlTypes}");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungHistoryModel>>();
-            }
-            base.LoadData();
         }
     }
 }

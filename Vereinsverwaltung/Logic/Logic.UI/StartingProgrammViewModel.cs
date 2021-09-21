@@ -23,15 +23,16 @@ namespace Logic.UI
 
         private void ExecuteCheckServerIsOnlineCommand()
         {
+            DataIsLoading = true;
             new BackendHelper().CheckServerIsOnline();
             if (GlobalVariables.ServerIsOnline)
             {
                 ViewModelLocator locator = new ViewModelLocator();
                 locator.Main.RaisePropertyChanged("MenuIsEnabled");
-                Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewMitgliederUebersicht });
+                Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewMitgliederUebersicht });
             }
 
-            Messenger.Default.Send<CloseViewMessage>(new CloseViewMessage(), "StartingProgramm");
+            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
         }
 
         public ICommand CheckServerIsOnlineCommand { get; private set; }

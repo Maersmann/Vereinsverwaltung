@@ -24,17 +24,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         protected override int GetID() { return selectedItem.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schnur; }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/sichtbar");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchnurModel>>();
-            }
-            base.LoadData();
-        }
+        protected override string GetREST_API() { return $"/api/schnurschiessen/Schnur/sichtbar"; }
 
         #region Commands
         protected async override void ExecuteEntfernenCommand()

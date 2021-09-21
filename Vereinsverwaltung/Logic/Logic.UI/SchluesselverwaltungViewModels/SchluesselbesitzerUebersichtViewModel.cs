@@ -1,20 +1,14 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.BaseViewModels;
 using Prism.Commands;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
@@ -33,16 +27,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         protected override int GetID() { return selectedItem.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselbesitzer; }
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Besitzer; }
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselbesitzerModel>>();
-            }
-            base.LoadData();
-        }
+        protected override string GetREST_API() { return $"/api/schluesselverwaltung/besitzer"; }
 
         #region Bindings
         public ICommand OpenHistorieCommand { get; set; }

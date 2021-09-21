@@ -23,21 +23,11 @@ namespace Logic.UI.AuswahlViewModels
 
         public int? SchluesselbestizerID()
         {
-            if (selectedItem == null) return null;
-            else return selectedItem.ID;
+            return selectedItem == null ? null : (int?)selectedItem.ID;
         }
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselbesitzer; }
+        protected override string GetREST_API() { return $"/api/schluesselverwaltung/besitzer"; }
 
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselbesitzerAuswahlModel>>();
-            }
-            base.LoadData();
-        }
     }
 }

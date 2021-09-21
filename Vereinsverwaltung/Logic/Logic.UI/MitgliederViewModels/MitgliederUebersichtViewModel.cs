@@ -25,19 +25,10 @@ namespace Logic.UI.MitgliederViewModels
             Title = "Übersicht Mitglieder";
             //RegisterAktualisereViewMessage(StammdatenTypes.mitglied);    
         }
+        
         protected override int GetID() { return selectedItem.ID; }
+        protected override string GetREST_API() { return $"/api/Mitglieder"; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<MitgliederModel>>();
-            }
-            base.LoadData();
-        }
 
         #region Commands
 

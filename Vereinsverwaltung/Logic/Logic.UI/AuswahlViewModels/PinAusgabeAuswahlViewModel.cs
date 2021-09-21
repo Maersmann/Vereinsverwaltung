@@ -21,19 +21,7 @@ namespace Logic.UI.AuswahlViewModels
             LoadData();
         }
 
-
-        public override async void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe");
-                if (resp.IsSuccessStatusCode)
-                {
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<PinAusgabeAuswahlModel>>();
-                }
-            }
-            base.LoadData();
-        }
+        protected override string GetREST_API() { return $"/api/Pins/Ausgabe"; }
 
         protected override bool OnFilterTriggered(object item)
         {

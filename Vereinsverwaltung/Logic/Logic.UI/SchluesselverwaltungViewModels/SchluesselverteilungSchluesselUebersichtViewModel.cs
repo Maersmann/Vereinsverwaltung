@@ -29,17 +29,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         protected override int GetID() { return selectedItem.SchluesselID; }
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Schluessel; }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselverteilungSchluesselUebersichtModel>>();
-            }
-            base.LoadData();
-        }
+        protected override string GetREST_API() { return $"/api/schluesselverwaltung/zuteilung/schluessel"; }
 
         #region Bindings
 

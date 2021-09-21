@@ -36,17 +36,8 @@ namespace Logic.UI.SchnurschiessenViewModels
         }
         protected override int GetID() { return selectedItem.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schnurauszeichnung; }
+        protected override string GetREST_API() { return $"/api/schnurschiessen/Schnurauszeichnung"; }
 
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchnurauszeichnungModel>>();
-            }
-            base.LoadData();
-        }
 
         #region Commands
         protected async override void ExecuteEntfernenCommand()

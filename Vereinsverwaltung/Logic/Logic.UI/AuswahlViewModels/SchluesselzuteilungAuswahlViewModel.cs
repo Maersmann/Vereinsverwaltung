@@ -42,22 +42,11 @@ namespace Logic.UI.AuswahlViewModels
         }
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselzuteilung; }
-
-        public async override void LoadData()
+        protected override string GetREST_API() 
         {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp;
-                if (auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer))
-                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel");
-                else
-                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer");
-
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungAuswahlModel>>();
-            }
-            base.LoadData();
+            return auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer)
+                ? $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel"
+                : $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer";
         }
-
     }
 }

@@ -29,6 +29,7 @@ using UI.Desktop.Schnurschiessen;
 using UI.Desktop.Pin;
 using UI.Desktop.Auswertungen;
 using UI.Desktop.Konfiguration;
+using System.Windows.Media.Animation;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -57,7 +58,7 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
-        }
+        }   
 
         private void ReceiceCloseApplicationMessage()
         {
@@ -176,10 +177,10 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiceOpenStartingViewMessage()
         {
-            var view = new StartingProgrammView();
+            StartingProgrammView view = new StartingProgrammView();
             view.ShowDialog();
             SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
-        }
+        }   
     }
 
 }
