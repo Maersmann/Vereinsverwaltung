@@ -35,13 +35,24 @@ namespace Logic.UI.PinViewModels
 
         private void ExecuteOeffneAusgabeCommand()
         {
-            Messenger.Default.Send<OpenPinAusgabeMitgliederViewMessage>(new OpenPinAusgabeMitgliederViewMessage { ID = selectedItem.ID }, "PinAusgabeUebersicht");
+            Messenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = selectedItem.ID }, "PinAusgabeUebersicht");
         }
 
-        private void ExecuteErledigeAusgabeCommand()
+        private async void ExecuteErledigeAusgabeCommand()
         {
             selectedItem.Abgeschlossen = true;
-            base.LoadData();
+            DataIsLoading = true;
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/erledigen", selectedItem.ID);
+                if (!resp.IsSuccessStatusCode)
+                {
+                    SendExceptionMessage("Ausgabe konnte nicht abgeschlossen werden.");
+                }
+            }
+            DataIsLoading = false;
+
+            LoadData();
         }
         #endregion
     }

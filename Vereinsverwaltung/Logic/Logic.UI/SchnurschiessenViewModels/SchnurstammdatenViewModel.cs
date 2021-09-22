@@ -27,7 +27,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            DataIsLoading = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
@@ -37,6 +37,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             Bezeichnung = data.Bezeichnung;
             Schnurtyp = data.Schnurtyp;
             state = State.Bearbeiten;
+            DataIsLoading = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnur;
@@ -66,38 +67,29 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public string Bezeichnung
         {
-            get
-            {
-                return data.Bezeichnung;
-            }
+            get => data.Bezeichnung;
             set
             {
-                if ( LoadData || !string.Equals(data.Bezeichnung, value))
+                if (DataIsLoading || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public IEnumerable<Schnurtypes> Schnurtypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(Schnurtypes)).Cast<Schnurtypes>();
-            }
-        }
+        public IEnumerable<Schnurtypes> Schnurtypes => Enum.GetValues(typeof(Schnurtypes)).Cast<Schnurtypes>();
         public Schnurtypes Schnurtyp
         {
-            get { return data.Schnurtyp; }
+            get => data.Schnurtyp;
             set
             {
-                if (LoadData || (this.data.Schnurtyp != value))
+                if (DataIsLoading || (data.Schnurtyp != value))
                 {
-                    this.data.Schnurtyp = value;
-                    this.RaisePropertyChanged();
+                    data.Schnurtyp = value;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }

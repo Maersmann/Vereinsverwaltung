@@ -51,7 +51,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
                 DataIsLoading = false;
             }
-            base.LoadData();
+            base.LoadData(id);
         }
 
         #region Commands

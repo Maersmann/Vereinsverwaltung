@@ -45,6 +45,11 @@ namespace Logic.UI.BaseViewModels
 
         public async void LoadData()
         {
+            if (GetREST_API().Equals(""))
+            {
+                return;
+            }
+
             if (GlobalVariables.ServerIsOnline)
             {
                 DataIsLoading = true;
@@ -64,8 +69,8 @@ namespace Logic.UI.BaseViewModels
         {
             _customerView = (CollectionView)CollectionViewSource.GetDefaultView(ItemList);
             _customerView.Filter = OnFilterTriggered;
-            this.RaisePropertyChanged("ItemCollection");
-            this.RaisePropertyChanged("ItemList");
+            RaisePropertyChanged("ItemCollection");
+            RaisePropertyChanged("ItemList");
         }
 
         protected virtual bool OnFilterTriggered(object item)

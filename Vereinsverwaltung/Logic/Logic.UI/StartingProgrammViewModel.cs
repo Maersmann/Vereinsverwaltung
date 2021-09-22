@@ -24,6 +24,7 @@ namespace Logic.UI
         private void ExecuteCheckServerIsOnlineCommand()
         {
             DataIsLoading = true;
+
             new BackendHelper().CheckServerIsOnline();
             if (GlobalVariables.ServerIsOnline)
             {

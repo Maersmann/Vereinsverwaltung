@@ -46,7 +46,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            DataIsLoading = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/{id}");
@@ -58,6 +58,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             Hauptteil = alleSichtbarenSchnuere.First(s => s.ID == data.HauptteilID);
             Zusatz = alleSchnuere.FirstOrDefault(s => s.ID == data.ZusatzID);
             state = State.Bearbeiten;
+            DataIsLoading = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnurauszeichnung;
@@ -86,19 +87,16 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         #region Bindings
 
-        public String Bezeichnung
+        public string Bezeichnung
         {
-            get
-            {
-                return data.Bezeichnung;
-            }
+            get => data.Bezeichnung;
             set
             {
-                if (LoadData || !string.Equals(data.Bezeichnung, value))
+                if (DataIsLoading || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -109,11 +107,11 @@ namespace Logic.UI.SchnurschiessenViewModels
             get => data.Rangfolge;
             set
             {
-                if (LoadData || !string.Equals(data.Rangfolge, value))
+                if (DataIsLoading || !Equals(data.Rangfolge, value))
                 {
                     ValidateZahl(value, "Rangfolge");
                     data.Rangfolge = value.GetValueOrDefault(0);
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -126,20 +124,24 @@ namespace Logic.UI.SchnurschiessenViewModels
         public SchnurModel Hauptteil
         {
             get
-            { 
-                var schnur = alleSichtbarenSchnuere.FirstOrDefault(s => s.ID == data.HauptteilID);
+            {
+                SchnurModel schnur = alleSichtbarenSchnuere.FirstOrDefault(s => s.ID == data.HauptteilID);
                 if (alleSichtbarenSchnuere.Count == 0)
+                {
                     schnur = new SchnurModel();
+                }
                 else if (schnur == null)
+                { 
                     schnur = alleSichtbarenSchnuere.First();
+                }
                 return schnur;
             }
             set
             {
-                if (LoadData || (this.data.HauptteilID != value.ID))
+                if (DataIsLoading || (data.HauptteilID != value.ID))
                 {
-                    this.data.HauptteilID = value.ID;
-                    this.RaisePropertyChanged();
+                    data.HauptteilID = value.ID;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -150,10 +152,10 @@ namespace Logic.UI.SchnurschiessenViewModels
             get { return alleSchnuere.FirstOrDefault(s => s.ID == data.ZusatzID); }
             set
             {
-                if (LoadData || (this.data.ZusatzID != value.ID))
+                if (DataIsLoading || (data.ZusatzID != value.ID))
                 {
-                    this.data.ZusatzID = value.ID;
-                    this.RaisePropertyChanged();
+                    data.ZusatzID = value.ID;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }

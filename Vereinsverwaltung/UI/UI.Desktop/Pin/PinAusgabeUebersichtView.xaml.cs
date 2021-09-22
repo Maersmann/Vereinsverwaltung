@@ -29,7 +29,7 @@ namespace UI.Desktop.Pin
 
         private void ReceiveOpenPinAusgabeMitgliederViewMessage(OpenPinAusgabeMitgliederViewMessage m)
         {
-            var view = new PinAusgabeMitgliedUebersichtView
+            PinAusgabeMitgliedUebersichtView view = new PinAusgabeMitgliedUebersichtView
             {
                 Owner = Application.Current.MainWindow
             };

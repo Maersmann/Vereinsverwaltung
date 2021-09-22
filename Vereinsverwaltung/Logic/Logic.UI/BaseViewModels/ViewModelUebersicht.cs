@@ -18,11 +18,11 @@ namespace Logic.UI.BaseViewModels
        
         public ViewModelUebersicht()
         {
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
+            EntfernenCommand = new DelegateCommand(ExecuteEntfernenCommand, CanExecuteCommand);
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
+            BearbeitenCommand = new DelegateCommand(ExecuteBearbeitenCommand, CanExecuteCommand);
             LoadData();
-        }    
+        }   
 
         protected virtual int GetID() { return 0; }
         protected virtual StammdatenTypes GetStammdatenType() { return 0; }
@@ -60,11 +60,11 @@ namespace Logic.UI.BaseViewModels
         }
         protected virtual void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Bearbeiten, ID = GetID(), Stammdaten = GetStammdatenType() });
+            Messenger.Default.Send(new BaseStammdatenMessage { State = State.Bearbeiten, ID = GetID(), Stammdaten = GetStammdatenType() });
         }
         protected virtual void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, Stammdaten = GetStammdatenType() });
+            Messenger.Default.Send(new BaseStammdatenMessage { State = State.Neu, ID = null, Stammdaten = GetStammdatenType() });
         }
     }
 }

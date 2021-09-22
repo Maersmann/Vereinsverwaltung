@@ -125,7 +125,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (confirmed)
             {
-                LoadData = true;
+                DataIsLoading = true;
                 if (GlobalVariables.ServerIsOnline)
                 {
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{id}");
@@ -142,6 +142,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
                 }
+                DataIsLoading = false;
             }
         }
         #endregion

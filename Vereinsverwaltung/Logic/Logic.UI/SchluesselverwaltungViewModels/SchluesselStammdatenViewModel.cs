@@ -26,7 +26,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            DataIsLoading = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
@@ -39,7 +39,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Bezeichnung = data.Bezeichnung;
             Bestand = data.Bestand;
             state = State.Bearbeiten;
-            LoadData = false;       
+            DataIsLoading = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluessel;
@@ -73,52 +73,43 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
         #region Bindings
-        public int? Nummer 
+        public int? Nummer
         {
-            get
-            {
-                return data.Nummer;
-            }
+            get => data.Nummer;
             set
             {
-                if (LoadData || !string.Equals(data.Nummer, value))
+                if (DataIsLoading || !Equals(data.Nummer, value))
                 {
                     ValidateAnzahl(value, "Nummer");
                     data.Nummer = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public String Beschreibung
+        public string Beschreibung
         {
-            get
-            {
-                return data.Beschreibung;
-            }
+            get => data.Beschreibung;
             set
             {
-                if (LoadData || !string.Equals(data.Beschreibung, value))
+                if (DataIsLoading || !Equals(data.Beschreibung, value))
                 {
                     data.Beschreibung = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
-        public String Bezeichnung
+        public string Bezeichnung
         {
-            get
-            {
-                return data.Bezeichnung;
-            }
+            get => data.Bezeichnung;
             set
             {
-                if (LoadData || !string.Equals(data.Bezeichnung, value))
+                if (DataIsLoading || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -126,16 +117,13 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public int? Bestand
         {
-            get
-            {
-                return data.Bestand;
-            }
+            get => data.Bestand;
             set
             {
-                if (LoadData || !string.Equals(data.Bestand, value))
+                if (DataIsLoading || !Equals(data.Bestand, value))
                 {
                     data.Bestand = value.GetValueOrDefault(0);
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }

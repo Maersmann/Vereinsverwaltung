@@ -32,7 +32,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            DataIsLoading = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
@@ -45,21 +45,20 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             RaisePropertyChanged("KeinMitgliedHinterlegt");
             RaisePropertyChanged("Mitgliedsnr");
             state = State.Bearbeiten;
-            
+            DataIsLoading = false;
+
+
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselbesitzer;
 
 
         #region Bindings
-        public String Name 
-        { 
-            get
-            {
-                return data.Name;
-            }
+        public string Name
+        {
+            get => data.Name;
             set
             {
-                if( LoadData || !string.Equals(data.Name,value))
+                if (DataIsLoading || !Equals(data.Name, value))
                 {
                     ValidateName(value);
                     data.Name = value;

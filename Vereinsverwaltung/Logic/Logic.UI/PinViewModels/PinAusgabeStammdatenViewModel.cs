@@ -30,7 +30,7 @@ namespace Logic.UI.PinViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true; 
+            DataIsLoading = true; 
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/{id}");
@@ -40,7 +40,7 @@ namespace Logic.UI.PinViewModels
 
             Bezeichnung = data.Bezeichnung;
             state = State.Bearbeiten;
-            LoadData = false;
+            DataIsLoading = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.pinAusgabe;
@@ -75,7 +75,7 @@ namespace Logic.UI.PinViewModels
 
         #region Bindings
 
-        public String Bezeichnung
+        public string Bezeichnung
         {
             get
             {
@@ -83,11 +83,11 @@ namespace Logic.UI.PinViewModels
             }
             set
             {
-                if (LoadData || !string.Equals(data.Bezeichnung, value))
+                if (DataIsLoading || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -98,25 +98,25 @@ namespace Logic.UI.PinViewModels
             set
             {
 
-                if (LoadData || !string.Equals(data.Option.Stichtag, value))
+                if (DataIsLoading || !Equals(data.Option.Stichtag, value))
                 {
                     data.Option.Stichtag = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-        public Boolean NurAktive
+        public bool NurAktive
         {
             get { return data.Option.NurAktive; }
             set
             {
 
-                if (LoadData || !string.Equals(data.Option.NurAktive, value))
+                if (DataIsLoading || !Equals(data.Option.NurAktive, value))
                 {
                     data.Option.NurAktive = value;
-                    this.RaisePropertyChanged();
-                    this.RaisePropertyChanged(nameof(Stichtag));
+                    RaisePropertyChanged();
+                    RaisePropertyChanged(nameof(Stichtag));
                 }
             }
         }
@@ -127,10 +127,10 @@ namespace Logic.UI.PinViewModels
             get { return data.Pin; }
             set
             {
-                if (LoadData || (this.data.Pin != value))
+                if (DataIsLoading || (data.Pin != value))
                 {
-                    this.data.Pin = value;
-                    this.RaisePropertyChanged();
+                    data.Pin = value;
+                    RaisePropertyChanged();
                 }
             }
         }

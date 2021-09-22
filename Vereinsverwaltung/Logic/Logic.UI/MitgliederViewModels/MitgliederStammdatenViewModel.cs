@@ -30,7 +30,7 @@ namespace Logic.UI.MitgliederViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            DataIsLoading = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
@@ -47,7 +47,7 @@ namespace Logic.UI.MitgliederViewModels
             Vorname = data.Vorname;
             Geschlecht = data.Geschlecht;
             state = State.Bearbeiten;
-            LoadData = false;
+            DataIsLoading = false;
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.mitglied;
         #region Commands
@@ -83,81 +83,81 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (LoadData || !string.Equals(data.Name, value))
+                if (DataIsLoading || !Equals(data.Name, value))
                 {
                     ValidateName(value);
                     data.Name = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public String Vorname
+        public string Vorname
         {
-            get { return data.Vorname; }
+            get => data.Vorname;
             set
             {
 
-                if (LoadData || !string.Equals(data.Vorname, value))
+                if (DataIsLoading || !Equals(data.Vorname, value))
                 {
                     ValidateVorName(value);
                     data.Vorname = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public String Ort
+        public string Ort
         {
-            get { return data.Ort; }
+            get => data.Ort;
             set
             {
 
-                if (LoadData || !string.Equals(data.Ort, value))
+                if (DataIsLoading || !Equals(data.Ort, value))
                 {
                     data.Ort = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
-        public String Strasse
+        public string Strasse
         {
-            get { return data.Straße; }
+            get => data.Straße;
             set
             {
 
-                if (LoadData || !string.Equals(data.Straße, value))
+                if (DataIsLoading || !Equals(data.Straße, value))
                 {
                     data.Straße = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
         public int? Mitgliedsnr
         {
-            get { return data.Mitgliedsnr; }
+            get => data.Mitgliedsnr;
             set
             {
-                if (LoadData || !string.Equals(data.Mitgliedsnr, value))
+                if (DataIsLoading || !Equals(data.Mitgliedsnr, value))
                 {
                     data.Mitgliedsnr = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
         public DateTime? Eintrittsdatum
         {
-            get { return data.Eintrittsdatum; }
+            get => data.Eintrittsdatum;
             set
             {
 
-                if (LoadData || !string.Equals(data.Eintrittsdatum, value))
+                if (DataIsLoading || !Equals(data.Eintrittsdatum, value))
                 {
                     ValidateEintrittsdatum(value);
                     data.Eintrittsdatum = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -165,28 +165,28 @@ namespace Logic.UI.MitgliederViewModels
 
         public DateTime? Austrittsdatum
         {
-            get { return data.Austrittsdatum; }
+            get => data.Austrittsdatum;
             set
             {
 
-                if (LoadData || !string.Equals(data.Austrittsdatum, value))
+                if (DataIsLoading || !Equals(data.Austrittsdatum, value))
                 {
                     data.Austrittsdatum = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
         public DateTime? Geburtstag
         {
-            get { return data.Geburtstag; }
+            get => data.Geburtstag;
             set
             {
-                
-                if (LoadData || !string.Equals(data.Geburtstag, value))
+
+                if (DataIsLoading || !Equals(data.Geburtstag, value))
                 {
                     ValidateGeburtstag(value);
                     data.Geburtstag = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -201,13 +201,13 @@ namespace Logic.UI.MitgliederViewModels
         }
         public Geschlecht Geschlecht
         {
-            get { return data.Geschlecht; }
+            get => data.Geschlecht;
             set
             {
-                if (LoadData || (this.data.Geschlecht != value))
+                if (DataIsLoading || (data.Geschlecht != value))
                 {
-                    this.data.Geschlecht = value;
-                    this.RaisePropertyChanged();
+                    data.Geschlecht = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -259,7 +259,7 @@ namespace Logic.UI.MitgliederViewModels
         public override void Cleanup()
         {
             data = new MitgliederModel();
-            this.RaisePropertyChanged();
+            RaisePropertyChanged();
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);
             ValidateName("");

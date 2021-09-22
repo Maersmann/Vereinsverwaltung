@@ -15,12 +15,10 @@ namespace Logic.UI.BaseViewModels
     {
         protected T data;
         protected State state;
-        protected bool LoadData;
         public ICommand SaveCommand { get; protected set; }
 
         public ViewModelStammdaten()
         {
-            LoadData = false;
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
