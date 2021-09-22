@@ -25,6 +25,7 @@ using Logic.UI.PinViewModels;
 using Logic.UI.AuswertungenViewModels;
 using Logic.UI.OptionenViewModels;
 using Logic.UI.KonfigruationViewModels;
+using Logic.UI.UtilsViewModels;
 
 namespace Logic.UI
 {
@@ -107,6 +108,7 @@ namespace Logic.UI
         public BackendSettingsViewModel BackendSettings => ServiceLocator.Current.GetInstance<BackendSettingsViewModel>();
         public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
         public PinAusgabeAuswahlViewModel PinAusgabeAuswahl => new PinAusgabeAuswahlViewModel();
+        public LoadingViewModel Loading => new LoadingViewModel();
         public static void Cleanup()
         {
 

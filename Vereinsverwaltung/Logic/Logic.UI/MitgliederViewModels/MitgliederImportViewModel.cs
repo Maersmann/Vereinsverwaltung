@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.ImportHelper;
 using Logic.Messages.BaseMessages;
+using Logic.Messages.UtilMessages;
 using Logic.UI.BaseViewModels;
 using Microsoft.Win32;
 using System;
@@ -44,8 +45,9 @@ namespace Logic.UI.MitgliederViewModels
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "MitgliederImport");
                     await new ImportHelper().PostFile( openFileDialog.FileName ).ContinueWith(async task =>
-                    {
+                    {                      
                         if (task.Result.IsSuccessStatusCode)
                         {
                             data = await task.Result.Content.ReadAsAsync<MitgliedImportHistoryModel>();
@@ -57,8 +59,8 @@ namespace Logic.UI.MitgliederViewModels
                             SendExceptionMessage("Import-Datei konnte nicht eingelesen werden");
                             return;
                         }
-
                     });
+                    Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
                 }
             }         
         }
@@ -67,8 +69,9 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert" }, "MitgliederImport");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
-
+                Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
 
                 if (resp.IsSuccessStatusCode)
                 {
