@@ -1,16 +1,17 @@
 ﻿using Data.Model.AuswahlModels;
 using Data.Model.PinModels;
 using Logic.Core;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
+using Data.Types;
 
 namespace Logic.UI.AuswahlViewModels
 {
-    public class PinAusgabeAuswahlViewModel : ViewModelAuswahl<PinAusgabeAuswahlModel>
+    public class PinAusgabeAuswahlViewModel : ViewModelAuswahl<PinAusgabeAuswahlModel, StammdatenTypes>
     {
         private string filtertext;
 

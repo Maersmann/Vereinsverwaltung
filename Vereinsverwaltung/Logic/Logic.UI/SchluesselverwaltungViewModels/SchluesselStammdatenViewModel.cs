@@ -4,7 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
@@ -14,10 +14,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselStammdatenViewModel : ViewModelStammdaten<SchluesselModel>, IViewModelStammdaten
+    public class SchluesselStammdatenViewModel : ViewModelStammdaten<SchluesselModel, StammdatenTypes>, IViewModelStammdaten
     {
         public SchluesselStammdatenViewModel() 
         {
@@ -26,7 +29,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            DataIsLoading = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
@@ -39,7 +42,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Bezeichnung = data.Bezeichnung;
             Bestand = data.Bestand;
             state = State.Bearbeiten;
-            DataIsLoading = false;
+            RequestIsWorking = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluessel;
@@ -49,25 +52,23 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 906)
                 {
                     SendExceptionMessage("Nummer ist schon vorhanden");
-                    return;
                 }
                 else
                 {
                     SendExceptionMessage("Schlüssel konnte nicht gespeichert werden.");
-                    return;
                 }
-
             }
         }
         #endregion
@@ -78,7 +79,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             get => data.Nummer;
             set
             {
-                if (DataIsLoading || !Equals(data.Nummer, value))
+                if (RequestIsWorking || !Equals(data.Nummer, value))
                 {
                     ValidateAnzahl(value, "Nummer");
                     data.Nummer = value.GetValueOrDefault();
@@ -93,7 +94,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             get => data.Beschreibung;
             set
             {
-                if (DataIsLoading || !Equals(data.Beschreibung, value))
+                if (RequestIsWorking || !Equals(data.Beschreibung, value))
                 {
                     data.Beschreibung = value;
                     this.RaisePropertyChanged();
@@ -105,7 +106,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             get => data.Bezeichnung;
             set
             {
-                if (DataIsLoading || !Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
@@ -120,7 +121,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             get => data.Bestand;
             set
             {
-                if (DataIsLoading || !Equals(data.Bestand, value))
+                if (RequestIsWorking || !Equals(data.Bestand, value))
                 {
                     data.Bestand = value.GetValueOrDefault(0);
                     RaisePropertyChanged();

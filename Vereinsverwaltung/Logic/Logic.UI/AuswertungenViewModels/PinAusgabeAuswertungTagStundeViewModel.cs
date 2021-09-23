@@ -5,13 +5,14 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using Logic.Core;
 using Logic.Messages.AuswahlMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.AuswertungenViewModels
 {
@@ -28,14 +29,14 @@ namespace Logic.UI.AuswertungenViewModels
 
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send<OpenPinAusgabeAuswahlMessage>(new OpenPinAusgabeAuswahlMessage(LoadAuswertungCallback), "PinAusgabeAuswertungTagStunde");
+            Messenger.Default.Send(new OpenPinAusgabeAuswahlMessage(LoadAuswertungCallback), "PinAusgabeAuswertungTagStunde");
         }
 
         public async void LoadAuswertungCallback(bool confirmed, int id)
         {
             if (confirmed && GlobalVariables.ServerIsOnline)
             {
-                DataIsLoading = true;
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/auswertungen/pinausgabe/TagStunde/{id}");
                 if (resp.IsSuccessStatusCode)
                 {
@@ -65,7 +66,7 @@ namespace Logic.UI.AuswertungenViewModels
                     RaisePropertyChanged(nameof(SeriesCollection));
                     RaisePropertyChanged(nameof(Labels));
                     RaisePropertyChanged(nameof(Formatter));
-                    DataIsLoading = false;
+                    RequestIsWorking = false;
                 }
                     
             }

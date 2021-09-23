@@ -1,25 +1,23 @@
 ﻿using Data.Model.MitgliederModels;
 using Data.Types;
 using Data.Types.MitgliederTypes;
-using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Core;
 using Logic.Core.Validierungen;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliederModel>, IViewModelStammdaten
+    public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliederModel, StammdatenTypes>, IViewModelStammdaten
     {
 
 
@@ -30,7 +28,7 @@ namespace Logic.UI.MitgliederViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            DataIsLoading = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
@@ -47,7 +45,7 @@ namespace Logic.UI.MitgliederViewModels
             Vorname = data.Vorname;
             Geschlecht = data.Geschlecht;
             state = State.Bearbeiten;
-            DataIsLoading = false;
+            RequestIsWorking = false;
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.mitglied;
         #region Commands
@@ -55,23 +53,22 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", data);
-
+                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 902)
                 {
                     SendExceptionMessage("MitgliedsNr ist schon vergeben");
-                    return;
                 }
                 else
                 {
                     SendExceptionMessage("Mitglied konnte nicht gespeichert werden.");
-                    return;
-                }
+                }           
             }
         }
         #endregion
@@ -83,7 +80,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (DataIsLoading || !Equals(data.Name, value))
+                if (RequestIsWorking || !Equals(data.Name, value))
                 {
                     ValidateName(value);
                     data.Name = value;
@@ -99,7 +96,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (DataIsLoading || !Equals(data.Vorname, value))
+                if (RequestIsWorking || !Equals(data.Vorname, value))
                 {
                     ValidateVorName(value);
                     data.Vorname = value;
@@ -115,7 +112,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (DataIsLoading || !Equals(data.Ort, value))
+                if (RequestIsWorking || !Equals(data.Ort, value))
                 {
                     data.Ort = value;
                     RaisePropertyChanged();
@@ -128,7 +125,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (DataIsLoading || !Equals(data.Straße, value))
+                if (RequestIsWorking || !Equals(data.Straße, value))
                 {
                     data.Straße = value;
                     RaisePropertyChanged();
@@ -140,7 +137,7 @@ namespace Logic.UI.MitgliederViewModels
             get => data.Mitgliedsnr;
             set
             {
-                if (DataIsLoading || !Equals(data.Mitgliedsnr, value))
+                if (RequestIsWorking || !Equals(data.Mitgliedsnr, value))
                 {
                     data.Mitgliedsnr = value;
                     RaisePropertyChanged();
@@ -153,7 +150,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (DataIsLoading || !Equals(data.Eintrittsdatum, value))
+                if (RequestIsWorking || !Equals(data.Eintrittsdatum, value))
                 {
                     ValidateEintrittsdatum(value);
                     data.Eintrittsdatum = value;
@@ -169,7 +166,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (DataIsLoading || !Equals(data.Austrittsdatum, value))
+                if (RequestIsWorking || !Equals(data.Austrittsdatum, value))
                 {
                     data.Austrittsdatum = value;
                     RaisePropertyChanged();
@@ -182,7 +179,7 @@ namespace Logic.UI.MitgliederViewModels
             set
             {
 
-                if (DataIsLoading || !Equals(data.Geburtstag, value))
+                if (RequestIsWorking || !Equals(data.Geburtstag, value))
                 {
                     ValidateGeburtstag(value);
                     data.Geburtstag = value;
@@ -204,7 +201,7 @@ namespace Logic.UI.MitgliederViewModels
             get => data.Geschlecht;
             set
             {
-                if (DataIsLoading || (data.Geschlecht != value))
+                if (RequestIsWorking || (data.Geschlecht != value))
                 {
                     data.Geschlecht = value;
                     RaisePropertyChanged();

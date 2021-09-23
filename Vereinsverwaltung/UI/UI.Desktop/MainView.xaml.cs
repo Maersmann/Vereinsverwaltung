@@ -30,6 +30,8 @@ using UI.Desktop.Pin;
 using UI.Desktop.Auswertungen;
 using UI.Desktop.Konfiguration;
 using System.Windows.Media.Animation;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -54,7 +56,7 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
             Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
-            Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
+            Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
@@ -131,7 +133,7 @@ namespace Vereinsverwaltung.UI.Desktop
         }
 
 
-        private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage m)
+        private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage<StammdatenTypes> m)
         {
             StammdatenView view = null;
             switch ( m.Stammdaten)

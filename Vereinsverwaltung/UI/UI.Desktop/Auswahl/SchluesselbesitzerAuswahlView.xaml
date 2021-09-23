@@ -28,7 +28,7 @@
                     <Style TargetType="{x:Type RowDefinition}">
                         <Setter Property="Height" Value="5" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DataIsLoading}" Value="false">
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
                                 <Setter Property="Height" Value="0" />
                             </DataTrigger>
                         </Style.Triggers>

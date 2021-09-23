@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Data.Types;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Data.Model.AuswahlModels;
 using Logic.Core;
 using System.Net.Http;
@@ -14,7 +14,7 @@ using System.Collections.ObjectModel;
 
 namespace Logic.UI.AuswahlViewModels
 {
-    public class MitgliedAuswahlViewModel : ViewModelAuswahl<MitgliedAuswahlModel>
+    public class MitgliedAuswahlViewModel : ViewModelAuswahl<MitgliedAuswahlModel, StammdatenTypes>
     {
         private string filtertext;
 
@@ -23,7 +23,7 @@ namespace Logic.UI.AuswahlViewModels
             Title = "Auswahl Mitglied";
             filtertext = "";
             LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.mitglied);
+            RegisterAktualisereViewMessage(StammdatenTypes.mitglied.ToString());
         }
 
         public int? MitgliedID() 

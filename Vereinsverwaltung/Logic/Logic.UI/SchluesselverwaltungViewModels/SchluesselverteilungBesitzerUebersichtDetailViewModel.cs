@@ -4,20 +4,22 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.SchluesselMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System.Collections.ObjectModel;
 using System.Net.Http;
+using Base.Logic.Messages;
+using Base.Logic.Core;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungBesitzerUebersichtDetailViewModel : ViewModelUebersicht<SchluesselzuteilungModel>
+    public class SchluesselverteilungBesitzerUebersichtDetailViewModel : ViewModelUebersicht<SchluesselzuteilungModel, StammdatenTypes>
     {
         private int besitzerid;
         public SchluesselverteilungBesitzerUebersichtDetailViewModel()
         {
             MessageToken = "SchluesselzuteilungBesitzerSchluesselUebersicht";
             Title = "Vorhandene Schlüssel des Besitzer";
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
             Messenger.Default.Register<LoadSchluesselverteilungBesitzerDetailMessage>(this, "SchluesselverteilungBesitzerUebersicht", m => ReceiveLoadSchluesselverteilungBesitzerDetailMessage(m));
         }
 
@@ -36,14 +38,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                DataIsLoading = true;
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel");
                 if (resp.IsSuccessStatusCode)
                 {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungModel>>();
                 }
 
-                DataIsLoading = false;
+                RequestIsWorking = false;
             }
             base.LoadData(id);
         }
@@ -53,16 +55,19 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{selectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage("Eintrag konnte nicht gelöscht werden.");
+                    RequestIsWorking = false;
                     return;
                 }
             }
             SendInformationMessage("Eintrag gelöscht");
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
             base.ExecuteEntfernenCommand();
+            RequestIsWorking = false;
         }
         #endregion
     }

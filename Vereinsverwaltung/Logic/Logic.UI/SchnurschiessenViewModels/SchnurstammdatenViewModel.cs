@@ -5,7 +5,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
@@ -15,10 +15,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurStammdatenViewModel : ViewModelStammdaten<SchnurModel>, IViewModelStammdaten
+    public class SchnurStammdatenViewModel : ViewModelStammdaten<SchnurModel, StammdatenTypes>, IViewModelStammdaten
     {
         public SchnurStammdatenViewModel()
         {
@@ -27,7 +30,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            DataIsLoading = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
@@ -37,7 +40,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             Bezeichnung = data.Bezeichnung;
             Schnurtyp = data.Schnurtyp;
             state = State.Bearbeiten;
-            DataIsLoading = false;
+            RequestIsWorking = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnur;
@@ -47,17 +50,18 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur", data);
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage("Schnur konnte nicht gespeichert werden.");
-                    return;
                 }
             }           
         }
@@ -70,7 +74,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             get => data.Bezeichnung;
             set
             {
-                if (DataIsLoading || !Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
@@ -86,7 +90,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             get => data.Schnurtyp;
             set
             {
-                if (DataIsLoading || (data.Schnurtyp != value))
+                if (RequestIsWorking || (data.Schnurtyp != value))
                 {
                     data.Schnurtyp = value;
                     RaisePropertyChanged();

@@ -3,13 +3,13 @@ using Data.Types.OptionTypes;
 using GalaSoft.MvvmLight.Command;
 using Logic.Core;
 using Logic.Core.OptionenLogic;
-using Logic.UI.BaseViewModels;
-using Logic.UI.Helper;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.OptionenViewModels
 {
@@ -27,7 +27,7 @@ namespace Logic.UI.OptionenViewModels
 
         public void SetModelData()
         {
-            var backendLogic = new BackendLogic();
+            BackendLogic backendLogic = new BackendLogic();
             if (backendLogic.IstINIVorhanden())
             {
                 backendLogic.LoadData();
@@ -41,57 +41,42 @@ namespace Logic.UI.OptionenViewModels
         #region Bindings
         public ICommand SpeicherSettingsCommand { get; set; }
         public ICommand TestConnectionCommand { get; set; }
-        public String Backend_IP
+        public string Backend_IP
         {
-            get
-            {
-                return model.Backend_IP;
-            }
+            get => model.Backend_IP;
             set
             {
                 model.Backend_IP = value;
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
             }
         }
         public string Backend_URL
         {
-            get
-            {
-                return model.Backend_URL;
-            }
+            get => model.Backend_URL;
             set
             {
                 model.Backend_URL = value;
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
             }
         }
         public string Port
         {
-            get
-            {
-                if (model.Port.HasValue)
-                    return model.Port.Value.ToString();
-                else
-                    return "";
-            }
+            get => model.Port.HasValue ? model.Port.Value.ToString() : "";
             set
             {
-                if (value.Equals(""))
-                    this.model.Port = null;
-                else
-                    this.model.Port = int.Parse(value);
-                this.RaisePropertyChanged();
+                model.Port = value.Equals("") ? null : (int?)int.Parse(value);
+                RaisePropertyChanged();
             }
         }
 
         public IEnumerable<BackendProtokollTypes> BackendProtokollTypes => Enum.GetValues(typeof(BackendProtokollTypes)).Cast<BackendProtokollTypes>();
         public BackendProtokollTypes BackendProtokollTyp
         {
-            get { return model.ProtokollTyp; }
+            get => model.ProtokollTyp;
             set
             {
-                this.model.ProtokollTyp = value;
-                this.RaisePropertyChanged();
+                model.ProtokollTyp = value;
+                RaisePropertyChanged();
             }
         }
 

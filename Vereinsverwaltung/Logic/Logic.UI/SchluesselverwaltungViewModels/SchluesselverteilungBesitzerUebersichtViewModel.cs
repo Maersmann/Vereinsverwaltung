@@ -2,22 +2,19 @@
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Core;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.BaseViewModels;
-using System.Collections.ObjectModel;
-using System.Net.Http;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungBesitzerUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungBesitzerUebersichtModel>
+    public class SchluesselverteilungBesitzerUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungBesitzerUebersichtModel, StammdatenTypes>
     {
         public SchluesselverteilungBesitzerUebersichtViewModel()
         {
             MessageToken = "SchluesselverteilungBesitzerUebersicht";
             Title = "Übersicht Verteilung Schlüsselbesitzer";
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselbesitzer);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselbesitzer.ToString());
         }
 
         protected override int GetID() { return selectedItem.SchluesselbesitzerID; }

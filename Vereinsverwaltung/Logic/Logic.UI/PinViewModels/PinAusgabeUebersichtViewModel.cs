@@ -4,25 +4,26 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Messages.PinMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.PinViewModels
 {
-    public class PinAusgabeUebersichtViewModel : ViewModelUebersicht<PinAusgabenUebersichtModel>
+    public class PinAusgabeUebersichtViewModel : ViewModelUebersicht<PinAusgabenUebersichtModel, StammdatenTypes>
     {
 
         public PinAusgabeUebersichtViewModel()
         {
             Title = "Übersicht Pin Ausgaben";
-            RegisterAktualisereViewMessage(StammdatenTypes.pinAusgabe);
+            RegisterAktualisereViewMessage(StammdatenTypes.pinAusgabe.ToString());
             OeffneAusgabeCommand = new RelayCommand(() => ExecuteOeffneAusgabeCommand());
             ErledigeAusgabeCommand = new RelayCommand(() => ExecuteErledigeAusgabeCommand());
         }
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.pinAusgabe; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.pinAusgabe; }
         protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Uebersicht"; }
 
         #region Bindings
@@ -41,7 +42,7 @@ namespace Logic.UI.PinViewModels
         private async void ExecuteErledigeAusgabeCommand()
         {
             selectedItem.Abgeschlossen = true;
-            DataIsLoading = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/erledigen", selectedItem.ID);
@@ -50,7 +51,7 @@ namespace Logic.UI.PinViewModels
                     SendExceptionMessage("Ausgabe konnte nicht abgeschlossen werden.");
                 }
             }
-            DataIsLoading = false;
+            RequestIsWorking = false;
 
             LoadData();
         }

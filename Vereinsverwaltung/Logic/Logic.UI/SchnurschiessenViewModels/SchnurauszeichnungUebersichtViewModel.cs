@@ -2,7 +2,7 @@
 using Data.Types;
 using Logic.Core;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -12,10 +12,12 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Messages;
+using Base.Logic.Core;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurauszeichnungUebersichtViewModel : ViewModelUebersicht<SchnurauszeichnungModel>
+    public class SchnurauszeichnungUebersichtViewModel : ViewModelUebersicht<SchnurauszeichnungModel, StammdatenTypes>
     {
         private bool canNew;
         public SchnurauszeichnungUebersichtViewModel()
@@ -24,8 +26,8 @@ namespace Logic.UI.SchnurschiessenViewModels
             MessageToken = "SchnurauszeichnungUebersicht";
             Title = "Übersicht Schnurauszeichnungen";
             NeuCommand = new DelegateCommand(this.ExecuteNeuCommand, this.CanExecuteNeuCommand);
-            RegisterAktualisereViewMessage(StammdatenTypes.schnurauszeichnung);
-            RegisterAktualisereViewMessage(StammdatenTypes.schnur);
+            RegisterAktualisereViewMessage(StammdatenTypes.schnurauszeichnung.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.schnur.ToString());
             CheckCanExecuteNeuCommand();
         }
 
@@ -35,7 +37,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             base.ReceiveAktualisiereViewMessage(m);
         }
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schnurauszeichnung; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schnurauszeichnung; }
         protected override string GetREST_API() { return $"/api/schnurschiessen/Schnurauszeichnung"; }
 
 
@@ -44,15 +46,18 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/{selectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage("Auszeichnung konnte nicht gelöscht werden.");
+                    RequestIsWorking = false;
                     return;
                 }
             }
             SendInformationMessage("Auszeichnung gelöscht");
             base.ExecuteEntfernenCommand();
+            RequestIsWorking = false;
         }
 
         private bool CanExecuteNeuCommand()
@@ -66,9 +71,11 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/CanNew");
                 if (resp.IsSuccessStatusCode)
                     canNew = await resp.Content.ReadAsAsync<bool>();
+                RequestIsWorking = false;
             }
             ((DelegateCommand)NeuCommand).RaiseCanExecuteChanged();
         }

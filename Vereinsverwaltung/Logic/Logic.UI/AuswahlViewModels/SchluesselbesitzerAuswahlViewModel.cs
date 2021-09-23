@@ -5,20 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System.Net.Http;
 using Logic.Core;
 using System.Collections.ObjectModel;
 
 namespace Logic.UI.AuswahlViewModels
 {
-    public class SchluesselbesitzerAuswahlViewModel : ViewModelAuswahl<SchluesselbesitzerAuswahlModel>
+    public class SchluesselbesitzerAuswahlViewModel : ViewModelAuswahl<SchluesselbesitzerAuswahlModel, StammdatenTypes>
     {
         public SchluesselbesitzerAuswahlViewModel()
         {
             Title = "Auswahl Besitzer";
             LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselbesitzer);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselbesitzer.ToString());
         }
 
         public int? SchluesselbestizerID()

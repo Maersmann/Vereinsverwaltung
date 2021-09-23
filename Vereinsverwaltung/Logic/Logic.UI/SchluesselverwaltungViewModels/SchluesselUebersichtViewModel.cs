@@ -1,4 +1,5 @@
-﻿using Data.Model.SchluesselverwaltungModels;
+﻿using Base.Logic.Core;
+using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using GalaSoft.MvvmLight.Messaging;
@@ -13,19 +14,19 @@ using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselModel>
+    public class SchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselModel, StammdatenTypes>
     {
         public SchluesselUebersichtViewModel()
         {
             MessageToken = "SchluesselUebersicht";
             Title = "Übersicht Schlüssel";
-            RegisterAktualisereViewMessage(StammdatenTypes.schluessel);
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
-            OpenHistorieCommand = new DelegateCommand(this.ExecuteOpenHistorieCommand, this.CanExecuteCommand);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluessel.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
+            OpenHistorieCommand = new DelegateCommand(ExecuteOpenHistorieCommand, CanExecuteCommand);
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluessel; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schluessel; }
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Schluessel; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/schluessel"; }
 
@@ -48,15 +49,18 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{selectedItem.ID}");
 
                 if ((int)resp.StatusCode == 905)
                 {
                     SendExceptionMessage("Schlüssel kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Schlüssel ist Besitzer zugeordnet");
+                    RequestIsWorking = false;
                     return;
                 }
                 SendInformationMessage("Schlüssel gelöscht");
                 base.ExecuteEntfernenCommand();
+                RequestIsWorking = false;
             }
         }
 

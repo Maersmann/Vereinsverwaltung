@@ -1,13 +1,16 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Windows.Input;
 using Data.Types;
 using Logic.Messages.BaseMessages;
 using Logic.Core;
 using Logic.Core.OptionenLogic;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Logic.UI
 {
@@ -51,12 +54,12 @@ namespace Logic.UI
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
+            Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
         }
 
         private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage {Stammdaten  = stammdaten, State = State.Neu});
+            Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
         }
 
         private void ExecuteOpenStartingViewCommand()

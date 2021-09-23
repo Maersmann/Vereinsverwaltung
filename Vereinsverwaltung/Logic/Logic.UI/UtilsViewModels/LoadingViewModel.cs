@@ -1,7 +1,4 @@
-﻿using Logic.UI.BaseViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Base.Logic.ViewModels;
 
 namespace Logic.UI.UtilsViewModels
 {

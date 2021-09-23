@@ -117,7 +117,7 @@ namespace Logic.Core.OptionenLogic
         }
         private bool IsFieldVorhanden(string section, string key)
         {
-            return (iniData.Sections[section].GetKeyData(key) != null);
+            return iniData.Sections[section].GetKeyData(key) != null;
         }
     }
 }

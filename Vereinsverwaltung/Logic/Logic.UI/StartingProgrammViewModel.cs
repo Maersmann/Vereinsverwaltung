@@ -3,13 +3,13 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
-using Logic.UI.Helper;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI
 {
@@ -23,7 +23,7 @@ namespace Logic.UI
 
         private void ExecuteCheckServerIsOnlineCommand()
         {
-            DataIsLoading = true;
+            RequestIsWorking = true;
 
             new BackendHelper().CheckServerIsOnline();
             if (GlobalVariables.ServerIsOnline)

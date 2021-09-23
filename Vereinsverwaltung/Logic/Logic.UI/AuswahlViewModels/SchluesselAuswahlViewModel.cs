@@ -1,24 +1,16 @@
 ﻿using Data.Model.AuswahlModels;
 using Data.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Logic.UI.BaseViewModels;
-using System.Net.Http;
-using Logic.Core;
-using System.Collections.ObjectModel;
+using Base.Logic.ViewModels;
 
 namespace Logic.UI.AuswahlViewModels
 {
-    public class SchluesselAuswahlViewModel : ViewModelAuswahl<SchluesselAuswahlModels>
+    public class SchluesselAuswahlViewModel : ViewModelAuswahl<SchluesselAuswahlModels, StammdatenTypes>
     {
         public SchluesselAuswahlViewModel()
         {
             Title = "Auswahl Schlüssel";
             LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.schluessel);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluessel.ToString());
         }
 
         public int? SchluesselID()

@@ -7,7 +7,6 @@ using Logic.Core;
 using Logic.Core.ImportHelper;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.UtilMessages;
-using Logic.UI.BaseViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -19,10 +18,13 @@ using System.Net.Http.Handlers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
+using Base.Logic.Messages;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederImportViewModel : ViewModelUebersicht<MitgliederImportModel>
+    public class MitgliederImportViewModel : ViewModelLoadData<MitgliederImportModel>
     {
         MitgliedImportHistoryModel data;
         public MitgliederImportViewModel()
@@ -77,7 +79,7 @@ namespace Logic.UI.MitgliederViewModels
                 {
                     itemList.Clear();
                     RaisePropertyChanged("ItemList");
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied.ToString());
                 }
                 else
                 {

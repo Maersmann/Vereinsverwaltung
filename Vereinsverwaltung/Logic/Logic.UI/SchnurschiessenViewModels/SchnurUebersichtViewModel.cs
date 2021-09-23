@@ -1,29 +1,23 @@
 ﻿using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using Logic.Core;
-using Logic.UI.BaseViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurUebersichtViewModel : ViewModelUebersicht<SchnurModel>
+    public class SchnurUebersichtViewModel : ViewModelUebersicht<SchnurModel, StammdatenTypes>
     {
         public SchnurUebersichtViewModel()
         {
             MessageToken = "SchnurUebersicht";
             Title = "Übersicht Schnüre";
-            RegisterAktualisereViewMessage(StammdatenTypes.schnur);
+            RegisterAktualisereViewMessage(StammdatenTypes.schnur.ToString());
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schnur; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schnur; }
         protected override string GetREST_API() { return $"/api/schnurschiessen/Schnur/sichtbar"; }
 
         #region Commands
@@ -31,15 +25,18 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/{selectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("Schnur konnte nicht gelöscht werden.");
+                    RequestIsWorking = false;
                     return;
                 }
             }
             SendInformationMessage("Schnur gelöscht");
             base.ExecuteEntfernenCommand();
+            RequestIsWorking = false;
         }
 
         #endregion

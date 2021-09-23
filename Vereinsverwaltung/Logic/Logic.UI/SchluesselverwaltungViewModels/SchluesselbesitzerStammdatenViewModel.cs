@@ -7,7 +7,7 @@ using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
@@ -17,10 +17,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselbesitzerStammdatenViewModel : ViewModelStammdaten<SchluesselbesitzerModel>, IViewModelStammdaten
+    public class SchluesselbesitzerStammdatenViewModel : ViewModelStammdaten<SchluesselbesitzerModel, StammdatenTypes>, IViewModelStammdaten
     {
         public SchluesselbesitzerStammdatenViewModel() 
         {
@@ -32,12 +35,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            DataIsLoading = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
                 if (resp.IsSuccessStatusCode)
+                {
                     data = await resp.Content.ReadAsAsync<SchluesselbesitzerModel>();
+                }
             }
 
             Name = data.Name;
@@ -45,7 +50,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             RaisePropertyChanged("KeinMitgliedHinterlegt");
             RaisePropertyChanged("Mitgliedsnr");
             state = State.Bearbeiten;
-            DataIsLoading = false;
+            RequestIsWorking = false;
 
 
         }
@@ -58,7 +63,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             get => data.Name;
             set
             {
-                if (DataIsLoading || !Equals(data.Name, value))
+                if (RequestIsWorking || !Equals(data.Name, value))
                 {
                     ValidateName(value);
                     data.Name = value;
@@ -85,22 +90,22 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer", data);
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 904)
                 {
                     SendExceptionMessage("Mitglied ist schon vergeben");
-                    return;
                 }
                 else
                 {
                     SendExceptionMessage("Besitzer konnte nicht gespeichert werden.");
-                    return;
                 }
             }
         }
@@ -116,12 +121,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/Mitglied/{id}");
                     if (resp.IsSuccessStatusCode)
                     {
                         if (await resp.Content.ReadAsAsync<bool>())
                         { 
                             SendInformationMessage("Mitglied hat schon ein Datensatz");
+                            RequestIsWorking = false;
                             return;
                         }
                     }
@@ -138,6 +145,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         RaisePropertyChanged("KeinMitgliedHinterlegt");
                         RaisePropertyChanged("Mitgliedsnr");
                     }
+                    RequestIsWorking = false;
                 }
             }
         }

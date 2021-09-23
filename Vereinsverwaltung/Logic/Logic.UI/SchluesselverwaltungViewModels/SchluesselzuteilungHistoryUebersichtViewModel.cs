@@ -1,7 +1,7 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types.SchluesselverwaltungTypes;
 using Logic.Core;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,10 +9,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Types;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselzuteilungHistoryUebersichtViewModel : ViewModelUebersicht<SchluesselzuteilungHistoryModel>
+    public class SchluesselzuteilungHistoryUebersichtViewModel : ViewModelLoadData<SchluesselzuteilungHistoryModel>
     {
         private SchluesselzuteilungTypes auswahlTypes;
         private int id;

@@ -17,14 +17,14 @@ using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungSchluesselUebersichtModel>
+    public class SchluesselverteilungSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungSchluesselUebersichtModel, StammdatenTypes>
     {
         public SchluesselverteilungSchluesselUebersichtViewModel()
         {
             MessageToken = "SchluesselverteilungSchluesselUebersicht";
             Title = "Übersicht Verteilung Schlüssel";
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
-            RegisterAktualisereViewMessage(StammdatenTypes.schluessel);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.schluessel.ToString());
         }
 
         protected override int GetID() { return selectedItem.SchluesselID; }

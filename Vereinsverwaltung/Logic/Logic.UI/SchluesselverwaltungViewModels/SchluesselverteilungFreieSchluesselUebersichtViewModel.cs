@@ -8,14 +8,14 @@ using System.Net.Http;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungFreieSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselModel>
+    public class SchluesselverteilungFreieSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselModel, StammdatenTypes>
     {
         public SchluesselverteilungFreieSchluesselUebersichtViewModel()
         {
             MessageToken = "SchluesselverteilungFreieSchluesselUebersicht";
             Title = "Übersicht Freie Schlüssel";
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
-            RegisterAktualisereViewMessage(StammdatenTypes.schluessel);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.schluessel.ToString());
         }
 
         protected override int GetID() { return selectedItem.ID; }

@@ -2,9 +2,6 @@
 using Data.Types;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Core;
-using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,10 +10,13 @@ using System.Net.Http;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
+using Base.Logic.Messages;
 
 namespace Logic.UI.PinViewModels
 {
-    public class PinAusgabeMitgliedUebersichtViewModel : ViewModelUebersicht<PinAusgabeMitgliedUebersichtModel>
+    public class PinAusgabeMitgliedUebersichtViewModel : ViewModelUebersicht<PinAusgabeMitgliedUebersichtModel, StammdatenTypes>
     {
         private string filtertext;
         private bool zeigeNurNichtErhalten;
@@ -31,22 +31,22 @@ namespace Logic.UI.PinViewModels
             zeigeNurNichtErhalten = true;
         }
         protected override int GetID() { return selectedItem.Mitglied.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
 
         public override async void LoadData(int id)
         {
             this.id = id;
             if (GlobalVariables.ServerIsOnline)
             {
-                DataIsLoading = true;
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Mitglieder/LoadAllForAusgabe/{this.id}");
                 if (resp.IsSuccessStatusCode)
                 {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<PinAusgabeMitgliedUebersichtModel>>();
                 }
-                DataIsLoading = false;
+                RequestIsWorking = false;
             }
-            base.LoadData();
+            base.LoadData(id);
         }
 
         protected override bool OnFilterTriggered(object item)
@@ -64,7 +64,7 @@ namespace Logic.UI.PinViewModels
         #region Bindings
         public ICommand ErhaltenCommand { get; private set; }
         public ICommand RueckgaengigCommand { get; private set; }
-        public String FilterText
+        public string FilterText
         {
             get => this.filtertext;
             set
@@ -75,7 +75,7 @@ namespace Logic.UI.PinViewModels
             }
         }
         
-        public Boolean ZeigeNurNichtErhalten
+        public bool ZeigeNurNichtErhalten
         {
             get
             {
@@ -155,7 +155,7 @@ namespace Logic.UI.PinViewModels
 
         protected override void ExecuteCleanUpCommand()
         {
-            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe);
+            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe.ToString());
         }
         #endregion
     }

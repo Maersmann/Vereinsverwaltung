@@ -7,7 +7,7 @@ using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -17,10 +17,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselRueckgabeStammdatenViewModel : ViewModelStammdaten<SchluesselRueckgabeStammdatenModel>
+    public class SchluesselRueckgabeStammdatenViewModel : ViewModelStammdaten<SchluesselRueckgabeStammdatenModel, StammdatenTypes>
     {
         private SchluesselzuteilungTypes typ;
         private int id;
@@ -85,26 +88,24 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/rueckgabe", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Rückgabe gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung);
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Rückgabe gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
                 }
                 else if ((int)resp.StatusCode == 907)
                 {
                     SendExceptionMessage("Es werden zu viele Schlüssel zurückgegeben");
-                    return;
                 }
                 else
                 {
                     SendExceptionMessage("Schlüsselrückgabe konnte nicht gespeichert werden.");
-                    return;
                 }
-
             }
         }
 
@@ -125,7 +126,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (confirmed)
             {
-                DataIsLoading = true;
+                RequestIsWorking = true;
                 if (GlobalVariables.ServerIsOnline)
                 {
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{id}");
@@ -142,7 +143,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
                 }
-                DataIsLoading = false;
+                RequestIsWorking = false;
             }
         }
         #endregion

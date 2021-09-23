@@ -1,34 +1,25 @@
 ﻿using Data.Model.MitgliederModels;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using Prism.Commands;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Logic.UI.BaseViewModels;
 using Data.Types;
 using Logic.Core;
 using System.Net.Http;
 using System.Net;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederUebersichtViewModel : ViewModelUebersicht<MitgliederModel>
+    public class MitgliederUebersichtViewModel : ViewModelUebersicht<MitgliederModel, StammdatenTypes>
     {
 
         public MitgliederUebersichtViewModel()
         {
             Title = "Übersicht Mitglieder";
-            //RegisterAktualisereViewMessage(StammdatenTypes.mitglied);    
         }
         
         protected override int GetID() { return selectedItem.ID; }
         protected override string GetREST_API() { return $"/api/Mitglieder"; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.mitglied; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
 
         #region Commands
 
@@ -36,16 +27,18 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp2 = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{selectedItem.ID}");
                 if (resp2.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("Mitglied kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Zugeteilter Schlüssel vorhanden");
                     return;
                 }
+            
+                SendInformationMessage("Mitglied gelöscht");
+                base.ExecuteEntfernenCommand();
+                RequestIsWorking = false;
             }
-            SendInformationMessage("Mitglied gelöscht");
-            base.ExecuteEntfernenCommand();
-         
         }
         #endregion
     }

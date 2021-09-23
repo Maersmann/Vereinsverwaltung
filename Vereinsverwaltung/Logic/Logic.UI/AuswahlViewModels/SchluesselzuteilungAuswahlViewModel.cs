@@ -2,7 +2,7 @@
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using Logic.Core;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +16,7 @@ using System.Windows.Data;
 
 namespace Logic.UI.AuswahlViewModels
 {
-    public class SchluesselzuteilungAuswahlViewModel : ViewModelAuswahl<SchluesselzuteilungAuswahlModel>
+    public class SchluesselzuteilungAuswahlViewModel : ViewModelAuswahl<SchluesselzuteilungAuswahlModel, StammdatenTypes>
     {
         private SchluesselzuteilungTypes auswahlTypes;
         private int id;
@@ -25,7 +25,7 @@ namespace Logic.UI.AuswahlViewModels
         {
             Title = "Auswahl Besitzer";
             LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
         }
 
         public void SetAuswahlState(int id, SchluesselzuteilungTypes auswahlTypes)
