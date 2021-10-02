@@ -62,41 +62,11 @@
 
             <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemCollection}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Vorname" Binding="{Binding Mitglied.Vorname}" Width="auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Nachname" Binding="{Binding Mitglied.Name}" Width="auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Mitglieds-Nr" Binding="{Binding Mitglied.Mitgliedsnr}" Width="auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Straße" Binding="{Binding Mitglied.Straße}" Width="auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Eintrittsdatum" Binding="{Binding Mitglied.Eintrittsdatum,StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Vorname" Binding="{Binding Mitglied.Vorname}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                    <DataGridTextColumn Header="Nachname" Binding="{Binding Mitglied.Name}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                    <DataGridTextColumn Header="Mitglieds-Nr" Binding="{Binding Mitglied.Mitgliedsnr}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                    <DataGridTextColumn Header="Straße" Binding="{Binding Mitglied.Straße}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                    <DataGridTextColumn Header="Eintrittsdatum" Binding="{Binding Mitglied.Eintrittsdatum,StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
                     <DataGridTemplateColumn Header="Erhalten" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -104,13 +74,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Erhalten Am" Binding="{Binding ErhaltenAm, StringFormat={}{0:dd.MM.yyyy HH:mm}, ConverterCulture='de-DE'}" Width="auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Erhalten Am" Binding="{Binding ErhaltenAm, StringFormat={}{0:dd.MM.yyyy HH:mm}, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

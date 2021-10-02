@@ -7,6 +7,7 @@
                     xmlns:local="clr-namespace:Vereinsverwaltung.UI.Desktop.Schluesselverwaltung"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="300.534" Width="357.917"
@@ -121,11 +122,9 @@
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten am</Label>
 
             <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, Mode=TwoWay, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                </i:Interaction.Behaviors>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>

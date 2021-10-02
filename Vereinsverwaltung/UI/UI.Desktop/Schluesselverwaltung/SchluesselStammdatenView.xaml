@@ -7,6 +7,7 @@
                     xmlns:local="clr-namespace:UI.Desktop.Schluesselverwaltung"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="264.534" Width="357.917"
@@ -61,11 +62,9 @@
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Beschreibung</Label>
             
             <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Nummer, Mode=TwoWay, TargetNullValue='' }" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                </i:Interaction.Behaviors>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -98,11 +97,9 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bestand, Mode=TwoWay, TargetNullValue='' }" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                </i:Interaction.Behaviors>
             </TextBox>
             <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }"  />
 

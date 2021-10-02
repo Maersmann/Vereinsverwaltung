@@ -7,6 +7,7 @@
                     xmlns:local="clr-namespace:Vereinsverwaltung.UI.Desktop.Mitglieder"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="468.105" Width="357.917"
@@ -158,11 +159,9 @@
             <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" ItemsSource="{Binding Geschlechter}" SelectedItem="{Binding Geschlecht}" IsReadOnly="True" SelectedIndex="0"  />
 
             <TextBox Grid.Row="6"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Mitgliedsnr, Mode=TwoWay, TargetNullValue='' }" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                </i:Interaction.Behaviors>
             </TextBox>
             <DatePicker Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" SelectedDate="{Binding Eintrittsdatum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
                 <Validation.ErrorTemplate>

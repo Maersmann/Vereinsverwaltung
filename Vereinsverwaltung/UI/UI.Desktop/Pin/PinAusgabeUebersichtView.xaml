@@ -35,41 +35,12 @@
 
         <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}" Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Pin" Binding="{Binding Pin.Bezeichnung}" Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt}" Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Verteilt" Binding="{Binding Verteilt}" Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Offen" Binding="{Binding Offen}" Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                <DataGridTextColumn Header="Pin" Binding="{Binding Pin.Bezeichnung}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                <DataGridTextColumn Header="Verteilt" Binding="{Binding Verteilt}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                <DataGridTextColumn Header="Offen" Binding="{Binding Offen}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+
                 <DataGridTemplateColumn Header="Abgeschlossen" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
