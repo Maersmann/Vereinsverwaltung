@@ -32,7 +32,8 @@ namespace Logic.UI
             NeuePinAusgabeCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.pinAusgabe));
             LadePinAusgabeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewPinAusgabeUebersicht));
             AuswertungPinAusgabeTagCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTag));
-            AuswertungPinAusgabeTagStundeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTagStunde));           
+            AuswertungPinAusgabeTagStundeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTagStunde));
+            ExportSchluesselCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportSchluessel));
         }
 
         public ICommand OpenMitgliederStammdatenCommand { get; private set; }
@@ -48,7 +49,7 @@ namespace Logic.UI
         public ICommand NeuePinAusgabeCommand { get; private set; }
         public ICommand AuswertungPinAusgabeTagCommand { get; private set; }
         public ICommand AuswertungPinAusgabeTagStundeCommand { get; private set; }
-        
+        public ICommand ExportSchluesselCommand { get; private set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 

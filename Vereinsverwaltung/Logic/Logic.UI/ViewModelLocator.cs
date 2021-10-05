@@ -26,6 +26,7 @@ using Logic.UI.AuswertungenViewModels;
 using Logic.UI.OptionenViewModels;
 using Logic.UI.KonfigruationViewModels;
 using Logic.UI.UtilsViewModels;
+using Logic.UI.ExportViewModels;
 
 namespace Logic.UI
 {
@@ -109,6 +110,7 @@ namespace Logic.UI
         public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
         public PinAusgabeAuswahlViewModel PinAusgabeAuswahl => new PinAusgabeAuswahlViewModel();
         public LoadingViewModel Loading => new LoadingViewModel();
+        public ExportSchluesselViewModel ExportSchluessel => new ExportSchluesselViewModel();
         public static void Cleanup()
         {
 

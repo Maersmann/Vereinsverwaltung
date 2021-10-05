@@ -75,7 +75,11 @@
                     <Fluent:Button Header="Tag / Stunde" Command="{Binding AuswertungPinAusgabeTagStundeCommand}" Width="60"  LargeIcon="Resources/auswertungStundeTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-
+            <Fluent:RibbonTabItem Header="Export">
+                <Fluent:RibbonGroupBox Header="Export" >
+                    <Fluent:Button Header="Schlüssel" Command="{Binding ExportSchluesselCommand}" Width="60"  LargeIcon="Resources/key_export.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
         <Grid Grid.Row="1">

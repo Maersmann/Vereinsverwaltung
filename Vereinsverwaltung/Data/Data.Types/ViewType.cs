@@ -19,7 +19,8 @@ namespace Data.Types
         viewZuteilungFreieAnzahlUebersicht,
         viewPinAusgabeUebersicht,
         viewAuswertungPinAusgabeTag,
-        viewAuswertungPinAusgabeTagStunde
+        viewAuswertungPinAusgabeTagStunde,
+        viewExportSchluessel
     }
     
 }

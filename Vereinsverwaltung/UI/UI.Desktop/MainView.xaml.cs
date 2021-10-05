@@ -32,6 +32,7 @@ using UI.Desktop.Konfiguration;
 using System.Windows.Media.Animation;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using UI.Desktop.Export;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -126,6 +127,9 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case ViewType.viewAuswertungPinAusgabeTagStunde:    
                     Container.NavigationService.Navigate(new PinAusgabeAuswertungTagStundeView());
+                    break;
+                case ViewType.viewExportSchluessel:
+                    new ExportSchluesselView().ShowDialog();
                     break;
                 default:
                     break;

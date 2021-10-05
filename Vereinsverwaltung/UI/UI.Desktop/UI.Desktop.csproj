@@ -21,6 +21,7 @@
     <None Remove="Resources\icon.ico" />
     <None Remove="Resources\import.png" />
     <None Remove="Resources\key.png" />
+    <None Remove="Resources\key_export.png" />
     <None Remove="Resources\key_free.png" />
     <None Remove="Resources\key_list.png" />
     <None Remove="Resources\person.png" />
@@ -54,6 +55,7 @@
     <Resource Include="Resources\icon.ico" />
     <Resource Include="Resources\import.png" />
     <Resource Include="Resources\key.png" />
+    <Resource Include="Resources\key_export.png" />
     <Resource Include="Resources\key_free.png" />
     <Resource Include="Resources\key_list.png" />
     <Resource Include="Resources\pin_load.png" />
