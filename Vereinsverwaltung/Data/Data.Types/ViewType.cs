@@ -20,7 +20,8 @@ namespace Data.Types
         viewPinAusgabeUebersicht,
         viewAuswertungPinAusgabeTag,
         viewAuswertungPinAusgabeTagStunde,
-        viewExportSchluessel
+        viewExportSchluessel,
+        viewExportMitgliederAenderungen
     }
     
 }

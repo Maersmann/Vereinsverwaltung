@@ -2,21 +2,25 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPF_Vereinsverwaltung.Resources">
 
+    <Color R="48" G="48" B="48" A="255" x:Key="colorRibbon" />
+    <Color R="80" G="80" B="80" A="255" x:Key="colorRibbonTitle" />
+    <Color R="100" G="100" B="100" A="255" x:Key="colorRibbonSelected" />
+    <SolidColorBrush Color="{StaticResource colorRibbonSelected}" x:Key="brusRibbonSelected" />
 
-    <Color R="111" G="126" B="149" A="255" x:Key="colorHeaderBG" />
-    <SolidColorBrush Color="{StaticResource colorHeaderBG}" x:Key="brushHeaderBG" />
+    <Color R="0" G="70" B="0" A="255" x:Key="colorHeaderBG" />
+    <SolidColorBrush Color="{StaticResource colorHeaderBG}" x:Key="brushHeader" />
 
-    <Color R="111" G="126" B="149" A="125" x:Key="colorSecondHeaderBG" />
+    <Color R="0" G="90" B="0" A="125" x:Key="colorSecondHeaderBG" />
     <SolidColorBrush Color="{StaticResource colorSecondHeaderBG}" x:Key="brushSecondHeader" />
 
     <Color R="190" G="190" B="190" A="255" x:Key="colorStammdatenBereich" />
     <SolidColorBrush Color="{StaticResource colorStammdatenBereich}" x:Key="brushStammdatenBereich" />
 
-    <Color R="135" G="206" B="250" A="255" x:Key="colorUebersicht" />
+    <Color R="0" G="206" B="0" A="255" x:Key="colorUebersicht" />
     <SolidColorBrush Color="{StaticResource colorUebersicht}" x:Key="brushInfo" />
-    
-    <Color R="111" G="126" B="89" A="255" x:Key="colorDetailBG" />
-    <SolidColorBrush Color="{StaticResource colorDetailBG}" x:Key="brushDetailBG" />
+
+    <Color R="0" G="110" B="0" A="150" x:Key="colorDetailBG" />
+    <SolidColorBrush Color="{StaticResource colorDetailBG}" x:Key="brushDetail" />
 
     <Style x:Key="verticalCenter" TargetType="{x:Type TextBlock}">
         <Setter Property="VerticalAlignment" Value="Center" />

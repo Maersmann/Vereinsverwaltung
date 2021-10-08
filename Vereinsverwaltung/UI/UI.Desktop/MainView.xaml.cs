@@ -131,6 +131,9 @@ namespace Vereinsverwaltung.UI.Desktop
                 case ViewType.viewExportSchluessel:
                     new ExportSchluesselView().ShowDialog();
                     break;
+                case ViewType.viewExportMitgliederAenderungen:
+                    Container.NavigationService.Navigate(new ExportMitgliederAenderungenView());
+                    break;
                 default:
                     break;
             }

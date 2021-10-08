@@ -33,7 +33,7 @@ namespace Logic.UI.ExportViewModels
         private async void ExcecuteExportZuteilungCommand()
         {
             Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Zuteilung wird heruntergeladen"}, "ExportSchluessel");
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/schluesselverwaltung/zuteilung/Export/Zuteilung/");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/schluesselverwaltung/Zuteilung");
             if (resp.IsSuccessStatusCode)
             {
                 string pfad = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Vereinsverwaltung\\Export\\Schluesselzuteilung";
@@ -55,7 +55,7 @@ namespace Logic.UI.ExportViewModels
         private async void ExcecuteExportSchluesselCommand()
         {
             Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Schlüsselliste wird heruntergeladen"}, "ExportSchluessel");
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/schluesselverwaltung/zuteilung/Export/Schluessel/");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/schluesselverwaltung/Schluessel");
             if (resp.IsSuccessStatusCode)
             {
                 string pfad = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Vereinsverwaltung\\Export\\Schluesselliste";

@@ -111,6 +111,7 @@ namespace Logic.UI
         public PinAusgabeAuswahlViewModel PinAusgabeAuswahl => new PinAusgabeAuswahlViewModel();
         public LoadingViewModel Loading => new LoadingViewModel();
         public ExportSchluesselViewModel ExportSchluessel => new ExportSchluesselViewModel();
+        public ExportMitgliederAenderungenViewModel ExportMitgliederAenderungen => new ExportMitgliederAenderungenViewModel();
         public static void Cleanup()
         {
 

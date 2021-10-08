@@ -14,7 +14,7 @@ namespace UI.Desktop.BaseViews
     {
         public StammdatenView()
         {
-            this.Unloaded += Window_Unloaded;           
+            Unloaded += Window_Unloaded;          
         }
         
         public void RegisterStammdatenGespeichertMessage(StammdatenTypes types)
