@@ -97,7 +97,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             get => data.Anzahl;
             set
             {
-                if (!string.Equals(data.Anzahl, value))
+                if (!Equals(data.Anzahl, value))
                 {
                     ValidateAnzahl(value, "Anzahl");
                     data.Anzahl = value.GetValueOrDefault(0);
@@ -112,11 +112,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             set
             {
 
-                if (!string.Equals(data.ErhaltenAm, value))
+                if (!Equals(data.ErhaltenAm, value))
                 {
-                    ValidateEintrittsdatum(value);
-                    data.ErhaltenAm = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
+                    data.ErhaltenAm = value.GetValueOrDefault(DateTime.Now);
+                    ValidateEintrittsdatum(data.ErhaltenAm);
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }

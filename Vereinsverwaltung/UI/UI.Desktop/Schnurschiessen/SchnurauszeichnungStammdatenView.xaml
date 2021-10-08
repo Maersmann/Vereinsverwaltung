@@ -61,7 +61,8 @@
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Hauptteil</Label>
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Zusatz</Label>
             
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="200" Text="{Binding Bezeichnung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }"  >
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="200" Text="{Binding Bezeichnung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam"  >
+                <materialDesign:HintAssist.Hint>Goldene Schnur</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -79,6 +80,7 @@
             </TextBox>
 
             <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="150" Text="{Binding Rangfolge, Mode=TwoWay, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+                <materialDesign:HintAssist.Hint>1</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                 </i:Interaction.Behaviors>

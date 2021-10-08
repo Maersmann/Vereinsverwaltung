@@ -62,7 +62,8 @@
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Bezeichnung</Label>
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Pin</Label>
 
-                <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bezeichnung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" TabIndex="0"  >
+                <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bezeichnung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" TabIndex="0" Cursor="IBeam"  >
+                    <materialDesign:HintAssist.Hint>Jubiläum</materialDesign:HintAssist.Hint>
                     <Validation.ErrorTemplate>
                         <ControlTemplate>
                             <StackPanel>
@@ -96,7 +97,9 @@
 
                         <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Stichtag</Label>
 
-                        <DatePicker Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="{Binding NurAktive }" Width="100" SelectedDate="{Binding Stichtag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="3" IsTabStop="True" />
+                        <DatePicker Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="{Binding NurAktive }" Width="100" SelectedDate="{Binding Stichtag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="3" IsTabStop="True">
+                            <materialDesign:HintAssist.Hint>01.01.1564</materialDesign:HintAssist.Hint>
+                        </DatePicker>
                         <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Nur Aktive" IsChecked="{Binding NurAktive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
 
                     </Grid>

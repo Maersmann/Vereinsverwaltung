@@ -121,7 +121,8 @@
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Anzahl</Label>
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten am</Label>
 
-            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, Mode=TwoWay, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, Mode=TwoWay, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" Cursor="IBeam" >
+                <materialDesign:HintAssist.Hint>1</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                 </i:Interaction.Behaviors>
@@ -141,6 +142,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <DatePicker Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" SelectedDate="{Binding ErhaltenAm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+                <materialDesign:HintAssist.Hint>01.01.1564</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>

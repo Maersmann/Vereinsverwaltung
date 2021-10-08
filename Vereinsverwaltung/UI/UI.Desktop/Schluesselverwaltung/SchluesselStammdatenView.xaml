@@ -61,7 +61,8 @@
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Bestand</Label>
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Beschreibung</Label>
             
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Nummer, Mode=TwoWay, TargetNullValue='' }" >
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Nummer, Mode=TwoWay, TargetNullValue='' }" Cursor="IBeam" >
+                <materialDesign:HintAssist.Hint>1</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                 </i:Interaction.Behaviors>
@@ -81,6 +82,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bezeichnung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }"  >
+                <materialDesign:HintAssist.Hint>Tür</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -97,11 +99,14 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bestand, Mode=TwoWay, TargetNullValue='' }" >
+                <materialDesign:HintAssist.Hint>1</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                 </i:Interaction.Behaviors>
             </TextBox>
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }"  />
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>Eingang</materialDesign:HintAssist.Hint>
+            </TextBox>
 
         </Grid>
 

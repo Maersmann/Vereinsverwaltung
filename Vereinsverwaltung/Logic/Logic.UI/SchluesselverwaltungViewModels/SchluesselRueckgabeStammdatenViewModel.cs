@@ -70,11 +70,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             set
             {
 
-                if (!string.Equals(data.RueckgabeAm, value))
-                {
-                    ValidateDatum(value);
-                    data.RueckgabeAm = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
+                if (!Equals(data.RueckgabeAm, value))
+                { 
+                    data.RueckgabeAm = value.GetValueOrDefault(DateTime.Now);
+                    ValidateDatum(data.RueckgabeAm);
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
