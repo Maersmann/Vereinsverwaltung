@@ -19,8 +19,6 @@ namespace Logic.UI.MitgliederViewModels
 {
     public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliederModel, StammdatenTypes>, IViewModelStammdaten
     {
-
-
         public MitgliederStammdatenViewModel() 
         {
             Title = "Stammdaten Mitglied";

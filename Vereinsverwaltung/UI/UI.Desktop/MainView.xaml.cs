@@ -33,6 +33,7 @@ using System.Windows.Media.Animation;
 using Base.Logic.Messages;
 using Base.Logic.Types;
 using UI.Desktop.Export;
+using UI.Desktop.KkSchiessen;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -125,7 +126,7 @@ namespace Vereinsverwaltung.UI.Desktop
                 case ViewType.viewAuswertungPinAusgabeTag:
                     Container.NavigationService.Navigate(new PinAusgabeAuswertungTagView());
                     break;
-                case ViewType.viewAuswertungPinAusgabeTagStunde:    
+                case ViewType.viewAuswertungPinAusgabeTagStunde:   
                     Container.NavigationService.Navigate(new PinAusgabeAuswertungTagStundeView());
                     break;
                 case ViewType.viewExportSchluessel:
@@ -134,6 +135,18 @@ namespace Vereinsverwaltung.UI.Desktop
                 case ViewType.viewExportMitgliederAenderungen:
                     Container.NavigationService.Navigate(new ExportMitgliederAenderungenView());
                     break;
+                case ViewType.viewKkSchiessenUebersicht:
+                    Container.NavigationService.Navigate(new KkSchiessenUebersichtView());
+                    break;
+                case ViewType.viewKkSchiessgruppeUebersicht:
+                    Container.NavigationService.Navigate(new KkSchiessgruppeUebersichtView());
+                    break;
+                case ViewType.viewAuswertungKkSchiessenMonat:
+                    Container.NavigationService.Navigate(new KkSchiessenMonatAuswertungView());
+                    break;
+                case ViewType.viewAuswertungKkSchiessenMonatJahresvergleich:
+                    Container.NavigationService.Navigate(new KkSchiessenMonatJahresvergleichAuswertungView());
+                    break;      
                 default:
                     break;
             }
@@ -162,6 +175,12 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case StammdatenTypes.pinAusgabe:
                     view = new PinAusgabeStammdatenView();
+                    break;
+                case StammdatenTypes.kkSchiessgruppe:
+                    view = new KkSchiessgruppeStammdatenView();
+                    break;
+                case StammdatenTypes.kkSchiessen:
+                    view = new KKSchiessenStammdatenView();
                     break;
                 default:
                     break;

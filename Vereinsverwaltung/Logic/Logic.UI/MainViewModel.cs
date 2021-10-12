@@ -35,6 +35,10 @@ namespace Logic.UI
             AuswertungPinAusgabeTagStundeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTagStunde));
             ExportSchluesselCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportSchluessel));
             ExportMitgliederAenderungenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportMitgliederAenderungen));
+            KkSchiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessenUebersicht));
+            KkSchiessgruppeUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessgruppeUebersicht)); 
+             AuswertungKkSchiessenMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonat));
+            AuswertungKkSchiessenMonatJahresvergleichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonatJahresvergleich));
         }
 
         public ICommand OpenMitgliederStammdatenCommand { get; private set; }
@@ -52,6 +56,10 @@ namespace Logic.UI
         public ICommand AuswertungPinAusgabeTagStundeCommand { get; private set; }
         public ICommand ExportSchluesselCommand { get; private set; }
         public ICommand ExportMitgliederAenderungenCommand { get; private set; }
+        public ICommand KkSchiessenUebersichtCommand { get; private set; }
+        public ICommand KkSchiessgruppeUebersichtCommand { get; private set; }
+        public ICommand AuswertungKkSchiessenMonatCommand { get; private set; }
+        public ICommand AuswertungKkSchiessenMonatJahresvergleichCommand { get; set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 

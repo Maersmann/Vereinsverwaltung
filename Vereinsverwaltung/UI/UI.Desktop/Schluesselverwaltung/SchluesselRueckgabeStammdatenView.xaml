@@ -108,7 +108,7 @@
                         </TextBox>
                     </Grid>
                     <DockPanel  LastChildFill="False" Grid.Row="2" Grid.ColumnSpan="2" >
-                        <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="140"  Command="{Binding OpenAuswahlSchluesselzuteilungCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >Auswahl Zuteilung</Button>
+                        <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="150"  Command="{Binding OpenAuswahlSchluesselzuteilungCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Cursor="Hand" >Auswahl Zuteilung</Button>
                     </DockPanel>
                 </Grid>
             </materialDesign:Card>

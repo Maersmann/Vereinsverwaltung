@@ -29,7 +29,7 @@ namespace Logic.UI.MitgliederViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if ((int)resp.StatusCode == 903)
                 {
                     SendExceptionMessage("Mitglied kann nicht gelöscht werden" + Environment.NewLine + Environment.NewLine + "Zugeteilter Schlüssel vorhanden");
                     return;

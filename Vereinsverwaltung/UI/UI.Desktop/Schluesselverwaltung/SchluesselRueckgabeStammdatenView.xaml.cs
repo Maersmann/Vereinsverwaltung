@@ -43,9 +43,13 @@ namespace UI.Desktop.Schluesselverwaltung
                 model.SetAuswahlState(m.ID, m.AuswahlTypes);
                 view.ShowDialog();
                 if (model.SchluesselzuteilungID().HasValue)
+                {
                     m.Callback(true, model.SchluesselzuteilungID().Value);
+                }
                 else
+                {
                     m.Callback(false, 0);
+                }
             }
         }
 

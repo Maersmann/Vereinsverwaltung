@@ -21,7 +21,11 @@ namespace Data.Types
         viewAuswertungPinAusgabeTag,
         viewAuswertungPinAusgabeTagStunde,
         viewExportSchluessel,
-        viewExportMitgliederAenderungen
+        viewExportMitgliederAenderungen,
+        viewKkSchiessgruppeUebersicht,
+        viewKkSchiessenUebersicht,
+        viewAuswertungKkSchiessenMonat,
+        viewAuswertungKkSchiessenMonatJahresvergleich
     }
     
 }

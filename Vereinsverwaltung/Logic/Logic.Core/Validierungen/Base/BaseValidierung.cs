@@ -75,5 +75,18 @@ namespace Logic.Core.Validierungen.Base
 
             return validationErrors.Count == 0;
         }
+
+        public bool ValidateIntegerAllow0(int? itg, out ICollection<string> validationErrors)
+        {
+            validationErrors = new List<String>();
+
+            if (!itg.HasValue)
+                validationErrors.Add("Keine Zahl hinterlegt");
+
+            if (itg < 0)
+                validationErrors.Add("Die Zahl zu niedrig");
+
+            return validationErrors.Count == 0;
+        }
     }
 }

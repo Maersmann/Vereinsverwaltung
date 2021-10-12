@@ -27,6 +27,7 @@ using Logic.UI.OptionenViewModels;
 using Logic.UI.KonfigruationViewModels;
 using Logic.UI.UtilsViewModels;
 using Logic.UI.ExportViewModels;
+using Logic.UI.KkSchiessenViewModels;
 
 namespace Logic.UI
 {
@@ -112,6 +113,13 @@ namespace Logic.UI
         public LoadingViewModel Loading => new LoadingViewModel();
         public ExportSchluesselViewModel ExportSchluessel => new ExportSchluesselViewModel();
         public ExportMitgliederAenderungenViewModel ExportMitgliederAenderungen => new ExportMitgliederAenderungenViewModel();
+        public KkSchiessenUebersichtViewModel KkSchiessenUebersicht => new KkSchiessenUebersichtViewModel();
+        public KkSchiessenStammdatenViewModel KkSchiessenStammdaten => new KkSchiessenStammdatenViewModel();
+        public KkSchiessgruppeAuswahlViewModel KkSchiessgruppeAuswahl => new KkSchiessgruppeAuswahlViewModel();
+        public KkSchiessGruppeStammdatenViewModel KkSchiessGruppeStammdaten => new KkSchiessGruppeStammdatenViewModel();
+        public KkSchiessGruppUebersichtViewModel KkSchiessGruppUebersicht => new KkSchiessGruppUebersichtViewModel();
+        public KkSchiessenMonatAuswertungViewModel KkSchiessenMonatAuswertung => new KkSchiessenMonatAuswertungViewModel();
+        public KkSchiessenMonatJahresvergleichAuswertungViewModel KkSchiessenMonatJahresvergleichAuswertung => new KkSchiessenMonatJahresvergleichAuswertungViewModel();
         public static void Cleanup()
         {
 

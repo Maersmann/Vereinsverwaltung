@@ -15,6 +15,8 @@ namespace Data.Types
         schluesselrueckgabe,
         schnur,
         schnurauszeichnung,
-        pinAusgabe
+        pinAusgabe,
+        kkSchiessgruppe,
+        kkSchiessen
     }
 }
