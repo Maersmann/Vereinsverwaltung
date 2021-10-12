@@ -1,55 +1,42 @@
 ﻿using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using Logic.Core;
-using Logic.UI.BaseViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurUebersichtViewModel : ViewModelUebersicht<SchnurModel>
+    public class SchnurUebersichtViewModel : ViewModelUebersicht<SchnurModel, StammdatenTypes>
     {
         public SchnurUebersichtViewModel()
         {
             MessageToken = "SchnurUebersicht";
             Title = "Übersicht Schnüre";
-            RegisterAktualisereViewMessage(StammdatenTypes.schnur);
+            RegisterAktualisereViewMessage(StammdatenTypes.schnur.ToString());
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schnur; }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/sichtbar");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchnurModel>>();
-            }
-            base.LoadData();
-        }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schnur; }
+        protected override string GetREST_API() { return $"/api/schnurschiessen/Schnur/sichtbar"; }
 
         #region Commands
         protected async override void ExecuteEntfernenCommand()
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/{selectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Schnur konnte nicht gelöscht werden.");
+                    RequestIsWorking = false;
                     return;
                 }
             }
             SendInformationMessage("Schnur gelöscht");
             base.ExecuteEntfernenCommand();
+            RequestIsWorking = false;
         }
 
         #endregion

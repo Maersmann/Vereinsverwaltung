@@ -13,17 +13,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{12DDC605
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup\Setup.wixproj", "{B882430E-83DA-47BB-809B-5D567D5D5FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Model", "Data\Data.Model\Data.Model.csproj", "{FE94F29E-EBB6-4378-B860-5495E1BB4E9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Model", "Data\Data.Model\Data.Model.csproj", "{FE94F29E-EBB6-4378-B860-5495E1BB4E9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Types", "Data\Data.Types\Data.Types.csproj", "{D4B40D04-21A0-4B6F-B2C5-42365471C8C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Types", "Data\Data.Types\Data.Types.csproj", "{D4B40D04-21A0-4B6F-B2C5-42365471C8C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Core", "Logic\Logic.Core\Logic.Core.csproj", "{AF07E4A3-F05D-46BC-941E-7C63700A0830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Core", "Logic\Logic.Core\Logic.Core.csproj", "{AF07E4A3-F05D-46BC-941E-7C63700A0830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Messages", "Logic\Logic.Messages\Logic.Messages.csproj", "{BBBBCD77-8DDB-4206-8C1E-84B8F4ED0B78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Messages", "Logic\Logic.Messages\Logic.Messages.csproj", "{BBBBCD77-8DDB-4206-8C1E-84B8F4ED0B78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.UI", "Logic\Logic.UI\Logic.UI.csproj", "{CC778CE1-E375-43FE-95F4-3A6E75A7CCBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.UI", "Logic\Logic.UI\Logic.UI.csproj", "{CC778CE1-E375-43FE-95F4-3A6E75A7CCBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Desktop", "UI\UI.Desktop\UI.Desktop.csproj", "{BC77F8D3-2E73-42DF-88B5-C431EB668073}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI.Desktop", "UI\UI.Desktop\UI.Desktop.csproj", "{BC77F8D3-2E73-42DF-88B5-C431EB668073}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base.Logic", "..\Base.Logic\Base.Logic\Base.Logic.csproj", "{F643900B-2703-45BF-9BF7-498EFF9E5F59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,14 @@ Global
 		{BC77F8D3-2E73-42DF-88B5-C431EB668073}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC77F8D3-2E73-42DF-88B5-C431EB668073}.Release|x86.ActiveCfg = Release|Any CPU
 		{BC77F8D3-2E73-42DF-88B5-C431EB668073}.Release|x86.Build.0 = Release|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Debug|x86.Build.0 = Debug|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Release|x86.ActiveCfg = Release|Any CPU
+		{F643900B-2703-45BF-9BF7-498EFF9E5F59}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

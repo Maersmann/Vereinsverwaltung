@@ -4,7 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
@@ -14,10 +14,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselStammdatenViewModel : ViewModelStammdaten<SchluesselModel>, IViewModelStammdaten
+    public class SchluesselStammdatenViewModel : ViewModelStammdaten<SchluesselModel, StammdatenTypes>, IViewModelStammdaten
     {
         public SchluesselStammdatenViewModel() 
         {
@@ -26,12 +29,12 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<SchluesselModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<SchluesselModel>();
             }
 
             Nummer = data.Nummer;
@@ -39,7 +42,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Bezeichnung = data.Bezeichnung;
             Bestand = data.Bestand;
             state = State.Bearbeiten;
-            LoadData = false;       
+            RequestIsWorking = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluessel;
@@ -49,76 +52,65 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 906)
                 {
                     SendExceptionMessage("Nummer ist schon vorhanden");
-                    return;
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler: Speicher Schlüssel" + Environment.NewLine + resp.StatusCode);
-                    return;
+                    SendExceptionMessage("Schlüssel konnte nicht gespeichert werden.");
                 }
-
             }
         }
         #endregion
 
         #region Bindings
-        public int? Nummer 
+        public int? Nummer
         {
-            get
-            {
-                return data.Nummer;
-            }
+            get => data.Nummer;
             set
             {
-                if (LoadData || !string.Equals(data.Nummer, value))
+                if (RequestIsWorking || !Equals(data.Nummer, value))
                 {
                     ValidateAnzahl(value, "Nummer");
                     data.Nummer = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public String Beschreibung
+        public string Beschreibung
         {
-            get
-            {
-                return data.Beschreibung;
-            }
+            get => data.Beschreibung;
             set
             {
-                if (LoadData || !string.Equals(data.Beschreibung, value))
+                if (RequestIsWorking || !Equals(data.Beschreibung, value))
                 {
                     data.Beschreibung = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
-        public String Bezeichnung
+        public string Bezeichnung
         {
-            get
-            {
-                return data.Bezeichnung;
-            }
+            get => data.Bezeichnung;
             set
             {
-                if (LoadData || !string.Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -126,16 +118,13 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public int? Bestand
         {
-            get
-            {
-                return data.Bestand;
-            }
+            get => data.Bestand;
             set
             {
-                if (LoadData || !string.Equals(data.Bestand, value))
+                if (RequestIsWorking || !Equals(data.Bestand, value))
                 {
                     data.Bestand = value.GetValueOrDefault(0);
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }

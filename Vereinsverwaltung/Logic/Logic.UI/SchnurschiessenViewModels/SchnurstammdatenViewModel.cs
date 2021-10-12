@@ -5,7 +5,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
@@ -15,10 +15,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
-    public class SchnurStammdatenViewModel : ViewModelStammdaten<SchnurModel>, IViewModelStammdaten
+    public class SchnurStammdatenViewModel : ViewModelStammdaten<SchnurModel, StammdatenTypes>, IViewModelStammdaten
     {
         public SchnurStammdatenViewModel()
         {
@@ -27,16 +30,17 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<SchnurModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<SchnurModel>();
             }
             Bezeichnung = data.Bezeichnung;
             Schnurtyp = data.Schnurtyp;
             state = State.Bearbeiten;
+            RequestIsWorking = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnur;
@@ -46,17 +50,18 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur", data);
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage("Nummer ist schon vorhanden");
-                    return;
+                    SendExceptionMessage("Schnur konnte nicht gespeichert werden.");
                 }
             }           
         }
@@ -64,40 +69,31 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         #region Bindings
 
-        public String Bezeichnung
+        public string Bezeichnung
         {
-            get
-            {
-                return data.Bezeichnung;
-            }
+            get => data.Bezeichnung;
             set
             {
-                if ( LoadData || !string.Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public IEnumerable<Schnurtypes> Schnurtypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(Schnurtypes)).Cast<Schnurtypes>();
-            }
-        }
+        public IEnumerable<Schnurtypes> Schnurtypes => Enum.GetValues(typeof(Schnurtypes)).Cast<Schnurtypes>();
         public Schnurtypes Schnurtyp
         {
-            get { return data.Schnurtyp; }
+            get => data.Schnurtyp;
             set
             {
-                if (LoadData || (this.data.Schnurtyp != value))
+                if (RequestIsWorking || (data.Schnurtyp != value))
                 {
-                    this.data.Schnurtyp = value;
-                    this.RaisePropertyChanged();
+                    data.Schnurtyp = value;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }

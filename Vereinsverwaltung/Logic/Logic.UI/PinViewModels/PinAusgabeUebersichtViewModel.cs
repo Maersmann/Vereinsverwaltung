@@ -4,40 +4,27 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Messages.PinMessages;
-using Logic.UI.BaseViewModels;
-using System;
-using System.Collections.Generic;
+using Base.Logic.ViewModels;
 using System.Collections.ObjectModel;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.PinViewModels
 {
-    public class PinAusgabeUebersichtViewModel : ViewModelUebersicht<PinAusgabenUebersichtModel>
+    public class PinAusgabeUebersichtViewModel : ViewModelUebersicht<PinAusgabenUebersichtModel, StammdatenTypes>
     {
 
         public PinAusgabeUebersichtViewModel()
         {
             Title = "Übersicht Pin Ausgaben";
-            RegisterAktualisereViewMessage(StammdatenTypes.pinAusgabe);
+            RegisterAktualisereViewMessage(StammdatenTypes.pinAusgabe.ToString());
             OeffneAusgabeCommand = new RelayCommand(() => ExecuteOeffneAusgabeCommand());
             ErledigeAusgabeCommand = new RelayCommand(() => ExecuteErledigeAusgabeCommand());
         }
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.pinAusgabe; }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Uebersicht");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<PinAusgabenUebersichtModel>>();
-            }
-            base.LoadData();
-        }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.pinAusgabe; }
+        protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Uebersicht"; }
 
         #region Bindings
         public ICommand OeffneAusgabeCommand { get; private set; }
@@ -49,13 +36,24 @@ namespace Logic.UI.PinViewModels
 
         private void ExecuteOeffneAusgabeCommand()
         {
-            Messenger.Default.Send<OpenPinAusgabeMitgliederViewMessage>(new OpenPinAusgabeMitgliederViewMessage { ID = selectedItem.ID }, "PinAusgabeUebersicht");
+            Messenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = selectedItem.ID }, "PinAusgabeUebersicht");
         }
 
-        private void ExecuteErledigeAusgabeCommand()
+        private async void ExecuteErledigeAusgabeCommand()
         {
             selectedItem.Abgeschlossen = true;
-            base.LoadData();
+            RequestIsWorking = true;
+            if (GlobalVariables.ServerIsOnline)
+            {
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/erledigen", selectedItem.ID);
+                if (!resp.IsSuccessStatusCode)
+                {
+                    SendExceptionMessage("Ausgabe konnte nicht abgeschlossen werden.");
+                }
+            }
+            RequestIsWorking = false;
+
+            LoadData();
         }
         #endregion
     }

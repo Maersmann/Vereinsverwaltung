@@ -17,29 +17,19 @@ using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselverteilungSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungSchluesselUebersichtModel>
+    public class SchluesselverteilungSchluesselUebersichtViewModel : ViewModelSchluesselverwaltungUebersicht<SchluesselverteilungSchluesselUebersichtModel, StammdatenTypes>
     {
         public SchluesselverteilungSchluesselUebersichtViewModel()
         {
             MessageToken = "SchluesselverteilungSchluesselUebersicht";
             Title = "Übersicht Verteilung Schlüssel";
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
-            RegisterAktualisereViewMessage(StammdatenTypes.schluessel);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.schluessel.ToString());
         }
 
         protected override int GetID() { return selectedItem.SchluesselID; }
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Schluessel; }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel");
-                if (resp2.IsSuccessStatusCode)
-                    itemList = await resp2.Content.ReadAsAsync<ObservableCollection<SchluesselverteilungSchluesselUebersichtModel>>();
-            }
-            base.LoadData();
-        }
+        protected override string GetREST_API() { return $"/api/schluesselverwaltung/zuteilung/schluessel"; }
 
         #region Bindings
 

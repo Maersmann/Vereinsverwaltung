@@ -2,26 +2,23 @@
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselzuteilungStammdatenViewModel : ViewModelStammdaten<SchluesselzuteilungModel>, ISchluesselzuteilungStammdatenViewModel
+    public class SchluesselzuteilungStammdatenViewModel : ViewModelStammdaten<SchluesselzuteilungModel, StammdatenTypes>, ISchluesselzuteilungStammdatenViewModel
     {
         private SchluesselzuteilungTypes auswahlTypes;
 
@@ -39,6 +36,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{schluesselID}");
                 if (resp.IsSuccessStatusCode)
                 {
@@ -51,7 +49,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Besitzer");
                     this.RaisePropertyChanged("SchluesselBez");
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                }    
+                }
+                RequestIsWorking = false;
             }
         }
 
@@ -59,6 +58,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{schluesselbesitzerID}");
                 if (resp.IsSuccessStatusCode)
                 {
@@ -72,6 +72,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     this.RaisePropertyChanged("Schluesselbesitzer");
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
+                RequestIsWorking = false;
             }
         }
 
@@ -96,7 +97,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             get => data.Anzahl;
             set
             {
-                if (!string.Equals(data.Anzahl, value))
+                if (!Equals(data.Anzahl, value))
                 {
                     ValidateAnzahl(value, "Anzahl");
                     data.Anzahl = value.GetValueOrDefault(0);
@@ -111,11 +112,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             set
             {
 
-                if (!string.Equals(data.ErhaltenAm, value))
+                if (!Equals(data.ErhaltenAm, value))
                 {
-                    ValidateEintrittsdatum(value);
-                    data.ErhaltenAm = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
+                    data.ErhaltenAm = value.GetValueOrDefault(DateTime.Now);
+                    ValidateEintrittsdatum(data.ErhaltenAm);
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -130,24 +131,23 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/new", data);
-
-
+                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 902)
                 {
                     SendExceptionMessage("Es sind zu wenig Schlüssel frei");
-                    return;
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler: Speicher Verteilung" + Environment.NewLine + resp.StatusCode);
-                    return;
+                    SendExceptionMessage("Schlüsselzuteilung konnte nicht gespeichert werden.");
                 }
+                
 
             }
         }
@@ -179,6 +179,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
                     if (resp.IsSuccessStatusCode)
                     {
@@ -189,6 +190,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         this.RaisePropertyChanged("Schluesselbesitzer");
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
+                    RequestIsWorking = false;
                 }
             }
         }
@@ -198,6 +200,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
                     if (resp.IsSuccessStatusCode)
                     {
@@ -208,6 +211,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         this.RaisePropertyChanged("SchluesselBez");
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
+                    RequestIsWorking = false;
                 }
             }
         }

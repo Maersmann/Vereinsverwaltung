@@ -1,28 +1,24 @@
 ﻿using Data.Model.MitgliederModels;
 using Data.Types;
 using Data.Types.MitgliederTypes;
-using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Core;
 using Logic.Core.Validierungen;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliederModel>, IViewModelStammdaten
+    public class MitgliederStammdatenViewModel : ViewModelStammdaten<MitgliederModel, StammdatenTypes>, IViewModelStammdaten
     {
-
-
         public MitgliederStammdatenViewModel() 
         {
             Title = "Stammdaten Mitglied";
@@ -30,12 +26,12 @@ namespace Logic.UI.MitgliederViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<MitgliederModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<MitgliederModel>();
             }
             Name = data.Name;
             Eintrittsdatum = data.Eintrittsdatum;
@@ -47,7 +43,7 @@ namespace Logic.UI.MitgliederViewModels
             Vorname = data.Vorname;
             Geschlecht = data.Geschlecht;
             state = State.Bearbeiten;
-            LoadData = false;
+            RequestIsWorking = false;
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.mitglied;
         #region Commands
@@ -55,109 +51,108 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", data);
-
+                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 902)
                 {
                     SendExceptionMessage("MitgliedsNr ist schon vergeben");
-                    return;
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler beim Speichern!" + Environment.NewLine + resp.StatusCode);
-                    return;
-                }
+                    SendExceptionMessage("Mitglied konnte nicht gespeichert werden.");
+                }           
             }
         }
         #endregion
 
         #region Bindings
-        public String Name
+        public string Name
         {
             get { return data.Name; }
             set
             {
 
-                if (LoadData || !string.Equals(data.Name, value))
+                if (RequestIsWorking || !Equals(data.Name, value))
                 {
                     ValidateName(value);
                     data.Name = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public String Vorname
+        public string Vorname
         {
-            get { return data.Vorname; }
+            get => data.Vorname;
             set
             {
 
-                if (LoadData || !string.Equals(data.Vorname, value))
+                if (RequestIsWorking || !Equals(data.Vorname, value))
                 {
                     ValidateVorName(value);
                     data.Vorname = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public String Ort
+        public string Ort
         {
-            get { return data.Ort; }
+            get => data.Ort;
             set
             {
 
-                if (LoadData || !string.Equals(data.Ort, value))
+                if (RequestIsWorking || !Equals(data.Ort, value))
                 {
                     data.Ort = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
-        public String Strasse
+        public string Strasse
         {
-            get { return data.Straße; }
+            get => data.Straße;
             set
             {
 
-                if (LoadData || !string.Equals(data.Straße, value))
+                if (RequestIsWorking || !Equals(data.Straße, value))
                 {
                     data.Straße = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
         public int? Mitgliedsnr
         {
-            get { return data.Mitgliedsnr; }
+            get => data.Mitgliedsnr;
             set
             {
-                if (LoadData || !string.Equals(data.Mitgliedsnr, value))
+                if (RequestIsWorking || !Equals(data.Mitgliedsnr, value))
                 {
                     data.Mitgliedsnr = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
         public DateTime? Eintrittsdatum
         {
-            get { return data.Eintrittsdatum; }
+            get => data.Eintrittsdatum;
             set
             {
 
-                if (LoadData || !string.Equals(data.Eintrittsdatum, value))
+                if (RequestIsWorking || !Equals(data.Eintrittsdatum, value))
                 {
                     ValidateEintrittsdatum(value);
                     data.Eintrittsdatum = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -165,28 +160,28 @@ namespace Logic.UI.MitgliederViewModels
 
         public DateTime? Austrittsdatum
         {
-            get { return data.Austrittsdatum; }
+            get => data.Austrittsdatum;
             set
             {
 
-                if (LoadData || !string.Equals(data.Austrittsdatum, value))
+                if (RequestIsWorking || !Equals(data.Austrittsdatum, value))
                 {
                     data.Austrittsdatum = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
         public DateTime? Geburtstag
         {
-            get { return data.Geburtstag; }
+            get => data.Geburtstag;
             set
             {
-                
-                if (LoadData || !string.Equals(data.Geburtstag, value))
+
+                if (RequestIsWorking || !Equals(data.Geburtstag, value))
                 {
                     ValidateGeburtstag(value);
                     data.Geburtstag = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -201,13 +196,13 @@ namespace Logic.UI.MitgliederViewModels
         }
         public Geschlecht Geschlecht
         {
-            get { return data.Geschlecht; }
+            get => data.Geschlecht;
             set
             {
-                if (LoadData || (this.data.Geschlecht != value))
+                if (RequestIsWorking || (data.Geschlecht != value))
                 {
-                    this.data.Geschlecht = value;
-                    this.RaisePropertyChanged();
+                    data.Geschlecht = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -259,7 +254,7 @@ namespace Logic.UI.MitgliederViewModels
         public override void Cleanup()
         {
             data = new MitgliederModel();
-            this.RaisePropertyChanged();
+            RaisePropertyChanged();
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);
             ValidateName("");

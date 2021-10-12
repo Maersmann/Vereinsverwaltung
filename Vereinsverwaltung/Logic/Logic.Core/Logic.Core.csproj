@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.1.0</Version>
+    <Version>1.3.0</Version>
     <Authors>Märsmann</Authors>
     <Product>Vereinsverwaltung</Product>
   </PropertyGroup>
@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Base.Logic\Base.Logic\Base.Logic.csproj" />
     <ProjectReference Include="..\..\Data\Data.Model\Data.Model.csproj" />
     <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj" />
   </ItemGroup>

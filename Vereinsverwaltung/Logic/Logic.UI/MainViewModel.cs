@@ -1,13 +1,16 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Windows.Input;
 using Data.Types;
 using Logic.Messages.BaseMessages;
 using Logic.Core;
 using Logic.Core.OptionenLogic;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Logic.UI
 {
@@ -29,7 +32,13 @@ namespace Logic.UI
             NeuePinAusgabeCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.pinAusgabe));
             LadePinAusgabeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewPinAusgabeUebersicht));
             AuswertungPinAusgabeTagCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTag));
-            AuswertungPinAusgabeTagStundeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTagStunde));           
+            AuswertungPinAusgabeTagStundeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungPinAusgabeTagStunde));
+            ExportSchluesselCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportSchluessel));
+            ExportMitgliederAenderungenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportMitgliederAenderungen));
+            KkSchiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessenUebersicht));
+            KkSchiessgruppeUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessgruppeUebersicht)); 
+             AuswertungKkSchiessenMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonat));
+            AuswertungKkSchiessenMonatJahresvergleichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonatJahresvergleich));
         }
 
         public ICommand OpenMitgliederStammdatenCommand { get; private set; }
@@ -45,18 +54,23 @@ namespace Logic.UI
         public ICommand NeuePinAusgabeCommand { get; private set; }
         public ICommand AuswertungPinAusgabeTagCommand { get; private set; }
         public ICommand AuswertungPinAusgabeTagStundeCommand { get; private set; }
-        
+        public ICommand ExportSchluesselCommand { get; private set; }
+        public ICommand ExportMitgliederAenderungenCommand { get; private set; }
+        public ICommand KkSchiessenUebersichtCommand { get; private set; }
+        public ICommand KkSchiessgruppeUebersichtCommand { get; private set; }
+        public ICommand AuswertungKkSchiessenMonatCommand { get; private set; }
+        public ICommand AuswertungKkSchiessenMonatJahresvergleichCommand { get; set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
+            Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
         }
 
         private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage {Stammdaten  = stammdaten, State = State.Neu});
+            Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
         }
 
         private void ExecuteOpenStartingViewCommand()

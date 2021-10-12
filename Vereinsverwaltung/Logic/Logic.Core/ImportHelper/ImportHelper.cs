@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Base.Logic.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;

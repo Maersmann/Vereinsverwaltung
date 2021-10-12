@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.ImportHelper;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Logic.Messages.UtilMessages;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -18,10 +18,13 @@ using System.Net.Http.Handlers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Base.Logic.ViewModels;
+using Base.Logic.Core;
+using Base.Logic.Messages;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederImportViewModel : ViewModelUebersicht<MitgliederImportModel>
+    public class MitgliederImportViewModel : ViewModelLoadData<MitgliederImportModel>
     {
         MitgliedImportHistoryModel data;
         public MitgliederImportViewModel()
@@ -44,16 +47,22 @@ namespace Logic.UI.MitgliederViewModels
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "MitgliederImport");
                     await new ImportHelper().PostFile( openFileDialog.FileName ).ContinueWith(async task =>
-                    { 
+                    {                      
                         if (task.Result.IsSuccessStatusCode)
                         {
                             data = await task.Result.Content.ReadAsAsync<MitgliedImportHistoryModel>();
                             itemList = data.Importlist;
                             this.RaisePropertyChanged("ItemList");
                         }
-                           
+                        else
+                        {
+                            SendExceptionMessage("Import-Datei konnte nicht eingelesen werden");
+                            return;
+                        }
                     });
+                    Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
                 }
             }         
         }
@@ -62,18 +71,19 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
+                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert" }, "MitgliederImport");
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
+                Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
 
-
-                if (resp2.IsSuccessStatusCode)
+                if (resp.IsSuccessStatusCode)
                 {
                     itemList.Clear();
-                    this.RaisePropertyChanged("ItemList");
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.mitglied);
+                    RaisePropertyChanged("ItemList");
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied.ToString());
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler Import/Save"+  Environment.NewLine + resp2.StatusCode);
+                    SendExceptionMessage("Mitglieder konnten nicht gespeichert werden.");
                     return;
                 }
             }

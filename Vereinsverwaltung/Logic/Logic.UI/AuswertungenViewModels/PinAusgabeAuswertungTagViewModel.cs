@@ -6,13 +6,14 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.Wpf;
 using Logic.Core;
 using Logic.Messages.AuswahlMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.AuswertungenViewModels
 {
@@ -29,29 +30,30 @@ namespace Logic.UI.AuswertungenViewModels
 
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send<OpenPinAusgabeAuswahlMessage>(new OpenPinAusgabeAuswahlMessage(LoadAuswertungCallback), "PinAusgabeAuswertungTag");
+            Messenger.Default.Send(new OpenPinAusgabeAuswahlMessage(LoadAuswertungCallback), "PinAusgabeAuswertungTag");
         }
 
         public async void LoadAuswertungCallback(bool confirmed, int id)
         {
             if (confirmed && GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/auswertungen/pinausgabe/Tag/{id}");
                 if (resp.IsSuccessStatusCode)
                 {
                     Data = await resp.Content.ReadAsAsync<PinAusgabeAuswertungTagModel>();
                     SecondTitle = "Auswertung von: " + Data.Bezeichnung;
-                    this.RaisePropertyChanged(nameof(SecondTitle));
-                    this.RaisePropertyChanged(nameof(Data));
-                    this.RaisePropertyChanged(nameof(SecondTitle));
-                    this.RaisePropertyChanged(nameof(Data));
-                    this.RaisePropertyChanged(nameof(Pin));
-                    this.RaisePropertyChanged(nameof(Abgeschlossen));
-                    this.RaisePropertyChanged(nameof(Verteilt));
-                    this.RaisePropertyChanged(nameof(Offen));
+                    RaisePropertyChanged(nameof(SecondTitle));
+                    RaisePropertyChanged(nameof(Data));
+                    RaisePropertyChanged(nameof(SecondTitle));
+                    RaisePropertyChanged(nameof(Data));
+                    RaisePropertyChanged(nameof(Pin));
+                    RaisePropertyChanged(nameof(Abgeschlossen));
+                    RaisePropertyChanged(nameof(Verteilt));
+                    RaisePropertyChanged(nameof(Offen));
 
-                    var values = new ChartValues<int>();
-                    Labels = new String[Data.Auswertung.Count];
+                    ChartValues<int> values = new ChartValues<int>();
+                    Labels = new string[Data.Auswertung.Count];
                     int index = 0;
                     Data.Auswertung.OrderBy(s => s.Tag).ToList().ForEach(a => 
                     { 
@@ -65,9 +67,10 @@ namespace Logic.UI.AuswertungenViewModels
                         new ColumnSeries{ Values = values, Title="Anzahl" }
                     };
                     
-                    this.RaisePropertyChanged(nameof(SeriesCollection));
-                    this.RaisePropertyChanged(nameof(Labels));
-                    this.RaisePropertyChanged(nameof(Formatter));
+                    RaisePropertyChanged(nameof(SeriesCollection));
+                    RaisePropertyChanged(nameof(Labels));
+                    RaisePropertyChanged(nameof(Formatter));
+                    RequestIsWorking = false;
                 }
             }
         }

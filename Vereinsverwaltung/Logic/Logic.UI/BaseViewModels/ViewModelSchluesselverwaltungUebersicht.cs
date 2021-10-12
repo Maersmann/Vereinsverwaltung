@@ -1,24 +1,19 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Data.Types.SchluesselverwaltungTypes;
 using Logic.Messages.SchluesselMessages;
+using Base.Logic.ViewModels;
 
 namespace Logic.UI.BaseViewModels
 {
-    public class ViewModelSchluesselverwaltungUebersicht<T> : ViewModelUebersicht<T>
+    public class ViewModelSchluesselverwaltungUebersicht<T1, T2> : ViewModelUebersicht<T1, T2>
     {
         public ViewModelSchluesselverwaltungUebersicht()
         {
             OpenZuteilungCommand = new RelayCommand(() => ExecuteOpenZuteilungCommand());
             OpenRueckgabeCommand = new RelayCommand(() => ExecuteOpenRueckgabeCommand());
         }
-
         protected virtual SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return 0; }
 
         public ICommand OpenZuteilungCommand { get; private set; }
@@ -26,12 +21,12 @@ namespace Logic.UI.BaseViewModels
 
         private void ExecuteOpenZuteilungCommand()
         {
-            Messenger.Default.Send<OpenSchluesselzuteilungMessage>(new OpenSchluesselzuteilungMessage { ID = GetID() }, messageToken);
+            Messenger.Default.Send(new OpenSchluesselzuteilungMessage { ID = GetID() }, messageToken);
         }
 
         private void ExecuteOpenRueckgabeCommand()
         {
-            Messenger.Default.Send<OpenSchluesselRueckgabeMessage>(new OpenSchluesselRueckgabeMessage { ID = GetID(), AuswahlTypes = GetSchluesselzuteilungAuswahlTyp() }, messageToken);
+            Messenger.Default.Send(new OpenSchluesselRueckgabeMessage { ID = GetID(), AuswahlTypes = GetSchluesselzuteilungAuswahlTyp() }, messageToken);
         }
     }
 }

@@ -19,7 +19,26 @@
     </i:Interaction.Triggers>
 
     <Grid >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
         <Label Content="Software wird geladen...." HorizontalAlignment="Left" Margin="87,102,0,0" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.386,0.423"/>
+
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </Window>

@@ -4,7 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System;
@@ -14,10 +14,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.Messages;
 
 namespace Logic.UI.PinViewModels
 {
-    public class PinAusgabeStammdatenViewModel : ViewModelStammdaten<PinAusgabeModel>, IViewModelStammdaten
+    public class PinAusgabeStammdatenViewModel : ViewModelStammdaten<PinAusgabeModel, StammdatenTypes>, IViewModelStammdaten
     {
         private IList<PinModel> pins;
         public PinAusgabeStammdatenViewModel()
@@ -30,17 +33,17 @@ namespace Logic.UI.PinViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadData = true; 
+            RequestIsWorking = true; 
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp2 = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/{id}");
-                if (resp2.IsSuccessStatusCode)
-                    data = await resp2.Content.ReadAsAsync<PinAusgabeModel>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/{id}");
+                if (resp.IsSuccessStatusCode)
+                    data = await resp.Content.ReadAsAsync<PinAusgabeModel>();
             }
 
             Bezeichnung = data.Bezeichnung;
             state = State.Bearbeiten;
-            LoadData = false;
+            RequestIsWorking = false;
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.pinAusgabe;
@@ -50,28 +53,31 @@ namespace Logic.UI.PinViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 data.PinID = data.Pin.ID;
-                if (!data.Option.NurAktive) data.Option.Stichtag = null;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", data);
+                if (!data.Option.NurAktive)
+                {
+                    data.Option.Stichtag = null;
+                }
 
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", data);
+                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
-                    SendExceptionMessage("Fehler: Speicher Pin Ausgabe" + Environment.NewLine + await resp.Content.ReadAsStringAsync());
-                    return;
+                    SendExceptionMessage("Pin konnte nicht gespeichert werden.");
                 }
-
             }
         }
         #endregion
 
         #region Bindings
 
-        public String Bezeichnung
+        public string Bezeichnung
         {
             get
             {
@@ -79,11 +85,11 @@ namespace Logic.UI.PinViewModels
             }
             set
             {
-                if (LoadData || !string.Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
                     data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -94,25 +100,25 @@ namespace Logic.UI.PinViewModels
             set
             {
 
-                if (LoadData || !string.Equals(data.Option.Stichtag, value))
+                if (RequestIsWorking || !Equals(data.Option.Stichtag, value))
                 {
                     data.Option.Stichtag = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-        public Boolean NurAktive
+        public bool NurAktive
         {
             get { return data.Option.NurAktive; }
             set
             {
 
-                if (LoadData || !string.Equals(data.Option.NurAktive, value))
+                if (RequestIsWorking || !Equals(data.Option.NurAktive, value))
                 {
                     data.Option.NurAktive = value;
-                    this.RaisePropertyChanged();
-                    this.RaisePropertyChanged(nameof(Stichtag));
+                    RaisePropertyChanged();
+                    RaisePropertyChanged(nameof(Stichtag));
                 }
             }
         }
@@ -123,10 +129,10 @@ namespace Logic.UI.PinViewModels
             get { return data.Pin; }
             set
             {
-                if (LoadData || (this.data.Pin != value))
+                if (RequestIsWorking || (data.Pin != value))
                 {
-                    this.data.Pin = value;
-                    this.RaisePropertyChanged();
+                    data.Pin = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -149,18 +155,25 @@ namespace Logic.UI.PinViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp;
                 resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins");
 
                 if (resp.IsSuccessStatusCode)
+                {
                     pins = await resp.Content.ReadAsAsync<ObservableCollection<PinModel>>();
+                }
                 else
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Pin-Arten konnten nicht gelade werden");
+                
+                RequestIsWorking = false;
             }
 
-            this.RaisePropertyChanged(nameof(Pins));
+            RaisePropertyChanged(nameof(Pins));
             if (pins.Count > 0)
+            {
                 Pin = pins.First();
+            }
         }
 
         public override void Cleanup()

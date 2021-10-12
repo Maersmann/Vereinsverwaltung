@@ -7,11 +7,14 @@
                     xmlns:local="clr-namespace:Vereinsverwaltung.UI.Desktop.Mitglieder"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="468.105" Width="357.917"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize" ShowInTaskbar="False"
+                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                    Background="{DynamicResource MaterialDesignPaper}"
                     DataContext="{Binding MitgliederStammdaten ,Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>
@@ -26,9 +29,21 @@
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
             <RowDefinition Height="45px" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
 
-        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" /> 
         </materialDesign:Card>
 
@@ -60,7 +75,8 @@
             <Label Grid.Row="8" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" >Austrittsdatum</Label>
 
 
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }"  >
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam"  >
+                <materialDesign:HintAssist.Hint>Max</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -77,6 +93,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }"  >
+                <materialDesign:HintAssist.Hint>Mustermann</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -94,6 +111,7 @@
             </TextBox>
 
             <DatePicker Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" SelectedDate="{Binding Geburtstag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+                <materialDesign:HintAssist.Hint>01.01.1564</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -111,6 +129,7 @@
             </DatePicker>
 
             <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Ort, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+                <materialDesign:HintAssist.Hint>Wietmarschen</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -127,6 +146,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <TextBox Grid.Row="4"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Strasse, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+                <materialDesign:HintAssist.Hint>Schulstrasse 17</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -145,14 +165,14 @@
 
             <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" ItemsSource="{Binding Geschlechter}" SelectedItem="{Binding Geschlecht}" IsReadOnly="True" SelectedIndex="0"  />
 
-            <TextBox Grid.Row="6"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Mitgliedsnr, Mode=TwoWay, TargetNullValue='' }" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <TextBox Grid.Row="6"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="150" Text="{Binding Mitgliedsnr, Mode=TwoWay, TargetNullValue='' }" Cursor="IBeam" >
+                <materialDesign:HintAssist.Hint>1564</materialDesign:HintAssist.Hint>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                </i:Interaction.Behaviors>
             </TextBox>
             <DatePicker Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" SelectedDate="{Binding Eintrittsdatum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+                <materialDesign:HintAssist.Hint>01.01.1564</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -176,9 +196,11 @@
 
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >
-                <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
+                <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >Speichern</Button>
             </DockPanel>
         </materialDesign:Card>
+
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </src:StammdatenView>

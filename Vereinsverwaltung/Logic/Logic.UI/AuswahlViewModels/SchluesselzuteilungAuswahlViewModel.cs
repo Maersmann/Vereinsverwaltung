@@ -2,7 +2,7 @@
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
 using Logic.Core;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +16,7 @@ using System.Windows.Data;
 
 namespace Logic.UI.AuswahlViewModels
 {
-    public class SchluesselzuteilungAuswahlViewModel : ViewModelAuswahl<SchluesselzuteilungAuswahlModel>
+    public class SchluesselzuteilungAuswahlViewModel : ViewModelAuswahl<SchluesselzuteilungAuswahlModel, StammdatenTypes>
     {
         private SchluesselzuteilungTypes auswahlTypes;
         private int id;
@@ -25,7 +25,7 @@ namespace Logic.UI.AuswahlViewModels
         {
             Title = "Auswahl Besitzer";
             LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung);
+            RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
         }
 
         public void SetAuswahlState(int id, SchluesselzuteilungTypes auswahlTypes)
@@ -42,22 +42,11 @@ namespace Logic.UI.AuswahlViewModels
         }
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselzuteilung; }
-
-        public async override void LoadData()
+        protected override string GetREST_API() 
         {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp;
-                if (auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer))
-                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel");
-                else
-                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer");
-
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungAuswahlModel>>();
-            }
-            base.LoadData();
+            return auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer)
+                ? $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel"
+                : $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer";
         }
-
     }
 }

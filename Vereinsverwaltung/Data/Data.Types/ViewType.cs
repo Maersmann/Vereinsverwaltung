@@ -19,7 +19,13 @@ namespace Data.Types
         viewZuteilungFreieAnzahlUebersicht,
         viewPinAusgabeUebersicht,
         viewAuswertungPinAusgabeTag,
-        viewAuswertungPinAusgabeTagStunde
+        viewAuswertungPinAusgabeTagStunde,
+        viewExportSchluessel,
+        viewExportMitgliederAenderungen,
+        viewKkSchiessgruppeUebersicht,
+        viewKkSchiessenUebersicht,
+        viewAuswertungKkSchiessenMonat,
+        viewAuswertungKkSchiessenMonatJahresvergleich
     }
     
 }

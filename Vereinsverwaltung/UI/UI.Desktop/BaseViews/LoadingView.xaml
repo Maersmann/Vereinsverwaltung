@@ -1,0 +1,29 @@
+﻿<Window x:Class="UI.Desktop.BaseViews.LoadingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI.Desktop.BaseViews"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Bitte warten..." Height="130" Width="320"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        DataContext="{Binding Loading, Source={StaticResource Locator}}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5px" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}"/>
+        </materialDesign:Card>
+
+        <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Content= "{Binding Beschreibung}"/>
+
+        <ProgressBar Grid.Row="2" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+
+    </Grid>
+</Window>

@@ -12,8 +12,9 @@
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
         Icon="Resources/icon.ico" 
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Background="{DynamicResource MaterialDesignPaper}"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" IsAutomaticCollapseEnabled="False"
-        DataContext="{Binding Main ,Source={StaticResource Locator}}">
+        DataContext="{Binding Main ,Source={StaticResource Locator}}" MinHeight="728" MinWidth="1021">
 
 
     <i:Interaction.Triggers>
@@ -28,10 +29,15 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Fluent:Ribbon Grid.Row="0" AutomaticStateManagement="True">
+        <Fluent:Ribbon Grid.Row="0" AutomaticStateManagement="True" Background="{DynamicResource MaterialDesignPaper}" >
+
+            <Fluent:Ribbon.Resources>
+                <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.TabsGrid.Background" Color="{DynamicResource colorRibbonTitle}"/>
+                <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Content.Background" Color="{DynamicResource colorRibbon}"/>
+            </Fluent:Ribbon.Resources>
 
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage >
+                <Fluent:Backstage Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}" >
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="Schnurschießen"  >
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  />
@@ -46,36 +52,56 @@
             </Fluent:Ribbon.Menu>
 
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="Mitglieder">
+            <Fluent:RibbonTabItem Header="Mitglieder" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" >
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
-                    <Fluent:Button Header="Übersicht" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
-                    <Fluent:Button Header="Import" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Übersicht" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Import" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            <Fluent:RibbonTabItem Header="Schlüssel">
+            
+            <Fluent:RibbonTabItem Header="Schlüssel" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Stammdaten" >
-                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenSchluesselUebersichtCommand}" Width="60" LargeIcon="Resources/key.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"/>
-                    <Fluent:Button Header="Besitzer" Command="{Binding OpenSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"/>
+                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenSchluesselUebersichtCommand}" Width="60" LargeIcon="Resources/key.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Besitzer" Command="{Binding OpenSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Zuteilung" >
-                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenZuteilungSchluesselUebersichtCommand}" Width="60"  LargeIcon="Resources/key_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
-                    <Fluent:Button Header="Besitzer" Command="{Binding OpenZuteilungSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"/>
-                    <Fluent:Button Header="Freie Schlüssel" Command="{Binding OpenZuteilungFreieAnzahlUbersichtCommand}" Width="60"  LargeIcon="Resources/key_free.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                <Fluent:RibbonGroupBox Header="Zuteilung"  >
+                    <Fluent:Button Header="Schlüssel" Command="{Binding OpenZuteilungSchluesselUebersichtCommand}" Width="60"  LargeIcon="Resources/key_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Besitzer" Command="{Binding OpenZuteilungSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Freie Schlüssel" Command="{Binding OpenZuteilungFreieAnzahlUbersichtCommand}" Width="60"  LargeIcon="Resources/key_free.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            <Fluent:RibbonTabItem Header="Pins">
+            
+            <Fluent:RibbonTabItem Header="Pins" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Ausgabe" >
-                    <Fluent:Button Header="Neu" Command="{Binding NeuePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_new.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
-                    <Fluent:Button Header="Lade" Command="{Binding LadePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_load.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Neu" Command="{Binding NeuePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_new.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Lade" Command="{Binding LadePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_load.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            <Fluent:RibbonTabItem Header="Auswertungen">
+            
+            <Fluent:RibbonTabItem Header="KK-Schießen" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+                <Fluent:RibbonGroupBox Header="KK-Schießen" >
+                    <Fluent:Button Header="Übersicht" Command="{Binding KkSchiessenUebersichtCommand}" Width="60"  LargeIcon="Resources/kk_schiessen.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Gruppen" Command="{Binding KkSchiessgruppeUebersichtCommand}" Width="60"  LargeIcon="Resources/kk_schiessgruppe.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            
+            <Fluent:RibbonTabItem Header="Auswertungen" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Pin Ausgabe" >
-                    <Fluent:Button Header="Tag" Command="{Binding AuswertungPinAusgabeTagCommand}" Width="60"  LargeIcon="Resources/auswertungTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
-                    <Fluent:Button Header="Tag / Stunde" Command="{Binding AuswertungPinAusgabeTagStundeCommand}" Width="60"  LargeIcon="Resources/auswertungStundeTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Tag" Command="{Binding AuswertungPinAusgabeTagCommand}" Width="60"  LargeIcon="Resources/auswertungTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Tag / Stunde" Command="{Binding AuswertungPinAusgabeTagStundeCommand}" Width="60"  LargeIcon="Resources/auswertungStundeTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="KK-Schießen" >
+                    <Fluent:Button Header="Monate" Command="{Binding AuswertungKkSchiessenMonatCommand}" Width="80"  LargeIcon="Resources/auswertung_kk_monat.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Monate Jahresvergleich" Command="{Binding AuswertungKkSchiessenMonatJahresvergleichCommand}" Width="90"  LargeIcon="Resources/auswertung_kk_monat_jahres.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-
+            
+            <Fluent:RibbonTabItem Header="Export" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+                <Fluent:RibbonGroupBox Header="Export" >
+                    <Fluent:Button Header="Schlüssel" Command="{Binding ExportSchluesselCommand}" Width="70"  LargeIcon="Resources/key_export.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Mitglied Änderungen" Command="{Binding ExportMitgliederAenderungenCommand}" Width="70"  LargeIcon="Resources/export_mitglieder.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
         <Grid Grid.Row="1">

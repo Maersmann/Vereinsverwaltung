@@ -25,9 +25,21 @@
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
             <RowDefinition Height="45px" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
 
-        <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
+        <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}"   >
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title}" />
         </materialDesign:Card>
 
@@ -43,7 +55,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Suche:</Label>
-                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Margin="10,10" >
+                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Margin="10,10" Cursor="IBeam" >
                     <materialDesign:HintAssist.Hint>Mitglieds-Nr, Vorname, Name</materialDesign:HintAssist.Hint>
                 </TextBox>
             </Grid>
@@ -66,9 +78,11 @@
         </Button>
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >
-                <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Auswahl}"  Style="{DynamicResource MaterialDesignToolButton}" >OK</Button>
+                <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Auswahl}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >OK</Button>
             </DockPanel>
         </materialDesign:Card>
+
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </Window>

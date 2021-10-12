@@ -29,6 +29,11 @@ using UI.Desktop.Schnurschiessen;
 using UI.Desktop.Pin;
 using UI.Desktop.Auswertungen;
 using UI.Desktop.Konfiguration;
+using System.Windows.Media.Animation;
+using Base.Logic.Messages;
+using Base.Logic.Types;
+using UI.Desktop.Export;
+using UI.Desktop.KkSchiessen;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -53,11 +58,11 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
             Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
-            Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
+            Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
-        }
+        }   
 
         private void ReceiceCloseApplicationMessage()
         {
@@ -121,16 +126,34 @@ namespace Vereinsverwaltung.UI.Desktop
                 case ViewType.viewAuswertungPinAusgabeTag:
                     Container.NavigationService.Navigate(new PinAusgabeAuswertungTagView());
                     break;
-                case ViewType.viewAuswertungPinAusgabeTagStunde:    
+                case ViewType.viewAuswertungPinAusgabeTagStunde:   
                     Container.NavigationService.Navigate(new PinAusgabeAuswertungTagStundeView());
                     break;
+                case ViewType.viewExportSchluessel:
+                    new ExportSchluesselView().ShowDialog();
+                    break;
+                case ViewType.viewExportMitgliederAenderungen:
+                    Container.NavigationService.Navigate(new ExportMitgliederAenderungenView());
+                    break;
+                case ViewType.viewKkSchiessenUebersicht:
+                    Container.NavigationService.Navigate(new KkSchiessenUebersichtView());
+                    break;
+                case ViewType.viewKkSchiessgruppeUebersicht:
+                    Container.NavigationService.Navigate(new KkSchiessgruppeUebersichtView());
+                    break;
+                case ViewType.viewAuswertungKkSchiessenMonat:
+                    Container.NavigationService.Navigate(new KkSchiessenMonatAuswertungView());
+                    break;
+                case ViewType.viewAuswertungKkSchiessenMonatJahresvergleich:
+                    Container.NavigationService.Navigate(new KkSchiessenMonatJahresvergleichAuswertungView());
+                    break;      
                 default:
                     break;
             }
         }
 
 
-        private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage m)
+        private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage<StammdatenTypes> m)
         {
             StammdatenView view = null;
             switch ( m.Stammdaten)
@@ -152,6 +175,12 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case StammdatenTypes.pinAusgabe:
                     view = new PinAusgabeStammdatenView();
+                    break;
+                case StammdatenTypes.kkSchiessgruppe:
+                    view = new KkSchiessgruppeStammdatenView();
+                    break;
+                case StammdatenTypes.kkSchiessen:
+                    view = new KKSchiessenStammdatenView();
                     break;
                 default:
                     break;
@@ -176,10 +205,10 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiceOpenStartingViewMessage()
         {
-            var view = new StartingProgrammView();
+            StartingProgrammView view = new StartingProgrammView();
             view.ShowDialog();
             SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
-        }
+        }   
     }
 
 }

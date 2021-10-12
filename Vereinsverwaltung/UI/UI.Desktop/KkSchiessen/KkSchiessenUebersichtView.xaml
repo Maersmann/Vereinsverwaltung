@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="UI.Desktop.KkSchiessen.KkSchiessenUebersichtView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UI.Desktop.KkSchiessen"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             DataContext="{Binding KkSchiessenUebersicht, Source={StaticResource Locator}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45px" />
+            <RowDefinition Height="0" >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}"/>
+        </materialDesign:Card>
+
+        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Gruppe" Binding="{Binding KkSchiessGruppe.Name}" Width="auto"/>
+                <DataGridTextColumn Header="Datum" Binding="{Binding Datum, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Getränke" Binding="{Binding Getraenke }" Width="auto" FontWeight="Bold"/>
+                <DataGridTextColumn Header="Packungen Munition" Binding="{Binding PackungenMunition}" Width="auto" FontWeight="Bold"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10">
+            <Image Source="../Resources/add.png" Stretch="None"/>
+        </Button>
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,85,10" >
+            <Image Source="../Resources/bearbeiten.png" Stretch="None"/>
+        </Button>
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,145,10" >
+            <Image Source="../Resources/entfernen.png" Stretch="None"/>
+        </Button>
+
+        <materialDesign:Card  Grid.Row="2">
+            <DockPanel  LastChildFill="False" >
+            </DockPanel>
+        </materialDesign:Card>
+
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+
+    </Grid>
+</UserControl>
