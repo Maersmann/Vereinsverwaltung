@@ -17,10 +17,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             RegisterAktualisereViewMessage(StammdatenTypes.schluesselbesitzer.ToString());
         }
 
-        protected override int GetID() { return selectedItem.SchluesselbesitzerID; }
+        protected override int GetID() { return SelectedItem.SchluesselbesitzerID; }
 
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Besitzer; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/zuteilung/besitzer"; }
+        protected override bool WithPagination() { return true; }
 
         #region Bindings
 
@@ -30,9 +31,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             set
             {
                 base.SelectedItem = value;
-                if (selectedItem != null)
+                if (SelectedItem != null)
                 {
-                    Messenger.Default.Send<LoadSchluesselverteilungBesitzerDetailMessage>(new LoadSchluesselverteilungBesitzerDetailMessage { ID = selectedItem.SchluesselbesitzerID }, messageToken);
+                    Messenger.Default.Send(new LoadSchluesselverteilungBesitzerDetailMessage { ID = SelectedItem.SchluesselbesitzerID }, messageToken);
                 }
             } 
         }

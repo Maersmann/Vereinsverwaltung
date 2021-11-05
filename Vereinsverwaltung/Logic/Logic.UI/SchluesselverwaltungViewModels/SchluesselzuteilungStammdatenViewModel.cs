@@ -15,6 +15,7 @@ using System.Windows.Input;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
@@ -40,14 +41,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{schluesselID}");
                 if (resp.IsSuccessStatusCode)
                 {
-                    var resData = await resp.Content.ReadAsAsync<SchluesselModel>();
-                    data.SchluesselID = resData.ID;
-                    data.SchluesselBezeichnung = resData.Bezeichnung;
+                    Response<SchluesselModel> resData = await resp.Content.ReadAsAsync<Response<SchluesselModel>>();
+                    Data.SchluesselID = resData.Data.ID;
+                    Data.SchluesselBezeichnung = resData.Data.Bezeichnung;
                     auswahlTypes = SchluesselzuteilungTypes.Besitzer;
                     ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
                     ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Besitzer");
-                    this.RaisePropertyChanged("SchluesselBez");
+                    RaisePropertyChanged("SchluesselBez");
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
                 RequestIsWorking = false;
@@ -62,14 +63,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{schluesselbesitzerID}");
                 if (resp.IsSuccessStatusCode)
                 {
-                    var resData = await resp.Content.ReadAsAsync<SchluesselbesitzerModel>();
-                    data.SchluesselbesitzerID = resData.ID;
-                    data.SchluesselbesitzerName = resData.Name;
+                    Response<SchluesselbesitzerModel> resData = await resp.Content.ReadAsAsync<Response<SchluesselbesitzerModel>>();
+                    Data.SchluesselbesitzerID = resData.Data.ID;
+                    Data.SchluesselbesitzerName = resData.Data.Name;
                     auswahlTypes = SchluesselzuteilungTypes.Schluessel;
                     ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
                     ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
-                    this.RaisePropertyChanged("Schluesselbesitzer");
+                    RaisePropertyChanged("Schluesselbesitzer");
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
                 RequestIsWorking = false;
@@ -77,46 +78,34 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         }
 
         #region Bindings
-        public String SchluesselBez
-        {
-            get
-            {
-                 return data.SchluesselBezeichnung;
-            }
-        }
-        public String Schluesselbesitzer
-        {
-            get
-            {
-                return data.SchluesselbesitzerName; 
-            }
-        }
+        public string SchluesselBez => Data.SchluesselBezeichnung;
+        public string Schluesselbesitzer => Data.SchluesselbesitzerName;
 
         public int? Anzahl
         {
-            get => data.Anzahl;
+            get => Data.Anzahl;
             set
             {
-                if (!Equals(data.Anzahl, value))
+                if (!Equals(Data.Anzahl, value))
                 {
                     ValidateAnzahl(value, "Anzahl");
-                    data.Anzahl = value.GetValueOrDefault(0);
-                    this.RaisePropertyChanged();
+                    Data.Anzahl = value.GetValueOrDefault(0);
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public DateTime? ErhaltenAm
         {
-            get => data.ErhaltenAm;
+            get => Data.ErhaltenAm;
             set
             {
 
-                if (!Equals(data.ErhaltenAm, value))
+                if (!Equals(Data.ErhaltenAm, value))
                 {
-                    data.ErhaltenAm = value.GetValueOrDefault(DateTime.Now);
-                    ValidateEintrittsdatum(data.ErhaltenAm);
-                    RaisePropertyChanged();
+                    Data.ErhaltenAm = value.GetValueOrDefault(DateTime.Now);
+                    ValidateEintrittsdatum(Data.ErhaltenAm);
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -132,14 +121,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/new", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/new", Data);
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
-                else if ((int)resp.StatusCode == 902)
+                else if ((int)resp.StatusCode == 908)
                 {
                     SendExceptionMessage("Es sind zu wenig Schlüssel frei");
                 }
@@ -163,12 +152,12 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExecuteOpenAuswahlSchluesselCommand()
         {
-            Messenger.Default.Send<OpenSchluesselAuswahlMessage>(new OpenSchluesselAuswahlMessage(OpenSchluesselAuswahlCallback), "SchluesselzuteilungStammdaten");
+            Messenger.Default.Send(new OpenSchluesselAuswahlMessage(OpenSchluesselAuswahlCallback), "SchluesselzuteilungStammdaten");
         }
 
         private void ExecuteOpenAuswahlBesitzerCommand()
         {
-            Messenger.Default.Send<OpenSchluesselbesitzerAuswahlMessage>(new OpenSchluesselbesitzerAuswahlMessage(OpenSchluesselbesitzerAuswahlCallback), "SchluesselzuteilungStammdaten");
+            Messenger.Default.Send(new OpenSchluesselbesitzerAuswahlMessage(OpenSchluesselbesitzerAuswahlCallback), "SchluesselzuteilungStammdaten");
         }
         #endregion
 
@@ -183,11 +172,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{id}");
                     if (resp.IsSuccessStatusCode)
                     {
-                        var resData = await resp.Content.ReadAsAsync<SchluesselbesitzerModel>();;
-                        data.SchluesselbesitzerID = resData.ID;
-                        data.SchluesselbesitzerName = resData.Name;
+                        Response<SchluesselbesitzerModel> resData = await resp.Content.ReadAsAsync<Response<SchluesselbesitzerModel>>();;
+                        Data.SchluesselbesitzerID = resData.Data.ID;
+                        Data.SchluesselbesitzerName = resData.Data.Name;
                         ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Schlüssel");
-                        this.RaisePropertyChanged("Schluesselbesitzer");
+                        RaisePropertyChanged("Schluesselbesitzer");
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
                     RequestIsWorking = false;
@@ -204,11 +193,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
                     if (resp.IsSuccessStatusCode)
                     {
-                        var resData = await resp.Content.ReadAsAsync<SchluesselModel>();
-                        data.SchluesselID = resData.ID;
-                        data.SchluesselBezeichnung = resData.Bezeichnung;
+                        Response<SchluesselModel> resData = await resp.Content.ReadAsAsync<Response<SchluesselModel>>();
+                        Data.SchluesselID = resData.Data.ID;
+                        Data.SchluesselBezeichnung = resData.Data.Bezeichnung;
                         ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
-                        this.RaisePropertyChanged("SchluesselBez");
+                        RaisePropertyChanged("SchluesselBez");
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
                     RequestIsWorking = false;
@@ -251,7 +240,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public override void Cleanup()
         {
-            data = new SchluesselzuteilungModel();
+            Data = new SchluesselzuteilungModel();
             ErhaltenAm = DateTime.Now;
             Anzahl = null;
             state = State.Neu;

@@ -38,7 +38,7 @@ namespace UI.Desktop.KkSchiessen
             if (view.DataContext is KkSchiessgruppeAuswahlViewModel model)
             {
                 view.ShowDialog();
-                if (model.ID().HasValue)
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
                 {
                     m.Callback(true, model.ID().Value);
                 }

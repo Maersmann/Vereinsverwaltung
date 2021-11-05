@@ -28,6 +28,7 @@ using Logic.UI.KonfigruationViewModels;
 using Logic.UI.UtilsViewModels;
 using Logic.UI.ExportViewModels;
 using Logic.UI.KkSchiessenViewModels;
+using Logic.UI.VereinsmeisterschaftViewModels;
 
 namespace Logic.UI
 {
@@ -120,6 +121,36 @@ namespace Logic.UI
         public KkSchiessGruppUebersichtViewModel KkSchiessGruppUebersicht => new KkSchiessGruppUebersichtViewModel();
         public KkSchiessenMonatAuswertungViewModel KkSchiessenMonatAuswertung => new KkSchiessenMonatAuswertungViewModel();
         public KkSchiessenMonatJahresvergleichAuswertungViewModel KkSchiessenMonatJahresvergleichAuswertung => new KkSchiessenMonatJahresvergleichAuswertungViewModel();
+        public VereinsmeisterschaftAktivViewModel VereinsmeisterschaftAktiveVereinsmeisterschaft => new VereinsmeisterschaftAktivViewModel();
+        public VereinsmeisterschaftNeueErstellenViewModel VereinsmeisterschaftNeueErstellen => new VereinsmeisterschaftNeueErstellenViewModel();
+        public SchuetzenUebersichtViewModel SchuetzenUebersicht => new SchuetzenUebersichtViewModel();
+        public SchuetzeStammdatenViewModel SchuetzeStammdaten => new SchuetzeStammdatenViewModel();
+        public SchiessgruppenUebersichtViewModel SchiessgruppeUebersicht => new SchiessgruppenUebersichtViewModel();
+        public SchiessgruppeStammdatenViewModel SchiessgruppeStammdaten => new SchiessgruppeStammdatenViewModel();
+        public VereinsmeisterschaftNeuerSchuetzeViewModel VereinsmeisterschaftNeuerSchuetze => new VereinsmeisterschaftNeuerSchuetzeViewModel();
+        public VereinsmeisterschaftSchuetzeAuswahlViewModel VereinsmeisterschaftSchuetzeAuswahl => new VereinsmeisterschaftSchuetzeAuswahlViewModel();
+        public VereinsmeisterschaftFreieGruppeAuswahlViewModel VereinsmeisterschaftFreieGruppeAuswahl => new VereinsmeisterschaftFreieGruppeAuswahlViewModel();
+        public VereinsmeisterschaftGruppenMitSchuetzenViewModel VereinsmeisterschaftGruppenMitSchuetzen => new VereinsmeisterschaftGruppenMitSchuetzenViewModel();
+        public VereinsmeisterschaftSchuetzenDerGruppeViewModel VereinsmeisterschaftSchuetzenDerGruppe => new VereinsmeisterschaftSchuetzenDerGruppeViewModel();
+        public VereinsmeisterschaftGruppenVonSchuetzeViewModel VereinsmeisterschaftGruppenVonSchuetze => new VereinsmeisterschaftGruppenVonSchuetzeViewModel();
+        public VereinsmeisterschaftErgebnisEintragenViewModel VereinsmeisterschaftErgebnisEintragen => new VereinsmeisterschaftErgebnisEintragenViewModel();
+        public ExportVereinsmeisterschaftViewModel ExportVereinsmeisterschaft => new ExportVereinsmeisterschaftViewModel();
+        public BestaetigungViewModel Bestaetigung => new BestaetigungViewModel();
+        public VereinsmeisterschaftAuswahlViewModel VereinsmeisterschaftAuswahl => new VereinsmeisterschaftAuswahlViewModel();
+        public VereinsmeisterschaftAktivErgebnisseSchuetzentypenViewModel VereinsmeisterschaftAktivErgebnisseSchuetzentypen => new VereinsmeisterschaftAktivErgebnisseSchuetzentypenViewModel();
+        public VereinsmeisterschaftAktivErgebnisseVonSchuetzenTypViewModel VereinsmeisterschaftAktivErgebnisseVonSchuetzenTyp => new VereinsmeisterschaftAktivErgebnisseVonSchuetzenTypViewModel();
+        public VereinsmeisterschaftAktivErgebnisseGruppentypenViewModel VereinsmeisterschaftAktivErgebnisseGruppentypen => new VereinsmeisterschaftAktivErgebnisseGruppentypenViewModel();
+        public VereinsmeisterschaftAktivErgebnisseVonGruppenTypViewModel VereinsmeisterschaftAktivErgebnisseVonGruppenTyp => new VereinsmeisterschaftAktivErgebnisseVonGruppenTypViewModel();
+        public VereinsmeisterschaftenUebersichtViewModel VereinsmeisterschaftenUebersicht => new VereinsmeisterschaftenUebersichtViewModel();
+        public VereinsmeisterschaftPlatzierungenGruppentypenViewModel VereinsmeisterschaftPlatzierungenGruppentypen => new VereinsmeisterschaftPlatzierungenGruppentypenViewModel();
+        public VereinsmeisterschaftPlatzierungenVonGruppentypViewModel VereinsmeisterschaftPlatzierungenVonGruppentyp => new VereinsmeisterschaftPlatzierungenVonGruppentypViewModel();
+        public VereinsmeisterschaftPlatzierungenSchuetzentypenViewModel VereinsmeisterschaftPlatzierungenSchuetzentypen => new VereinsmeisterschaftPlatzierungenSchuetzentypenViewModel();
+        public VereinsmeisterschaftPlatzierungenVonSchuetzentypViewModel VereinsmeisterschaftPlatzierungenVonSchuetzentyp => new VereinsmeisterschaftPlatzierungenVonSchuetzentypViewModel();
+        public VereinsmeisterschaftSchuetzeErgebnisseViewModel VereinsmeisterschaftSchuetzeErgebnisse => new VereinsmeisterschaftSchuetzeErgebnisseViewModel();
+        public VereinsmeisterschaftGruppeErgebnisseViewModel VereinsmeisterschaftGruppeErgebnisse => new VereinsmeisterschaftGruppeErgebnisseViewModel();
+        public AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel AuswertungVereinsmeisterschaftEntwicklungSchuetzen => new AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel();
+        public AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel AuswertungVereinsmeisterschaftEntwicklungGruppen => new AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel();
+        public InfoViewModel Info => new InfoViewModel();
         public static void Cleanup()
         {
 

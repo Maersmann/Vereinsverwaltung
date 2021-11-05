@@ -29,6 +29,10 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Messenger.Default.Register<LoadSchluesselverteilungSchluesselDetailMessage>(this, "SchluesselverteilungSchluesselUebersicht", m => ReceiveLoadSchluesselverteilungSchluesselDetailMessage(m));
         }
 
+        protected override bool WithPagination() { return true; }
+        protected override string GetREST_API() { return $"/api/schluesselverwaltung/zuteilung/schluessel/{LoadDataID}/besitzer"; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schluesselzuteilung; }
+
         private void ReceiveLoadSchluesselverteilungSchluesselDetailMessage(LoadSchluesselverteilungSchluesselDetailMessage m)
         {
             schluesselid = m.ID;
@@ -40,21 +44,6 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             LoadData(schluesselid);
         }
 
-        public override async void LoadData(int id)
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer");
-                if (resp.IsSuccessStatusCode)
-                {
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SchluesselzuteilungModel>>();
-                }
-
-                RequestIsWorking = false;
-            }
-            base.LoadData(id);
-        }
 
         #region Commands
         protected async override void ExecuteEntfernenCommand()
@@ -62,7 +51,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{SelectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage("Eintrag konnte nicht gelöscht werden.");
@@ -71,7 +60,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 }
             }
             SendInformationMessage("Eintrag gelöscht");
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
+            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
             base.ExecuteEntfernenCommand();
             RequestIsWorking = false;
         }

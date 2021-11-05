@@ -13,7 +13,7 @@ using Data.Types;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
-    public class SchluesselzuteilungHistoryUebersichtViewModel : ViewModelLoadData<SchluesselzuteilungHistoryModel>
+    public class SchluesselzuteilungHistoryUebersichtViewModel : ViewModelLoadListData<SchluesselzuteilungHistoryModel>
     {
         private SchluesselzuteilungTypes auswahlTypes;
         private int id;
@@ -23,13 +23,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Title = "History Verteilung";
         }
 
+        protected override bool WithPagination() { return true; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/history?id={id}&type={auswahlTypes}"; }
 
-        public void SetAuswahlState(int id, SchluesselzuteilungTypes auswahlTypes)
+        public async void SetAuswahlState(int id, SchluesselzuteilungTypes auswahlTypes)
         {
             this.auswahlTypes = auswahlTypes;
             this.id = id;
-            LoadData();
+            await LoadData();
         }
     }
 }

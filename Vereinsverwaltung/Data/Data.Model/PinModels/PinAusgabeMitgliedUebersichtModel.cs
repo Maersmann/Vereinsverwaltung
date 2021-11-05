@@ -10,6 +10,7 @@ namespace Data.Model.PinModels
         public int ID { get; set; }
         public bool Erhalten { get; set; }
         public int PinAusgabeID { get; set; }
+        public string Beschreibung { get; set; }
         public DateTime? ErhaltenAm { get; set; }
         public MitgliederModel Mitglied { get; set; }
 

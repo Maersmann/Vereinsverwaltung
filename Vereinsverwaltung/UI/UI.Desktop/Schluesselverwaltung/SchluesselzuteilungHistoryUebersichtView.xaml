@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="70px" />
             <RowDefinition Height="45px" />
             <RowDefinition >
                 <RowDefinition.Style>
@@ -33,7 +34,7 @@
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}"/>
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" >
+        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Bezeichnung" Binding="{Binding SchluesselBezeichnung}" />
                 <DataGridTextColumn Header="Name" Binding="{Binding SchluesselbesitzerName}" Width="auto"/>
@@ -43,12 +44,32 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <materialDesign:Card  Grid.Row="2">
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <DockPanel LastChildFill="False" Margin="12" >
+                    <Button DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Content="&lt;&lt;" Command="{Binding FirstPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}"  Margin="3"/>
+                    <Button DockPanel.Dock="Left" VerticalAlignment="Center" Width="50" Command="{Binding PreviousPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Content="&lt;" Margin="3"/>
+                    <Label  DockPanel.Dock="Left" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="120" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding PageInfo}" Margin="3"/>
+                    <Button DockPanel.Dock="Left" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="40" Content="&gt;" Command="{Binding NextPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Margin="3"/>
+                    <Button DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Command="{Binding LastPageCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Content="&gt;&gt;" Margin="3"/>
+                    <ComboBox  DockPanel.Dock="Left" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="45" HorizontalContentAlignment="Center"   ItemsSource="{Binding PageSizeTypes}" SelectedItem="{Binding PageSizeTyp}" IsReadOnly="True" SelectedIndex="0" Margin="3"/>
+                </DockPanel>
+
+            </Grid>
+
+            <Grid Grid.Column="1">
+            </Grid>
+        </Grid>
+
+        <materialDesign:Card  Grid.Row="3">
             <DockPanel  LastChildFill="False" >
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="4" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </UserControl>

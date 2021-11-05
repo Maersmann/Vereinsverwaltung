@@ -21,7 +21,6 @@ namespace Logic.UI
             Title = "Vereinsverwaltung";
             GlobalVariables.ServerIsOnline = false;
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
-            OpenMitgliederStammdatenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitlgiederStammdaten));
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
             OpenSchluesselUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchluesselUebersicht));
@@ -37,11 +36,19 @@ namespace Logic.UI
             ExportMitgliederAenderungenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportMitgliederAenderungen));
             KkSchiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessenUebersicht));
             KkSchiessgruppeUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessgruppeUebersicht)); 
-             AuswertungKkSchiessenMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonat));
+            AuswertungKkSchiessenMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonat));
             AuswertungKkSchiessenMonatJahresvergleichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonatJahresvergleich));
+            VereinsmeisterschaftOffenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftAktiveVereinsmeisterschaft));
+            SchuetzenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchuetzenUebersicht));
+            SchiessgruppenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchiessgruppenUebersicht));
+            ExportVereinsmeisterschaftCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportVereinsmeisterschaft));
+            VereinsmeisterschaftAktivErgebnisseSchuetzenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseSchuetzen));
+            VereinsmeisterschaftAktivErgebnisseGruppenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseGruppen));
+            VereinsmeisterschaftenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftenUebersicht));
+            AuswertungVereinsmeisterschaftEntwicklungGruppenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungGruppen));
+            AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen));
         }
 
-        public ICommand OpenMitgliederStammdatenCommand { get; private set; }
         public ICommand OpenMitgliederImportCommand { get; private set; }
         public ICommand OpenMitgliederUebersichtCommand { get; private set; }
         public ICommand OpenSchluesselUebersichtCommand { get; private set; }
@@ -60,7 +67,15 @@ namespace Logic.UI
         public ICommand KkSchiessgruppeUebersichtCommand { get; private set; }
         public ICommand AuswertungKkSchiessenMonatCommand { get; private set; }
         public ICommand AuswertungKkSchiessenMonatJahresvergleichCommand { get; set; }
-
+        public ICommand VereinsmeisterschaftOffenUebersichtCommand { get; set; }
+        public ICommand SchuetzenUebersichtCommand { get; set; }
+        public ICommand SchiessgruppenUebersichtCommand { get; set; }
+        public ICommand ExportVereinsmeisterschaftCommand { get; set; }
+        public ICommand VereinsmeisterschaftAktivErgebnisseSchuetzenCommand { get; set; }
+        public ICommand VereinsmeisterschaftAktivErgebnisseGruppenCommand { get; set; }
+        public ICommand VereinsmeisterschaftenUebersichtCommand { get; set; }
+        public ICommand AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand { get; set; }
+        public ICommand AuswertungVereinsmeisterschaftEntwicklungGruppenCommand { get; set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)
@@ -78,14 +93,14 @@ namespace Logic.UI
             var backendlogic = new BackendLogic();
             if (!backendlogic.IstINIVorhanden())
             {
-                Messenger.Default.Send<OpenKonfigurationViewMessage>(new OpenKonfigurationViewMessage { });
+                Messenger.Default.Send(new OpenKonfigurationViewMessage { });
             }
             backendlogic.LoadData();
             GlobalVariables.BackendServer_IP = backendlogic.GetBackendIP();
             GlobalVariables.BackendServer_URL = backendlogic.GetURL();
             GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
 
-            Messenger.Default.Send<OpenStartingViewMessage>(new OpenStartingViewMessage { });
+            Messenger.Default.Send(new OpenStartingViewMessage { });
         }
 
     }

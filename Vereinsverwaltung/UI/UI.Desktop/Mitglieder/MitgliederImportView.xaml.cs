@@ -17,38 +17,18 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UI.Desktop.BaseViews;
 
-namespace Vereinsverwaltung.UI.Desktop.Mitglieder
+namespace UI.Desktop.Mitglieder
 {
     /// <summary>
     /// Interaktionslogik für MitgliederImportView.xaml
     /// </summary>
-    public partial class MitgliederImportView : UserControl
+    public partial class MitgliederImportView : BaseUsercontrol
     {
-        private LoadingView loadingView;
         public MitgliederImportView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenLoadingViewMessage>(this, "MitgliederImport", m => ReceiveOpenLoadingViewMessage(m));
-            Messenger.Default.Register<CloseLoadingViewMessage>(this, "MitgliederImport", m => CloseLoadingViewMessage());
+            RegisterMessages("MitgliederImport");
         }
 
-        private void CloseLoadingViewMessage()
-        {
-            if (loadingView.IsActive)
-            {
-                loadingView.Close();
-            }
-        }
-
-        private void ReceiveOpenLoadingViewMessage(OpenLoadingViewMessage m)
-        {
-            loadingView = new LoadingView();
-
-            if (loadingView.DataContext is LoadingViewModel model)
-            {
-                model.Beschreibung = m.Beschreibung;
-            }
-            loadingView.Show();
-        }
     }
 }

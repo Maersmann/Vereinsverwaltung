@@ -20,6 +20,7 @@ using System.Windows.Input;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
@@ -46,19 +47,19 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselrueckgabe;
 
         #region Bindings
-        public String SchluesselBez => data.Schluesselbezeichnung;
+        public string SchluesselBez => Data.Schluesselbezeichnung;
 
-        public String Schluesselbesitzer => data.SchluesselbesitzerName;
+        public string Schluesselbesitzer => Data.SchluesselbesitzerName;
 
         public int? Anzahl
         {
-            get => data.Anzahl;
+            get => Data.Anzahl;
             set
             {
-                if (!string.Equals(data.Anzahl, value))
+                if (!string.Equals(Data.Anzahl, value))
                 {
                     ValidateAnzahl(value, "Anzahl");
-                    data.Anzahl = value.GetValueOrDefault(0);
+                    Data.Anzahl = value.GetValueOrDefault(0);
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -66,14 +67,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         }
         public DateTime? RueckgabeAm
         {
-            get => data.RueckgabeAm;
+            get => Data.RueckgabeAm;
             set
             {
 
-                if (!Equals(data.RueckgabeAm, value))
+                if (!Equals(Data.RueckgabeAm, value))
                 { 
-                    data.RueckgabeAm = value.GetValueOrDefault(DateTime.Now);
-                    ValidateDatum(data.RueckgabeAm);
+                    Data.RueckgabeAm = value.GetValueOrDefault(DateTime.Now);
+                    ValidateDatum(Data.RueckgabeAm);
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -89,7 +90,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/rueckgabe", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/rueckgabe", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -112,7 +113,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExecuteOpenAuswahlSchluesselzuteilungCommand()
         {
-            Messenger.Default.Send<OpenSchluesselzuteilungAuswahlMessage>(new OpenSchluesselzuteilungAuswahlMessage(OpenSchluesselzuteilungAuswahlCallback, id, typ), "SchluesselRueckgabeStammdaten");
+            Messenger.Default.Send(new OpenSchluesselzuteilungAuswahlMessage(OpenSchluesselzuteilungAuswahlCallback, id, typ), "SchluesselRueckgabeStammdaten");
         }
 
         protected override bool CanExecuteSaveCommand()
@@ -132,11 +133,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/{id}");
                     if (resp.IsSuccessStatusCode)
                     {
-                        SchluesselzuteilungModel resData = await resp.Content.ReadAsAsync<SchluesselzuteilungModel>();
-                        data.SchluesselzuteilungID = id;
-                        data.Schluesselbezeichnung = resData.SchluesselBezeichnung;
-                        data.SchluesselbesitzerName = resData.SchluesselbesitzerName;
-                        Anzahl = resData.Anzahl;
+                        Response<SchluesselzuteilungModel> resData = await resp.Content.ReadAsAsync<Response<SchluesselzuteilungModel>>();
+                        Data.SchluesselzuteilungID = id;
+                        Data.Schluesselbezeichnung = resData.Data.SchluesselBezeichnung;
+                        Data.SchluesselbesitzerName = resData.Data.SchluesselbesitzerName;
+                        Anzahl = resData.Data.Anzahl;
                         RaisePropertyChanged("SchluesselBez");
                         RaisePropertyChanged("Schluesselbesitzer");
                         schluesselAusgewaehlt = true;
@@ -173,7 +174,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public override void Cleanup()
         {
-            data = new SchluesselRueckgabeStammdatenModel { };
+            Data = new SchluesselRueckgabeStammdatenModel { };
             RueckgabeAm = DateTime.Now;
             Anzahl = null;
             state = State.Neu;

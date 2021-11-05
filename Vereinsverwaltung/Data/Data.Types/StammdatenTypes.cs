@@ -17,6 +17,10 @@ namespace Data.Types
         schnurauszeichnung,
         pinAusgabe,
         kkSchiessgruppe,
-        kkSchiessen
+        kkSchiessen,
+        vereinsmeisterschaft,
+        schuetze,
+        schiessgruppe,
+        vereinsmeisterschaftSchuetzeErgebnis
     }
 }

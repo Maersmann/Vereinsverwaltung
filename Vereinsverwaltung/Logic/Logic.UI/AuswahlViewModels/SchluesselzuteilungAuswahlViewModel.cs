@@ -24,29 +24,33 @@ namespace Logic.UI.AuswahlViewModels
         public SchluesselzuteilungAuswahlViewModel()
         {
             Title = "Auswahl Besitzer";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
         }
 
-        public void SetAuswahlState(int id, SchluesselzuteilungTypes auswahlTypes)
+        public async void SetAuswahlState(int id, SchluesselzuteilungTypes auswahlTypes)
         {
             this.auswahlTypes = auswahlTypes;
             this.id = id;
-            LoadData();
+            await LoadData();
         }
 
-        public int? SchluesselzuteilungID()
+        public int? ID()
         {
-            if (selectedItem == null) return null;
-            else return selectedItem.ID;
+            return SelectedItem == null ? null : (int?)SelectedItem.ID;
         }
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselzuteilung; }
+        protected override bool WithPagination() { return true; }
         protected override string GetREST_API() 
         {
             return auswahlTypes.Equals(SchluesselzuteilungTypes.Besitzer)
                 ? $"/api/schluesselverwaltung/zuteilung/besitzer/{id}/schluessel"
                 : $"/api/schluesselverwaltung/zuteilung/schluessel/{id}/besitzer";
+        }
+        protected override void ExecuteCloseWindowCommand(Window window)
+        {
+            AuswahlGetaetigt = true;
+            base.ExecuteCloseWindowCommand(window);
         }
     }
 }

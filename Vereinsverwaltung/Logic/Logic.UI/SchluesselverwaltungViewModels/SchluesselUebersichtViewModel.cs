@@ -25,10 +25,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             OpenHistorieCommand = new DelegateCommand(ExecuteOpenHistorieCommand, CanExecuteCommand);
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schluessel; }
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Schluessel; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/schluessel"; }
+        protected override bool WithPagination() { return true; }
 
         #region Bindings
         public ICommand OpenHistorieCommand { get; set; }
@@ -50,7 +51,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{SelectedItem.ID}");
 
                 if ((int)resp.StatusCode == 905)
                 {
@@ -66,7 +67,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExecuteOpenHistorieCommand()
         {
-            Messenger.Default.Send<OpenSchluesselzuteilungHistoryUebersichtMessage>(new OpenSchluesselzuteilungHistoryUebersichtMessage { AuswahlTypes = SchluesselzuteilungTypes.Schluessel, ID = selectedItem.ID}, messageToken);
+            Messenger.Default.Send(new OpenSchluesselzuteilungHistoryUebersichtMessage { AuswahlTypes = SchluesselzuteilungTypes.Schluessel, ID = SelectedItem.ID}, messageToken);
         }
 
         #endregion

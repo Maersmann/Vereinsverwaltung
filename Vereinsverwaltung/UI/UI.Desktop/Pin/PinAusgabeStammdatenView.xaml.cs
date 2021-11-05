@@ -22,6 +22,7 @@ namespace UI.Desktop.Pin
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.pinAusgabe);
+            RegisterMessages("PinAusgabeStammdaten");
         }
     }
 }

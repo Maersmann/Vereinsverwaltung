@@ -45,8 +45,8 @@ namespace UI.Desktop.Schluesselverwaltung
             view.ShowDialog();
             if (view.DataContext is MitgliedAuswahlViewModel model)
             {
-                if (model.MitgliedID().HasValue)
-                    m.Callback(true, model.MitgliedID().Value);
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
+                    m.Callback(true, model.ID().Value);
                 else
                     m.Callback(false,0);
             }     

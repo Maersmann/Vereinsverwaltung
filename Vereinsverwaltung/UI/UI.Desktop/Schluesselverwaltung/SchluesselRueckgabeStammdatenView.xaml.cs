@@ -42,9 +42,9 @@ namespace UI.Desktop.Schluesselverwaltung
             {
                 model.SetAuswahlState(m.ID, m.AuswahlTypes);
                 view.ShowDialog();
-                if (model.SchluesselzuteilungID().HasValue)
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
                 {
-                    m.Callback(true, model.SchluesselzuteilungID().Value);
+                    m.Callback(true, model.ID().Value);
                 }
                 else
                 {

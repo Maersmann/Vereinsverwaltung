@@ -2,6 +2,7 @@
 using Base.Logic.Messages;
 using Base.Logic.Types;
 using Base.Logic.ViewModels;
+using Base.Logic.Wrapper;
 using Data.Model.KkSchiessenModels;
 using Data.Types;
 using GalaSoft.MvvmLight.Messaging;
@@ -30,9 +31,9 @@ namespace Logic.UI.KkSchiessenViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/KKSchiessGruppen/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<KkSchiessgruppeModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<KkSchiessgruppeModel>>();
             }
-            Name = data.Name;
+            Name = Data.Name;
             state = State.Bearbeiten;
             RequestIsWorking = false;
         }
@@ -43,7 +44,7 @@ namespace Logic.UI.KkSchiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KKSchiessGruppen", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KKSchiessGruppen", Data);
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
@@ -61,13 +62,13 @@ namespace Logic.UI.KkSchiessenViewModels
         #region Bindings
         public string Name
         {
-            get => data.Name;
+            get => Data.Name;
             set
             {
-                if (RequestIsWorking || !Equals(data.Name, value))
+                if (RequestIsWorking || !Equals(Data.Name, value))
                 {
                     ValidateName(value);
-                    data.Name = value;
+                    Data.Name = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -90,7 +91,7 @@ namespace Logic.UI.KkSchiessenViewModels
 
         public override void Cleanup()
         {
-            data = new KkSchiessgruppeModel();
+            Data = new KkSchiessgruppeModel();
             Name = "";
             state = State.Neu;
         }

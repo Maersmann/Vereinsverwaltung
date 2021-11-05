@@ -3,22 +3,18 @@ using Data.Types;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Windows;
 using System.Windows.Input;
 using Base.Logic.ViewModels;
 using Base.Logic.Core;
 using Base.Logic.Messages;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.PinViewModels
 {
     public class PinAusgabeMitgliedUebersichtViewModel : ViewModelUebersicht<PinAusgabeMitgliedUebersichtModel, StammdatenTypes>
     {
-        private string filtertext;
         private bool zeigeNurNichtErhalten;
         private int id;
         public PinAusgabeMitgliedUebersichtViewModel()
@@ -27,68 +23,36 @@ namespace Logic.UI.PinViewModels
             Title = "Übersicht Mitglieder für Pins";
             ErhaltenCommand = new RelayCommand(() => ExecuteErhaltenCommand());
             RueckgaengigCommand = new RelayCommand(() => ExcecuteRueckgaengigCommand());
-            filtertext = "";
             zeigeNurNichtErhalten = true;
         }
-        protected override int GetID() { return selectedItem.Mitglied.ID; }
+        protected override int GetID() { return SelectedItem.Mitglied.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
+        protected override bool WithPagination() { return true; }
+        protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Mitglieder/LoadAllForAusgabe/{id}?nurNichtErhaltene={zeigeNurNichtErhalten}"; }
+        protected override bool LoadingOnCreate() => false;
 
         public override async void LoadData(int id)
         {
             this.id = id;
-            if (GlobalVariables.ServerIsOnline)
-            {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/Mitglieder/LoadAllForAusgabe/{this.id}");
-                if (resp.IsSuccessStatusCode)
-                {
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<PinAusgabeMitgliedUebersichtModel>>();
-                }
-                RequestIsWorking = false;
-            }
-            base.LoadData(id);
+            await LoadData();
         }
 
-        protected override bool OnFilterTriggered(object item)
-        {
-            if (item is PinAusgabeMitgliedUebersichtModel mitglied)
-            {
-                string MitgliedsNr = Convert.ToString(mitglied.Mitglied.Mitgliedsnr);
-                return zeigeNurNichtErhalten
-                    ? (mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext)) && !mitglied.Erhalten
-                    : mitglied.Mitglied.Fullname.ToLower().Contains(filtertext.ToLower().Trim()) || MitgliedsNr.Contains(filtertext);
-            }
-            return true;
-        }
 
         #region Bindings
         public ICommand ErhaltenCommand { get; private set; }
         public ICommand RueckgaengigCommand { get; private set; }
-        public string FilterText
-        {
-            get => this.filtertext;
-            set
-            {
-                this.filtertext = value;
-                this.RaisePropertyChanged();
-                _customerView.Refresh();
-            }
-        }
-        
+
+       
         public bool ZeigeNurNichtErhalten
         {
-            get
-            {
-                return zeigeNurNichtErhalten;
-            }
+            get => zeigeNurNichtErhalten;
             set
             {
                 zeigeNurNichtErhalten = value;
-                this.RaisePropertyChanged();
-                _customerView.Refresh();
+                RaisePropertyChanged();
             }
         }
-        
+
         #endregion
 
         #region Commands
@@ -110,9 +74,9 @@ namespace Logic.UI.PinViewModels
                         return;
                     }
                     PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
-                    selectedItem.Erhalten = content.Erhalten;
-                    selectedItem.ErhaltenAm = content.ErhaltenAm;
-                    base.LoadData();
+                    SelectedItem.Erhalten = content.Erhalten;
+                    SelectedItem.ErhaltenAm = content.ErhaltenAm;
+                    LoadData(id);
                 }
             }
             catch (Exception e)
@@ -142,9 +106,9 @@ namespace Logic.UI.PinViewModels
                         }
                     }
                     PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
-                    selectedItem.Erhalten = content.Erhalten;
-                    selectedItem.ErhaltenAm = content.ErhaltenAm;
-                    base.LoadData();
+                    SelectedItem.Erhalten = content.Erhalten;
+                    SelectedItem.ErhaltenAm = content.ErhaltenAm;
+                    LoadData(id);
                 }
             }
             catch (Exception e)

@@ -1,0 +1,78 @@
+﻿<Window x:Class="UI.Desktop.Vereinsmeisterschaft.VereinsmeisterschaftGruppenVonSchuetzeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI.Desktop.Vereinsmeisterschaft"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"      
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
+             mc:Ignorable="d"  Width="530" Height="450"
+             MinHeight="450" MinWidth="530" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             DataContext="{Binding VereinsmeisterschaftGruppenVonSchuetze, Source={StaticResource Locator}}" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45px" />
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}"/>
+        </materialDesign:Card>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="70px"/>
+            </Grid.RowDefinitions>
+
+            <DataGrid Grid.Row="0" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" Name="grid" CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Jahr" Binding="{Binding Jahr}" Width="auto"/>
+                    <DataGridTextColumn Header="Gruppe" Binding="{Binding Gruppe}" Width="auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <DockPanel LastChildFill="False" Margin="12" >
+                        <Button DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Content="&lt;&lt;" Command="{Binding FirstPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}"  Margin="3"/>
+                        <Button DockPanel.Dock="Left" VerticalAlignment="Center" Width="50" Command="{Binding PreviousPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Content="&lt;" Margin="3" Cursor="Hand"/>
+                        <Label  DockPanel.Dock="Left" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="120" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding PageInfo}" Margin="3"/>
+                        <Button DockPanel.Dock="Left" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="40" Content="&gt;" Command="{Binding NextPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Margin="3"/>
+                        <Button DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Command="{Binding LastPageCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Content="&gt;&gt;" Margin="3"/>
+                        <ComboBox  DockPanel.Dock="Left" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="45" HorizontalContentAlignment="Center"   ItemsSource="{Binding PageSizeTypes}" SelectedItem="{Binding PageSizeTyp}" IsReadOnly="True" SelectedIndex="0" Margin="3"/>
+                    </DockPanel>
+
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <materialDesign:Card  Grid.Row="2">
+            <DockPanel  LastChildFill="False" >
+            </DockPanel>
+        </materialDesign:Card>
+
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Height="5" IsIndeterminate="True" />
+
+    </Grid>
+</Window>

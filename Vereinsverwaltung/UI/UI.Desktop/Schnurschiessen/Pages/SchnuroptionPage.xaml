@@ -9,9 +9,9 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MinHeight="400px"/>
             <RowDefinition Height="5px"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MinHeight="400px"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.Messages;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
@@ -30,7 +31,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             alleSichtbarenSchnuere = new List<SchnurModel>();
             alleSchnuere = new List<SchnurModel>();
             Title = "Schnurauszeichung Stammdaten";
-            LoadSchnuere();
+            LoadSchnuere();      
         }
 
         private async void LoadSchnuere()
@@ -40,7 +41,10 @@ namespace Logic.UI.SchnurschiessenViewModels
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur");
                 if (resp.IsSuccessStatusCode)
-                    alleSchnuere = await resp.Content.ReadAsAsync<ObservableCollection<SchnurModel>>();
+                { 
+                    var ResponseSchnur = await resp.Content.ReadAsAsync<Response<ObservableCollection<SchnurModel>>>();
+                    alleSchnuere = ResponseSchnur.Data;
+                }
 
                 alleSichtbarenSchnuere = alleSchnuere.Where(s => s.Sichtbar).ToList();
                 RequestIsWorking = false;
@@ -56,12 +60,13 @@ namespace Logic.UI.SchnurschiessenViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<SchnurauszeichnungModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<SchnurauszeichnungModel>>();
             }
-            Bezeichnung = data.Bezeichnung;
-            Rangfolge = data.Rangfolge;
-            Hauptteil = alleSichtbarenSchnuere.First(s => s.ID == data.HauptteilID);
-            Zusatz = alleSchnuere.FirstOrDefault(s => s.ID == data.ZusatzID);
+            RequestIsWorking = true;
+            Bezeichnung = Data.Bezeichnung;
+            Rangfolge = Data.Rangfolge;
+            Hauptteil = alleSichtbarenSchnuere.First(s => s.ID == Data.HauptteilID);
+            Zusatz = alleSchnuere.FirstOrDefault(s => s.ID == Data.ZusatzID);
             state = State.Bearbeiten;
             RequestIsWorking = false;
         }
@@ -74,9 +79,9 @@ namespace Logic.UI.SchnurschiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                data.HauptteilID = Hauptteil.ID;
-                data.ZusatzID = Zusatz.ID;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung", data);
+                Data.HauptteilID = Hauptteil.ID;
+                Data.ZusatzID = Zusatz.ID;
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnurauszeichnung", Data);
                 RequestIsWorking = false;
                 
                 if (resp.IsSuccessStatusCode)
@@ -97,13 +102,13 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public string Bezeichnung
         {
-            get => data.Bezeichnung;
+            get => Data.Bezeichnung;
             set
             {
-                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(Data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
-                    data.Bezeichnung = value;
+                    Data.Bezeichnung = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -112,13 +117,13 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public int? Rangfolge
         {
-            get => data.Rangfolge;
+            get => Data.Rangfolge;
             set
             {
-                if (RequestIsWorking || !Equals(data.Rangfolge, value))
+                if (RequestIsWorking || !Equals(Data.Rangfolge, value))
                 {
                     ValidateZahl(value, "Rangfolge");
-                    data.Rangfolge = value.GetValueOrDefault(0);
+                    Data.Rangfolge = value.GetValueOrDefault(0);
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -133,7 +138,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             get
             {
-                SchnurModel schnur = alleSichtbarenSchnuere.FirstOrDefault(s => s.ID == data.HauptteilID);
+                SchnurModel schnur = alleSichtbarenSchnuere.FirstOrDefault(s => s.ID == Data.HauptteilID);
                 if (alleSichtbarenSchnuere.Count == 0)
                 {
                     schnur = new SchnurModel();
@@ -146,9 +151,9 @@ namespace Logic.UI.SchnurschiessenViewModels
             }
             set
             {
-                if (RequestIsWorking || (data.HauptteilID != value.ID))
+                if (RequestIsWorking || (Data.HauptteilID != value.ID))
                 {
-                    data.HauptteilID = value.ID;
+                    Data.HauptteilID = value.ID;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -157,12 +162,12 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public SchnurModel Zusatz
         {
-            get { return alleSchnuere.FirstOrDefault(s => s.ID == data.ZusatzID); }
+            get { return alleSchnuere.FirstOrDefault(s => s.ID == Data.ZusatzID); }
             set
             {
-                if (RequestIsWorking || (data.ZusatzID != value.ID))
+                if (RequestIsWorking || (Data.ZusatzID != value.ID))
                 {
-                    data.ZusatzID = value.ID;
+                    Data.ZusatzID = value.ID;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -195,7 +200,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public override void Cleanup()
         {
-            data = new SchnurauszeichnungModel
+            Data = new SchnurauszeichnungModel
             {
                 ZusatzID = 1
             };

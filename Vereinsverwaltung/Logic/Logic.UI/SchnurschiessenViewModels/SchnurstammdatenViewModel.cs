@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.Messages;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
@@ -35,10 +36,10 @@ namespace Logic.UI.SchnurschiessenViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<SchnurModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<SchnurModel>>();
             }
-            Bezeichnung = data.Bezeichnung;
-            Schnurtyp = data.Schnurtyp;
+            Bezeichnung = Data.Bezeichnung;
+            Schnurtyp = Data.Schnurtyp;
             state = State.Bearbeiten;
             RequestIsWorking = false;
         }
@@ -51,7 +52,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/schnur", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -71,14 +72,14 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public string Bezeichnung
         {
-            get => data.Bezeichnung;
+            get => Data.Bezeichnung;
             set
             {
-                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(Data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
-                    data.Bezeichnung = value;
-                    RaisePropertyChanged();
+                    Data.Bezeichnung = value;
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -87,13 +88,13 @@ namespace Logic.UI.SchnurschiessenViewModels
         public IEnumerable<Schnurtypes> Schnurtypes => Enum.GetValues(typeof(Schnurtypes)).Cast<Schnurtypes>();
         public Schnurtypes Schnurtyp
         {
-            get => data.Schnurtyp;
+            get => Data.Schnurtyp;
             set
             {
-                if (RequestIsWorking || (data.Schnurtyp != value))
+                if (RequestIsWorking || (Data.Schnurtyp != value))
                 {
-                    data.Schnurtyp = value;
-                    RaisePropertyChanged();
+                    Data.Schnurtyp = value;
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -117,9 +118,9 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         public override void Cleanup()
         {
-            data = new SchnurModel();
+            Data = new SchnurModel();
             Bezeichnung = "";
-            Schnurtyp = Data.Types.SchnurschiessenTypes.Schnurtypes.schnur;
+            Schnurtyp = global::Data.Types.SchnurschiessenTypes.Schnurtypes.schnur;
             state = State.Neu;
         }
     }

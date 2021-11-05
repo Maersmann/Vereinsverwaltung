@@ -2,38 +2,25 @@
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using UI.Desktop;
 using UI.Desktop.BaseViews;
 using UI.Desktop.Mitglieder;
 using Vereinsverwaltung.UI.Desktop.Mitglieder;
 using UI.Desktop.Schluesselverwaltung;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Pages;
-using Vereinsverwaltung.UI.Desktop.Schnurschiessen;
 using Vereinsverwaltung.UI.Desktop.Schnurschiessen.Pages;
 using Vereinsverwaltung.UI.Desktop.Schluesselverwaltung;
 using UI.Desktop.Schnurschiessen;
 using UI.Desktop.Pin;
 using UI.Desktop.Auswertungen;
 using UI.Desktop.Konfiguration;
-using System.Windows.Media.Animation;
 using Base.Logic.Messages;
 using Base.Logic.Types;
 using UI.Desktop.Export;
 using UI.Desktop.KkSchiessen;
+using UI.Desktop.Vereinsmeisterschaft;
+using UI.Desktop.Vereinsmeisterschaft.Pages;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -88,9 +75,6 @@ namespace Vereinsverwaltung.UI.Desktop
         {
             switch (inType)
             {
-                case ViewType.viewMitlgiederStammdaten:
-                    new MitgliedStammdatenView().ShowDialog();
-                    break;
                 case ViewType.viewMitgliederUebersicht:
                     mitgliederUebersichtView ??= new MitgliederUebersichtView();
                     Container.NavigationService.Navigate(mitgliederUebersichtView);
@@ -124,29 +108,71 @@ namespace Vereinsverwaltung.UI.Desktop
                     Container.NavigationService.Navigate(pinAusgabeUebersichtView);
                     break;
                 case ViewType.viewAuswertungPinAusgabeTag:
-                    Container.NavigationService.Navigate(new PinAusgabeAuswertungTagView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(PinAusgabeAuswertungTagView).Name))
+                        Container.NavigationService.Navigate(new PinAusgabeAuswertungTagView());
                     break;
-                case ViewType.viewAuswertungPinAusgabeTagStunde:   
-                    Container.NavigationService.Navigate(new PinAusgabeAuswertungTagStundeView());
+                case ViewType.viewAuswertungPinAusgabeTagStunde:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(PinAusgabeAuswertungTagStundeView).Name))
+                        Container.NavigationService.Navigate(new PinAusgabeAuswertungTagStundeView());
                     break;
                 case ViewType.viewExportSchluessel:
                     new ExportSchluesselView().ShowDialog();
                     break;
                 case ViewType.viewExportMitgliederAenderungen:
-                    Container.NavigationService.Navigate(new ExportMitgliederAenderungenView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ExportMitgliederAenderungenView).Name))
+                        Container.NavigationService.Navigate(new ExportMitgliederAenderungenView());
                     break;
                 case ViewType.viewKkSchiessenUebersicht:
-                    Container.NavigationService.Navigate(new KkSchiessenUebersichtView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(KkSchiessenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new KkSchiessenUebersichtView());
                     break;
                 case ViewType.viewKkSchiessgruppeUebersicht:
-                    Container.NavigationService.Navigate(new KkSchiessgruppeUebersichtView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(KkSchiessgruppeUebersichtView).Name))
+                        Container.NavigationService.Navigate(new KkSchiessgruppeUebersichtView());
                     break;
                 case ViewType.viewAuswertungKkSchiessenMonat:
-                    Container.NavigationService.Navigate(new KkSchiessenMonatAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(KkSchiessenMonatAuswertungView).Name))
+                        Container.NavigationService.Navigate(new KkSchiessenMonatAuswertungView());
                     break;
                 case ViewType.viewAuswertungKkSchiessenMonatJahresvergleich:
-                    Container.NavigationService.Navigate(new KkSchiessenMonatJahresvergleichAuswertungView());
-                    break;      
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(KkSchiessenMonatJahresvergleichAuswertungView).Name))
+                        Container.NavigationService.Navigate(new KkSchiessenMonatJahresvergleichAuswertungView());
+                    break;
+                case ViewType.viewVereinsmeisterschaftAktiveVereinsmeisterschaft:
+                    if(Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(VereinsmeisterschaftAktivView).Name))
+                        Container.NavigationService.Navigate(new VereinsmeisterschaftAktivView());
+                    break;
+                case ViewType.viewSchuetzenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchuetzenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new SchuetzenUebersichtView());
+                    break;
+                case ViewType.viewSchiessgruppenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchiessgruppenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new SchiessgruppenUebersichtView());
+                    break;
+                case ViewType.viewExportVereinsmeisterschaft:
+                    new ExportVereinsmeisterschaftView().ShowDialog();
+                    break;
+                case ViewType.viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseSchuetzen:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(VereinsmeisterschaftAktivErgebnisseSchuetzenPage).Name))
+                        Container.NavigationService.Navigate(new VereinsmeisterschaftAktivErgebnisseSchuetzenPage());
+                    break;
+                case ViewType.viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseGruppen:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(VereinsmeisterschaftAktivErgebnisseGruppenPage).Name))
+                        Container.NavigationService.Navigate(new VereinsmeisterschaftAktivErgebnisseGruppenPage());
+                    break;
+                case ViewType.viewVereinsmeisterschaftenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(VereinsmeisterschaftenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new VereinsmeisterschaftenUebersichtView());
+                    break;
+                case ViewType.viewAuswertungVereinsmeisterschaftEntwicklungGruppen:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(AuswertungVereinsmeisterschaftEntwicklungGruppenView).Name))
+                        Container.NavigationService.Navigate(new AuswertungVereinsmeisterschaftEntwicklungGruppenView());
+                    break;
+                case ViewType.viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(AuswertungVereinsmeisterschaftEntwicklungSchuetzenView).Name))
+                        Container.NavigationService.Navigate(new AuswertungVereinsmeisterschaftEntwicklungSchuetzenView());
+                    break;
                 default:
                     break;
             }
@@ -181,6 +207,12 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case StammdatenTypes.kkSchiessen:
                     view = new KKSchiessenStammdatenView();
+                    break;
+                case StammdatenTypes.schuetze:
+                    view = new SchuetzeStammdatenView();
+                    break;
+                case StammdatenTypes.schiessgruppe:
+                    view = new SchiessgruppeStammdatenView();
                     break;
                 default:
                     break;
