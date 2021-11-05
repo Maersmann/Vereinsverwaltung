@@ -84,9 +84,9 @@ namespace UI.Desktop.Vereinsmeisterschaft
             if (view.DataContext is VereinsmeisterschaftNeueErstellenViewModel model)
             {
                 view.ShowDialog();
+                Messenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage>(this);
                 m.Callback(model.NeueVereinsmeisterschaftErstellt);
-            }
-            Messenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage>(this);
+            }        
         }
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
