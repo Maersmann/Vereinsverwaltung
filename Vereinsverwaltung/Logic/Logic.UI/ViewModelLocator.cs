@@ -150,6 +150,7 @@ namespace Logic.UI
         public VereinsmeisterschaftGruppeErgebnisseViewModel VereinsmeisterschaftGruppeErgebnisse => new VereinsmeisterschaftGruppeErgebnisseViewModel();
         public AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel AuswertungVereinsmeisterschaftEntwicklungSchuetzen => new AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel();
         public AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel AuswertungVereinsmeisterschaftEntwicklungGruppen => new AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel();
+        public InfoViewModel Info => new InfoViewModel();
         public static void Cleanup()
         {
 

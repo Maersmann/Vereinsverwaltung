@@ -45,6 +45,9 @@
                         <Fluent:BackstageTabItem Header="Backend-Settings">
                             <optionen:BackendSettingsView/>
                         </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Info" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
+                            <optionen:InfoView />
+                        </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
                         <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
                     </Fluent:BackstageTabControl>
