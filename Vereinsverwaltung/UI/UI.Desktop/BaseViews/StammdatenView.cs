@@ -10,11 +10,11 @@ using Logic.Messages.BaseMessages;
 
 namespace UI.Desktop.BaseViews
 {
-    public class StammdatenView : Window
+    public class StammdatenView : BaseView
     {
-        public StammdatenView()
+        public StammdatenView() : base()
         {
-            Unloaded += Window_Unloaded;          
+    
         }
         
         public void RegisterStammdatenGespeichertMessage(StammdatenTypes types)
@@ -31,9 +31,10 @@ namespace UI.Desktop.BaseViews
                 DialogResult = true;
         }
 
-        protected virtual void Window_Unloaded(object sender, RoutedEventArgs e)
+        protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<StammdatenGespeichertMessage>(this);
+            base.Window_Unloaded(sender, e);
         }
     }
 }

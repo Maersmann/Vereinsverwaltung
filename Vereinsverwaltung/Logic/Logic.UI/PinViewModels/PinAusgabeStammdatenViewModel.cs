@@ -18,6 +18,7 @@ using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.Messages;
 using Base.Logic.Wrapper;
+using Logic.Messages.UtilMessages;
 
 namespace Logic.UI.PinViewModels
 {
@@ -60,7 +61,7 @@ namespace Logic.UI.PinViewModels
                 {
                     Data.Option.Stichtag = null;
                 }
-
+                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Liste wird erstellt." }, "PinAusgabeStammdaten");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", Data);
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
@@ -72,6 +73,7 @@ namespace Logic.UI.PinViewModels
                 {
                     SendExceptionMessage("Pin konnte nicht gespeichert werden.");
                 }
+                Messenger.Default.Send(new CloseLoadingViewMessage(), "PinAusgabeStammdaten");
             }
         }
         #endregion
