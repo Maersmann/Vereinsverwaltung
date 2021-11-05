@@ -8,42 +8,30 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
 using Data.Types;
+using System.Windows;
 
 namespace Logic.UI.AuswahlViewModels
 {
     public class PinAusgabeAuswahlViewModel : ViewModelAuswahl<PinAusgabeAuswahlModel, StammdatenTypes>
     {
-        private string filtertext;
-
         public PinAusgabeAuswahlViewModel()
         {
             Title = "Auswahl Pin Ausgabe";
-            filtertext = "";
-            LoadData();
         }
 
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.pinAusgabe; }
         protected override string GetREST_API() { return $"/api/Pins/Ausgabe"; }
-
-        protected override bool OnFilterTriggered(object item)
+        protected override bool WithPagination() { return true; }
+        protected override void ExecuteCloseWindowCommand(Window window)
         {
-            return true;
+            AuswahlGetaetigt = true;
+            base.ExecuteCloseWindowCommand(window);
         }
 
         #region Bindings
-        public string FilterText
-        {
-            get => filtertext;
-            set
-            {
-                filtertext = value;
-                RaisePropertyChanged();
-                _customerView.Refresh();
-            }
-        }
         public int? ID()
         {
-            if (selectedItem == null) return null;
-            else return selectedItem.ID;
+            return SelectedItem == null ? null : (int?)SelectedItem.ID;
         }
         #endregion
     }

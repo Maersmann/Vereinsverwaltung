@@ -12,8 +12,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic.UI.ExportViewModels
@@ -31,7 +29,8 @@ namespace Logic.UI.ExportViewModels
             ErledigenCommand = new RelayCommand(() => ExecuteErledigenCommandAsync());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
+        protected override bool WithPagination() { return true; }
         protected override string GetREST_API() { return $"/api/export/mitgliedAenderungen/Uebersicht"; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
 
@@ -41,7 +40,15 @@ namespace Logic.UI.ExportViewModels
             set 
             {
                 base.SelectedItem = value;
-                detailList = SelectedItem.Daten;
+                if(SelectedItem != null)
+                {
+                    detailList = SelectedItem.Daten;
+                }
+                else
+                {
+                    detailList = new ObservableCollection<MitgliedAenderungDatenModel>();
+                }
+                
                 RaisePropertyChanged(nameof(DetailList));
             } 
         }

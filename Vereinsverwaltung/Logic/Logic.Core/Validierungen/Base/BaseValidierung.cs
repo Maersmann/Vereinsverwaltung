@@ -88,5 +88,18 @@ namespace Logic.Core.Validierungen.Base
 
             return validationErrors.Count == 0;
         }
+
+        public bool ValidateDouble(double? ergebnis, out ICollection<string> validationErrors)
+        {
+            validationErrors = new List<String>();
+
+            if (!ergebnis.HasValue)
+                validationErrors.Add("Keine Zahl hinterlegt");
+
+            if (ergebnis < 0)
+                validationErrors.Add("Die Zahl zu niedrig");
+
+            return validationErrors.Count == 0;
+        }
     }
 }

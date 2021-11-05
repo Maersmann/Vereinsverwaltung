@@ -9,7 +9,9 @@ namespace Data.Model.AuswahlModels
         public int ID { get; set; }
         public string Name { get; set; }
         public string Vorname { get; set; }
+        public string Straße { get; set; }
         public DateTime? Eintrittsdatum { get; set; }
+        public DateTime? Geburtstag { get; set; }
         public int? Mitgliedsnr { get; set; }
         public string Fullname => Vorname + " " + Name;
     }

@@ -14,7 +14,7 @@
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Background="{DynamicResource MaterialDesignPaper}"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" IsAutomaticCollapseEnabled="False"
-        DataContext="{Binding Main ,Source={StaticResource Locator}}" MinHeight="728" MinWidth="1021">
+        DataContext="{Binding Main ,Source={StaticResource Locator}}" MinHeight="1028" MinWidth="1920">
 
 
     <i:Interaction.Triggers>
@@ -84,7 +84,22 @@
                     <Fluent:Button Header="Gruppen" Command="{Binding KkSchiessgruppeUebersichtCommand}" Width="60"  LargeIcon="Resources/kk_schiessgruppe.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
+
+            <Fluent:RibbonTabItem Header="Vereinsmeisterschaft" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+                <Fluent:RibbonGroupBox Header="Stammdaten" >
+                    <Fluent:Button Header="Schützen" Command="{Binding SchuetzenUebersichtCommand}" Width="60"  LargeIcon="Resources/account-circle.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Gruppen" Command="{Binding SchiessgruppenUebersichtCommand}" Width="60"  LargeIcon="Resources/account-group.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Aktiv" >
+                    <Fluent:Button Header="Übersicht" Command="{Binding VereinsmeisterschaftOffenUebersichtCommand}" Width="70"  LargeIcon="Resources/cards.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Ergebnisse Schützen" Command="{Binding VereinsmeisterschaftAktivErgebnisseSchuetzenCommand}" Width="70"  LargeIcon="Resources/format-list-bulleted-square.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Ergebnisse Gruppen" Command="{Binding VereinsmeisterschaftAktivErgebnisseGruppenCommand}" Width="70"  LargeIcon="Resources/format-list-bulleted.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Historie" >
+                    <Fluent:Button Header="Übersicht" Command="{Binding VereinsmeisterschaftenUebersichtCommand}" Width="70"  LargeIcon="Resources/history.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
             <Fluent:RibbonTabItem Header="Auswertungen" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Pin Ausgabe" >
                     <Fluent:Button Header="Tag" Command="{Binding AuswertungPinAusgabeTagCommand}" Width="60"  LargeIcon="Resources/auswertungTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
@@ -94,12 +109,17 @@
                     <Fluent:Button Header="Monate" Command="{Binding AuswertungKkSchiessenMonatCommand}" Width="80"  LargeIcon="Resources/auswertung_kk_monat.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Monate Jahresvergleich" Command="{Binding AuswertungKkSchiessenMonatJahresvergleichCommand}" Width="90"  LargeIcon="Resources/auswertung_kk_monat_jahres.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Vereinsmeisterschaft" >
+                    <Fluent:Button Header="Entwicklung Schützen" Command="{Binding AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand}" Width="80"  LargeIcon="Resources/file-chart.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Entwicklung Gruppen" Command="{Binding AuswertungVereinsmeisterschaftEntwicklungGruppenCommand}" Width="90"  LargeIcon="Resources/file-chart-outline.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             
             <Fluent:RibbonTabItem Header="Export" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Export" >
                     <Fluent:Button Header="Schlüssel" Command="{Binding ExportSchluesselCommand}" Width="70"  LargeIcon="Resources/key_export.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Mitglied Änderungen" Command="{Binding ExportMitgliederAenderungenCommand}" Width="70"  LargeIcon="Resources/export_mitglieder.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Vereinsmeisterschaft" Command="{Binding ExportVereinsmeisterschaftCommand}" Width="70"  LargeIcon="Resources/table-arrow-right.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

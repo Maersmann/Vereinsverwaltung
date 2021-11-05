@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.Messages;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
@@ -34,13 +35,13 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<SchluesselModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<SchluesselModel>>();
             }
 
-            Nummer = data.Nummer;
-            Beschreibung = data.Beschreibung;
-            Bezeichnung = data.Bezeichnung;
-            Bestand = data.Bestand;
+            Nummer = Data.Nummer;
+            Beschreibung = Data.Beschreibung;
+            Bezeichnung = Data.Bezeichnung;
+            Bestand = Data.Bestand;
             state = State.Bearbeiten;
             RequestIsWorking = false;
         }
@@ -53,7 +54,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -76,14 +77,14 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #region Bindings
         public int? Nummer
         {
-            get => data.Nummer;
+            get => Data.Nummer;
             set
             {
-                if (RequestIsWorking || !Equals(data.Nummer, value))
+                if (RequestIsWorking || !Equals(Data.Nummer, value))
                 {
                     ValidateAnzahl(value, "Nummer");
-                    data.Nummer = value.GetValueOrDefault();
-                    RaisePropertyChanged();
+                    Data.Nummer = value.GetValueOrDefault();
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -91,25 +92,25 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public string Beschreibung
         {
-            get => data.Beschreibung;
+            get => Data.Beschreibung;
             set
             {
-                if (RequestIsWorking || !Equals(data.Beschreibung, value))
+                if (RequestIsWorking || !Equals(Data.Beschreibung, value))
                 {
-                    data.Beschreibung = value;
+                    Data.Beschreibung = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         public string Bezeichnung
         {
-            get => data.Bezeichnung;
+            get => Data.Bezeichnung;
             set
             {
-                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(Data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
-                    data.Bezeichnung = value;
+                    Data.Bezeichnung = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -118,12 +119,12 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public int? Bestand
         {
-            get => data.Bestand;
+            get => Data.Bestand;
             set
             {
-                if (RequestIsWorking || !Equals(data.Bestand, value))
+                if (RequestIsWorking || !Equals(Data.Bestand, value))
                 {
-                    data.Bestand = value.GetValueOrDefault(0);
+                    Data.Bestand = value.GetValueOrDefault(0);
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -154,7 +155,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public override void Cleanup()
         {
-            data = new SchluesselModel();
+            Data = new SchluesselModel();
             Nummer = null;
             Bestand = null;
             Beschreibung = "";

@@ -18,9 +18,10 @@ namespace Logic.UI.KkSchiessenViewModels
             RegisterAktualisereViewMessage(StammdatenTypes.kkSchiessgruppe.ToString());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override string GetREST_API() { return $"/api/KKSchiessGruppen"; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.kkSchiessgruppe; }
+        protected override bool WithPagination() { return true; }
 
         #region Commands
 
@@ -29,7 +30,7 @@ namespace Logic.UI.KkSchiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/KKSchiessGruppen/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/KKSchiessGruppen/{SelectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("KK-Schießgruppe kann nicht gelöscht werden");

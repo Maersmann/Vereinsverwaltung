@@ -37,7 +37,7 @@ namespace UI.Desktop.Auswertungen
             view.ShowDialog();
             if (view.DataContext is PinAusgabeAuswahlViewModel model)
             {
-                if (model.ID().HasValue)
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
                     m.Callback(true, model.ID().Value);
                 else
                     m.Callback(false, 0);

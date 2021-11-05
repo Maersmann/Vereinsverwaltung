@@ -9,6 +9,7 @@ using Base.Logic.ViewModels;
 using System.Net.Http;
 using Logic.Core;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Logic.UI.AuswahlViewModels
 {
@@ -17,17 +18,22 @@ namespace Logic.UI.AuswahlViewModels
         public SchluesselbesitzerAuswahlViewModel()
         {
             Title = "Auswahl Besitzer";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.schluesselbesitzer.ToString());
         }
 
-        public int? SchluesselbestizerID()
+        public int? ID()
         {
-            return selectedItem == null ? null : (int?)selectedItem.ID;
+            return SelectedItem == null ? null : (int?)SelectedItem.ID;
         }
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluesselbesitzer; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/besitzer"; }
+        protected override bool WithPagination() { return true; }
+        protected override void ExecuteCloseWindowCommand(Window window)
+        {
+            AuswahlGetaetigt = true;
+            base.ExecuteCloseWindowCommand(window);
+        }
 
     }
 }

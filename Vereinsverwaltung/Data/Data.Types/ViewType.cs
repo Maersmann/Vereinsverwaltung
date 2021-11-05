@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Data.Types
+﻿namespace Data.Types
 {
     public enum ViewType
     {
-        viewMitlgiederStammdaten,
         viewMitgliederUebersicht,
         viewMitgliederImport,
         viewSchluesselStammdaten,
@@ -25,7 +18,15 @@ namespace Data.Types
         viewKkSchiessgruppeUebersicht,
         viewKkSchiessenUebersicht,
         viewAuswertungKkSchiessenMonat,
-        viewAuswertungKkSchiessenMonatJahresvergleich
+        viewAuswertungKkSchiessenMonatJahresvergleich,
+        viewVereinsmeisterschaftAktiveVereinsmeisterschaft,
+        viewSchuetzenUebersicht,
+        viewSchiessgruppenUebersicht,
+        viewExportVereinsmeisterschaft,
+        viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseSchuetzen,
+        viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseGruppen,
+        viewVereinsmeisterschaftenUebersicht,
+        viewAuswertungVereinsmeisterschaftEntwicklungGruppen,
+        viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen
     }
-    
 }

@@ -22,9 +22,10 @@ namespace Logic.UI.PinViewModels
             OeffneAusgabeCommand = new RelayCommand(() => ExecuteOeffneAusgabeCommand());
             ErledigeAusgabeCommand = new RelayCommand(() => ExecuteErledigeAusgabeCommand());
         }
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.pinAusgabe; }
         protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Uebersicht"; }
+        protected override bool WithPagination() { return true; }
 
         #region Bindings
         public ICommand OeffneAusgabeCommand { get; private set; }
@@ -36,16 +37,16 @@ namespace Logic.UI.PinViewModels
 
         private void ExecuteOeffneAusgabeCommand()
         {
-            Messenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = selectedItem.ID }, "PinAusgabeUebersicht");
+            Messenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = SelectedItem.ID }, "PinAusgabeUebersicht");
         }
 
         private async void ExecuteErledigeAusgabeCommand()
         {
-            selectedItem.Abgeschlossen = true;
+            SelectedItem.Abgeschlossen = true;
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/erledigen", selectedItem.ID);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/erledigen", SelectedItem.ID);
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage("Ausgabe konnte nicht abgeschlossen werden.");
@@ -53,7 +54,7 @@ namespace Logic.UI.PinViewModels
             }
             RequestIsWorking = false;
 
-            LoadData();
+            await LoadData();
         }
         #endregion
     }

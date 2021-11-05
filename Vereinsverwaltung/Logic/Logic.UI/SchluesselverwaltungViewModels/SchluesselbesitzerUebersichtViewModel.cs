@@ -25,10 +25,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             OpenHistorieCommand = new DelegateCommand(this.ExecuteOpenHistorieCommand, CanExecuteCommand);
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schluesselbesitzer; }
         protected override SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return SchluesselzuteilungTypes.Besitzer; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/besitzer"; }
+        protected override bool WithPagination() { return true; }
 
         #region Bindings
         public ICommand OpenHistorieCommand { get; set; }
@@ -50,7 +51,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer/{SelectedItem.ID}");
                 if ((int)resp.StatusCode == 903)
                 {
                     SendExceptionMessage("Besitzer kann nicht gelöscht werden" + Environment.NewLine +  Environment.NewLine + "Besitzer sind Schlüssel zugeordnet");
@@ -65,7 +66,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExecuteOpenHistorieCommand()
         {
-            Messenger.Default.Send(new OpenSchluesselzuteilungHistoryUebersichtMessage { AuswahlTypes = SchluesselzuteilungTypes.Besitzer, ID = selectedItem.ID }, messageToken);
+            Messenger.Default.Send(new OpenSchluesselzuteilungHistoryUebersichtMessage { AuswahlTypes = SchluesselzuteilungTypes.Besitzer, ID = SelectedItem.ID }, messageToken);
         }
 
         #endregion

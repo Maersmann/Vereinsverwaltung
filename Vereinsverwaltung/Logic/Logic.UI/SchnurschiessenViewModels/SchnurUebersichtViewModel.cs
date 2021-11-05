@@ -16,8 +16,9 @@ namespace Logic.UI.SchnurschiessenViewModels
             RegisterAktualisereViewMessage(StammdatenTypes.schnur.ToString());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schnur; }
+        protected override bool WithPagination() { return true; }
         protected override string GetREST_API() { return $"/api/schnurschiessen/Schnur/sichtbar"; }
 
         #region Commands
@@ -26,7 +27,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/schnurschiessen/Schnur/{SelectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("Schnur konnte nicht gelöscht werden.");

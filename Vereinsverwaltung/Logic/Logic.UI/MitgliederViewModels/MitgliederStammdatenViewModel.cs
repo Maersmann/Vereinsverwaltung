@@ -14,6 +14,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.Messages;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.MitgliederViewModels
 {
@@ -31,17 +32,17 @@ namespace Logic.UI.MitgliederViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<MitgliederModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<MitgliederModel>>();
             }
-            Name = data.Name;
-            Eintrittsdatum = data.Eintrittsdatum;
-            Austrittsdatum = data.Austrittsdatum;
-            Geburtstag = data.Geburtstag;
-            Mitgliedsnr = data.Mitgliedsnr;
-            Ort = data.Ort;
-            Strasse = data.Straße;
-            Vorname = data.Vorname;
-            Geschlecht = data.Geschlecht;
+            Name = Data.Name;
+            Eintrittsdatum = Data.Eintrittsdatum;
+            Austrittsdatum = Data.Austrittsdatum;
+            Geburtstag = Data.Geburtstag;
+            Mitgliedsnr = Data.Mitgliedsnr;
+            Ort = Data.Ort;
+            Strasse = Data.Straße;
+            Vorname = Data.Vorname;
+            Geschlecht = Data.Geschlecht;
             state = State.Bearbeiten;
             RequestIsWorking = false;
         }
@@ -52,7 +53,7 @@ namespace Logic.UI.MitgliederViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", Data);
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
@@ -74,134 +75,125 @@ namespace Logic.UI.MitgliederViewModels
         #region Bindings
         public string Name
         {
-            get { return data.Name; }
+            get { return Data.Name; }
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Name, value))
+                if (RequestIsWorking || !Equals(Data.Name, value))
                 {
                     ValidateName(value);
-                    data.Name = value;
-                    RaisePropertyChanged();
+                    Data.Name = value;
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-
         public string Vorname
         {
-            get => data.Vorname;
+            get => Data.Vorname;
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Vorname, value))
+                if (RequestIsWorking || !Equals(Data.Vorname, value))
                 {
                     ValidateVorName(value);
-                    data.Vorname = value;
-                    RaisePropertyChanged();
+                    Data.Vorname = value;
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-
         public string Ort
         {
-            get => data.Ort;
+            get => Data.Ort;
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Ort, value))
+                if (RequestIsWorking || !Equals(Data.Ort, value))
                 {
-                    data.Ort = value;
-                    RaisePropertyChanged();
+                    Data.Ort = value;
+                    base.RaisePropertyChanged();
                 }
             }
         }
         public string Strasse
         {
-            get => data.Straße;
+            get => Data.Straße;
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Straße, value))
+                if (RequestIsWorking || !Equals(Data.Straße, value))
                 {
-                    data.Straße = value;
-                    RaisePropertyChanged();
+                    Data.Straße = value;
+                    base.RaisePropertyChanged();
                 }
             }
         }
         public int? Mitgliedsnr
         {
-            get => data.Mitgliedsnr;
+            get => Data.Mitgliedsnr;
             set
             {
-                if (RequestIsWorking || !Equals(data.Mitgliedsnr, value))
+                if (RequestIsWorking || !Equals(Data.Mitgliedsnr, value))
                 {
-                    data.Mitgliedsnr = value;
-                    RaisePropertyChanged();
+                    Data.Mitgliedsnr = value;
+                    base.RaisePropertyChanged();
                 }
             }
         }
         public DateTime? Eintrittsdatum
         {
-            get => data.Eintrittsdatum;
+            get => Data.Eintrittsdatum;
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Eintrittsdatum, value))
+                if (RequestIsWorking || !Equals(Data.Eintrittsdatum, value))
                 {
                     ValidateEintrittsdatum(value);
-                    data.Eintrittsdatum = value;
-                    RaisePropertyChanged();
+                    Data.Eintrittsdatum = value;
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-
         public DateTime? Austrittsdatum
         {
-            get => data.Austrittsdatum;
+            get => Data.Austrittsdatum;
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Austrittsdatum, value))
+                if (RequestIsWorking || !Equals(Data.Austrittsdatum, value))
                 {
-                    data.Austrittsdatum = value;
-                    RaisePropertyChanged();
+                    Data.Austrittsdatum = value;
+                    base.RaisePropertyChanged();
                 }
             }
         }
         public DateTime? Geburtstag
         {
-            get => data.Geburtstag;
+            get => Data.Geburtstag;
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Geburtstag, value))
+                if (RequestIsWorking || !Equals(Data.Geburtstag, value))
                 {
                     ValidateGeburtstag(value);
-                    data.Geburtstag = value;
-                    RaisePropertyChanged();
+                    Data.Geburtstag = value;
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public IEnumerable<Geschlecht> Geschlechter
-        {
-            get
-            {
-                return Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
-            }
-        }
+        public IEnumerable<Geschlecht> Geschlechter => Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
         public Geschlecht Geschlecht
         {
-            get => data.Geschlecht;
+            get => Data.Geschlecht;
             set
             {
-                if (RequestIsWorking || (data.Geschlecht != value))
+                if (RequestIsWorking || (Data.Geschlecht != value))
                 {
-                    data.Geschlecht = value;
+                    Data.Geschlecht = value;
                     RaisePropertyChanged();
                 }
             }
@@ -253,7 +245,7 @@ namespace Logic.UI.MitgliederViewModels
         
         public override void Cleanup()
         {
-            data = new MitgliederModel();
+            Data = new MitgliederModel();
             RaisePropertyChanged();
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);

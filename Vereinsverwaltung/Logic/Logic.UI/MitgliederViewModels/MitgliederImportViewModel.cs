@@ -24,7 +24,7 @@ using Base.Logic.Messages;
 
 namespace Logic.UI.MitgliederViewModels
 {
-    public class MitgliederImportViewModel : ViewModelLoadData<MitgliederImportModel>
+    public class MitgliederImportViewModel : ViewModelLoadListData<MitgliederImportModel>
     {
         MitgliedImportHistoryModel data;
         public MitgliederImportViewModel()
@@ -53,8 +53,8 @@ namespace Logic.UI.MitgliederViewModels
                         if (task.Result.IsSuccessStatusCode)
                         {
                             data = await task.Result.Content.ReadAsAsync<MitgliedImportHistoryModel>();
-                            itemList = data.Importlist;
-                            this.RaisePropertyChanged("ItemList");
+                            Response.Data = data.Importlist;
+                            RaisePropertyChanged("ItemList");
                         }
                         else
                         {
@@ -77,7 +77,7 @@ namespace Logic.UI.MitgliederViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    itemList.Clear();
+                    Response.Data.Clear();
                     RaisePropertyChanged("ItemList");
                     Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied.ToString());
                 }

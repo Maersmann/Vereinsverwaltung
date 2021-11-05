@@ -42,8 +42,8 @@ namespace UI.Desktop.Schluesselverwaltung
             view.ShowDialog();
             if (view.DataContext is SchluesselAuswahlViewModel model)
             {
-                if (model.SchluesselID().HasValue)
-                    m.Callback(true, model.SchluesselID().Value);
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
+                    m.Callback(true, model.ID().Value);
                 else
                     m.Callback(false, 0);
             }
@@ -58,8 +58,8 @@ namespace UI.Desktop.Schluesselverwaltung
             view.ShowDialog();
             if (view.DataContext is SchluesselbesitzerAuswahlViewModel model)
             {
-                if (model.SchluesselbestizerID().HasValue)
-                    m.Callback(true, model.SchluesselbestizerID().Value);
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
+                    m.Callback(true, model.ID().Value);
                 else
                     m.Callback(false, 0);
             }

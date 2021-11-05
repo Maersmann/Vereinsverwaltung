@@ -8,16 +8,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UI.Desktop.BaseViews
+namespace UI.Desktop.Vereinsmeisterschaft
 {
     /// <summary>
-    /// Interaktionslogik für LoadingView.xaml
+    /// Interaktionslogik für VereinsmeisterschaftPlatzierungenSchuetzentypenView.xaml
     /// </summary>
-    public partial class LoadingView : Window
+    public partial class VereinsmeisterschaftPlatzierungenSchuetzentypenView : UserControl
     {
-        public LoadingView()
+        public VereinsmeisterschaftPlatzierungenSchuetzentypenView()
         {
             InitializeComponent();
         }

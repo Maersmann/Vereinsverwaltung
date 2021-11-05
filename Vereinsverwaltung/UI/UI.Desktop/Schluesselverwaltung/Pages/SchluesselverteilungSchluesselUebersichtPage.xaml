@@ -12,9 +12,9 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="600px"/>
             <ColumnDefinition Width="5px"/>
-            <ColumnDefinition Width="420"/>
+            <ColumnDefinition Width="*" MinWidth="600px"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
@@ -24,7 +24,7 @@
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
 
         <Grid Grid.Column="2">
-            <Frame x:Name="ContainerRight"  NavigationUIVisibility="Hidden"  />
+            <Frame x:Name="ContainerRight"  NavigationUIVisibility="Hidden" MinWidth="540"  />
         </Grid>
 
     </Grid>

@@ -17,6 +17,7 @@ using System.Text;
 using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.Messages;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.PinViewModels
 {
@@ -38,10 +39,10 @@ namespace Logic.UI.PinViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<PinAusgabeModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<PinAusgabeModel>>();
             }
 
-            Bezeichnung = data.Bezeichnung;
+            Bezeichnung = Data.Bezeichnung;
             state = State.Bearbeiten;
             RequestIsWorking = false;
         }
@@ -54,13 +55,13 @@ namespace Logic.UI.PinViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                data.PinID = data.Pin.ID;
-                if (!data.Option.NurAktive)
+                Data.PinID = Data.Pin.ID;
+                if (!Data.Option.NurAktive)
                 {
-                    data.Option.Stichtag = null;
+                    Data.Option.Stichtag = null;
                 }
 
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", Data);
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
@@ -81,14 +82,14 @@ namespace Logic.UI.PinViewModels
         {
             get
             {
-                return data.Bezeichnung;
+                return Data.Bezeichnung;
             }
             set
             {
-                if (RequestIsWorking || !Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !Equals(Data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
-                    data.Bezeichnung = value;
+                    Data.Bezeichnung = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -96,13 +97,13 @@ namespace Logic.UI.PinViewModels
         }
         public DateTime? Stichtag
         {
-            get { return data.Option.Stichtag; }
+            get { return Data.Option.Stichtag; }
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Option.Stichtag, value))
+                if (RequestIsWorking || !Equals(Data.Option.Stichtag, value))
                 {
-                    data.Option.Stichtag = value;
+                    Data.Option.Stichtag = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -110,13 +111,13 @@ namespace Logic.UI.PinViewModels
         }
         public bool NurAktive
         {
-            get { return data.Option.NurAktive; }
+            get { return Data.Option.NurAktive; }
             set
             {
 
-                if (RequestIsWorking || !Equals(data.Option.NurAktive, value))
+                if (RequestIsWorking || !Equals(Data.Option.NurAktive, value))
                 {
-                    data.Option.NurAktive = value;
+                    Data.Option.NurAktive = value;
                     RaisePropertyChanged();
                     RaisePropertyChanged(nameof(Stichtag));
                 }
@@ -126,12 +127,12 @@ namespace Logic.UI.PinViewModels
         public IEnumerable<PinModel> Pins => pins;
         public PinModel Pin
         {
-            get { return data.Pin; }
+            get { return Data.Pin; }
             set
             {
-                if (RequestIsWorking || (data.Pin != value))
+                if (RequestIsWorking || (Data.Pin != value))
                 {
-                    data.Pin = value;
+                    Data.Pin = value;
                     RaisePropertyChanged();
                 }
             }
@@ -161,7 +162,8 @@ namespace Logic.UI.PinViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    pins = await resp.Content.ReadAsAsync<ObservableCollection<PinModel>>();
+                    var Response = await resp.Content.ReadAsAsync<Response<ObservableCollection<PinModel>>>();
+                    pins = Response.Data;
                 }
                 else
                     SendExceptionMessage("Pin-Arten konnten nicht gelade werden");
@@ -178,7 +180,7 @@ namespace Logic.UI.PinViewModels
 
         public override void Cleanup()
         {
-            data = new PinAusgabeModel { Option = new PinAusgabeOptionModel(), Pin = new PinModel() };
+            Data = new PinAusgabeModel { Option = new PinAusgabeOptionModel(), Pin = new PinModel() };
             Bezeichnung = "";
             Stichtag = DateTime.Now;
             NurAktive = true;

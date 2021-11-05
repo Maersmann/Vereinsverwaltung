@@ -1,6 +1,7 @@
 ﻿using Data.Model.AuswahlModels;
 using Data.Types;
 using Base.Logic.ViewModels;
+using System.Windows;
 
 namespace Logic.UI.AuswahlViewModels
 {
@@ -9,17 +10,22 @@ namespace Logic.UI.AuswahlViewModels
         public SchluesselAuswahlViewModel()
         {
             Title = "Auswahl Schlüssel";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.schluessel.ToString());
         }
 
-        public int? SchluesselID()
+        public int? ID()
         {
-            return selectedItem == null ? null : (int?)selectedItem.ID;
+            return SelectedItem == null ? null : (int?)SelectedItem.ID;
         }
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.schluessel; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/schluessel"; }
+        protected override bool WithPagination() { return true; }
+        protected override void ExecuteCloseWindowCommand(Window window)
+        {
+            AuswahlGetaetigt = true;
+            base.ExecuteCloseWindowCommand(window);
+        }
 
     }
 }

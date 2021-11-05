@@ -18,9 +18,10 @@ namespace Logic.UI.KkSchiessenViewModels
             RegisterAktualisereViewMessage(StammdatenTypes.kkSchiessen.ToString());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override string GetREST_API() { return $"/api/KkSchiessen"; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.kkSchiessen; }
+        protected override bool WithPagination() { return true; }
 
         #region Commands
 
@@ -29,7 +30,7 @@ namespace Logic.UI.KkSchiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/KkSchiessen/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/KkSchiessen/{SelectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("KK-Schießen kann nicht gelöscht werden");

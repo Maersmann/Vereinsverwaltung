@@ -2,6 +2,7 @@
 using Base.Logic.Messages;
 using Base.Logic.Types;
 using Base.Logic.ViewModels;
+using Base.Logic.Wrapper;
 using Data.Model.KkSchiessenModels;
 using Data.Types;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -35,14 +36,14 @@ namespace Logic.UI.KkSchiessenViewModels
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/KkSchiessen/{id}");
                 if (resp.IsSuccessStatusCode)
                 {
-                    data = await resp.Content.ReadAsAsync<KkSchiessenModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<KkSchiessenModel>>();
                 }
             }
             state = State.Bearbeiten;
             gruppeAusgewaehlt = true;
-            Datum = data.Datum;
-            Getraenke = data.Getraenke;
-            Munition = data.PackungenMunition;
+            Datum = Data.Datum;
+            Getraenke = Data.Getraenke;
+            Munition = Data.PackungenMunition;
             RaisePropertyChanged(nameof(GruppenBezeichnung));
             RequestIsWorking = false;
         }
@@ -53,8 +54,8 @@ namespace Logic.UI.KkSchiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                data.Datum = data.Datum.Add(DateTime.Now.TimeOfDay);
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KkSchiessen", data);
+                Data.Datum = Data.Datum.Add(DateTime.Now.TimeOfDay);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KkSchiessen", Data);
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
@@ -90,9 +91,9 @@ namespace Logic.UI.KkSchiessenViewModels
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/KKSchiessGruppen/{id}");
                     if (resp.IsSuccessStatusCode)
                     {
-                        KkSchiessgruppeModel resData = await resp.Content.ReadAsAsync<KkSchiessgruppeModel>();
-                        data.KkSchiessGruppeID = resData.ID;
-                        data.KkSchiessGruppe = resData;
+                        Response<KkSchiessgruppeModel> resData = await resp.Content.ReadAsAsync<Response<KkSchiessgruppeModel>>();
+                        Data.KkSchiessGruppeID = resData.Data.ID;
+                        Data.KkSchiessGruppe = resData.Data;
                         RaisePropertyChanged(nameof(GruppenBezeichnung));
                         gruppeAusgewaehlt = true;
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -106,14 +107,14 @@ namespace Logic.UI.KkSchiessenViewModels
         #region Bindings
         public int? Getraenke
         {
-            get => data.Getraenke;
+            get => Data.Getraenke;
             set
             {
-                if (RequestIsWorking || !Equals(data.Getraenke, value))
+                if (RequestIsWorking || !Equals(Data.Getraenke, value))
                 {
-                    data.Getraenke = value.GetValueOrDefault(0);
-                    ValidateAnzahl(data.Getraenke, nameof(Getraenke)); 
-                    RaisePropertyChanged();
+                    Data.Getraenke = value.GetValueOrDefault(0);
+                    ValidateAnzahl(Data.Getraenke, nameof(Getraenke)); 
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -121,14 +122,14 @@ namespace Logic.UI.KkSchiessenViewModels
 
         public int? Munition
         {
-            get => data.PackungenMunition;
+            get => Data.PackungenMunition;
             set
             {
-                if (RequestIsWorking || !Equals(data.PackungenMunition, value))
+                if (RequestIsWorking || !Equals(Data.PackungenMunition, value))
                 {
-                    data.PackungenMunition = value.GetValueOrDefault(0);
-                    ValidateAnzahl(data.PackungenMunition, nameof(Munition));
-                    RaisePropertyChanged();
+                    Data.PackungenMunition = value.GetValueOrDefault(0);
+                    ValidateAnzahl(Data.PackungenMunition, nameof(Munition));
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -136,15 +137,15 @@ namespace Logic.UI.KkSchiessenViewModels
 
         public DateTime? Datum
         {
-            get => data.Datum;
+            get => Data.Datum;
             set
             {
 
-                if (!Equals(data.Datum, value))
+                if (!Equals(Data.Datum, value))
                 {
-                    data.Datum = value.GetValueOrDefault(DateTime.Now);
-                    ValidateDatum(data.Datum);
-                    RaisePropertyChanged();
+                    Data.Datum = value.GetValueOrDefault(DateTime.Now);
+                    ValidateDatum(Data.Datum);
+                    base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -152,7 +153,7 @@ namespace Logic.UI.KkSchiessenViewModels
 
         public ICommand OpenAuswahlCommand { get; set; }
 
-        public string GruppenBezeichnung => data.KkSchiessGruppe.Name;
+        public string GruppenBezeichnung => Data.KkSchiessGruppe.Name;
         #endregion
 
         #region Validierung
@@ -180,7 +181,7 @@ namespace Logic.UI.KkSchiessenViewModels
 
         public override void Cleanup()
         {
-            data = new KkSchiessenModel { KkSchiessGruppe = new KkSchiessgruppeModel() };
+            Data = new KkSchiessenModel { KkSchiessGruppe = new KkSchiessgruppeModel() };
             Getraenke = null;
             Munition = null;
             Datum = DateTime.Now;
