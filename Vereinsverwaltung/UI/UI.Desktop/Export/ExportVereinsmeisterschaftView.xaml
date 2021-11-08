@@ -66,10 +66,8 @@
                 
             </materialDesign:Card>
 
-            
-
-            <Button Grid.Row="1" Grid.Column="0" Margin="20" Content="Medaillen" Command="{Binding ExportMedaillenCommand}"/>
-            <Button Grid.Row="1" Grid.Column="1" Margin="20" Content="Schlüsselliste" Command="{Binding ExportErgebnisseCommand}"/>
+            <Button Grid.Row="1" Grid.Column="0" Margin="20" Content="Medaillen" Command="{Binding ExportMedaillenCommand}" Cursor="Hand"/>
+            <Button Grid.Row="1" Grid.Column="1" Margin="20" Content="Ergebnisse" Command="{Binding ExportErgebnisseCommand}" Cursor="Hand"/>
         </Grid>
 
 
