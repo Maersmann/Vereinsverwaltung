@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Logic.UI.AuswertungenViewModels
@@ -18,8 +21,18 @@ namespace Logic.UI.AuswertungenViewModels
     {
         private int jahrvon;
         private int jahrbis;
+        private bool maenner16_30SeriesVisibility;
+        private bool maenner31_50SeriesVisibility;
+        private bool maenner51SeriesVisibility;
+        private bool frauenSeriesVisibility;
+        private bool sportschuetzenSeriesVisibility;
         public AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel()
         {
+            maenner16_30SeriesVisibility = true;
+            maenner31_50SeriesVisibility = true;
+            maenner51SeriesVisibility = true;
+            frauenSeriesVisibility = true;
+            sportschuetzenSeriesVisibility = true;
             Title = "Auswertung Entwicklung Schützen";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
@@ -58,13 +71,83 @@ namespace Logic.UI.AuswertungenViewModels
                     Labels[index] = a.Jahr.ToString();
                     index++;
                 });
+
+
+                Binding Maenner16_30SeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(Maenner16_30SeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+                Binding FrauenSeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(FrauenSeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+                Binding Maenner31_50SeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(Maenner31_50SeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+                Binding Maenner51SeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(Maenner51SeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+                Binding SportschuetzenSeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(SportschuetzenSeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+
+                LineSeries Maenner16_30Series = new LineSeries
+                {
+                    Values = valuesMaenner16_30,
+                    Title = "Anzahl Männer 16-30"
+                };
+                LineSeries Maenner31_50Series = new LineSeries
+                {
+                    Values = valuesMaenner31_50,
+                    Title = "Anzahl Männer 31-50"
+                };
+                LineSeries Maenner51Series = new LineSeries
+                {
+                    Values = valuesMaenner51,
+                    Title = "Anzahl Männer ab 50"
+                };
+                LineSeries FrauenSeries = new LineSeries
+                {
+                    Values = valuesFrauen,
+                    Title = "Anzahl Frauen",
+                };
+                LineSeries SportschuetzenSeries = new LineSeries
+                {
+                    Values = valuesSportschuetzen,
+                    Title = "Anzahl Sportschützen"
+                };
+
+                Maenner16_30Series.SetBinding(UIElement.VisibilityProperty, Maenner16_30SeriesVisbilityBinding);
+                Maenner31_50Series.SetBinding(UIElement.VisibilityProperty, Maenner31_50SeriesVisbilityBinding);
+                Maenner51Series.SetBinding(UIElement.VisibilityProperty, Maenner51SeriesVisbilityBinding);
+                SportschuetzenSeries.SetBinding(UIElement.VisibilityProperty, SportschuetzenSeriesVisbilityBinding);
+                FrauenSeries.SetBinding(UIElement.VisibilityProperty, FrauenSeriesVisbilityBinding);
+
                 SeriesCollection = new SeriesCollection
                 {
-                    new LineSeries{ Values = valuesFrauen, Title="Anzahl Frauen" },
-                    new LineSeries{ Values = valuesMaenner16_30, Title="Anzahl Männer 16-30" },
-                    new LineSeries{ Values = valuesMaenner31_50, Title="Anzahl Männer 31-50" },
-                    new LineSeries{ Values = valuesMaenner51, Title="Anzahl Männer 51 - " },
-                    new LineSeries{ Values = valuesSportschuetzen, Title="Anzahl Sportschützen" }
+                    Maenner16_30Series,
+                    Maenner31_50Series,
+                    Maenner51Series,
+                    FrauenSeries,
+                    SportschuetzenSeries
                 };
 
                 RaisePropertyChanged(nameof(SeriesCollection));
@@ -97,6 +180,56 @@ namespace Logic.UI.AuswertungenViewModels
                 RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
+            }
+        }
+
+        public bool Maenner16_30SeriesVisibility
+        {
+            get { return maenner16_30SeriesVisibility; }
+            set
+            {
+                maenner16_30SeriesVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool Maenner31_50SeriesVisibility
+        {
+            get { return maenner31_50SeriesVisibility; }
+            set
+            {
+                maenner31_50SeriesVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool Maenner51SeriesVisibility
+        {
+            get { return maenner51SeriesVisibility; }
+            set
+            {
+                maenner51SeriesVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool FrauenSeriesVisibility
+        {
+            get { return frauenSeriesVisibility; }
+            set
+            {
+                frauenSeriesVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool SportschuetzenSeriesVisibility
+        {
+            get { return sportschuetzenSeriesVisibility; }
+            set
+            {
+                sportschuetzenSeriesVisibility = value;
+                RaisePropertyChanged();
             }
         }
         #endregion

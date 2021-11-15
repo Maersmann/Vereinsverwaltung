@@ -50,14 +50,15 @@
 
             <DataGrid Grid.Row="0" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" Name="grid" CanUserSortColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Jahr" Binding="{Binding Jahr }" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
-                    <DataGridTextColumn Header="Schützen 16-30" Binding="{Binding AnzahlMaenner16_30}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
-                    <DataGridTextColumn Header="Schützen 31-50" Binding="{Binding AnzahlMaenner31_50}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
-                    <DataGridTextColumn Header="Schützen 51-" Binding="{Binding AnzahlMaenner51}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
-                    <DataGridTextColumn Header="Schützen Frauen" Binding="{Binding AnzahlFrauen}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
-                    <DataGridTextColumn Header="Schützen Sportschützem" Binding="{Binding AnzahlSportschuetzen}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
-                    <DataGridTextColumn Header="Gruppen Männer" Binding="{Binding AnzahlGruppenMaenner}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
-                    <DataGridTextColumn Header="Gruppen Frauen" Binding="{Binding AnzahlGruppenFrauen}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                    <DataGridTextColumn Header="Jahr" Binding="{Binding Jahr }" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Stichtag" Binding="{Binding Stichtag, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE' }" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Schützen 16-30" Binding="{Binding AnzahlMaenner16_30}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Schützen 31-50" Binding="{Binding AnzahlMaenner31_50}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Schützen 51-" Binding="{Binding AnzahlMaenner51}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Schützen Frauen" Binding="{Binding AnzahlFrauen}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Schützen Sportschützem" Binding="{Binding AnzahlSportschuetzen}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Gruppen Männer" Binding="{Binding AnzahlGruppenMaenner}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                    <DataGridTextColumn Header="Gruppen Frauen" Binding="{Binding AnzahlGruppenFrauen}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

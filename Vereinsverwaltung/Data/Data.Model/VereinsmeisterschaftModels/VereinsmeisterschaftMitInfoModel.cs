@@ -17,6 +17,7 @@ namespace Data.Model.VereinsmeisterschaftModels
         public int AnzahlMaenner31_50 { get; set; }
         public int AnzahlMaenner51 { get; set; }
         public int AnzahlSportschuetzen { get; set; }
+        public DateTime Stichtag { get; set; }
 
         public VereinsmeisterschaftMitInfoModel()
         {

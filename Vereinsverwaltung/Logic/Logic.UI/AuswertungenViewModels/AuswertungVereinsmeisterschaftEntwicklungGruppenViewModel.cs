@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Logic.UI.AuswertungenViewModels
@@ -18,8 +21,12 @@ namespace Logic.UI.AuswertungenViewModels
     {
         private int jahrvon;
         private int jahrbis;
+        private bool frauenSeriesVisibility;
+        private bool maennerSeriesVisibility;
         public AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel()
         {
+            maennerSeriesVisibility = true;
+            frauenSeriesVisibility = true;
             Title = "Auswertung Entwicklung Gruppen";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
@@ -52,10 +59,40 @@ namespace Logic.UI.AuswertungenViewModels
                     Labels[index] = a.Jahr.ToString();
                     index++;
                 });
+
+                Binding MaennerSeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(MaennerSeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+                Binding FrauenSeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(FrauenSeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+
+                LineSeries FrauenSeries = new LineSeries
+                {
+                    Values = valuesFrauen,
+                    Title = "Anzahl Frauen",
+                };
+                LineSeries MaennerSeries = new LineSeries
+                {
+                    Values = valuesMaenner,
+                    Title = "Anzahl Männer"
+                };
+
+                MaennerSeries.SetBinding(UIElement.VisibilityProperty, MaennerSeriesVisbilityBinding);
+                FrauenSeries.SetBinding(UIElement.VisibilityProperty, FrauenSeriesVisbilityBinding);
+
                 SeriesCollection = new SeriesCollection
                 {
-                    new LineSeries{ Values = valuesFrauen, Title="Anzahl Frauen" },
-                    new LineSeries{ Values = valuesMaenner, Title="Anzahl Männer" },
+                    MaennerSeries,
+                    FrauenSeries  
                 };
 
                 RaisePropertyChanged(nameof(SeriesCollection));
@@ -88,6 +125,26 @@ namespace Logic.UI.AuswertungenViewModels
                 RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
+            }
+        }
+
+        public bool FrauenSeriesVisibility
+        {
+            get { return frauenSeriesVisibility; }
+            set
+            {
+                frauenSeriesVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool MaennerSeriesVisibility
+        {
+            get { return maennerSeriesVisibility; }
+            set
+            {
+                maennerSeriesVisibility = value;
+                RaisePropertyChanged();
             }
         }
         #endregion

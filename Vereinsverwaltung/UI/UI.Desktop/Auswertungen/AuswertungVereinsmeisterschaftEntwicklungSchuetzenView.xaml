@@ -134,6 +134,7 @@
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20px"/>
+                    <RowDefinition Height="40px"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -141,7 +142,17 @@
                     <Label HorizontalAlignment="Center" Width="auto" Content="Auswertung" FontSize="9"/>
                 </materialDesign:Card>
 
-                <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" Height="auto" Margin="10" LegendLocation="Bottom" >
+                <Grid Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Maenner16_30SeriesVisibility}" Content="Männer 16-30" Margin="29,0,20,0"/>
+                        <CheckBox IsChecked="{Binding Maenner31_50SeriesVisibility}" Content="Männer 31-50" Margin="0,0,20,0" />
+                        <CheckBox IsChecked="{Binding Maenner51SeriesVisibility}" Content="Männer ab 50" Margin="0,0,20,0"/>
+                        <CheckBox IsChecked="{Binding FrauenSeriesVisibility}" Content="Frauen" Margin="0,0,20,0"/>
+                        <CheckBox IsChecked="{Binding SportschuetzenSeriesVisibility}" Content="Sportschützen" Margin="0,0,20,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Height="auto" Margin="10" LegendLocation="Bottom" >
                     <lvc:CartesianChart.DataTooltip>
                         <lvc:DefaultTooltip Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}"></lvc:DefaultTooltip>
                     </lvc:CartesianChart.DataTooltip>
