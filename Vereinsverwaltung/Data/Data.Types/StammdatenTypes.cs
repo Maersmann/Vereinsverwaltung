@@ -21,6 +21,7 @@ namespace Data.Types
         vereinsmeisterschaft,
         schuetze,
         schiessgruppe,
-        vereinsmeisterschaftSchuetzeErgebnis
+        vereinsmeisterschaftSchuetzeErgebnis,
+        user
     }
 }

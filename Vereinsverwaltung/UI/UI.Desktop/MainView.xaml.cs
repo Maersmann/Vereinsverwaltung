@@ -21,6 +21,7 @@ using UI.Desktop.Export;
 using UI.Desktop.KkSchiessen;
 using UI.Desktop.Vereinsmeisterschaft;
 using UI.Desktop.Vereinsmeisterschaft.Pages;
+using UI.Desktop.User;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -214,6 +215,9 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case StammdatenTypes.schiessgruppe:
                     view = new SchiessgruppeStammdatenView();
+                    break;
+                case StammdatenTypes.user:
+                    view = new UserStammdatenView();
                     break;
                 default:
                     break;

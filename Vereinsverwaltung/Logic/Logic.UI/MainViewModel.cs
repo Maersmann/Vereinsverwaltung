@@ -49,6 +49,8 @@ namespace Logic.UI
             VereinsmeisterschaftenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftenUebersicht));
             AuswertungVereinsmeisterschaftEntwicklungGruppenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungGruppen));
             AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen));
+
+            Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -103,6 +105,11 @@ namespace Logic.UI
             GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
 
             Messenger.Default.Send(new OpenStartingViewMessage { });
+        }
+
+        private void ReceiveOpenViewMessage()
+        {
+            RaisePropertyChanged("MenuIsEnabled");
         }
 
     }

@@ -38,7 +38,7 @@ namespace Logic.Core.Validierungen.Base
             if (fieldname.Length == 0)
                 fieldname = "Text";
 
-            if (str.Length == 0)
+            if (str == null || str.Length == 0)
                 validationErrors.Add("Kein "+ fieldname + " hinterlegt");
 
             return validationErrors.Count == 0;

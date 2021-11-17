@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:UI.Desktop"
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:optionen="clr-namespace:UI.Desktop.Optionen"
+        xmlns:user="clr-namespace:UI.Desktop.User"
         x:Name="Main"
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
         Icon="Resources/icon.ico" 
@@ -41,6 +42,9 @@
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="Schnurschießen"  >
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  />
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Benutzerverwaltung" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
+                            <user:UserUebersichtView/>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Backend-Settings">
                             <optionen:BackendSettingsView/>
