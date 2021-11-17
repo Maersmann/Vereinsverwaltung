@@ -20,6 +20,8 @@ namespace Logic.UI
         {
             Title = "Vereinsverwaltung";
             GlobalVariables.ServerIsOnline = false;
+            GlobalVariables.BackendServer_URL = "";
+            GlobalVariables.Token = "";
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));

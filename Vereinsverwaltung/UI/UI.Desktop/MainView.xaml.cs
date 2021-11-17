@@ -47,6 +47,7 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
             Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
+            Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
         }   
@@ -232,14 +233,19 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiceOpenKonfigurationViewMessage()
         {
-            new KonfigurationView().ShowDialog();
+            _ = new KonfigurationView().ShowDialog();
+        }
+
+        private void ReceiceOpenLoginViewMessage()
+        {
+            _ = new LoginView().ShowDialog();
         }
 
         private void ReceiceOpenStartingViewMessage()
         {
             StartingProgrammView view = new StartingProgrammView();
-            view.ShowDialog();
-            SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
+            _ = view.ShowDialog();
+            _ = SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
         }   
     }
 

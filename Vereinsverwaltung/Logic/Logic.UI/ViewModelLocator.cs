@@ -151,6 +151,7 @@ namespace Logic.UI
         public AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel AuswertungVereinsmeisterschaftEntwicklungSchuetzen => new AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel();
         public AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel AuswertungVereinsmeisterschaftEntwicklungGruppen => new AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel();
         public InfoViewModel Info => new InfoViewModel();
+        public LoginViewModel Login => new LoginViewModel();
         public static void Cleanup()
         {
 

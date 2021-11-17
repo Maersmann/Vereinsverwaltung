@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Data.Types.Converter;
+using Base.Logic.Types.Converter;
 
 namespace Data.Types.SchnurschiessenTypes
 {
