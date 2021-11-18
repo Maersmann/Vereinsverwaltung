@@ -57,6 +57,7 @@
                             <optionen:InfoView />
                         </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Abmelden" Command="{Binding AbmeldenCommand}" CommandParameter="{Binding ElementName=Main}"/>
                         <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>

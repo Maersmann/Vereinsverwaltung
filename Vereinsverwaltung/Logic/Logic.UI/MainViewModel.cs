@@ -27,6 +27,7 @@ namespace Logic.UI
             GlobalVariables.Token = "";
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
 
+            AbmeldenCommand = new RelayCommand(() => ExecuteAbmeldenCommand());
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
@@ -85,8 +86,11 @@ namespace Logic.UI
         public ICommand VereinsmeisterschaftenUebersichtCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungGruppenCommand { get; set; }
+
+
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
         public bool BerechtigungVisibility => false;
+        public ICommand AbmeldenCommand { get; set; }
 
 
         public RelayCommand<PasswordBox> PasswordCommand { get; private set; }
@@ -99,6 +103,14 @@ namespace Logic.UI
         private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
         {
             Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
+        }
+
+        private void ExecuteAbmeldenCommand()
+        {
+            GlobalVariables.Token = "";
+            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            Messenger.Default.Send(new AktualisiereBerechtigungenMessage { });
+            Messenger.Default.Send(new OpenLoginViewMessage { });
         }
 
         private void ExecuteOpenStartingViewCommand()
