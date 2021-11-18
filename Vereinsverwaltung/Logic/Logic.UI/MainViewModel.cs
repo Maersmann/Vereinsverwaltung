@@ -11,6 +11,8 @@ using Logic.Core.OptionenLogic;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace Logic.UI
 {
@@ -19,9 +21,12 @@ namespace Logic.UI
         public MainViewModel()
         {
             Title = "Vereinsverwaltung";
+
             GlobalVariables.ServerIsOnline = false;
             GlobalVariables.BackendServer_URL = "";
             GlobalVariables.Token = "";
+            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
@@ -81,6 +86,10 @@ namespace Logic.UI
         public ICommand AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungGruppenCommand { get; set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
+        public bool BerechtigungVisibility => false;
+
+
+        public RelayCommand<PasswordBox> PasswordCommand { get; private set; }
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
@@ -110,6 +119,7 @@ namespace Logic.UI
         private void ReceiveOpenViewMessage()
         {
             RaisePropertyChanged("MenuIsEnabled");
+            RaisePropertyChanged(nameof(BerechtigungVisibility));
         }
 
     }

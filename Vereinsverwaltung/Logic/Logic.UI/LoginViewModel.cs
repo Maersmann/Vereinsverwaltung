@@ -5,11 +5,13 @@ using Data.Model.UserModels;
 using Data.Types;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Controls;
@@ -44,6 +46,16 @@ namespace Logic.UI
                 {
                     AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
                     GlobalVariables.Token = Response.Token;
+                    SetConnection();
+                    HttpResponseMessage respBerechtigung = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/UserBerechtigung/{Response.Id}");
+                    if (respBerechtigung.IsSuccessStatusCode)
+                    {
+                        IList<UserBerechtigungModel> Berechtigungen  = await respBerechtigung.Content.ReadAsAsync<IList<UserBerechtigungModel>>();
+                        Berechtigungen.ToList().ForEach(Berechtigung => {
+                            BerechtigungenService.Berechtigungen.Add(Berechtigung.Berechtigung);
+                        });
+                    }
+
                     Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
                     Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewMitgliederUebersicht });
                     Messenger.Default.Send(new CloseViewMessage(), "Login");

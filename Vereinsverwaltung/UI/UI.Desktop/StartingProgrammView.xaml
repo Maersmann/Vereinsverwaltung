@@ -8,7 +8,7 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Height="302.744" Width="442.378"
-        WindowStartupLocation="CenterScreen" 
+        WindowStartupLocation="CenterOwner" 
         Title="{Binding Title, Mode=OneWay}"  
         DataContext="{Binding StartingProgramm ,Source={StaticResource Locator}}">
 

@@ -22,6 +22,9 @@ using UI.Desktop.KkSchiessen;
 using UI.Desktop.Vereinsmeisterschaft;
 using UI.Desktop.Vereinsmeisterschaft.Pages;
 using UI.Desktop.User;
+using System.Windows.Data;
+using System;
+using System.Globalization;
 
 namespace Vereinsverwaltung.UI.Desktop
 {

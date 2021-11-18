@@ -1,4 +1,6 @@
-﻿using Logic.UI.UserViewModels;
+﻿using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.UserMessages;
+using Logic.UI.UserViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +24,22 @@ namespace UI.Desktop.User
         public UserUebersichtView()
         {
             InitializeComponent();
+            Messenger.Default.Register<OpenUserBerechtigungenMessage>(this, "UserUebersicht", m => ReceiveOpenUserBerechtigungenMessage(m));
+        }
+
+        private void ReceiveOpenUserBerechtigungenMessage(OpenUserBerechtigungenMessage m)
+        {
+            UserBerechtigungenUebersichtView view = new UserBerechtigungenUebersichtView
+            {
+                Owner = Application.Current.MainWindow
+            };
+
+            if (view.DataContext is UserBerechtigungenUebersichtViewModel model)
+            {
+                model.UserID = m.UserID;
+            }
+
+            _ = view.ShowDialog();
         }
 
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

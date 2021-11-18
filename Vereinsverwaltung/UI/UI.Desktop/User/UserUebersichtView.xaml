@@ -74,6 +74,7 @@
 
         <materialDesign:Card  Grid.Row="3">
             <DockPanel  LastChildFill="False" >
+                <Button DockPanel.Dock="Left" Width="130" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding BereichtigungCommand, Mode=OneWay}" Content="Berechtigungen" HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="Hand"/>
             </DockPanel>
         </materialDesign:Card>
 

@@ -2,10 +2,14 @@
 using Base.Logic.ViewModels;
 using Data.Model.UserModels;
 using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.UserMessages;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Windows.Input;
 
 namespace Logic.UI.UserViewModels
 {
@@ -14,8 +18,10 @@ namespace Logic.UI.UserViewModels
 
         public UserUebersichtViewModel()
         {
+            MessageToken = "UserUebersicht";
             Title = "Übersicht User";
             RegisterAktualisereViewMessage(StammdatenTypes.user.ToString());
+            BereichtigungCommand = new DelegateCommand(ExecuteBereichtigungCommand, CanExecuteCommand);
         }
 
         protected override int GetID() { return SelectedItem.Id; }
@@ -23,7 +29,25 @@ namespace Logic.UI.UserViewModels
         protected override bool WithPagination() { return true; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.user; }
 
+        #region Bindings
+        public ICommand BereichtigungCommand { get; set; }
+        public override UserModel SelectedItem 
+        { 
+            get => base.SelectedItem;
+            set
+            {
+                base.SelectedItem = value;
+                ((DelegateCommand)BereichtigungCommand).RaiseCanExecuteChanged();
+            } 
+        }
+        #endregion
+
         #region Commands
+
+        private void ExecuteBereichtigungCommand()
+        {
+            Messenger.Default.Send(new OpenUserBerechtigungenMessage { UserID = SelectedItem.Id }, messageToken);
+        }
 
         protected async override void ExecuteEntfernenCommand()
         {

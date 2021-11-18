@@ -80,7 +80,7 @@ namespace Logic.UI.ExportViewModels
                 }
 
                 SendInformationMessage("Änderungen erledigt");
-                LoadData();
+                await LoadData();
                 RequestIsWorking = false;
             }
         }
