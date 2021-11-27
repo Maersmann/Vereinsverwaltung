@@ -1,0 +1,114 @@
+﻿<Window x:Class="UI.Desktop.User.UserBerechtigungenUebersichtView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI.Desktop.User"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
+             mc:Ignorable="d" 
+             Height="500" Width="600" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" MinHeight="550px" MinWidth="400px"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             DataContext="{Binding UserBerechtigungenUebersicht, Source={StaticResource Locator}}">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45px" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
+        </materialDesign:Card>
+
+
+
+        <Grid Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="200px"/>
+                <RowDefinition Height="5px"/>
+                <RowDefinition Height="*" MinHeight="200px"/>
+             </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20px"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}" >
+                    <Label HorizontalAlignment="Center" Width="auto" Content="Berechtigungen vom Benutzer" FontSize="9"/>
+                </materialDesign:Card>
+
+                <DataGrid  Grid.Row="1"  Margin="5"  ItemsSource="{Binding UserBerechtigungen}" SelectedItem="{Binding SelectedUserBerechtigungItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Header="Berechtigung" Binding="{Binding Berechtigung }" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Entfernen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.BerechtigungEntfernenCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch"/>
+
+            <Grid Grid.Row="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20px"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
+                    <Label HorizontalAlignment="Center" Width="auto" Content="Berechtigungen" FontSize="9"/>
+                </materialDesign:Card>
+
+                <DataGrid  Grid.Row="1"  Margin="5"  ItemsSource="{Binding Berechtigungen}" SelectedItem="{Binding SelectedBerechtigungItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" >
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate />
+                    </Validation.ErrorTemplate>
+                    <DataGrid.Columns > 
+                        <DataGridTextColumn Header="Berechtigung" Binding="{Binding}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                        <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                    <Button Content="Hinzufügen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.BerechtigungHinzufuegenCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+             </Grid>
+        </Grid>
+
+
+        <materialDesign:Card Grid.Row="2"  >
+            <DockPanel  LastChildFill="False" />
+        </materialDesign:Card>
+
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
+
+    </Grid>
+</Window>

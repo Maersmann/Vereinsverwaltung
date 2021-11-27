@@ -21,6 +21,10 @@ using UI.Desktop.Export;
 using UI.Desktop.KkSchiessen;
 using UI.Desktop.Vereinsmeisterschaft;
 using UI.Desktop.Vereinsmeisterschaft.Pages;
+using UI.Desktop.User;
+using System.Windows.Data;
+using System;
+using System.Globalization;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -47,6 +51,7 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
             Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
+            Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
         }   
@@ -214,6 +219,9 @@ namespace Vereinsverwaltung.UI.Desktop
                 case StammdatenTypes.schiessgruppe:
                     view = new SchiessgruppeStammdatenView();
                     break;
+                case StammdatenTypes.user:
+                    view = new UserStammdatenView();
+                    break;
                 default:
                     break;
             }
@@ -232,14 +240,19 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiceOpenKonfigurationViewMessage()
         {
-            new KonfigurationView().ShowDialog();
+            _ = new KonfigurationView().ShowDialog();
+        }
+
+        private void ReceiceOpenLoginViewMessage()
+        {
+            _ = new LoginView().ShowDialog();
         }
 
         private void ReceiceOpenStartingViewMessage()
         {
             StartingProgrammView view = new StartingProgrammView();
-            view.ShowDialog();
-            SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
+            _ = view.ShowDialog();
+            _ = SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
         }   
     }
 

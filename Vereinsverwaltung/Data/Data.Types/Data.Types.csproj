@@ -9,4 +9,8 @@
     <Version>1.4.0</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Base.Logic\Base.Logic\Base.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

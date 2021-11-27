@@ -11,6 +11,8 @@ using Logic.Core.OptionenLogic;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace Logic.UI
 {
@@ -19,7 +21,13 @@ namespace Logic.UI
         public MainViewModel()
         {
             Title = "Vereinsverwaltung";
+
             GlobalVariables.ServerIsOnline = false;
+            GlobalVariables.BackendServer_URL = "";
+            GlobalVariables.Token = "";
+            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+
+            AbmeldenCommand = new RelayCommand(() => ExecuteAbmeldenCommand());
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
@@ -47,6 +55,8 @@ namespace Logic.UI
             VereinsmeisterschaftenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftenUebersicht));
             AuswertungVereinsmeisterschaftEntwicklungGruppenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungGruppen));
             AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen));
+
+            Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -76,7 +86,14 @@ namespace Logic.UI
         public ICommand VereinsmeisterschaftenUebersichtCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungGruppenCommand { get; set; }
+
+
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
+        public bool BerechtigungVisibility => false;
+        public ICommand AbmeldenCommand { get; set; }
+
+
+        public RelayCommand<PasswordBox> PasswordCommand { get; private set; }
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
@@ -86,6 +103,14 @@ namespace Logic.UI
         private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
         {
             Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
+        }
+
+        private void ExecuteAbmeldenCommand()
+        {
+            GlobalVariables.Token = "";
+            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            Messenger.Default.Send(new AktualisiereBerechtigungenMessage { });
+            Messenger.Default.Send(new OpenLoginViewMessage { });
         }
 
         private void ExecuteOpenStartingViewCommand()
@@ -101,6 +126,12 @@ namespace Logic.UI
             GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
 
             Messenger.Default.Send(new OpenStartingViewMessage { });
+        }
+
+        private void ReceiveOpenViewMessage()
+        {
+            RaisePropertyChanged("MenuIsEnabled");
+            RaisePropertyChanged(nameof(BerechtigungVisibility));
         }
 
     }

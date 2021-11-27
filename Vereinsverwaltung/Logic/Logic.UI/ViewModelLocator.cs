@@ -29,6 +29,7 @@ using Logic.UI.UtilsViewModels;
 using Logic.UI.ExportViewModels;
 using Logic.UI.KkSchiessenViewModels;
 using Logic.UI.VereinsmeisterschaftViewModels;
+using Logic.UI.UserViewModels;
 
 namespace Logic.UI
 {
@@ -151,6 +152,10 @@ namespace Logic.UI
         public AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel AuswertungVereinsmeisterschaftEntwicklungSchuetzen => new AuswertungVereinsmeisterschaftEntwicklungSchuetzenViewModel();
         public AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel AuswertungVereinsmeisterschaftEntwicklungGruppen => new AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel();
         public InfoViewModel Info => new InfoViewModel();
+        public LoginViewModel Login => new LoginViewModel();
+        public UserStammdatenViewModel UserStammdaten => new UserStammdatenViewModel();
+        public UserUebersichtViewModel UserUebersicht => new UserUebersichtViewModel();
+        public UserBerechtigungenUebersichtViewModel UserBerechtigungenUebersicht => new UserBerechtigungenUebersichtViewModel();
         public static void Cleanup()
         {
 

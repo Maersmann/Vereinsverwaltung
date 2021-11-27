@@ -5,17 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
-        xmlns:local="clr-namespace:UI.Desktop"
+        xmlns:local="clr-namespace:Vereinsverwaltung.UI.Desktop"
+        xmlns:converter="clr-namespace:UI.Desktop.Converter"
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:optionen="clr-namespace:UI.Desktop.Optionen"
+        xmlns:user="clr-namespace:UI.Desktop.User"
         x:Name="Main"
         x:Class="Vereinsverwaltung.UI.Desktop.MainView"
         Icon="Resources/icon.ico" 
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Background="{DynamicResource MaterialDesignPaper}"
-        Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" IsAutomaticCollapseEnabled="False"
-        DataContext="{Binding Main ,Source={StaticResource Locator}}" MinHeight="1028" MinWidth="1920">
+        Title="{Binding Title, Mode=OneWay}" 
+        DataContext="{Binding Main ,Source={StaticResource Locator}}" Height="1028" Width="1920">
 
+    <Fluent:RibbonWindow.Resources>
+        <converter:BerechtigungToVisbilityConverter  x:Key="BoolToVisConverter" />
+    </Fluent:RibbonWindow.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
@@ -42,6 +47,9 @@
                         <Fluent:BackstageTabItem Header="Schnurschießen"  >
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  />
                         </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Benutzerverwaltung" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
+                            <user:UserUebersichtView/>
+                        </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Backend-Settings">
                             <optionen:BackendSettingsView/>
                         </Fluent:BackstageTabItem>
@@ -49,6 +57,7 @@
                             <optionen:InfoView />
                         </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Abmelden" Command="{Binding AbmeldenCommand}" CommandParameter="{Binding ElementName=Main}"/>
                         <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
@@ -58,11 +67,11 @@
             <Fluent:RibbonTabItem Header="Mitglieder" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" >
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
                     <Fluent:Button Header="Übersicht" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
-                    <Fluent:Button Header="Import" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Import" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederImport }" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
-            <Fluent:RibbonTabItem Header="Schlüssel" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+
+            <Fluent:RibbonTabItem Header="Schlüssel" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=Schluessel }">
                 <Fluent:RibbonGroupBox Header="Stammdaten" >
                     <Fluent:Button Header="Schlüssel" Command="{Binding OpenSchluesselUebersichtCommand}" Width="60" LargeIcon="Resources/key.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Besitzer" Command="{Binding OpenSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
