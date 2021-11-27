@@ -15,8 +15,8 @@
         Icon="Resources/icon.ico" 
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Background="{DynamicResource MaterialDesignPaper}"
-        Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" IsAutomaticCollapseEnabled="False"
-        DataContext="{Binding Main ,Source={StaticResource Locator}}" MinHeight="1028" MinWidth="1920">
+        Title="{Binding Title, Mode=OneWay}" 
+        DataContext="{Binding Main ,Source={StaticResource Locator}}" Height="1028" Width="1920">
 
     <Fluent:RibbonWindow.Resources>
         <converter:BerechtigungToVisbilityConverter  x:Key="BoolToVisConverter" />
