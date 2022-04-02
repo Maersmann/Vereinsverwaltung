@@ -13,6 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
+            <RowDefinition Height="50px"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="70px" />
             <RowDefinition Height="45px" />
@@ -34,7 +35,25 @@
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}"/>
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50px"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="140px"/>
+                <ColumnDefinition Width="100px"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Suche:</Label>
+            <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Margin="10,10" Cursor="IBeam" >
+                <materialDesign:HintAssist.Hint>Name</materialDesign:HintAssist.Hint>
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding SucheCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <CheckBox Grid.Column="2" Content="Zeige nur Offene" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding ZeigeNurOffene, Mode=TwoWay}"/>
+            <Button Grid.Column ="3" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Command="{Binding SucheCommand}" Cursor="Hand" >Suchen</Button>
+        </Grid>
+
+        <DataGrid Grid.Row="2" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
                 <DataGridTextColumn Header="Pin" Binding="{Binding Pin.Bezeichnung}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
@@ -66,7 +85,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="9*"/>
                 <ColumnDefinition Width="3*"/>
@@ -90,12 +109,12 @@
             </Grid>
         </Grid>
 
-        <materialDesign:Card  Grid.Row="3">
+        <materialDesign:Card  Grid.Row="4">
             <DockPanel  LastChildFill="False" >
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="4" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="5" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </UserControl>

@@ -24,11 +24,13 @@ namespace Data.Model.MitgliederModels
             get
             {
                 if (!Geburtstag.HasValue)
+                {
                     return null;
+                }
                 else
                 {
                     int years = DateTime.Now.Year - Geburtstag.Value.Year;
-                    var birthday = Geburtstag.Value.AddYears(years);
+                    DateTime birthday = Geburtstag.Value.AddYears(years);
                     if (DateTime.Now.CompareTo(birthday) < 0) { years--; }
                     return years;
                 }

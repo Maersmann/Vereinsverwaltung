@@ -1,26 +1,24 @@
-﻿using Data.Model.PinModels;
-using Data.Types;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Windows.Input;
+﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
-using Base.Logic.Core;
-using Base.Logic.Messages;
-using Base.Logic.Wrapper;
+using Data.Model.PinModels;
+using Data.Types;
+using GalaSoft.MvvmLight.CommandWpf;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Windows.Input;
 
 namespace Logic.UI.PinViewModels
 {
-    public class PinAusgabeMitgliedUebersichtViewModel : ViewModelUebersicht<PinAusgabeMitgliedUebersichtModel, StammdatenTypes>
+    public class PinsVomMitgliedUebersichtViewModel : ViewModelUebersicht<PinAusgabeMitgliedModel, StammdatenTypes>
     {
         private bool zeigeNurOffene;
         private int id;
-        public PinAusgabeMitgliedUebersichtViewModel()
+        public PinsVomMitgliedUebersichtViewModel()
         {
             id = 0;
-            Title = "Übersicht Mitglieder für Pins";
+            Title = "Übersicht Pins vom Mitglied";
             ErhaltenCommand = new RelayCommand(() => ExecuteErhaltenCommand());
             RueckgaengigCommand = new RelayCommand(() => ExcecuteRueckgaengigCommand());
             zeigeNurOffene = true;
@@ -28,16 +26,7 @@ namespace Logic.UI.PinViewModels
         protected override int GetID() { return SelectedItem.Mitglied.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
         protected override bool WithPagination() { return true; }
-        protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Mitglieder/LoadAllForAusgabe/{id}?nurOffene={zeigeNurOffene}"; }
-
-        public void SetFilterData(string filterText, bool zeigeNurOffene)
-        {
-            if (filterText.Length > 0)
-            {
-                FilterText = filterText;
-            }
-            ZeigeNurOffene = zeigeNurOffene;
-        }
+        protected override string GetREST_API() { return $"/api/Mitglieder/{id}/pins?nurOffene={zeigeNurOffene}"; }
 
         protected override bool LoadingOnCreate() => false;
 
@@ -52,7 +41,7 @@ namespace Logic.UI.PinViewModels
         public ICommand ErhaltenCommand { get; private set; }
         public ICommand RueckgaengigCommand { get; private set; }
 
-       
+
         public bool ZeigeNurOffene
         {
             get => zeigeNurOffene;
@@ -93,7 +82,7 @@ namespace Logic.UI.PinViewModels
             {
                 SendExceptionMessage(e.Message); ;
             }
-            
+
         }
         private async void ExecuteErhaltenCommand()
         {
@@ -107,11 +96,11 @@ namespace Logic.UI.PinViewModels
                     {
                         if ((int)resp.StatusCode == 900)
                         {
-                            SendExceptionMessage($"{SelectedItem.Mitglied.Fullname} hat den Pin schon erhalten");
+                            SendExceptionMessage($"Pin schon erhalten");
                         }
                         else
                         {
-                            SendExceptionMessage("Fehler: Pin Erhalten bei ID: " + SelectedItem.Mitglied.Fullname + Environment.NewLine + await resp.Content.ReadAsStringAsync());
+                            SendExceptionMessage("Fehler: Pin Erhalten bei ID: " + SelectedItem.Beschreibung);
                             return;
                         }
                     }
@@ -124,13 +113,9 @@ namespace Logic.UI.PinViewModels
             catch (Exception e)
             {
                 SendExceptionMessage(e.Message);
-            }           
+            }
         }
 
-        protected override void ExecuteCleanUpCommand()
-        {
-            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe.ToString());
-        }
         #endregion
     }
 }

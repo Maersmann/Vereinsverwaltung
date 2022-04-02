@@ -14,20 +14,31 @@ namespace Logic.UI.PinViewModels
 {
     public class PinAusgabeUebersichtViewModel : ViewModelUebersicht<PinAusgabenUebersichtModel, StammdatenTypes>
     {
-
+        private bool zeigeNurOffene;
         public PinAusgabeUebersichtViewModel()
         {
             Title = "Übersicht Pin Ausgaben";
             RegisterAktualisereViewMessage(StammdatenTypes.pinAusgabe.ToString());
             OeffneAusgabeCommand = new RelayCommand(() => ExecuteOeffneAusgabeCommand());
             ErledigeAusgabeCommand = new RelayCommand(() => ExecuteErledigeAusgabeCommand());
+            zeigeNurOffene = true;
         }
         protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.pinAusgabe; }
-        protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Uebersicht"; }
+        protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Uebersicht?nurOffene={zeigeNurOffene}"; }
         protected override bool WithPagination() { return true; }
 
         #region Bindings
+        public bool ZeigeNurOffene
+        {
+            get => zeigeNurOffene;
+            set
+            {
+                zeigeNurOffene = value;
+                RaisePropertyChanged();
+
+            }
+        }
         public ICommand OeffneAusgabeCommand { get; private set; }
         public ICommand ErledigeAusgabeCommand { get; private set; }
         #endregion
@@ -37,7 +48,7 @@ namespace Logic.UI.PinViewModels
 
         private void ExecuteOeffneAusgabeCommand()
         {
-            Messenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = SelectedItem.ID }, "PinAusgabeUebersicht");
+            Messenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = SelectedItem.ID, FilterText = FilterText, ZeigeNurOffene = zeigeNurOffene }, "PinAusgabeUebersicht");
         }
 
         private async void ExecuteErledigeAusgabeCommand()

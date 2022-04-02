@@ -156,6 +156,7 @@ namespace Logic.UI
         public UserStammdatenViewModel UserStammdaten => new UserStammdatenViewModel();
         public UserUebersichtViewModel UserUebersicht => new UserUebersichtViewModel();
         public UserBerechtigungenUebersichtViewModel UserBerechtigungenUebersicht => new UserBerechtigungenUebersichtViewModel();
+        public PinsVomMitgliedUebersichtViewModel PinsVomMitgliedUebersicht => new PinsVomMitgliedUebersichtViewModel();
         public static void Cleanup()
         {
 

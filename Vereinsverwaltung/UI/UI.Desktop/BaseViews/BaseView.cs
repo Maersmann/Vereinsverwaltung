@@ -33,7 +33,10 @@ namespace UI.Desktop.BaseViews
 
         private void ReceiveOpenLoadingViewMessage(OpenLoadingViewMessage m)
         {
-            loadingView = new LoadingView();
+            loadingView = new LoadingView
+            {
+                //Owner = Application.Current.MainWindow
+            };
 
             if (loadingView.DataContext is LoadingViewModel model)
             {

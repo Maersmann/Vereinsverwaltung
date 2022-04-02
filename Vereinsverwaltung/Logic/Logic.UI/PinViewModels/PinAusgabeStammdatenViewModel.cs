@@ -1,7 +1,6 @@
 ﻿using Data.Model.PinModels;
 using Data.Types;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Base.Logic.ViewModels;
@@ -13,7 +12,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.Messages;
@@ -55,7 +53,6 @@ namespace Logic.UI.PinViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                RequestIsWorking = true;
                 Data.PinID = Data.Pin.ID;
                 if (!Data.Option.NurAktive)
                 {
@@ -63,15 +60,18 @@ namespace Logic.UI.PinViewModels
                 }
                 Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Liste wird erstellt." }, "PinAusgabeStammdaten");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", Data);
-                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
+                else if (resp.StatusCode.Equals(HttpStatusCode.UnprocessableEntity))
+                {
+                    SendExceptionMessage("Pinausgabe konnte nicht erstellt werden." + Environment.NewLine + "Der Stichtag ist nicht ausgewählt");
+                }
                 else
                 {
-                    SendExceptionMessage("Pin konnte nicht gespeichert werden.");
+                    SendExceptionMessage("Pinausgabe konnte nicht erstellt werden.");
                 }
                 Messenger.Default.Send(new CloseLoadingViewMessage(), "PinAusgabeStammdaten");
             }
