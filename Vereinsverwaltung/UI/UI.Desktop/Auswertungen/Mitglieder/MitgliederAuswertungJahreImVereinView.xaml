@@ -1,18 +1,17 @@
-﻿<UserControl x:Class="UI.Desktop.Auswertungen.AuswertungVereinsmeisterschaftEntwicklungGruppenView"
+﻿<UserControl x:Class="UI.Desktop.Auswertungen.Mitglieder.MitgliederAuswertungJahreImVereinView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UI.Desktop.Auswertungen"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:local="clr-namespace:UI.Desktop.Auswertungen.Mitglieder"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
-             DataContext="{Binding AuswertungVereinsmeisterschaftEntwicklungGruppen, Source={StaticResource Locator}}">
+             DataContext="{Binding MitgliederAuswertungJahreImVerein, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
@@ -63,24 +62,20 @@
                             </Grid>
 
                             <Grid Grid.Column="1">
-
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="160"/>
-                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="200"/>
                                 </Grid.ColumnDefinitions>
 
 
                                 <Grid Grid.Column="0" Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="4*"/>
-                                        <ColumnDefinition Width="6*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="7*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Margin="3" Grid.Column="0" Content="Jahr von:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding JahrVon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
-                                        <i:Interaction.Behaviors>
-                                            <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
-                                        </i:Interaction.Behaviors>
+                                    <Label Margin="3" Grid.Column="0" Content="Stichtag:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" SelectedDate="{Binding Stichtag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+                                        <materialDesign:HintAssist.Hint>01.01.1564</materialDesign:HintAssist.Hint>
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <StackPanel>
@@ -88,43 +83,19 @@
                                                     <ItemsControl ItemsSource="{Binding}">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock Text="{Binding ErrorContent}" Foreground="Red" TextWrapping="Wrap" FontSize="9" />
+                                                                <TextBlock Text="{Binding ErrorContent}" Foreground="Red" />
                                                             </DataTemplate>
                                                         </ItemsControl.ItemTemplate>
                                                     </ItemsControl>
                                                 </StackPanel>
                                             </ControlTemplate>
                                         </Validation.ErrorTemplate>
-                                    </TextBox>
-                                </Grid>
-                                <Grid Grid.Column="1" Margin="5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="4*"/>
-                                        <ColumnDefinition Width="6*"/>
-                                    </Grid.ColumnDefinitions>
+                                    </DatePicker>
 
-                                    <Label Margin="3" Grid.Column="0" Content="Jahr bis:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="{Binding JahrBis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
-                                        <i:Interaction.Behaviors>
-                                            <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
-                                        </i:Interaction.Behaviors>
-                                        <Validation.ErrorTemplate>
-                                            <ControlTemplate>
-                                                <StackPanel>
-                                                    <AdornedElementPlaceholder x:Name="textBox"/>
-                                                    <ItemsControl ItemsSource="{Binding}">
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock Text="{Binding ErrorContent}" Foreground="Red" TextWrapping="Wrap" FontSize="9" />
-                                                            </DataTemplate>
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
-                                                </StackPanel>
-                                            </ControlTemplate>
-                                        </Validation.ErrorTemplate>
-                                    </TextBox>
                                 </Grid>
                             </Grid>
+
+
                         </Grid>
 
                     </Grid>
@@ -134,7 +105,6 @@
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20px"/>
-                    <RowDefinition Height="40px"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -142,27 +112,7 @@
                     <Label HorizontalAlignment="Center" Width="auto" Content="Auswertung" FontSize="9"/>
                 </materialDesign:Card>
 
-                <Grid Grid.Row="1">
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding MaennerSeriesVisibility}" Content="Männer" Margin="29,0,20,0"/>
-                        <CheckBox IsChecked="{Binding FrauenSeriesVisibility}" Content="Frauen" Margin="0,0,20,0" />
-                    </StackPanel>
-                </Grid>
-
-                <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Height="auto" Margin="10" LegendLocation="Bottom">
-                    <lvc:CartesianChart.DataTooltip>
-                        <lvc:DefaultTooltip Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}"></lvc:DefaultTooltip>
-                    </lvc:CartesianChart.DataTooltip>
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="Jahr" Labels="{Binding Labels}"></lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Anzahl" LabelFormatter="{Binding Formatter}" MinValue="0" >
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="2" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart Grid.Row="1" Series="{Binding Series}" Height="auto" Margin="10" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" LegendPosition="Bottom" LegendBackground="{DynamicResource MaterialDesignPaper}" LegendTextBrush="White" >
                 </lvc:CartesianChart>
             </Grid>
 
@@ -177,3 +127,4 @@
 
     </Grid>
 </UserControl>
+

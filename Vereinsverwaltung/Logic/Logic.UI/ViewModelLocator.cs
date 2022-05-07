@@ -30,6 +30,7 @@ using Logic.UI.ExportViewModels;
 using Logic.UI.KkSchiessenViewModels;
 using Logic.UI.VereinsmeisterschaftViewModels;
 using Logic.UI.UserViewModels;
+using Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels;
 
 namespace Logic.UI
 {
@@ -157,6 +158,10 @@ namespace Logic.UI
         public UserUebersichtViewModel UserUebersicht => new UserUebersichtViewModel();
         public UserBerechtigungenUebersichtViewModel UserBerechtigungenUebersicht => new UserBerechtigungenUebersichtViewModel();
         public PinsVomMitgliedUebersichtViewModel PinsVomMitgliedUebersicht => new PinsVomMitgliedUebersichtViewModel();
+        public MitgliederAuswertungEintrittViewModel MitgliederAuswertungEintritt => new MitgliederAuswertungEintrittViewModel();
+        public MitgliederAuswertungJahreImVereinViewModel MitgliederAuswertungJahreImVerein => new MitgliederAuswertungJahreImVereinViewModel();
+        public MitgliederAuswertungJahrgangViewModel MitgliederAuswertungJahrgang => new MitgliederAuswertungJahrgangViewModel();
+        public MitgliederAuswertungJahrzehnteViewModel MitgliederAuswertungJahrzehnte => new MitgliederAuswertungJahrzehnteViewModel();
         public static void Cleanup()
         {
 

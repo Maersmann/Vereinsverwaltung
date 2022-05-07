@@ -25,6 +25,7 @@ using UI.Desktop.User;
 using System.Windows.Data;
 using System;
 using System.Globalization;
+using UI.Desktop.Auswertungen.Mitglieder;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -177,6 +178,22 @@ namespace Vereinsverwaltung.UI.Desktop
                 case ViewType.viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(AuswertungVereinsmeisterschaftEntwicklungSchuetzenView).Name))
                         Container.NavigationService.Navigate(new AuswertungVereinsmeisterschaftEntwicklungSchuetzenView());
+                    break;
+                case ViewType.viewAuswertungMitgliederAuswertungEintritt:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungEintrittView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungEintrittView());
+                    break;
+                case ViewType.viewAuswertungMitgliederAuswertungJahreImVerein:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungJahreImVereinView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungJahreImVereinView());
+                    break;
+                case ViewType.viewAuswertungMitgliederAuswertungJahrgang:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungJahrgangView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungJahrgangView());
+                    break;
+                case ViewType.viewAuswertungMitgliederAuswertungJahrzehnt:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungJahrzehnteView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungJahrzehnteView());
                     break;
                 default:
                     break;

@@ -1,10 +1,12 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels.KkSchiessenAuswertungModels;
-using LiveCharts;
-using LiveCharts.Wpf;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Logic.Core.Validierungen.Base;
 using Prism.Commands;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,13 +21,27 @@ namespace Logic.UI.AuswertungenViewModels
     {
         private int jahrvon;
         private int jahrbis;
+        private LineSeries<int> anzahlSeries;
+        private LineSeries<int> getraenkeSeries;
+        private LineSeries<int> munitionSeries;
         public KkSchiessenMonatAuswertungViewModel()
         {
             Title = "Auswertung KK-Schießen je Monat";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N0}", value);
+            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
+            anzahlSeries = new LineSeries<int>();
+            getraenkeSeries = new LineSeries<int>();
+            munitionSeries = new LineSeries<int>();
+            YAxes = new List<Axis>
+                {
+                    new Axis()
+                    {
+                        LabelsPaint = new SolidColorPaint{ Color = SKColors.CornflowerBlue },
+                        Position = AxisPosition.Start,
+                        Labeler = (value) =>  string.Format("{0}", value)
+                    }
+                };
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -41,9 +57,9 @@ namespace Logic.UI.AuswertungenViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<KkSchiessenMonatAuswertungModel>>();
 
-                ChartValues<int> valuesAnzahl = new ChartValues<int>();
-                ChartValues<int> valuesGetraenke = new ChartValues<int>();
-                ChartValues<int> valuesMunition = new ChartValues<int>();
+                IList<int> valuesAnzahl = new List<int>();
+                IList<int> valuesGetraenke = new List<int>();
+                IList<int> valuesMunition = new List<int>();
                 Labels = new string[ItemList.Count];
                 int index = 0;
 
@@ -55,16 +71,33 @@ namespace Logic.UI.AuswertungenViewModels
                     Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
                     index++;
                 });
-                SeriesCollection = new SeriesCollection
+                anzahlSeries = new LineSeries<int>
                 {
-                    new LineSeries{ Values = valuesAnzahl, Title="Anzahl Veranstaltungen" },
-                    new LineSeries{ Values = valuesGetraenke, Title="Anzahl Getränke" },
-                    new LineSeries{ Values = valuesMunition, Title="Anzahl Munition" }
+                    Values = valuesAnzahl,
+                    Name = "Veranstaltungen",
+                    TooltipLabelFormatter = (point) => "Veranstaltungen " + point.PrimaryValue.ToString()
+                };
+                getraenkeSeries = new LineSeries<int>
+                {
+                    Values = valuesGetraenke,
+                    Name = "Getränke",
+                    TooltipLabelFormatter = (point) => "Getränke " + point.PrimaryValue.ToString()
+                };
+                munitionSeries = new LineSeries<int>
+                {
+                    Values = valuesMunition,
+                    Name = "Munition",
+                    TooltipLabelFormatter = (point) => "Munition " + point.PrimaryValue.ToString()
                 };
 
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Monat";
+                YAxes.First().Name = "Anzahl";
+                Series = new LineSeries<int>[3] { anzahlSeries, getraenkeSeries, munitionSeries };
+
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }

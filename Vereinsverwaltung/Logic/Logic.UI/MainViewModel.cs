@@ -55,6 +55,10 @@ namespace Logic.UI
             VereinsmeisterschaftenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftenUebersicht));
             AuswertungVereinsmeisterschaftEntwicklungGruppenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungGruppen));
             AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen));
+            AuswertungMitgliederAuswertungEintrittCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungEintritt));
+            AuswertungMitgliederAuswertungJahreImVereinCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahreImVerein));
+            AuswertungMitgliederAuswertungJahrgangCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrgang));
+            AuswertungMitgliederAuswertungJahrzehntCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrzehnt));
 
             Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
@@ -86,7 +90,10 @@ namespace Logic.UI
         public ICommand VereinsmeisterschaftenUebersichtCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungGruppenCommand { get; set; }
-
+        public ICommand AuswertungMitgliederAuswertungEintrittCommand { get; set; }
+        public ICommand AuswertungMitgliederAuswertungJahreImVereinCommand { get; set; }
+        public ICommand AuswertungMitgliederAuswertungJahrgangCommand { get; set; }
+        public ICommand AuswertungMitgliederAuswertungJahrzehntCommand { get; set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
         public bool BerechtigungVisibility => false;

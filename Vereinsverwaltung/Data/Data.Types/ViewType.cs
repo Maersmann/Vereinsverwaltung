@@ -27,6 +27,10 @@
         viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseGruppen,
         viewVereinsmeisterschaftenUebersicht,
         viewAuswertungVereinsmeisterschaftEntwicklungGruppen,
-        viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen
+        viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen,
+        viewAuswertungMitgliederAuswertungEintritt,
+        viewAuswertungMitgliederAuswertungJahreImVerein,
+        viewAuswertungMitgliederAuswertungJahrgang,
+        viewAuswertungMitgliederAuswertungJahrzehnt
     }
 }

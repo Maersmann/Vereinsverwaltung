@@ -14,7 +14,11 @@
 
   <ItemGroup>
     <None Remove="Resources\account-circle.png" />
+    <None Remove="Resources\account-clock.png" />
     <None Remove="Resources\account-group.png" />
+    <None Remove="Resources\account-multiple-plus.png" />
+    <None Remove="Resources\account-network.png" />
+    <None Remove="Resources\account-settings.png" />
     <None Remove="Resources\add.png" />
     <None Remove="Resources\auswertungStundeTag.png" />
     <None Remove="Resources\auswertungTag.png" />
@@ -62,7 +66,11 @@
 
   <ItemGroup>
     <Resource Include="Resources\account-circle.png" />
+    <Resource Include="Resources\account-clock.png" />
     <Resource Include="Resources\account-group.png" />
+    <Resource Include="Resources\account-multiple-plus.png" />
+    <Resource Include="Resources\account-network.png" />
+    <Resource Include="Resources\account-settings.png" />
     <Resource Include="Resources\add.png" />
     <Resource Include="Resources\auswertungStundeTag.png" />
     <Resource Include="Resources\auswertungTag.png" />

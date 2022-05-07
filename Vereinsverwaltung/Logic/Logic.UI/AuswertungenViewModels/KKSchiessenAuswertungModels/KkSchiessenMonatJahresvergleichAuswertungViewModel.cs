@@ -2,10 +2,12 @@
 using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels.KkSchiessenAuswertungModels;
 using Data.Types.AuswertungTypes;
-using LiveCharts;
-using LiveCharts.Wpf;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Logic.Core.Validierungen.Base;
 using Prism.Commands;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,7 +30,15 @@ namespace Logic.UI.AuswertungenViewModels
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N0}", value);
+            YAxes = new List<Axis>
+                {
+                    new Axis()
+                    {
+                        LabelsPaint = new SolidColorPaint{ Color = SKColors.CornflowerBlue },
+                        Position = AxisPosition.Start,
+                        Labeler = (value) =>  string.Format("{0}", value)
+                    }
+                };
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -45,19 +55,29 @@ namespace Logic.UI.AuswertungenViewModels
                 ItemList = await resp.Content.ReadAsAsync<List<KkSchiessenMonatJahresvergleichAuswertungModel>>();
 
                 Labels = new string[12];
-                SeriesCollection = new SeriesCollection();
+                ColumnSeries<int>[] series = new ColumnSeries<int>[ItemList.Count];
+                int index = 0;
+
+
+
                 ItemList.ToList().ForEach(item =>
                 {
-                    ColumnSeries coloumn = new ColumnSeries
+
+                    ColumnSeries<int> coloumn = new ColumnSeries<int>
                     {
-                        Title = item.Jahr.ToString(),
-                        Values = new ChartValues<int>()
+                        Name = item.Jahr.ToString(),
+                        Values = new List<int>(),
+                        TooltipLabelFormatter = (point) => item.Jahr + " " + point.PrimaryValue.ToString()
                     };
+
+                    var anzahl = new List<int>();
                     item.Monatswerte.ToList().ForEach(mw =>
                     {
-                        coloumn.Values.Add(mw.Anzahl);
+                        anzahl.Add(mw.Anzahl);
                     });
-                    SeriesCollection.Add(coloumn);
+                    coloumn.Values = anzahl;
+                    series.SetValue(coloumn, index);
+                    index++;
 
                 });
 
@@ -66,9 +86,15 @@ namespace Logic.UI.AuswertungenViewModels
                     Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
                 }
 
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Monat";
+                YAxes.First().Name = "Anzahl";
+
+                Series = series;
+
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }

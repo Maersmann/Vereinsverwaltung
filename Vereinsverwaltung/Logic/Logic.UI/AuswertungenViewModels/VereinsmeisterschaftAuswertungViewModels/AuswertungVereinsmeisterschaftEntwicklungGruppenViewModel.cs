@@ -1,10 +1,12 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels.VereinsmeisterschaftAuswertungModels;
-using LiveCharts;
-using LiveCharts.Wpf;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Logic.Core.Validierungen.Base;
 using Prism.Commands;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,17 +23,25 @@ namespace Logic.UI.AuswertungenViewModels
     {
         private int jahrvon;
         private int jahrbis;
-        private bool frauenSeriesVisibility;
-        private bool maennerSeriesVisibility;
+        private LineSeries<int> frauenSeries;
+        private LineSeries<int> maennerSeries;
         public AuswertungVereinsmeisterschaftEntwicklungGruppenViewModel()
         {
-            maennerSeriesVisibility = true;
-            frauenSeriesVisibility = true;
             Title = "Auswertung Entwicklung Gruppen";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N0}", value);
+            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
+            frauenSeries = new LineSeries<int>();
+            maennerSeries = new LineSeries<int>();
+            YAxes = new List<Axis>
+                {
+                    new Axis()
+                    {
+                        LabelsPaint = new SolidColorPaint{ Color = SKColors.CornflowerBlue },
+                        Position = AxisPosition.Start,
+                        Labeler = (value) =>  string.Format("{0}", value)
+                    }
+                };
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -47,8 +57,8 @@ namespace Logic.UI.AuswertungenViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<AuswertungVereinsmeisterschaftEntwicklungGruppenModel>>();
 
-                ChartValues<int> valuesFrauen = new ChartValues<int>();
-                ChartValues<int> valuesMaenner = new ChartValues<int>();
+                IList<int> valuesFrauen = new List<int>();
+                IList<int> valuesMaenner = new List<int>();
                 Labels = new string[ItemList.Count];
                 int index = 0;
 
@@ -60,44 +70,27 @@ namespace Logic.UI.AuswertungenViewModels
                     index++;
                 });
 
-                Binding MaennerSeriesVisbilityBinding = new Binding()
-                {
-                    Source = this,
-                    Path = new PropertyPath(nameof(MaennerSeriesVisibility)),
-                    Converter = new BooleanToVisibilityConverter(),
-                    Mode = BindingMode.OneWay,
-                };
-                Binding FrauenSeriesVisbilityBinding = new Binding()
-                {
-                    Source = this,
-                    Path = new PropertyPath(nameof(FrauenSeriesVisibility)),
-                    Converter = new BooleanToVisibilityConverter(),
-                    Mode = BindingMode.OneWay,
-                };
-
-                LineSeries FrauenSeries = new LineSeries
+                frauenSeries = new LineSeries<int>
                 {
                     Values = valuesFrauen,
-                    Title = "Anzahl Frauen",
+                    Name = "Anzahl Frauen",
+                    TooltipLabelFormatter = (point) => "Anzahl Frauen " + point.PrimaryValue.ToString()
                 };
-                LineSeries MaennerSeries = new LineSeries
+                maennerSeries = new LineSeries<int>
                 {
                     Values = valuesMaenner,
-                    Title = "Anzahl Männer"
+                    Name = "Anzahl Männer",
+                    TooltipLabelFormatter = (point) => "Anzahl Männer " + point.PrimaryValue.ToString()
                 };
 
-                MaennerSeries.SetBinding(UIElement.VisibilityProperty, MaennerSeriesVisbilityBinding);
-                FrauenSeries.SetBinding(UIElement.VisibilityProperty, FrauenSeriesVisbilityBinding);
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Jahr";
+                YAxes.First().Name = "Anzahl";
+                Series = new LineSeries<int>[2] { frauenSeries, maennerSeries };
 
-                SeriesCollection = new SeriesCollection
-                {
-                    MaennerSeries,
-                    FrauenSeries  
-                };
-
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -130,21 +123,21 @@ namespace Logic.UI.AuswertungenViewModels
 
         public bool FrauenSeriesVisibility
         {
-            get { return frauenSeriesVisibility; }
+            get { return frauenSeries.IsVisible; }
             set
             {
-                frauenSeriesVisibility = value;
-                RaisePropertyChanged();
+                frauenSeries.IsVisible = value;
+                RaisePropertyChanged(nameof(Series));
             }
         }
 
         public bool MaennerSeriesVisibility
         {
-            get { return maennerSeriesVisibility; }
+            get { return maennerSeries.IsVisible; }
             set
             {
-                maennerSeriesVisibility = value;
-                RaisePropertyChanged();
+                maennerSeries.IsVisible = value;
+                RaisePropertyChanged(nameof(Series));
             }
         }
         #endregion
