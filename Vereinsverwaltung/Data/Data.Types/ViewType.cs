@@ -2,6 +2,7 @@
 {
     public enum ViewType
     {
+        viewNothing,
         viewMitgliederUebersicht,
         viewMitgliederImport,
         viewSchluesselStammdaten,

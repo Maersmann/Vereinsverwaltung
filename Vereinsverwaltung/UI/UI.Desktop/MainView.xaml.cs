@@ -196,6 +196,8 @@ namespace Vereinsverwaltung.UI.Desktop
                         Container.NavigationService.Navigate(new MitgliederAuswertungJahrzehnteView());
                     break;
                 default:
+                    Container.Content = null;
+                    Container.NavigationService.RemoveBackEntry();
                     break;
             }
         }

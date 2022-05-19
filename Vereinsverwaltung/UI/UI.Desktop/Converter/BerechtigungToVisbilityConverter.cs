@@ -15,7 +15,11 @@ namespace UI.Desktop.Converter
         {
             bool Return = (bool)value;
             if (parameter != null)
-            {
+            { 
+                if (BerechtigungenService.IsAdmin)
+                {
+                    return Visibility.Visible;
+                }
                 Data.Types.BerechtigungTypes Berechtigung = BerechtigungenService.StringToTyp(parameter.ToString());
                 Return = BerechtigungenService.HatBerechtigung(Berechtigung);
             }

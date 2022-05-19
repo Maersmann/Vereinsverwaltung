@@ -44,13 +44,13 @@
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}" >
                     <Fluent:BackstageTabControl>
-                        <Fluent:BackstageTabItem Header="Schnurschießen"  >
+                        <Fluent:BackstageTabItem Header="Schnurschießen"   Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=OptionSchnurrschiessen }" >
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  />
                         </Fluent:BackstageTabItem>
-                        <Fluent:BackstageTabItem Header="Benutzerverwaltung" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
+                        <Fluent:BackstageTabItem Header="Benutzerverwaltung" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=OptionBenutzerverwaltung }">
                             <user:UserUebersichtView/>
                         </Fluent:BackstageTabItem>
-                        <Fluent:BackstageTabItem Header="Backend-Settings">
+                        <Fluent:BackstageTabItem Header="Backend-Settings"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=OptionBackendSettings }">
                             <optionen:BackendSettingsView/>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Info" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
@@ -66,78 +66,78 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Mitglieder" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" >
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
-                    <Fluent:Button Header="Übersicht" Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Übersicht"  Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Import" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederImport }" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Schlüssel" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=Schluessel }">
-                <Fluent:RibbonGroupBox Header="Stammdaten" >
+            <Fluent:RibbonTabItem Header="Schlüssel" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AllgemeinSchluessel }">
+                <Fluent:RibbonGroupBox Header="Stammdaten" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=SchluesselStammdatenUebersicht }"  >
                     <Fluent:Button Header="Schlüssel" Command="{Binding OpenSchluesselUebersichtCommand}" Width="60" LargeIcon="Resources/key.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Besitzer" Command="{Binding OpenSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Zuteilung"  >
+                <Fluent:RibbonGroupBox Header="Zuteilung" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=SchluesselZuteilung }"  >
                     <Fluent:Button Header="Schlüssel" Command="{Binding OpenZuteilungSchluesselUebersichtCommand}" Width="60"  LargeIcon="Resources/key_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Besitzer" Command="{Binding OpenZuteilungSchluesselbesitzerUebersichtCommand}" Width="60" LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Freie Schlüssel" Command="{Binding OpenZuteilungFreieAnzahlUbersichtCommand}" Width="60"  LargeIcon="Resources/key_free.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
-            <Fluent:RibbonTabItem Header="Pins" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+
+            <Fluent:RibbonTabItem Header="Pins" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AllgemeinPins }">
                 <Fluent:RibbonGroupBox Header="Ausgabe" >
-                    <Fluent:Button Header="Neu" Command="{Binding NeuePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_new.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
-                    <Fluent:Button Header="Übersicht" Command="{Binding LadePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_load.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Neu" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=PinsAusagabeErstellen }" Command="{Binding NeuePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_new.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Übersicht" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=PinAusgabeUeberischt }" Command="{Binding LadePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_load.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
-            <Fluent:RibbonTabItem Header="KK-Schießen" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+
+            <Fluent:RibbonTabItem Header="KK-Schießen" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AllgemeinKKSchiessen }">
                 <Fluent:RibbonGroupBox Header="KK-Schießen" >
                     <Fluent:Button Header="Übersicht" Command="{Binding KkSchiessenUebersichtCommand}" Width="60"  LargeIcon="Resources/kk_schiessen.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Gruppen" Command="{Binding KkSchiessgruppeUebersichtCommand}" Width="60"  LargeIcon="Resources/kk_schiessgruppe.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Vereinsmeisterschaft" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
-                <Fluent:RibbonGroupBox Header="Stammdaten" >
+            <Fluent:RibbonTabItem Header="Vereinsmeisterschaft" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AllgemeinVereinsmeisterschaft }">
+                <Fluent:RibbonGroupBox Header="Stammdaten"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=VereinsmeisterschaftStammdatenUebersicht }" >
                     <Fluent:Button Header="Schützen" Command="{Binding SchuetzenUebersichtCommand}" Width="60"  LargeIcon="Resources/account-circle.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Gruppen" Command="{Binding SchiessgruppenUebersichtCommand}" Width="60"  LargeIcon="Resources/account-group.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Aktiv" >
+                <Fluent:RibbonGroupBox Header="Aktiv"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=VereinsmeisterschaftDurchfuehrung }" >
                     <Fluent:Button Header="Übersicht" Command="{Binding VereinsmeisterschaftOffenUebersichtCommand}" Width="70"  LargeIcon="Resources/cards.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Ergebnisse Schützen" Command="{Binding VereinsmeisterschaftAktivErgebnisseSchuetzenCommand}" Width="70"  LargeIcon="Resources/format-list-bulleted-square.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Ergebnisse Gruppen" Command="{Binding VereinsmeisterschaftAktivErgebnisseGruppenCommand}" Width="70"  LargeIcon="Resources/format-list-bulleted.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Historie" >
+                <Fluent:RibbonGroupBox Header="Historie"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=VereinsmeisterschaftErgebnisse }" >
                     <Fluent:Button Header="Übersicht" Command="{Binding VereinsmeisterschaftenUebersichtCommand}" Width="70"  LargeIcon="Resources/history.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Auswertungen" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
-                <Fluent:RibbonGroupBox Header="Pin Ausgabe" >
+            <Fluent:RibbonTabItem Header="Auswertungen" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AllgemeinAuswertung }">
+                <Fluent:RibbonGroupBox Header="Pin Ausgabe" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AuswertungPinAusgabe }" >
                     <Fluent:Button Header="Tag" Command="{Binding AuswertungPinAusgabeTagCommand}" Width="60"  LargeIcon="Resources/auswertungTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Tag / Stunde" Command="{Binding AuswertungPinAusgabeTagStundeCommand}" Width="60"  LargeIcon="Resources/auswertungStundeTag.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="KK-Schießen" >
+                <Fluent:RibbonGroupBox Header="KK-Schießen" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AuswertungKKSchiessen }">
                     <Fluent:Button Header="Monate" Command="{Binding AuswertungKkSchiessenMonatCommand}" Width="80"  LargeIcon="Resources/auswertung_kk_monat.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Monate Jahresvergleich" Command="{Binding AuswertungKkSchiessenMonatJahresvergleichCommand}" Width="90"  LargeIcon="Resources/auswertung_kk_monat_jahres.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Vereinsmeisterschaft" >
+                <Fluent:RibbonGroupBox Header="Vereinsmeisterschaft" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AuswertungVereinsmeisterschaft }">
                     <Fluent:Button Header="Entwicklung Schützen" Command="{Binding AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand}" Width="80"  LargeIcon="Resources/file-chart.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Entwicklung Gruppen" Command="{Binding AuswertungVereinsmeisterschaftEntwicklungGruppenCommand}" Width="90"  LargeIcon="Resources/file-chart-outline.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Mitglieder" >
+                <Fluent:RibbonGroupBox Header="Mitglieder" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AuswertungMitglieder }">
                     <Fluent:Button Header="Eintritt" Command="{Binding AuswertungMitgliederAuswertungEintrittCommand}" Width="80"  LargeIcon="Resources/account-multiple-plus.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Jahre im Verein" Command="{Binding AuswertungMitgliederAuswertungJahreImVereinCommand}" Width="90"  LargeIcon="Resources/account-clock.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Jahrgang" Command="{Binding AuswertungMitgliederAuswertungJahrgangCommand}" Width="90"  LargeIcon="Resources/account-settings.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Jahrzehnt" Command="{Binding AuswertungMitgliederAuswertungJahrzehntCommand}" Width="90"  LargeIcon="Resources/account-network.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
-            <Fluent:RibbonTabItem Header="Export" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+
+            <Fluent:RibbonTabItem Header="Export" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=AllgemeinExport }">
                 <Fluent:RibbonGroupBox Header="Export" >
-                    <Fluent:Button Header="Schlüssel" Command="{Binding ExportSchluesselCommand}" Width="70"  LargeIcon="Resources/key_export.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
-                    <Fluent:Button Header="Mitglied Änderungen" Command="{Binding ExportMitgliederAenderungenCommand}" Width="70"  LargeIcon="Resources/export_mitglieder.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
-                    <Fluent:Button Header="Vereinsmeisterschaft" Command="{Binding ExportVereinsmeisterschaftCommand}" Width="70"  LargeIcon="Resources/table-arrow-right.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Schlüssel" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=ExportSchluessel }" Command="{Binding ExportSchluesselCommand}" Width="70"  LargeIcon="Resources/key_export.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Mitglied Änderungen" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=ExportMitgliedAenderungen }" Command="{Binding ExportMitgliederAenderungenCommand}" Width="70"  LargeIcon="Resources/export_mitglieder.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Vereinsmeisterschaft" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=ExportVereinsmeisterschaft }" Command="{Binding ExportVereinsmeisterschaftCommand}" Width="70"  LargeIcon="Resources/table-arrow-right.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

@@ -26,6 +26,7 @@ namespace Logic.UI
             GlobalVariables.BackendServer_URL = "";
             GlobalVariables.Token = "";
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.IsAdmin = false;
 
             AbmeldenCommand = new RelayCommand(() => ExecuteAbmeldenCommand());
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
@@ -60,7 +61,7 @@ namespace Logic.UI
             AuswertungMitgliederAuswertungJahrgangCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrgang));
             AuswertungMitgliederAuswertungJahrzehntCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrzehnt));
 
-            Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
+            
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -96,7 +97,7 @@ namespace Logic.UI
         public ICommand AuswertungMitgliederAuswertungJahrzehntCommand { get; set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
-        public bool BerechtigungVisibility => false;
+        
         public ICommand AbmeldenCommand { get; set; }
 
 
@@ -116,7 +117,9 @@ namespace Logic.UI
         {
             GlobalVariables.Token = "";
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.IsAdmin = false;
             Messenger.Default.Send(new AktualisiereBerechtigungenMessage { });
+            Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
             Messenger.Default.Send(new OpenLoginViewMessage { });
         }
 
@@ -135,10 +138,10 @@ namespace Logic.UI
             Messenger.Default.Send(new OpenStartingViewMessage { });
         }
 
-        private void ReceiveOpenViewMessage()
+        protected override void ReceiveOpenViewMessage()
         {
             RaisePropertyChanged("MenuIsEnabled");
-            RaisePropertyChanged(nameof(BerechtigungVisibility));
+            base.ReceiveOpenViewMessage();
         }
 
     }
