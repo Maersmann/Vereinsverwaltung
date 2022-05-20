@@ -162,6 +162,7 @@ namespace Logic.UI
         public MitgliederAuswertungJahreImVereinViewModel MitgliederAuswertungJahreImVerein => new MitgliederAuswertungJahreImVereinViewModel();
         public MitgliederAuswertungJahrgangViewModel MitgliederAuswertungJahrgang => new MitgliederAuswertungJahrgangViewModel();
         public MitgliederAuswertungJahrzehnteViewModel MitgliederAuswertungJahrzehnte => new MitgliederAuswertungJahrzehnteViewModel();
+        public UserPasswordAendernViewModel UserPasswordAendern => new UserPasswordAendernViewModel();
         public static void Cleanup()
         {
 

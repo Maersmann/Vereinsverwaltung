@@ -47,6 +47,7 @@ namespace Logic.UI
                     AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
                     GlobalVariables.Token = Response.Token;
                     BerechtigungenService.IsAdmin = Response.IsAdmin;
+                    GlobalUserVariables.UserID = Response.Id;
                     SetConnection();
                     HttpResponseMessage respBerechtigung = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/UserBerechtigung/{Response.Id}");
                     if (respBerechtigung.IsSuccessStatusCode)

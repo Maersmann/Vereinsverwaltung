@@ -53,6 +53,8 @@
                         <Fluent:BackstageTabItem Header="Backend-Settings"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=OptionBackendSettings }">
                             <optionen:BackendSettingsView/>
                         </Fluent:BackstageTabItem>
+                        <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Password ändern" Command="{Binding PasswordAendernCommand}" CommandParameter="{Binding ElementName=Main}"/>
                         <Fluent:BackstageTabItem Header="Info" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
                             <optionen:InfoView />
                         </Fluent:BackstageTabItem>

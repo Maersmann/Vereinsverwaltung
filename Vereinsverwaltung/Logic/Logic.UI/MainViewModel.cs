@@ -13,6 +13,7 @@ using Base.Logic.Messages;
 using Base.Logic.Types;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using Logic.Messages.UserMessages;
 
 namespace Logic.UI
 {
@@ -27,8 +28,10 @@ namespace Logic.UI
             GlobalVariables.Token = "";
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
             BerechtigungenService.IsAdmin = false;
+            GlobalUserVariables.UserID = 0;
 
             AbmeldenCommand = new RelayCommand(() => ExecuteAbmeldenCommand());
+            PasswordAendernCommand = new RelayCommand(() => ExecutePasswordAendernCommand());
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
@@ -99,6 +102,9 @@ namespace Logic.UI
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
         
         public ICommand AbmeldenCommand { get; set; }
+        public ICommand PasswordAendernCommand { get; set; }
+
+        
 
 
         public RelayCommand<PasswordBox> PasswordCommand { get; private set; }
@@ -118,9 +124,16 @@ namespace Logic.UI
             GlobalVariables.Token = "";
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
             BerechtigungenService.IsAdmin = false;
+            GlobalUserVariables.UserID = 0;
             Messenger.Default.Send(new AktualisiereBerechtigungenMessage { });
             Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
             Messenger.Default.Send(new OpenLoginViewMessage { });
+        }
+
+
+        private void ExecutePasswordAendernCommand()
+        {
+            Messenger.Default.Send(new OpenPasswordAendernViewMessage { });
         }
 
         private void ExecuteOpenStartingViewCommand()

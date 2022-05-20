@@ -26,6 +26,7 @@ using System.Windows.Data;
 using System;
 using System.Globalization;
 using UI.Desktop.Auswertungen.Mitglieder;
+using Logic.Messages.UserMessages;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -55,7 +56,8 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
-        }   
+            Messenger.Default.Register<OpenPasswordAendernViewMessage>(this, m => ReceiceOpenPasswordAendernViewMessage());          
+        }
 
         private void ReceiceCloseApplicationMessage()
         {
@@ -272,7 +274,13 @@ namespace Vereinsverwaltung.UI.Desktop
             StartingProgrammView view = new StartingProgrammView();
             _ = view.ShowDialog();
             _ = SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
-        }   
+        }
+
+        private void ReceiceOpenPasswordAendernViewMessage()
+        {
+            UserPasswordAendernView view = new UserPasswordAendernView();
+            _ = view.ShowDialog();
+        }
     }
 
 }
