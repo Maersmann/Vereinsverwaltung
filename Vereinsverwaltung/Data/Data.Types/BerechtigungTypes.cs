@@ -24,6 +24,8 @@ namespace Data.Types
         AllgemeinExport = 5,
         [Description("Allgemein - Pins")]
         AllgemeinPins = 30,
+        [Description("Allgemein - Schützenfest")]
+        SchuetzenfestAllgemein = 32,
         [Description("Mitglieder - Import")]
         MitgliederImport = 6,
         [Description("Mitglieder - Uebersicht")]
@@ -73,6 +75,14 @@ namespace Data.Types
         [Description("Optionen - Backend-Settings")]
         OptionBackendSettings = 28,
         [Description("Optionen - Schnurrschießen")]
-        OptionSchnurrschiessen = 29
+        OptionSchnurrschiessen = 29,
+        [Description("Jugenkönigschiessen Erstellen")]
+        JugenkoenigschiessenErstellen = 33,
+        [Description("Jugenkönigschiessen Übersicht")]
+        JugendkoenigschiessenUebersicht = 34,
+        [Description("Königschiessen Erstellen")]
+        KoenigschiessenErstellen = 35,
+        [Description("Königschiessen Übersicht")]
+        KoenigschiessenUebersicht = 36
     }
 }

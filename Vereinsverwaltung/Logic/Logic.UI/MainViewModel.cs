@@ -63,8 +63,10 @@ namespace Logic.UI
             AuswertungMitgliederAuswertungJahreImVereinCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahreImVerein));
             AuswertungMitgliederAuswertungJahrgangCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrgang));
             AuswertungMitgliederAuswertungJahrzehntCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrzehnt));
-
-            
+            KoenigschiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKoenigschiessenUebersicht));
+            KoenigschiessenErstellenCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.koenigschiessen));
+            JugendkoenigschiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewJugendkoenigschiessenUebersicht));
+            JugendkoenigschiessenErstellenCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.jugendkoenigschiessen));
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -98,6 +100,10 @@ namespace Logic.UI
         public ICommand AuswertungMitgliederAuswertungJahreImVereinCommand { get; set; }
         public ICommand AuswertungMitgliederAuswertungJahrgangCommand { get; set; }
         public ICommand AuswertungMitgliederAuswertungJahrzehntCommand { get; set; }
+        public ICommand KoenigschiessenUebersichtCommand { get; set; }
+        public ICommand KoenigschiessenErstellenCommand { get; set; }
+        public ICommand JugendkoenigschiessenUebersichtCommand { get; set; }
+        public ICommand JugendkoenigschiessenErstellenCommand { get; set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
         

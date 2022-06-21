@@ -42,7 +42,7 @@
             </Fluent:Ribbon.Resources>
 
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}" >
+                <Fluent:Backstage Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="Schnurschießen"   Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=OptionSchnurrschiessen }" >
                             <Frame x:Name="SchnurschiessenOption" NavigationUIVisibility="Hidden" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  />
@@ -89,6 +89,17 @@
                 <Fluent:RibbonGroupBox Header="Ausgabe" >
                     <Fluent:Button Header="Neu" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=PinsAusagabeErstellen }" Command="{Binding NeuePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_new.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Übersicht" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=PinAusgabeUeberischt }" Command="{Binding LadePinAusgabeCommand}" Width="60"  LargeIcon="Resources/pin_load.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Schützenfest" ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=schuetzenfestallgemein }">
+                <Fluent:RibbonGroupBox Header="Königschiessen" >
+                    <Fluent:Button Header="Neu" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=koenigschiessenerstellen }" Command="{Binding KoenigschiessenErstellenCommand}" Width="60"  LargeIcon="Resources/new-box.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Übersicht" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=koenigschiessenuebersicht }" Command="{Binding KoenigschiessenUebersichtCommand}" Width="60"  LargeIcon="Resources/crown.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Jugendkönigschiessen" >
+                    <Fluent:Button Header="Neu" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=jugenkoenigschiessenerstellen }" Command="{Binding JugendkoenigschiessenErstellenCommand}" Width="60"  LargeIcon="Resources/new-box.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Übersicht" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=jugendkoenigschiessenuebersicht }" Command="{Binding JugendkoenigschiessenUebersichtCommand}" Width="60"  LargeIcon="Resources/chess-king.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 

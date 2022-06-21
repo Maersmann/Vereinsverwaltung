@@ -27,6 +27,7 @@ using System;
 using System.Globalization;
 using UI.Desktop.Auswertungen.Mitglieder;
 using Logic.Messages.UserMessages;
+using UI.Desktop.Koenigschiessen;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -197,6 +198,14 @@ namespace Vereinsverwaltung.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungJahrzehnteView).Name))
                         Container.NavigationService.Navigate(new MitgliederAuswertungJahrzehnteView());
                     break;
+                case ViewType.viewKoenigschiessenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(KoenigschiessenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new KoenigschiessenUebersichtView());
+                    break;
+                case ViewType.viewJugendkoenigschiessenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(JugendkoenigschiessenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new JugendkoenigschiessenUebersichtView());
+                    break;
                 default:
                     Container.Content = null;
                     Container.NavigationService.RemoveBackEntry();
@@ -242,6 +251,12 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case StammdatenTypes.user:
                     view = new UserStammdatenView();
+                    break;
+                case StammdatenTypes.koenigschiessen:
+                    view = new KoenigschiessenErstellenView();
+                    break;
+                case StammdatenTypes.jugendkoenigschiessen:
+                    view = new JugendkoenigschiessenErstellenView();
                     break;
                 default:
                     break;

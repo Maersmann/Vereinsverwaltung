@@ -48,6 +48,11 @@ namespace Logic.UI
                 "allgemeinpins" => BerechtigungTypes.AllgemeinPins,
                 "optionschnurrschiessen" => BerechtigungTypes.OptionSchnurrschiessen,
                 "auswertungmitglieder" => BerechtigungTypes.AuswertungMitglieder,
+                "schuetzenfestallgemein" => BerechtigungTypes.SchuetzenfestAllgemein,
+                "jugenkoenigschiessenerstellen" => BerechtigungTypes.JugenkoenigschiessenErstellen,
+                "jugendkoenigschiessenuebersicht" => BerechtigungTypes.JugendkoenigschiessenUebersicht,
+                "koenigschiessenuebersicht" => BerechtigungTypes.KoenigschiessenUebersicht,
+                "koenigschiessenerstellen" => BerechtigungTypes.KoenigschiessenErstellen,
                 _ => BerechtigungTypes.Undefiniert,
             };
         }

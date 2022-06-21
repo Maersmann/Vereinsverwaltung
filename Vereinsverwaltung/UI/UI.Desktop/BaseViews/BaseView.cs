@@ -22,7 +22,25 @@ namespace UI.Desktop.BaseViews
         {
             Messenger.Default.Register<OpenLoadingViewMessage>(this, token, m => ReceiveOpenLoadingViewMessage(m));
             Messenger.Default.Register<CloseLoadingViewMessage>(this, token, m => CloseLoadingViewMessage());
+            Messenger.Default.Register<OpenBestaetigungViewMessage>(this, token, m => ReceiveOpenBestaetigungViewMessage(m));
+
         }
+
+        private void ReceiveOpenBestaetigungViewMessage(OpenBestaetigungViewMessage m)
+        {
+            var Bestaetigung = new BestaetigungView();
+            if (Bestaetigung.DataContext is BestaetigungViewModel model)
+            {
+                model.Beschreibung = m.Beschreibung;
+                Bestaetigung.ShowDialog();
+                if (model.Bestaetigt)
+                {
+                    m.Command();
+                }
+            }
+
+        }
+
         private void CloseLoadingViewMessage()
         {
             if (loadingView.IsActive)

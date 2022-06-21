@@ -31,6 +31,7 @@ using Logic.UI.KkSchiessenViewModels;
 using Logic.UI.VereinsmeisterschaftViewModels;
 using Logic.UI.UserViewModels;
 using Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels;
+using Logic.UI.KoenigschiessenViewModels;
 
 namespace Logic.UI
 {
@@ -163,6 +164,14 @@ namespace Logic.UI
         public MitgliederAuswertungJahrgangViewModel MitgliederAuswertungJahrgang => new MitgliederAuswertungJahrgangViewModel();
         public MitgliederAuswertungJahrzehnteViewModel MitgliederAuswertungJahrzehnte => new MitgliederAuswertungJahrzehnteViewModel();
         public UserPasswordAendernViewModel UserPasswordAendern => new UserPasswordAendernViewModel();
+        public KoenigschiessenUebersichtViewModel KoenigschiessenUebersicht => new KoenigschiessenUebersichtViewModel();
+        public KoenigschiessenErstellenViewModel KoenigschiessenErstellen => new KoenigschiessenErstellenViewModel();
+        public KoenigschiessenAnmeldungUebersichtViewModel KoenigschiessenAnmeldungUebersicht => new KoenigschiessenAnmeldungUebersichtViewModel();
+        public KoenigschiessenAnmeldungBestaetigungViewModel KoenigschiessenAnmeldungBestaetigung => new KoenigschiessenAnmeldungBestaetigungViewModel();
+        public JugendkoenigUebersichtViewModel JugendkoenigUebersicht => new JugendkoenigUebersichtViewModel();
+        public JugendkoenigschiessenErstellenViewModel jugendkoenigschiessenErstellen => new JugendkoenigschiessenErstellenViewModel();
+        public KoenigschiessenAnmeldungWerteKoenigViewModel KoenigschiessenAnmeldungKoenigWerte => new KoenigschiessenAnmeldungWerteKoenigViewModel();
+        public KoenigschiessenAnmeldungWerteJugendkoenigViewModel KoenigschiessenAnmeldungWerteJugendkoenig => new KoenigschiessenAnmeldungWerteJugendkoenigViewModel();
         public static void Cleanup()
         {
 

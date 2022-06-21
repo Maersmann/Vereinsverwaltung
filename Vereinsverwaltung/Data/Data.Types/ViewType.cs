@@ -32,6 +32,8 @@
         viewAuswertungMitgliederAuswertungEintritt,
         viewAuswertungMitgliederAuswertungJahreImVerein,
         viewAuswertungMitgliederAuswertungJahrgang,
-        viewAuswertungMitgliederAuswertungJahrzehnt
+        viewAuswertungMitgliederAuswertungJahrzehnt,
+        viewKoenigschiessenUebersicht,
+        viewJugendkoenigschiessenUebersicht
     }
 }
