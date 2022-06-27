@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using GalaSoft.MvvmLight.CommandWpf;
 using Logic.Messages.PinMessages;
 using GalaSoft.MvvmLight.Messaging;
+using Data.Types.MitgliederTypes;
 
 namespace Logic.UI.MitgliederViewModels
 {
@@ -26,7 +27,7 @@ namespace Logic.UI.MitgliederViewModels
 
 
         protected override int GetID() { return SelectedItem.ID; }
-        protected override string GetREST_API() { return $"/api/Mitglieder"; }
+        protected override string GetREST_API() { return $"/api/Mitglieder?status={MitgliedStatus.Aktiv}"; }
         protected override bool WithPagination() { return true; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
 
