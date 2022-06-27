@@ -31,8 +31,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             variante = KoenigschiessenVarianten.koenigschiessen;
             zeigeNurNichtAngemeldete = true;
             jahr = 2022;
-            Title = "Übersicht Königsschiessen";
-            RegisterAktualisereViewMessage(StammdatenTypes.koenigschiessenAnmeldung.ToString());
+            Title = "Übersicht Anmeldung Königsschiessen";
             AnmeldeCommand = new RelayCommand(() => ExecuteAnmeldeCommand());
             RueckgaengigCommand = new RelayCommand(() => ExcecuteRueckgaengigCommand());
         }
@@ -102,7 +101,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                     {
                         if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                         {
-                            SendExceptionMessage($"Teilnahme wurde schon zurückgeommen");
+                            SendExceptionMessage(await resp.Content.ReadAsStringAsync());
                         }
                         else
                         {
@@ -110,9 +109,12 @@ namespace Logic.UI.KoenigschiessenViewModels
                             return;
                         }
                     }
-                    SelectedItem.Angemeldet = false;
-                    SelectedItem.AngemeldetAm = null;
-                    LadeUebersicht(jahr, variante);
+                    else
+                    {
+                        SelectedItem.Angemeldet = false;
+                        SelectedItem.AngemeldetAm = null;
+                        LadeUebersicht(jahr, variante);
+                    }
                 }
             }
             catch (Exception e)

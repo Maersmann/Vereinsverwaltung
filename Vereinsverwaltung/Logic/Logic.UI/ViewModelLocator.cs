@@ -172,6 +172,11 @@ namespace Logic.UI
         public JugendkoenigschiessenErstellenViewModel jugendkoenigschiessenErstellen => new JugendkoenigschiessenErstellenViewModel();
         public KoenigschiessenAnmeldungWerteKoenigViewModel KoenigschiessenAnmeldungKoenigWerte => new KoenigschiessenAnmeldungWerteKoenigViewModel();
         public KoenigschiessenAnmeldungWerteJugendkoenigViewModel KoenigschiessenAnmeldungWerteJugendkoenig => new KoenigschiessenAnmeldungWerteJugendkoenigViewModel();
+        public KoenigschiessenRundeTeilnehmerUebersichtViewModel KoenigschiessenRundeTeilnehmerUebersicht => new KoenigschiessenRundeTeilnehmerUebersichtViewModel();
+        public KoenigschiessenErgebnisEintragenViewModel KoenigschiessenErgebnisEintragen => new KoenigschiessenErgebnisEintragenViewModel();
+        public KoenigschiessenRundeTeilnehmerWerteViewModel KoenigschiessenRundeTeilnehmerWerte => new KoenigschiessenRundeTeilnehmerWerteViewModel();
+        public KoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewModel KoenigschiessenHoechsteErgebnisSchuetzenUebersicht => new KoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewModel();
+        public KoenigschiessenRundeAbschlussViewModel KoenigschiessenRundeAbschluss => new KoenigschiessenRundeAbschlussViewModel();
         public static void Cleanup()
         {
 

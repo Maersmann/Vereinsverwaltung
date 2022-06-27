@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Bitte warten..." Height="400" Width="320"
+        Title="Bitte warten..." Height="430" Width="320"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         DataContext="{Binding KoenigschiessenAnmeldungBestaetigung, Source={StaticResource Locator}}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
@@ -27,6 +27,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -42,8 +43,11 @@
             <Label Grid.Row="3" Grid.Column="0" Content="Geburtstag" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <Label Grid.Row="3" Grid.Column="1" Content="{Binding KoenigschiessenAnmeldung.Geburtstag}"  ContentStringFormat="dd.MM.yyyy" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-            <Label Grid.Row="4" Grid.Column="0" Content="Wohnort" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Label Grid.Row="4" Grid.Column="1" Content="{Binding KoenigschiessenAnmeldung.Ort}"  ContentStringFormat="dd.MM.yyyy" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label Grid.Row="4" Grid.Column="0" Content="Straße" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label Grid.Row="4" Grid.Column="1" Content="{Binding KoenigschiessenAnmeldung.Strasse}"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            <Label Grid.Row="5" Grid.Column="0" Content="Wohnort" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label Grid.Row="5" Grid.Column="1" Content="{Binding KoenigschiessenAnmeldung.Ort}"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
         </Grid>
 

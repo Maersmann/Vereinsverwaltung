@@ -48,6 +48,7 @@
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Jahr" Binding="{Binding Jahr}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                <DataGridTextColumn Header="Alt/Jung" Binding="{Binding Intervall}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
                 <DataGridTextColumn Header="König" Binding="{Binding AnzahlKoenig}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
                 <DataGridTextColumn Header="Vize" Binding="{Binding AnzahlVize}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
                 <DataGridTextColumn Header="Beste Schützin" Binding="{Binding AnzahlBesteSchuetzin}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
@@ -55,7 +56,28 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Anmeldung" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneAnmeldungCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                            <Button Content="Anmeldung" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneAnmeldungCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding AnmeldungMoeglich}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Visibility="{Binding .Data , Converter={StaticResource BoolToVisConverter}, ConverterParameter=koenigschiessenrundeergebnisseeintragen, Source={StaticResource proxy}}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Königschiessen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneKoenigschiessenCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding KoenigschiessenNichtBeendet}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Visibility="{Binding .Data , Converter={StaticResource BoolToVisConverter}, ConverterParameter=koenigschiessenrundeergebnisseeintragen, Source={StaticResource proxy}}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Vize-Königschiessen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneVizeKoenigschiessenCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding VizekoenigschiessenNichtBeendet}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Visibility="{Binding .Data , Converter={StaticResource BoolToVisConverter}, ConverterParameter=koenigschiessenrundeergebnisseeintragen, Source={StaticResource proxy}}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Beste Schützin" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneBesteSchuetzinCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding BesteSchuetzinNichtBeendet}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

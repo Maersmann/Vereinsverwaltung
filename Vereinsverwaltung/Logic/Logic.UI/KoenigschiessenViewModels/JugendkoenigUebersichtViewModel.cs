@@ -19,6 +19,8 @@ namespace Logic.UI.KoenigschiessenViewModels
             Title = "Übersicht Jugendkönigsschiessen";
             RegisterAktualisereViewMessage(StammdatenTypes.jugendkoenigschiessen.ToString());
             OeffneAnmeldungCommand = new RelayCommand(() => ExecuteOeffneAnmeldungCommand());
+            OeffneJugendkoenigschiessenCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.jugendkoenig));
+            OeffneJugendkoeniginschiessenCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.jugendkoenigin));
         }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.koenigschiessen; }
         protected override string GetREST_API() { return $"/api/Jugendkoenigschiessen"; }
@@ -26,12 +28,31 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         #region bindings
         public ICommand OeffneAnmeldungCommand { get; private set; }
+        public ICommand OeffneJugendkoenigschiessenCommand { get; private set; }
+        public ICommand OeffneJugendkoeniginschiessenCommand { get; private set; }
         #endregion
 
         #region Commands
         private void ExecuteOeffneAnmeldungCommand()
         {
             Messenger.Default.Send(new OpenKoenigschiessenAnmeldungViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.jugendkoenigschiessen }, "JugendkoenigUebersicht");
+        }
+
+        private void ExecuteOeffneRundeCommand(KoenigschiessenArt art)
+        {
+            int Runde;
+            switch (art)
+            {
+                case KoenigschiessenArt.jugendkoenig:
+                    Runde = SelectedItem.RundeJugendkoenig;
+                    break;
+                case KoenigschiessenArt.jugendkoenigin:
+                    Runde = SelectedItem.RundeJugendkoenigin;
+                    break;
+                default:
+                    return;
+            }
+            Messenger.Default.Send(new OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.jugendkoenigschiessen, Runde = Runde, Art = art }, "JugendkoenigUebersicht");
         }
         #endregion
     }

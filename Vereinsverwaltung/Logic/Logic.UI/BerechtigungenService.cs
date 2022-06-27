@@ -53,6 +53,7 @@ namespace Logic.UI
                 "jugendkoenigschiessenuebersicht" => BerechtigungTypes.JugendkoenigschiessenUebersicht,
                 "koenigschiessenuebersicht" => BerechtigungTypes.KoenigschiessenUebersicht,
                 "koenigschiessenerstellen" => BerechtigungTypes.KoenigschiessenErstellen,
+                "koenigschiessenrundeergebnisseeintragen" => BerechtigungTypes.KoenigschiessenRundeErgebnisseEintragen,
                 _ => BerechtigungTypes.Undefiniert,
             };
         }

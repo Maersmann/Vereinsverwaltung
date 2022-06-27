@@ -25,6 +25,28 @@ namespace UI.Desktop.Koenigschiessen
         {
             InitializeComponent();
             Messenger.Default.Register<OpenKoenigschiessenAnmeldungViewMessage>(this, "JugendkoenigUebersicht", m => ReceiveOpenKoenigschiessenViewMessage(m));
+            Messenger.Default.Register<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage>(this, "JugendkoenigUebersicht", m => ReceiveOpenKoenigschiessenErgebnisViewMessage(m));
+
+        }
+
+        private async void ReceiveOpenKoenigschiessenErgebnisViewMessage(OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage m)
+        {
+            KoenigschiessenRundeTeilnehmerUebersichtView view = new KoenigschiessenRundeTeilnehmerUebersichtView
+            {
+                Owner = Application.Current.MainWindow
+            };
+            if (view.DataContext is KoenigschiessenRundeTeilnehmerUebersichtViewModel model)
+            {
+                model.LadeUebersicht(m.Jahr, m.Variante, m.Runde, m.Art);
+                view.ShowDialog();
+                if (model.RundeBeendet)
+                {
+                    if (DataContext is JugendkoenigUebersichtViewModel modelUebersicht)
+                    {
+                        await modelUebersicht.LoadData();
+                    }
+                }
+            }
         }
 
         private void ReceiveOpenKoenigschiessenViewMessage(OpenKoenigschiessenAnmeldungViewMessage m)
@@ -44,6 +66,7 @@ namespace UI.Desktop.Koenigschiessen
         private void WindowUnloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<OpenKoenigschiessenAnmeldungViewMessage>(this);
+            Messenger.Default.Unregister<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage>(this);
         }
     }
 }

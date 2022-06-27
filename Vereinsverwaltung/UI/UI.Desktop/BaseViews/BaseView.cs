@@ -67,6 +67,7 @@ namespace UI.Desktop.BaseViews
         {
             Messenger.Default.Unregister<CloseLoadingViewMessage>(this);
             Messenger.Default.Unregister<OpenLoadingViewMessage>(this);
+            Messenger.Default.Unregister<OpenBestaetigungViewMessage>(this);
         }
     }
 }

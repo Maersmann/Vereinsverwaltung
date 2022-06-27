@@ -19,6 +19,9 @@ namespace Logic.UI.KoenigschiessenViewModels
             Title = "Übersicht Königsschiessen";
             RegisterAktualisereViewMessage(StammdatenTypes.koenigschiessen.ToString());
             OeffneAnmeldungCommand = new RelayCommand(() => ExecuteOeffneAnmeldungCommand());
+            OeffneKoenigschiessenCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.koenig));
+            OeffneVizeKoenigschiessenCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.vizekoenig));
+            OeffneBesteSchuetzinCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.besteSchuetzin));
         }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.koenigschiessen; }
         protected override string GetREST_API() { return $"/api/Koenigschiessen"; }
@@ -26,12 +29,35 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         #region bindings
         public ICommand OeffneAnmeldungCommand { get; private set; }
+        public ICommand OeffneKoenigschiessenCommand { get; private set; }
+        public ICommand OeffneVizeKoenigschiessenCommand { get; private set; }
+        public ICommand OeffneBesteSchuetzinCommand { get; private set; }
         #endregion
 
         #region Commands
         private void ExecuteOeffneAnmeldungCommand()
         {
             Messenger.Default.Send(new OpenKoenigschiessenAnmeldungViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen }, "KoenigschiessenUebersicht");
+        }
+
+        private void ExecuteOeffneRundeCommand(KoenigschiessenArt art)
+        {
+            int Runde;
+            switch (art)
+            {
+                case KoenigschiessenArt.besteSchuetzin:
+                    Runde = SelectedItem.RundeBesteSchuetzin;
+                    break;
+                case KoenigschiessenArt.vizekoenig:
+                    Runde = SelectedItem.RundeVizekoenigschiessen;
+                    break;
+                case KoenigschiessenArt.koenig:
+                    Runde = SelectedItem.RundeKoenigschiessen;
+                    break;
+                default:
+                    return;
+            }
+            Messenger.Default.Send(new OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen, Runde = Runde, Art = art }, "KoenigschiessenUebersicht");
         }
         #endregion
     }

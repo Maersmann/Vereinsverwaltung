@@ -54,7 +54,21 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Anmeldung" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneAnmeldungCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                            <Button Content="Anmeldung" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneAnmeldungCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding AnmeldungMoeglich}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Visibility="{Binding .Data , Converter={StaticResource BoolToVisConverter}, ConverterParameter=koenigschiessenrundeergebnisseeintragen, Source={StaticResource proxy}}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Jugendkönig Schiessen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneJugendkoenigschiessenCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding JugenkoenigschiessenNichtBeendet}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Visibility="{Binding .Data , Converter={StaticResource BoolToVisConverter}, ConverterParameter=koenigschiessenrundeergebnisseeintragen, Source={StaticResource proxy}}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Jugendkönigin Schiessen" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding Path=DataContext.OeffneJugendkoeniginschiessenCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding JugenkoeniginschiessenNichtBeendet}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

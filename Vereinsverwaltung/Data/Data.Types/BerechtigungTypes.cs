@@ -83,6 +83,8 @@ namespace Data.Types
         [Description("Königschiessen Erstellen")]
         KoenigschiessenErstellen = 35,
         [Description("Königschiessen Übersicht")]
-        KoenigschiessenUebersicht = 36
+        KoenigschiessenUebersicht = 36,
+        [Description("Königschiessen Ergebnisse Eintragen")]
+        KoenigschiessenRundeErgebnisseEintragen = 37
     }
 }

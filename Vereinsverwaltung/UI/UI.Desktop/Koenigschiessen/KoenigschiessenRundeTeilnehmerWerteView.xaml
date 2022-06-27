@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="UI.Desktop.Koenigschiessen.KoenigschiessenRundeTeilnehmerWerteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UI.Desktop.Koenigschiessen"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            xmlns:converter="clr-namespace:UI.Desktop.Converter"
+            xmlns:prox="clr-namespace:Logic.UI;assembly=Logic.UI"
+            mc:Ignorable="d" 
+            d:DesignHeight="450" d:DesignWidth="500"
+            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+            Background="{DynamicResource MaterialDesignPaper}"
+            DataContext="{Binding KoenigschiessenRundeTeilnehmerWerte, Source={StaticResource Locator}}">
+    <Grid>
+        <materialDesign:Card  Grid.Row="1">
+            <Grid  HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="{Binding Werte.RundeBezeichnug}" Grid.Row="0" FontSize="25" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalAlignment="Center" />
+
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="{Binding Werte.AnzahlSchuetzen}"  ContentStringFormat="Anzahl Gesamt: {0}" Grid.Column="0"  VerticalContentAlignment="Center" HorizontalAlignment="Center"  Margin="10"/>
+                    <Label Content="{Binding Werte.AnzahlAbgegeben}"  ContentStringFormat="Anzahl Abgegeben: {0}" Grid.Column="1"  VerticalContentAlignment="Center" HorizontalAlignment="Center"  Margin="10" />
+                    <Label Content="{Binding Werte.AnzahlOffen}"  ContentStringFormat="Anzahl Offen: {0}" Grid.Column="2"  VerticalContentAlignment="Center" HorizontalAlignment="Center"  Margin="10" />
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="{Binding Werte.AnzahlHoechstesErgebnis}"  ContentStringFormat="Anzahl Höchstes Ergebnis: {0}" Grid.Column="0"  VerticalContentAlignment="Center" HorizontalAlignment="Center"  Margin="10" />
+                    <Label Content="{Binding Werte.HoechstesErgebnis}"  ContentStringFormat="Höchstes Ergebnis: {0}" Grid.Column="1"  VerticalContentAlignment="Center" HorizontalAlignment="Center"  Margin="10" />
+                </Grid>
+
+            </Grid>
+
+        </materialDesign:Card>
+
+    </Grid>
+</UserControl>
