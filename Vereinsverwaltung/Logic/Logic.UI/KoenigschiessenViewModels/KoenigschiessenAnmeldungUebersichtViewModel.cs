@@ -123,6 +123,13 @@ namespace Logic.UI.KoenigschiessenViewModels
             }
         }
 
+        protected override void ExecuteBearbeitenCommand()
+        {
+            base.ExecuteBearbeitenCommand();
+            FilterText = SelectedItem.Fullname;
+            LadeUebersicht(jahr, variante);
+        }
+
         #endregion
 
     }
