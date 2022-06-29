@@ -15,7 +15,7 @@ namespace Logic.UI.PinViewModels
 {
     public class PinAusgabeMitgliedUebersichtViewModel : ViewModelUebersicht<PinAusgabeMitgliedUebersichtModel, StammdatenTypes>
     {
-        private bool zeigeNurNichtErhalten;
+        private bool zeigeNurOffene;
         private int id;
         public PinAusgabeMitgliedUebersichtViewModel()
         {
@@ -23,12 +23,22 @@ namespace Logic.UI.PinViewModels
             Title = "Übersicht Mitglieder für Pins";
             ErhaltenCommand = new RelayCommand(() => ExecuteErhaltenCommand());
             RueckgaengigCommand = new RelayCommand(() => ExcecuteRueckgaengigCommand());
-            zeigeNurNichtErhalten = true;
+            zeigeNurOffene = true;
         }
         protected override int GetID() { return SelectedItem.Mitglied.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
         protected override bool WithPagination() { return true; }
-        protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Mitglieder/LoadAllForAusgabe/{id}?nurNichtErhaltene={zeigeNurNichtErhalten}"; }
+        protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Mitglieder/LoadAllForAusgabe/{id}?nurOffene={zeigeNurOffene}"; }
+
+        public void SetFilterData(string filterText, bool zeigeNurOffene)
+        {
+            if (filterText.Length > 0)
+            {
+                FilterText = filterText;
+            }
+            ZeigeNurOffene = zeigeNurOffene;
+        }
+
         protected override bool LoadingOnCreate() => false;
 
         public override async void LoadData(int id)
@@ -43,12 +53,12 @@ namespace Logic.UI.PinViewModels
         public ICommand RueckgaengigCommand { get; private set; }
 
        
-        public bool ZeigeNurNichtErhalten
+        public bool ZeigeNurOffene
         {
-            get => zeigeNurNichtErhalten;
+            get => zeigeNurOffene;
             set
             {
-                zeigeNurNichtErhalten = value;
+                zeigeNurOffene = value;
                 RaisePropertyChanged();
             }
         }

@@ -25,12 +25,18 @@
     <Style x:Key="verticalCenter" TargetType="{x:Type TextBlock}">
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
+    
     <Style x:Key="verticalHorizontalCenter" TargetType="{x:Type TextBlock}">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
     <Style x:Key="horizontalCenter" TargetType="{x:Type TextBlock}">
         <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="koenigschiessenArt" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="LightGray" />
     </Style>
 
 </ResourceDictionary>

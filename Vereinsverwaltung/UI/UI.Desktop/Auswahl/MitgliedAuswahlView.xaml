@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:Vereinsverwaltung.UI.Desktop.Auswahl"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:converter="clr-namespace:UI.Desktop.Converter"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
@@ -14,6 +15,10 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Height="700" SizeToContent="Width" ShowInTaskbar="False"
         DataContext="{Binding MitgliedAuswahl ,Source={StaticResource Locator}}">
+
+    <Window.Resources>
+        <converter:BerechtigungToVisbilityConverter  x:Key="BoolToVisConverter" />
+    </Window.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
@@ -97,7 +102,7 @@
 
             </Grid>
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederStammdatenPflege }">
                 <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionDarkButton}" Command="{Binding NewItemCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10" Height="40" Width="40">
                     <Image Source="../Resources/add.png" Stretch="None"/>
                 </Button>

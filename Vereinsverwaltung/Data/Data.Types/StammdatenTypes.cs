@@ -22,6 +22,9 @@ namespace Data.Types
         schuetze,
         schiessgruppe,
         vereinsmeisterschaftSchuetzeErgebnis,
-        user
+        user,
+        koenigschiessen,
+        koenigschiessenAnmeldung,
+        jugendkoenigschiessen
     }
 }

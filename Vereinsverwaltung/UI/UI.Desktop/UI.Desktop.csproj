@@ -8,13 +8,17 @@
     <AssemblyName>Vereinsverwaltung</AssemblyName>
     <Authors>Märsmann</Authors>
     <Company>Märsmann</Company>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\account-circle.png" />
+    <None Remove="Resources\account-clock.png" />
     <None Remove="Resources\account-group.png" />
+    <None Remove="Resources\account-multiple-plus.png" />
+    <None Remove="Resources\account-network.png" />
+    <None Remove="Resources\account-settings.png" />
     <None Remove="Resources\add.png" />
     <None Remove="Resources\auswertungStundeTag.png" />
     <None Remove="Resources\auswertungTag.png" />
@@ -22,6 +26,8 @@
     <None Remove="Resources\auswertung_kk_monat_jahres.png" />
     <None Remove="Resources\bearbeiten.png" />
     <None Remove="Resources\cards.png" />
+    <None Remove="Resources\chess-king.png" />
+    <None Remove="Resources\crown.png" />
     <None Remove="Resources\entfernen.png" />
     <None Remove="Resources\entfernen_klein.png" />
     <None Remove="Resources\export_mitglieder.png" />
@@ -38,6 +44,7 @@
     <None Remove="Resources\key_list.png" />
     <None Remove="Resources\kk_schiessen.png" />
     <None Remove="Resources\kk_schiessgruppe.png" />
+    <None Remove="Resources\new-box.png" />
     <None Remove="Resources\person.png" />
     <None Remove="Resources\person_list.png" />
     <None Remove="Resources\pin_load.png" />
@@ -62,7 +69,11 @@
 
   <ItemGroup>
     <Resource Include="Resources\account-circle.png" />
+    <Resource Include="Resources\account-clock.png" />
     <Resource Include="Resources\account-group.png" />
+    <Resource Include="Resources\account-multiple-plus.png" />
+    <Resource Include="Resources\account-network.png" />
+    <Resource Include="Resources\account-settings.png" />
     <Resource Include="Resources\add.png" />
     <Resource Include="Resources\auswertungStundeTag.png" />
     <Resource Include="Resources\auswertungTag.png" />
@@ -70,6 +81,8 @@
     <Resource Include="Resources\auswertung_kk_monat_jahres.png" />
     <Resource Include="Resources\bearbeiten.png" />
     <Resource Include="Resources\cards.png" />
+    <Resource Include="Resources\chess-king.png" />
+    <Resource Include="Resources\crown.png" />
     <Resource Include="Resources\entfernen.png" />
     <Resource Include="Resources\export_mitglieder.png" />
     <Resource Include="Resources\file-chart-outline.png" />
@@ -85,6 +98,7 @@
     <Resource Include="Resources\key_list.png" />
     <Resource Include="Resources\kk_schiessen.png" />
     <Resource Include="Resources\kk_schiessgruppe.png" />
+    <Resource Include="Resources\new-box.png" />
     <Resource Include="Resources\pin_load.png" />
     <Resource Include="Resources\pin_new.png" />
     <Resource Include="Resources\person.png" />

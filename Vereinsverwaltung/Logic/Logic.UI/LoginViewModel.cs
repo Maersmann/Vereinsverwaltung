@@ -46,6 +46,8 @@ namespace Logic.UI
                 {
                     AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
                     GlobalVariables.Token = Response.Token;
+                    BerechtigungenService.IsAdmin = Response.IsAdmin;
+                    GlobalUserVariables.UserID = Response.Id;
                     SetConnection();
                     HttpResponseMessage respBerechtigung = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/UserBerechtigung/{Response.Id}");
                     if (respBerechtigung.IsSuccessStatusCode)
@@ -57,7 +59,7 @@ namespace Logic.UI
                     }
 
                     Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
-                    Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewMitgliederUebersicht });
+                    Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
                     Messenger.Default.Send(new CloseViewMessage(), "Login");
                 }
                 else if (resp.StatusCode == System.Net.HttpStatusCode.BadRequest)

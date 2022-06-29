@@ -9,6 +9,9 @@ using Base.Logic.Core;
 using System.Windows.Input;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.CommandWpf;
+using Logic.Messages.PinMessages;
+using GalaSoft.MvvmLight.Messaging;
+using Data.Types.MitgliederTypes;
 
 namespace Logic.UI.MitgliederViewModels
 {
@@ -19,13 +22,18 @@ namespace Logic.UI.MitgliederViewModels
         {
             Title = "Übersicht Mitglieder";
             RegisterAktualisereViewMessage(StammdatenTypes.mitglied.ToString());
+            OpenPinsVomMitgliedCommand = new RelayCommand(() => ExcecuteOpenPinsVomMitgliedCommand());
         }
-        
+
+
         protected override int GetID() { return SelectedItem.ID; }
-        protected override string GetREST_API() { return $"/api/Mitglieder"; }
+        protected override string GetREST_API() { return $"/api/Mitglieder?status={MitgliedStatus.Aktiv}"; }
         protected override bool WithPagination() { return true; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
 
+        #region bindings
+        public ICommand OpenPinsVomMitgliedCommand { get; private set; }
+        #endregion
         #region Commands
 
         protected async override void ExecuteEntfernenCommand()
@@ -44,6 +52,11 @@ namespace Logic.UI.MitgliederViewModels
                 base.ExecuteEntfernenCommand();
                 RequestIsWorking = false;
             }
+        }
+
+        private void ExcecuteOpenPinsVomMitgliedCommand()
+        {
+            Messenger.Default.Send(new OpenPinsVomMitgliedUebersichtMessage { ID = SelectedItem.ID }, "MitgliederUebersicht");
         }
         #endregion
 

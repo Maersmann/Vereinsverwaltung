@@ -13,6 +13,7 @@ using Base.Logic.Messages;
 using Base.Logic.Types;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using Logic.Messages.UserMessages;
 
 namespace Logic.UI
 {
@@ -26,8 +27,11 @@ namespace Logic.UI
             GlobalVariables.BackendServer_URL = "";
             GlobalVariables.Token = "";
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.IsAdmin = false;
+            GlobalUserVariables.UserID = 0;
 
             AbmeldenCommand = new RelayCommand(() => ExecuteAbmeldenCommand());
+            PasswordAendernCommand = new RelayCommand(() => ExecutePasswordAendernCommand());
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
             OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
@@ -55,8 +59,14 @@ namespace Logic.UI
             VereinsmeisterschaftenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftenUebersicht));
             AuswertungVereinsmeisterschaftEntwicklungGruppenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungGruppen));
             AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen));
-
-            Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
+            AuswertungMitgliederAuswertungEintrittCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungEintritt));
+            AuswertungMitgliederAuswertungJahreImVereinCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahreImVerein));
+            AuswertungMitgliederAuswertungJahrgangCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrgang));
+            AuswertungMitgliederAuswertungJahrzehntCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungMitgliederAuswertungJahrzehnt));
+            KoenigschiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKoenigschiessenUebersicht));
+            KoenigschiessenErstellenCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.koenigschiessen));
+            JugendkoenigschiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewJugendkoenigschiessenUebersicht));
+            JugendkoenigschiessenErstellenCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.jugendkoenigschiessen));
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -86,11 +96,21 @@ namespace Logic.UI
         public ICommand VereinsmeisterschaftenUebersichtCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungSchuetzenCommand { get; set; }
         public ICommand AuswertungVereinsmeisterschaftEntwicklungGruppenCommand { get; set; }
-
+        public ICommand AuswertungMitgliederAuswertungEintrittCommand { get; set; }
+        public ICommand AuswertungMitgliederAuswertungJahreImVereinCommand { get; set; }
+        public ICommand AuswertungMitgliederAuswertungJahrgangCommand { get; set; }
+        public ICommand AuswertungMitgliederAuswertungJahrzehntCommand { get; set; }
+        public ICommand KoenigschiessenUebersichtCommand { get; set; }
+        public ICommand KoenigschiessenErstellenCommand { get; set; }
+        public ICommand JugendkoenigschiessenUebersichtCommand { get; set; }
+        public ICommand JugendkoenigschiessenErstellenCommand { get; set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
-        public bool BerechtigungVisibility => false;
+        
         public ICommand AbmeldenCommand { get; set; }
+        public ICommand PasswordAendernCommand { get; set; }
+
+        
 
 
         public RelayCommand<PasswordBox> PasswordCommand { get; private set; }
@@ -109,8 +129,17 @@ namespace Logic.UI
         {
             GlobalVariables.Token = "";
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.IsAdmin = false;
+            GlobalUserVariables.UserID = 0;
             Messenger.Default.Send(new AktualisiereBerechtigungenMessage { });
+            Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
             Messenger.Default.Send(new OpenLoginViewMessage { });
+        }
+
+
+        private void ExecutePasswordAendernCommand()
+        {
+            Messenger.Default.Send(new OpenPasswordAendernViewMessage { });
         }
 
         private void ExecuteOpenStartingViewCommand()
@@ -128,10 +157,10 @@ namespace Logic.UI
             Messenger.Default.Send(new OpenStartingViewMessage { });
         }
 
-        private void ReceiveOpenViewMessage()
+        protected override void ReceiveOpenViewMessage()
         {
             RaisePropertyChanged("MenuIsEnabled");
-            RaisePropertyChanged(nameof(BerechtigungVisibility));
+            base.ReceiveOpenViewMessage();
         }
 
     }

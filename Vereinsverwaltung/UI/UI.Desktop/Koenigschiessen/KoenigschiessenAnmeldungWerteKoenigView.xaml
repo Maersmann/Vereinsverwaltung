@@ -1,0 +1,141 @@
+﻿<UserControl x:Class="UI.Desktop.Koenigschiessen.KoenigschiessenAnmeldungWerteKoenigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UI.Desktop.Koenigschiessen"
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            xmlns:converter="clr-namespace:UI.Desktop.Converter"
+            xmlns:prox="clr-namespace:Logic.UI;assembly=Logic.UI"
+            mc:Ignorable="d" 
+            d:DesignHeight="450" d:DesignWidth="800"
+            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+            Background="{DynamicResource MaterialDesignPaper}"
+            DataContext="{Binding KoenigschiessenAnmeldungKoenigWerte, Source={StaticResource Locator}}">
+    <Grid>
+        <materialDesign:Card  Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="1" Content="Gesamt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Label Grid.Row="0" Grid.Column="2" Content="Teilgenommen" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Label Grid.Row="0" Grid.Column="3" Content="Offen" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="König" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Vize-König" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="Beste Schützin" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Ohne Wertung" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Label Grid.Row="5" Grid.Column="0" Content="Gesamt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding Werte.KoenigGesamt}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="1" Grid.Column="2" Content="{Binding Werte.KoenigTeilgenommen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="1" Grid.Column="3" Content="{Binding Werte.KoenigOffen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+
+                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding Werte.VizeKoenigGesamt}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="2" Grid.Column="2" Content="{Binding Werte.VizeKoenigTeilgenommen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="2" Grid.Column="3" Content="{Binding Werte.VizeKoenigOffen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+
+                    <Label Grid.Row="3" Grid.Column="1" Content="{Binding Werte.BesteSchuetzinGesamt}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="3" Grid.Column="2" Content="{Binding Werte.BesteSchuetzinTeilgenommen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="3" Grid.Column="3" Content="{Binding Werte.BesteSchuetzinOffen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+
+                    <Label Grid.Row="4" Grid.Column="1" Content="{Binding Werte.OhneWertungGesamt}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="4" Grid.Column="2" Content="{Binding Werte.OhneWertungTeilgenommen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="4" Grid.Column="3" Content="{Binding Werte.OhneWertungOffen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+
+                    <Label Grid.Row="5" Grid.Column="1" Content="{Binding Werte.Gesamt}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="5" Grid.Column="2" Content="{Binding Werte.Teilgenommen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                    <Label Grid.Row="5" Grid.Column="3" Content="{Binding Werte.Offen}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="1" Content="Von" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="Bis" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="König" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Vize-König" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="Beste Schützin" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" />
+
+                    <Grid Grid.Row="1" Grid.Column="1" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Werte.KoenigVon}" ContentStringFormat="dd.MM.yyyy" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Label Grid.Row="1" Content="{Binding Werte.KoenigVonAlter}" ContentStringFormat="Alter: {0}"  FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="2" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Werte.KoenigBis}" ContentStringFormat="dd.MM.yyyy" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Label Grid.Row="1" Content="{Binding Werte.KoenigBisAlter}" ContentStringFormat="Alter: {0}"  FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+
+                    <Grid Grid.Row="2" Grid.Column="1" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Werte.VizeKoenigVon}" ContentStringFormat="dd.MM.yyyy" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Label Grid.Row="1" Content="{Binding Werte.VizeKoenigVonAlter}" ContentStringFormat="Alter: {0}"  FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+
+                    <Grid Grid.Row="2" Grid.Column="2" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Werte.VizeKoenigBis}" ContentStringFormat="dd.MM.yyyy" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Label Grid.Row="1" Content="{Binding Werte.VizeKoenigBisAlter}" ContentStringFormat="Alter: {0}"  FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+
+                    <Grid Grid.Row="3" Grid.Column="1" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Werte.BesteSchuetzinVon}" ContentStringFormat="dd.MM.yyyy" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Label Grid.Row="1" Content="{Binding Werte.BesteSchuetzinVonAlter}" ContentStringFormat="Alter: {0}"  FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+                </Grid>
+
+            </Grid>
+
+        </materialDesign:Card>
+
+    </Grid>
+</UserControl>

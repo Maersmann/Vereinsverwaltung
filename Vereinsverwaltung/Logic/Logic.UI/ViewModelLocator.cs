@@ -30,6 +30,8 @@ using Logic.UI.ExportViewModels;
 using Logic.UI.KkSchiessenViewModels;
 using Logic.UI.VereinsmeisterschaftViewModels;
 using Logic.UI.UserViewModels;
+using Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels;
+using Logic.UI.KoenigschiessenViewModels;
 
 namespace Logic.UI
 {
@@ -156,6 +158,25 @@ namespace Logic.UI
         public UserStammdatenViewModel UserStammdaten => new UserStammdatenViewModel();
         public UserUebersichtViewModel UserUebersicht => new UserUebersichtViewModel();
         public UserBerechtigungenUebersichtViewModel UserBerechtigungenUebersicht => new UserBerechtigungenUebersichtViewModel();
+        public PinsVomMitgliedUebersichtViewModel PinsVomMitgliedUebersicht => new PinsVomMitgliedUebersichtViewModel();
+        public MitgliederAuswertungEintrittViewModel MitgliederAuswertungEintritt => new MitgliederAuswertungEintrittViewModel();
+        public MitgliederAuswertungJahreImVereinViewModel MitgliederAuswertungJahreImVerein => new MitgliederAuswertungJahreImVereinViewModel();
+        public MitgliederAuswertungJahrgangViewModel MitgliederAuswertungJahrgang => new MitgliederAuswertungJahrgangViewModel();
+        public MitgliederAuswertungJahrzehnteViewModel MitgliederAuswertungJahrzehnte => new MitgliederAuswertungJahrzehnteViewModel();
+        public UserPasswordAendernViewModel UserPasswordAendern => new UserPasswordAendernViewModel();
+        public KoenigschiessenUebersichtViewModel KoenigschiessenUebersicht => new KoenigschiessenUebersichtViewModel();
+        public KoenigschiessenErstellenViewModel KoenigschiessenErstellen => new KoenigschiessenErstellenViewModel();
+        public KoenigschiessenAnmeldungUebersichtViewModel KoenigschiessenAnmeldungUebersicht => new KoenigschiessenAnmeldungUebersichtViewModel();
+        public KoenigschiessenAnmeldungBestaetigungViewModel KoenigschiessenAnmeldungBestaetigung => new KoenigschiessenAnmeldungBestaetigungViewModel();
+        public JugendkoenigUebersichtViewModel JugendkoenigUebersicht => new JugendkoenigUebersichtViewModel();
+        public JugendkoenigschiessenErstellenViewModel jugendkoenigschiessenErstellen => new JugendkoenigschiessenErstellenViewModel();
+        public KoenigschiessenAnmeldungWerteKoenigViewModel KoenigschiessenAnmeldungKoenigWerte => new KoenigschiessenAnmeldungWerteKoenigViewModel();
+        public KoenigschiessenAnmeldungWerteJugendkoenigViewModel KoenigschiessenAnmeldungWerteJugendkoenig => new KoenigschiessenAnmeldungWerteJugendkoenigViewModel();
+        public KoenigschiessenRundeTeilnehmerUebersichtViewModel KoenigschiessenRundeTeilnehmerUebersicht => new KoenigschiessenRundeTeilnehmerUebersichtViewModel();
+        public KoenigschiessenErgebnisEintragenViewModel KoenigschiessenErgebnisEintragen => new KoenigschiessenErgebnisEintragenViewModel();
+        public KoenigschiessenRundeTeilnehmerWerteViewModel KoenigschiessenRundeTeilnehmerWerte => new KoenigschiessenRundeTeilnehmerWerteViewModel();
+        public KoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewModel KoenigschiessenHoechsteErgebnisSchuetzenUebersicht => new KoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewModel();
+        public KoenigschiessenRundeAbschlussViewModel KoenigschiessenRundeAbschluss => new KoenigschiessenRundeAbschlussViewModel();
         public static void Cleanup()
         {
 

@@ -35,6 +35,7 @@ namespace UI.Desktop.Pin
             };
             if (view.DataContext is PinAusgabeMitgliedUebersichtViewModel model)
             {
+                model.SetFilterData(m.FilterText, m.ZeigeNurOffene);
                 model.LoadData(m.ID);
                 view.ShowDialog();
             }

@@ -2,6 +2,7 @@
 {
     public enum ViewType
     {
+        viewNothing,
         viewMitgliederUebersicht,
         viewMitgliederImport,
         viewSchluesselStammdaten,
@@ -27,6 +28,12 @@
         viewVereinsmeisterschaftAktiveVereinsmeisterschaftErgebnisseGruppen,
         viewVereinsmeisterschaftenUebersicht,
         viewAuswertungVereinsmeisterschaftEntwicklungGruppen,
-        viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen
+        viewAuswertungVereinsmeisterschaftEntwicklungSchuetzen,
+        viewAuswertungMitgliederAuswertungEintritt,
+        viewAuswertungMitgliederAuswertungJahreImVerein,
+        viewAuswertungMitgliederAuswertungJahrgang,
+        viewAuswertungMitgliederAuswertungJahrzehnt,
+        viewKoenigschiessenUebersicht,
+        viewJugendkoenigschiessenUebersicht
     }
 }

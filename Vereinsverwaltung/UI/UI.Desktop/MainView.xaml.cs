@@ -25,6 +25,9 @@ using UI.Desktop.User;
 using System.Windows.Data;
 using System;
 using System.Globalization;
+using UI.Desktop.Auswertungen.Mitglieder;
+using Logic.Messages.UserMessages;
+using UI.Desktop.Koenigschiessen;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -54,7 +57,8 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
-        }   
+            Messenger.Default.Register<OpenPasswordAendernViewMessage>(this, m => ReceiceOpenPasswordAendernViewMessage());          
+        }
 
         private void ReceiceCloseApplicationMessage()
         {
@@ -178,7 +182,33 @@ namespace Vereinsverwaltung.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(AuswertungVereinsmeisterschaftEntwicklungSchuetzenView).Name))
                         Container.NavigationService.Navigate(new AuswertungVereinsmeisterschaftEntwicklungSchuetzenView());
                     break;
+                case ViewType.viewAuswertungMitgliederAuswertungEintritt:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungEintrittView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungEintrittView());
+                    break;
+                case ViewType.viewAuswertungMitgliederAuswertungJahreImVerein:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungJahreImVereinView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungJahreImVereinView());
+                    break;
+                case ViewType.viewAuswertungMitgliederAuswertungJahrgang:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungJahrgangView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungJahrgangView());
+                    break;
+                case ViewType.viewAuswertungMitgliederAuswertungJahrzehnt:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAuswertungJahrzehnteView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAuswertungJahrzehnteView());
+                    break;
+                case ViewType.viewKoenigschiessenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(KoenigschiessenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new KoenigschiessenUebersichtView());
+                    break;
+                case ViewType.viewJugendkoenigschiessenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(JugendkoenigschiessenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new JugendkoenigschiessenUebersichtView());
+                    break;
                 default:
+                    Container.Content = null;
+                    Container.NavigationService.RemoveBackEntry();
                     break;
             }
         }
@@ -222,6 +252,12 @@ namespace Vereinsverwaltung.UI.Desktop
                 case StammdatenTypes.user:
                     view = new UserStammdatenView();
                     break;
+                case StammdatenTypes.koenigschiessen:
+                    view = new KoenigschiessenErstellenView();
+                    break;
+                case StammdatenTypes.jugendkoenigschiessen:
+                    view = new JugendkoenigschiessenErstellenView();
+                    break;
                 default:
                     break;
             }
@@ -253,7 +289,13 @@ namespace Vereinsverwaltung.UI.Desktop
             StartingProgrammView view = new StartingProgrammView();
             _ = view.ShowDialog();
             _ = SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
-        }   
+        }
+
+        private void ReceiceOpenPasswordAendernViewMessage()
+        {
+            UserPasswordAendernView view = new UserPasswordAendernView();
+            _ = view.ShowDialog();
+        }
     }
 
 }
