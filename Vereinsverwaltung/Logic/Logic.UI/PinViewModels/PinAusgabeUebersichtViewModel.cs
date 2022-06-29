@@ -22,11 +22,13 @@ namespace Logic.UI.PinViewModels
             OeffneAusgabeCommand = new RelayCommand(() => ExecuteOeffneAusgabeCommand());
             ErledigeAusgabeCommand = new RelayCommand(() => ExecuteErledigeAusgabeCommand());
             zeigeNurOffene = true;
+            _ = LoadData();
         }
         protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.pinAusgabe; }
         protected override string GetREST_API() { return $"/api/Pins/Ausgabe/Uebersicht?nurOffene={zeigeNurOffene}"; }
         protected override bool WithPagination() { return true; }
+        protected override bool LoadingOnCreate() => false;
 
         #region Bindings
         public bool ZeigeNurOffene
