@@ -86,6 +86,7 @@ namespace Logic.UI.PinViewModels
                     PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
+                    FilterText = "";
                     LoadData(id);
                 }
             }
@@ -118,6 +119,7 @@ namespace Logic.UI.PinViewModels
                     PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
+                    FilterText = "";
                     LoadData(id);
                 }
             }
