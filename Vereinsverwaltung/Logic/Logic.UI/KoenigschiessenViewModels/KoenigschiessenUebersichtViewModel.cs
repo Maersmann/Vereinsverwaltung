@@ -22,6 +22,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             OeffneKoenigschiessenCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.koenig));
             OeffneVizeKoenigschiessenCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.vizekoenig));
             OeffneBesteSchuetzinCommand = new RelayCommand(() => ExecuteOeffneRundeCommand(KoenigschiessenArt.besteSchuetzin));
+            OeffneZahlenCommand = new RelayCommand(() => ExecuteOeffneZahlenCommand());
         }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.koenigschiessen; }
         protected override string GetREST_API() { return $"/api/Koenigschiessen"; }
@@ -32,12 +33,18 @@ namespace Logic.UI.KoenigschiessenViewModels
         public ICommand OeffneKoenigschiessenCommand { get; private set; }
         public ICommand OeffneVizeKoenigschiessenCommand { get; private set; }
         public ICommand OeffneBesteSchuetzinCommand { get; private set; }
+        public ICommand OeffneZahlenCommand { get; private set; }
         #endregion
 
         #region Commands
         private void ExecuteOeffneAnmeldungCommand()
         {
             Messenger.Default.Send(new OpenKoenigschiessenAnmeldungViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen }, "KoenigschiessenUebersicht");
+        }
+
+        private void ExecuteOeffneZahlenCommand()
+        {
+            Messenger.Default.Send(new OpenKoenigschiessenZahlenMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen }, "KoenigschiessenUebersicht");
         }
 
         private void ExecuteOeffneRundeCommand(KoenigschiessenArt art)
