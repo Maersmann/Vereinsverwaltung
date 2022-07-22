@@ -57,7 +57,7 @@ namespace Vereinsverwaltung.UI.Desktop
             Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
-            Messenger.Default.Register<OpenPasswordAendernViewMessage>(this, m => ReceiceOpenPasswordAendernViewMessage());          
+            Messenger.Default.Register<OpenPasswordAendernViewMessage>(this, m => ReceiceOpenPasswordAendernViewMessage());       
         }
 
         private void ReceiceCloseApplicationMessage()
@@ -67,12 +67,12 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiveInformationMessage(InformationMessage m)
         {
-            MessageBox.Show(m.Message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(this, m.Message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ReceiveExceptionMessage(ExceptionMessage m)
         {
-            MessageBox.Show(m.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(this, m.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ReceiveOpenViewMessage(OpenViewMessage m)

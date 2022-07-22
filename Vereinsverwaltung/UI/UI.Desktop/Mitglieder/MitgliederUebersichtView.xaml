@@ -117,7 +117,8 @@
 
         <materialDesign:Card  Grid.Row="2">
             <DockPanel  LastChildFill="False" >
-                <Button Grid.Row ="1" DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding OpenPinsVomMitgliedCommand}"   Style="{DynamicResource MaterialDesignToolForegroundButton}" Cursor="Hand" >Pins</Button>
+                <Button Grid.Row ="1" DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Right" Width="100" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=allgemeinpins }"  Command="{Binding OpenPinsVomMitgliedCommand}" Style="{DynamicResource MaterialDesignToolForegroundButton}" Cursor="Hand" >Pins</Button>
+                <Button Grid.Row ="1" DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Right" Width="120" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=schuetzenfestallgemein }"  Command="{Binding OpenKoenigschiessenErgebnisseVomMitgliedCommand}" Style="{DynamicResource MaterialDesignToolForegroundButton}" Cursor="Hand" >Königschiessen</Button>
             </DockPanel>
         </materialDesign:Card>
 

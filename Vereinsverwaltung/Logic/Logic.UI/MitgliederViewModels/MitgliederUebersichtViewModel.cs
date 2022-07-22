@@ -12,6 +12,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Logic.Messages.PinMessages;
 using GalaSoft.MvvmLight.Messaging;
 using Data.Types.MitgliederTypes;
+using Logic.Messages.KoenigschiessenMessages;
 
 namespace Logic.UI.MitgliederViewModels
 {
@@ -23,6 +24,7 @@ namespace Logic.UI.MitgliederViewModels
             Title = "Übersicht Mitglieder";
             RegisterAktualisereViewMessage(StammdatenTypes.mitglied.ToString());
             OpenPinsVomMitgliedCommand = new RelayCommand(() => ExcecuteOpenPinsVomMitgliedCommand());
+            OpenKoenigschiessenErgebnisseVomMitgliedCommand = new RelayCommand(() => ExcecuteOpenKoenigschiessenErgebnisseVomMitgliedCommand());
         }
 
 
@@ -33,6 +35,7 @@ namespace Logic.UI.MitgliederViewModels
 
         #region bindings
         public ICommand OpenPinsVomMitgliedCommand { get; private set; }
+        public ICommand OpenKoenigschiessenErgebnisseVomMitgliedCommand { get; private set; }
         #endregion
         #region Commands
 
@@ -57,6 +60,11 @@ namespace Logic.UI.MitgliederViewModels
         private void ExcecuteOpenPinsVomMitgliedCommand()
         {
             Messenger.Default.Send(new OpenPinsVomMitgliedUebersichtMessage { ID = SelectedItem.ID }, "MitgliederUebersicht");
+        }
+
+        private void ExcecuteOpenKoenigschiessenErgebnisseVomMitgliedCommand()
+        {
+            Messenger.Default.Send(new OpenKoenigschiessenErgebnisseVomMitgliedMessage { MitgliedID = SelectedItem.ID }, "MitgliederUebersicht");
         }
         #endregion
 

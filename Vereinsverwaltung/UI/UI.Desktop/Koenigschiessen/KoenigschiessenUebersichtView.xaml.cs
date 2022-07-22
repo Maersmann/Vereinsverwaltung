@@ -26,6 +26,7 @@ namespace UI.Desktop.Koenigschiessen
             InitializeComponent();
             Messenger.Default.Register<OpenKoenigschiessenAnmeldungViewMessage>(this, "KoenigschiessenUebersicht", m => ReceiveOpenKoenigschiessenViewMessage(m));
             Messenger.Default.Register<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage>(this, "KoenigschiessenUebersicht", m => ReceiveOpenKoenigschiessenErgebnisViewMessage(m));
+            Messenger.Default.Register<OpenKoenigschiessenZahlenMessage>(this, "KoenigschiessenUebersicht", m => ReceiveOpenKoenigschiessenZahlenMessage(m));
         }
 
         private async void ReceiveOpenKoenigschiessenErgebnisViewMessage(OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage m)
@@ -62,10 +63,24 @@ namespace UI.Desktop.Koenigschiessen
             }
         }
 
+        private void ReceiveOpenKoenigschiessenZahlenMessage(OpenKoenigschiessenZahlenMessage m)
+        {
+            KoenigschiessenRundenZahlenView view = new KoenigschiessenRundenZahlenView
+            {
+                Owner = Application.Current.MainWindow
+            };
+            if (view.DataContext is KoenigschiessenRundenZahlenViewModel model)
+            {
+                model.ZeigeDatenAn(m.Jahr, m.Variante);
+                view.ShowDialog();
+            }
+        }
+
         private void WindowUnloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<OpenKoenigschiessenAnmeldungViewMessage>(this);
             Messenger.Default.Unregister<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage>(this);
+            Messenger.Default.Unregister<OpenKoenigschiessenZahlenMessage>(this);
         }
     }
 }

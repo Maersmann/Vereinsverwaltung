@@ -177,6 +177,8 @@ namespace Logic.UI
         public KoenigschiessenRundeTeilnehmerWerteViewModel KoenigschiessenRundeTeilnehmerWerte => new KoenigschiessenRundeTeilnehmerWerteViewModel();
         public KoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewModel KoenigschiessenHoechsteErgebnisSchuetzenUebersicht => new KoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewModel();
         public KoenigschiessenRundeAbschlussViewModel KoenigschiessenRundeAbschluss => new KoenigschiessenRundeAbschlussViewModel();
+        public KoenigschiessenRundenZahlenViewModel KoenigschiessenRundenZahlen => new KoenigschiessenRundenZahlenViewModel();
+        public KoenigschiessenErgebnisseVonMitgliedViewModel KoenigschiessenErgebnisseVonMitglied => new KoenigschiessenErgebnisseVonMitgliedViewModel();
         public static void Cleanup()
         {
 
