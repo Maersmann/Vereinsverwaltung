@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.KoenigschiessenMessages;
 using Logic.Messages.PinMessages;
+using Logic.UI.KoenigschiessenViewModels;
 using Logic.UI.PinViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Koenigschiessen;
 using UI.Desktop.Pin;
 
 namespace Vereinsverwaltung.UI.Desktop.Mitglieder
@@ -28,6 +31,20 @@ namespace Vereinsverwaltung.UI.Desktop.Mitglieder
         {
             InitializeComponent();
             Messenger.Default.Register<OpenPinsVomMitgliedUebersichtMessage>(this, "MitgliederUebersicht", m => ReceiveOpenPinsVomMitgliedUebersichtMessage(m));
+            Messenger.Default.Register<OpenKoenigschiessenErgebnisseVomMitgliedMessage>(this, "MitgliederUebersicht", m => ReceiveOpenKoenigschiessenErgebnisseVomMitgliedMessage(m));
+        }
+
+        private void ReceiveOpenKoenigschiessenErgebnisseVomMitgliedMessage(OpenKoenigschiessenErgebnisseVomMitgliedMessage m)
+        {
+            var view = new KoenigschiessenErgebnisseVonMitgliedView
+            {
+                Owner = Application.Current.MainWindow
+            };
+            if (view.DataContext is KoenigschiessenErgebnisseVonMitgliedViewModel model)
+            {
+                model.ZeigeDatenAn(m.MitgliedID);
+            }
+            view.ShowDialog();
         }
 
         private void ReceiveOpenPinsVomMitgliedUebersichtMessage(OpenPinsVomMitgliedUebersichtMessage m)
