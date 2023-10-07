@@ -132,14 +132,14 @@
                     <ColumnDefinition Width="100px" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Suche:</Label>
-                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Delay=500 }" Margin="10,10" Cursor="IBeam" >
+                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10,10" Cursor="IBeam" >
                     <materialDesign:HintAssist.Hint>Schütze, Gruppe</materialDesign:HintAssist.Hint>
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding SucheCommand}" />
                     </TextBox.InputBindings>
                 </TextBox>
 
-                <CheckBox Grid.Column="2" Content="Zeige nur offene " HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding ZeigeNurOffene, Mode=TwoWay}"/>
+                <CheckBox Grid.Column="2" Content="Zeige nur offene " HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding ZeigeNurOffene, Mode=TwoWay}" IsEnabled="{Binding IsEnabled}"/>
                 <Button Grid.Column ="3" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Command="{Binding SucheCommand}" Cursor="Hand" >Suchen</Button>
             </Grid>
 

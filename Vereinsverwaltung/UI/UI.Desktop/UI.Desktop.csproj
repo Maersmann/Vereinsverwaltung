@@ -8,7 +8,7 @@
     <AssemblyName>Vereinsverwaltung</AssemblyName>
     <Authors>Märsmann</Authors>
     <Company>Märsmann</Company>
-    <Version>3.3.0</Version>
+    <Version>3.4.0</Version>
     <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
   </PropertyGroup>
 

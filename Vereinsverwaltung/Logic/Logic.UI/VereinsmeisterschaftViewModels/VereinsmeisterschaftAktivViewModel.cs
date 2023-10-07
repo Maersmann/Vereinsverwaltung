@@ -22,6 +22,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 {
     public class VereinsmeisterschaftAktivViewModel : ViewModelUebersicht<VereinsmeisterschaftschuetzeErgebnisModel, StammdatenTypes>
     {
+        private bool vereinsmeisterschaftAbgeschlossen = false;
         private bool zeigeNurOffene;
         private VereinsmeisterschaftMitInfoModel vereinsmeisterschaft;
         public VereinsmeisterschaftAktivViewModel()
@@ -30,6 +31,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             Title = "Aktive Vereinsmeisterscahft";
             zeigeNurOffene = true;
             _ = LoadVereinsmeisterschaft();
+            SucheCommand = new DelegateCommand(ExecuteSucheCommand, CanExecuteCommand);
             NeuerSchuetzeCommand = new DelegateCommand(ExecuteNeuerSchuetzeCommand, CanExecuteCommand);
             OpenGruppenViewCommand = new DelegateCommand(ExecuteOpenGruppenViewCommand, CanExecuteCommand);
             ErgebnisEintragenViewCommand = new RelayCommand(() => ExecuteErgebnisEintragenViewCommand());
@@ -56,7 +58,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                     await LoadData();
                     RequestIsWorking = false;
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.NotFound))
+                else if (resp.StatusCode.Equals(HttpStatusCode.NotFound) && !vereinsmeisterschaftAbgeschlossen)
                 {
                     RequestIsWorking = false;
                     Messenger.Default.Send(new NeueVereinsmeisterschaftErstellenMessage(NeueVereinsmeisterschaftErstellenCallback), messageToken);
@@ -65,6 +67,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             ((DelegateCommand)NeuerSchuetzeCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)OpenGruppenViewCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)VereinsmeisterschaftAbschliessenCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)SucheCommand).RaiseCanExecuteChanged();
             RaisePropertyChanged(nameof(AnzahlFrauen));
             RaisePropertyChanged(nameof(AnzahlHerren16_30));
             RaisePropertyChanged(nameof(AnzahlHerren31_50));
@@ -74,6 +77,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             RaisePropertyChanged(nameof(AnzahlGruppenFrauen));
             RaisePropertyChanged(nameof(Jahr));
             RaisePropertyChanged(nameof(AnzahlGruppenMaenner));
+            RaisePropertyChanged(nameof(IsEnabled));
         }
 
         private async void SchliesseVereinsmeisterschaftAb()
@@ -87,6 +91,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             }
             else
             {
+                vereinsmeisterschaftAbgeschlossen = true;
                 await LoadVereinsmeisterschaft();
                 await LoadData();
             }
@@ -117,6 +122,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 RaisePropertyChanged();
             }
         }
+
+        public bool IsEnabled => vereinsmeisterschaft.ID > 0;
         #endregion
 
         #region Commannds
