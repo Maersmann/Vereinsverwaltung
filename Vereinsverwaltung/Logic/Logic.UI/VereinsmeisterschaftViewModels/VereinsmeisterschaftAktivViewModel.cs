@@ -22,6 +22,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 {
     public class VereinsmeisterschaftAktivViewModel : ViewModelUebersicht<VereinsmeisterschaftschuetzeErgebnisModel, StammdatenTypes>
     {
+        private bool vereinsmeisterschaftAbgeschlossen = false;
         private bool zeigeNurOffene;
         private VereinsmeisterschaftMitInfoModel vereinsmeisterschaft;
         public VereinsmeisterschaftAktivViewModel()
@@ -56,7 +57,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                     await LoadData();
                     RequestIsWorking = false;
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.NotFound))
+                else if (resp.StatusCode.Equals(HttpStatusCode.NotFound) && !vereinsmeisterschaftAbgeschlossen)
                 {
                     RequestIsWorking = false;
                     Messenger.Default.Send(new NeueVereinsmeisterschaftErstellenMessage(NeueVereinsmeisterschaftErstellenCallback), messageToken);
@@ -87,6 +88,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             }
             else
             {
+                vereinsmeisterschaftAbgeschlossen = true;
                 await LoadVereinsmeisterschaft();
                 await LoadData();
             }
