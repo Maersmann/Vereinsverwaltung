@@ -8,7 +8,7 @@ namespace Data.Model.VereinsmeisterschaftModels
     {
         public int ID { get; set; }
         public DateTime Erstelldatum { get; set; }
-        public DateTime Stichtag { get; set; }
+        public DateTime Stichttag { get; set; }
         public int Jahr { get; set; }
     }
 }

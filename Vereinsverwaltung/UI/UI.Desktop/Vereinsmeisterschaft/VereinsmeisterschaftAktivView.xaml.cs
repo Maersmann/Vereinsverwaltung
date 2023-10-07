@@ -93,7 +93,9 @@ namespace UI.Desktop.Vereinsmeisterschaft
         {
             Messenger.Default.Unregister<NeuerSchuetzeErstellenMessage>(this);
             Messenger.Default.Unregister<OpenVereinsmeisterschaftGruppenMitSchuetzenMessage>(this);
-            Messenger.Default.Unregister<VereinsmeisterschaftErgebnisEintragenMessage>(this);
+            Messenger.Default.Unregister<VereinsmeisterschaftErgebnisEintragenMessage>(this); 
+            Messenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage>(this);
+
             base.Window_Unloaded(sender, e);
         }
     }

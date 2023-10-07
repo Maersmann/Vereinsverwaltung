@@ -57,14 +57,14 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 
         public DateTime? Stichttag
         {
-            get => Data.Stichtag;
+            get => Data.Stichttag;
             set
             {
 
-                if (RequestIsWorking || !Equals(Data.Stichtag, value))
+                if (RequestIsWorking || !Equals(Data.Stichttag, value))
                 {
                     ValidateDatum(value);
-                    Data.Stichtag = value.GetValueOrDefault(DateTime.Now);
+                    Data.Stichttag = value.GetValueOrDefault(DateTime.Now);
                     base.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
