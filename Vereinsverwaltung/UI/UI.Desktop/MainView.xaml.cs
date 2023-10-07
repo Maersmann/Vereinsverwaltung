@@ -281,7 +281,9 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiceOpenLoginViewMessage()
         {
-            _ = new LoginView().ShowDialog();
+            LoginView view = new LoginView();
+            view.Owner = this;
+            view.ShowDialog();
         }
 
         private void ReceiceOpenStartingViewMessage()
