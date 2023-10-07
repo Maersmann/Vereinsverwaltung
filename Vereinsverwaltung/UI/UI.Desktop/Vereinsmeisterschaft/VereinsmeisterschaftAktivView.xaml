@@ -132,7 +132,7 @@
                     <ColumnDefinition Width="100px" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Suche:</Label>
-                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Delay=500 }" Margin="10,10" Cursor="IBeam" >
+                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10,10" Cursor="IBeam" >
                     <materialDesign:HintAssist.Hint>Schütze, Gruppe</materialDesign:HintAssist.Hint>
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding SucheCommand}" />
