@@ -22,12 +22,11 @@ using UI.Desktop.KkSchiessen;
 using UI.Desktop.Vereinsmeisterschaft;
 using UI.Desktop.Vereinsmeisterschaft.Pages;
 using UI.Desktop.User;
-using System.Windows.Data;
-using System;
-using System.Globalization;
 using UI.Desktop.Auswertungen.Mitglieder;
 using Logic.Messages.UserMessages;
 using UI.Desktop.Koenigschiessen;
+using UI.Desktop.Schnurschiessen.Pages;
+using UI.Desktop.Auswertungen.Schnurschiessen;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -206,7 +205,70 @@ namespace Vereinsverwaltung.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(JugendkoenigschiessenUebersichtView).Name))
                         Container.NavigationService.Navigate(new JugendkoenigschiessenUebersichtView());
                     break;
-                default:
+                case ViewType.viewSchnurschiessenMitgliederUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenMitgliederUebersichtView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenMitgliederUebersichtView());
+                    break;
+                case ViewType.viewSchnurschiessenAuszeichnungBestandHistorie:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuszeichnungBestandHistoriePage).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuszeichnungBestandHistoriePage());
+                    break;
+                case ViewType.viewAktiveSchnurschiessenVerwaltung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(AktiveSchnurschiessenVerwaltungPage).Name))
+                        Container.NavigationService.Navigate(new AktiveSchnurschiessenVerwaltungPage());
+                    break;
+                case ViewType.viewAktivesSchnurschiessenMitgliederUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(AktivesSchnurschiessenMitgliederUebersichtView).Name))
+                        Container.NavigationService.Navigate(new AktivesSchnurschiessenMitgliederUebersichtView());
+                    break;
+                case ViewType.viewSchnurschiessenMitgliederImport:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenMitgliederImportView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenMitgliederImportView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungAktuellenStandAuszeichnung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungAktuellenStandAuszeichnungView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungAktuellenStandAuszeichnungView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungAktuellenStandRang:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungAktuellenStandRangView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungAktuellenStandRangView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungEntwicklungAuszeichnung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungEntwicklungAuszeichnungView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungEntwicklungAuszeichnungView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungEntwicklungRang:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungEntwicklungRangView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungEntwicklungRangView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungGesamtteilnahme:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungGesamtteilnahmeView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungGesamtteilnahmeView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungNeuerRang:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungNeuerRangView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungNeuerRangView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungTeilnahmeProTag:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungTeilnahmeProTagView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungTeilnahmeProTagView());
+                    break;
+                case ViewType.viewSchnurschiessenAuswertungErhalteneAuszeichnung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenAuswertungErhalteneAuszeichnungView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenAuswertungErhalteneAuszeichnungView());
+                    break;
+                case ViewType.viewSchnurschiessenMitgliederZuordnung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenMitgliederZuordnungView).Name))
+                        Container.NavigationService.Navigate(new SchnurschiessenMitgliederZuordnungView());
+                    break;
+                case ViewType.viewExportSchnurschiessen:
+                    var View = new ExportSchnurschiessenView
+                    {
+                        Owner = this
+                    };
+                    View.ShowDialog();
+                    break;
+                default:         
                     Container.Content = null;
                     Container.NavigationService.RemoveBackEntry();
                     break;
@@ -228,11 +290,11 @@ namespace Vereinsverwaltung.UI.Desktop
                 case StammdatenTypes.schluesselbesitzer:
                     view = new SchluesselbesitzerStammdatenView();
                     break;
-                case StammdatenTypes.schnur:
-                    view = new SchnurstammdatenView();
+                case StammdatenTypes.schnurschiessenAuszeichnung:
+                    view = new SchnurschiessenAuszeichnungStammdatenView();
                     break;
-                case StammdatenTypes.schnurauszeichnung:
-                    view = new SchnurauszeichnungStammdatenView();
+                case StammdatenTypes.schnurschiessenRang:
+                    view = new SchnurschiessenrangStammdatenView();
                     break;
                 case StammdatenTypes.pinAusgabe:
                     view = new PinAusgabeStammdatenView();
@@ -266,7 +328,7 @@ namespace Vereinsverwaltung.UI.Desktop
             {
                 if (m.State == State.Bearbeiten)
                 {
-                    model.ZeigeStammdatenAn(m.ID.Value);
+                    model.ZeigeStammdatenAnAsync(m.ID.Value);
                 }
 
             }
@@ -281,8 +343,10 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiceOpenLoginViewMessage()
         {
-            LoginView view = new LoginView();
-            view.Owner = this;
+            LoginView view = new LoginView
+            {
+                Owner = this
+            };
             view.ShowDialog();
         }
 
@@ -290,7 +354,7 @@ namespace Vereinsverwaltung.UI.Desktop
         {
             StartingProgrammView view = new StartingProgrammView();
             _ = view.ShowDialog();
-            _ = SchnurschiessenOption.NavigationService.Navigate(new SchnuroptionPage());
+            _ = SchnurschiessenOption.NavigationService.Navigate(new SchnurschiessenOptionPage());
         }
 
         private void ReceiceOpenPasswordAendernViewMessage()

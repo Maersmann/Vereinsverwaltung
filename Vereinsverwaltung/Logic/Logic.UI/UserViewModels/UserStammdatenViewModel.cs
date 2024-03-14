@@ -27,7 +27,7 @@ namespace Logic.UI.UserViewModels
             PasswordCommand = new RelayCommand<PasswordBox>(ExecutePasswordChangedCommand);
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)

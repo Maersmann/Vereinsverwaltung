@@ -24,7 +24,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             neueVereinsmeisterschaftErstellt = false;
         }
 
-        public void ZeigeStammdatenAn(int id)
+        public void ZeigeStammdatenAnAsync(int id)
         {
         }
         public bool NeueVereinsmeisterschaftErstellt => neueVereinsmeisterschaftErstellt;

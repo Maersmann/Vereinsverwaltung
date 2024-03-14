@@ -26,7 +26,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             Title = "Schiessgruppen Stammdaten";
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)

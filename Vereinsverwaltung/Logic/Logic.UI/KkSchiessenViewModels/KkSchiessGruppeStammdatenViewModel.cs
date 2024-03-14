@@ -24,7 +24,7 @@ namespace Logic.UI.KkSchiessenViewModels
             Title = "Stammdaten KK-Schießgruppe";
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)

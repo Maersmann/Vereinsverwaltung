@@ -32,6 +32,7 @@ using Logic.UI.VereinsmeisterschaftViewModels;
 using Logic.UI.UserViewModels;
 using Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels;
 using Logic.UI.KoenigschiessenViewModels;
+using Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels;
 
 namespace Logic.UI
 {
@@ -75,9 +76,6 @@ namespace Logic.UI
             SimpleIoc.Default.Register<SchluesselRueckgabeStammdatenViewModel>();
             SimpleIoc.Default.Register<SchluesselzuteilungAuswahlViewModel>();
             SimpleIoc.Default.Register<SchluesselzuteilungHistoryUebersichtViewModel>();
-            SimpleIoc.Default.Register<SchnurStammdatenViewModel>();
-            SimpleIoc.Default.Register<SchnurUebersichtViewModel>();
-            SimpleIoc.Default.Register<SchnurauszeichnungUebersichtViewModel>();
             SimpleIoc.Default.Register<BackendSettingsViewModel>();
         }
 
@@ -101,10 +99,10 @@ namespace Logic.UI
         public SchluesselRueckgabeStammdatenViewModel SchluesselRueckgabeStammdaten => ServiceLocator.Current.GetInstance<SchluesselRueckgabeStammdatenViewModel>();
         public SchluesselzuteilungAuswahlViewModel SchluesselzuteilungAuswahl => ServiceLocator.Current.GetInstance<SchluesselzuteilungAuswahlViewModel>();
         public SchluesselzuteilungHistoryUebersichtViewModel SchluesselzuteilungHistoryUebersicht => ServiceLocator.Current.GetInstance<SchluesselzuteilungHistoryUebersichtViewModel>();
-        public SchnurStammdatenViewModel Schnurstammdaten => ServiceLocator.Current.GetInstance<SchnurStammdatenViewModel>();
-        public SchnurUebersichtViewModel SchnurUebersicht => ServiceLocator.Current.GetInstance<SchnurUebersichtViewModel>();
-        public SchnurauszeichnungStammdatenViewModel SchnurauszeichnungStammdaten => new SchnurauszeichnungStammdatenViewModel();
-        public SchnurauszeichnungUebersichtViewModel SchnurauszeichnungUebersicht => ServiceLocator.Current.GetInstance<SchnurauszeichnungUebersichtViewModel>();
+        public SchnurschiessenAuszeichnungStammdatenViewModel SchnurschiessenAuszeichnungStammdaten => new SchnurschiessenAuszeichnungStammdatenViewModel();
+        public SchnurschiessenAuszeichnungUebersichtViewModel SchnurschiessenAuszeichnungUebersicht => new SchnurschiessenAuszeichnungUebersichtViewModel();
+        public SchnurschiessenrangStammdatenViewModel SchnurschiessenrangStammdaten => new SchnurschiessenrangStammdatenViewModel();
+        public SchnurschiessenrangUebersichtViewModel SchnurschiessenrangUebersicht =>new SchnurschiessenrangUebersichtViewModel();
         public StartingProgrammViewModel StartingProgramm => new StartingProgrammViewModel();
         public PinAusgabeStammdatenViewModel PinAusgabeStammdaten => new PinAusgabeStammdatenViewModel();
         public PinAusgabeUebersichtViewModel PinAusgabeUebersicht => new PinAusgabeUebersichtViewModel();
@@ -169,7 +167,7 @@ namespace Logic.UI
         public KoenigschiessenAnmeldungUebersichtViewModel KoenigschiessenAnmeldungUebersicht => new KoenigschiessenAnmeldungUebersichtViewModel();
         public KoenigschiessenAnmeldungBestaetigungViewModel KoenigschiessenAnmeldungBestaetigung => new KoenigschiessenAnmeldungBestaetigungViewModel();
         public JugendkoenigUebersichtViewModel JugendkoenigUebersicht => new JugendkoenigUebersichtViewModel();
-        public JugendkoenigschiessenErstellenViewModel jugendkoenigschiessenErstellen => new JugendkoenigschiessenErstellenViewModel();
+        public JugendkoenigschiessenErstellenViewModel JugendkoenigschiessenErstellen => new JugendkoenigschiessenErstellenViewModel();
         public KoenigschiessenAnmeldungWerteKoenigViewModel KoenigschiessenAnmeldungKoenigWerte => new KoenigschiessenAnmeldungWerteKoenigViewModel();
         public KoenigschiessenAnmeldungWerteJugendkoenigViewModel KoenigschiessenAnmeldungWerteJugendkoenig => new KoenigschiessenAnmeldungWerteJugendkoenigViewModel();
         public KoenigschiessenRundeTeilnehmerUebersichtViewModel KoenigschiessenRundeTeilnehmerUebersicht => new KoenigschiessenRundeTeilnehmerUebersichtViewModel();
@@ -179,6 +177,30 @@ namespace Logic.UI
         public KoenigschiessenRundeAbschlussViewModel KoenigschiessenRundeAbschluss => new KoenigschiessenRundeAbschlussViewModel();
         public KoenigschiessenRundenZahlenViewModel KoenigschiessenRundenZahlen => new KoenigschiessenRundenZahlenViewModel();
         public KoenigschiessenErgebnisseVonMitgliedViewModel KoenigschiessenErgebnisseVonMitglied => new KoenigschiessenErgebnisseVonMitgliedViewModel();
+        public SchnurschiessenMitgliederUebersichtViewModel SchnurschiessenMitgliederUebersicht => new SchnurschiessenMitgliederUebersichtViewModel();
+        public SchnurschiessenMitgliedHistorieUebersichtViewModel SchnurschiessenMitgliedHistorieUebersicht => new SchnurschiessenMitgliedHistorieUebersichtViewModel();
+        public SchnurschiessenAuszeichnungBestandHistorieViewModel SchnurschiessenAuszeichnungBestandHistorie => new SchnurschiessenAuszeichnungBestandHistorieViewModel();
+        public SchnurschiessenAuszeichnungBestandUebersichtViewModel SchnurschiessenAuszeichnungBestandUebersicht => new SchnurschiessenAuszeichnungBestandUebersichtViewModel();
+        public SchnurschiessenAuszeichnungGekauftEintragenViewModel SchnurschiessenAuszeichnungGekauftEintragen => new SchnurschiessenAuszeichnungGekauftEintragenViewModel();
+        public AktiveSchnurschiessenVerwaltungViewModel AktiveSchnurschiessenVerwaltung => new AktiveSchnurschiessenVerwaltungViewModel();
+        public SchnurschiessenNeuesErstellenViewModel SchnurschiessenNeuesErstellen => new SchnurschiessenNeuesErstellenViewModel();
+        public AktivesSchnurschiessenVerwaltungAusgabeSchnurViewModel AktivesSchnurschiessenVerwaltungAusgabeSchnur => new AktivesSchnurschiessenVerwaltungAusgabeSchnurViewModel();
+        public AktivesSchnurschiessenMitgliederUebersichtViewModel AktivesSchnurschiessenMitgliederUebersicht => new AktivesSchnurschiessenMitgliederUebersichtViewModel();
+        public AktivesSchnurschiessenTeilnahmeEintragenViewModel AktivesSchnurschiessenTeilnahmeEintragen => new AktivesSchnurschiessenTeilnahmeEintragenViewModel();
+        public AktiveSchnurschiessenBestandHistorieViewModel AktiveSchnurschiessenBestandHistorie => new AktiveSchnurschiessenBestandHistorieViewModel();
+        public SchnurschiessenMitgliederImportViewModel SchnurschiessenMitgliederImport => new SchnurschiessenMitgliederImportViewModel();
+        public SchnurschiessenAuswertungAktuellenStandAuszeichnungViewModel SchnurschiessenAuswertungAktuellenStandAuszeichnung => new SchnurschiessenAuswertungAktuellenStandAuszeichnungViewModel();
+        public SchnurschiessenRangAuswahlViewModel SchnurschiessenRangAuswahl => new SchnurschiessenRangAuswahlViewModel();
+        public SchnurschiessenAuszeichnungAuswahlViewModel SchnurschiessenAuszeichnungAuswahl => new SchnurschiessenAuszeichnungAuswahlViewModel();
+        public SchnurschiessenAuswertungAktuellenStandRangViewModel SchnurschiessenAuswertungAktuellenStandRang => new SchnurschiessenAuswertungAktuellenStandRangViewModel();
+        public SchnurschiessenAuswertungEntwicklungAuszeichnungViewModel SchnurschiessenAuswertungEntwicklungAuszeichnung => new SchnurschiessenAuswertungEntwicklungAuszeichnungViewModel();
+        public SchnurschiessenAuswertungEntwicklungRangViewModel SchnurschiessenAuswertungEntwicklungRang => new SchnurschiessenAuswertungEntwicklungRangViewModel();
+        public SchnurschiessenAuswertungGesamtteilnahmeViewModel SchnurschiessenAuswertungGesamtteilnahme => new SchnurschiessenAuswertungGesamtteilnahmeViewModel();
+        public SchnurschiessenAuswertungErhalteneAuszeichnungViewModel SchnurschiessenAuswertungErhalteneAuszeichnung => new SchnurschiessenAuswertungErhalteneAuszeichnungViewModel();
+        public SchnurschiessenAuswertungNeuerRangViewModel SchnurschiessenAuswertungNeuerRang => new SchnurschiessenAuswertungNeuerRangViewModel();
+        public SchnurschiessenAuswertungTeilnahmeProTagViewModel SchnurschiessenAuswertungTeilnahmeProTag => new SchnurschiessenAuswertungTeilnahmeProTagViewModel();
+        public SchnurschiessenMitgliederZuordnungViewModel SchnurschiessenMitgliederZuordnung => new SchnurschiessenMitgliederZuordnungViewModel();
+        public ExportSchnurschiessenViewModel ExportSchnurschiessen => new ExportSchnurschiessenViewModel();
         public static void Cleanup()
         {
 

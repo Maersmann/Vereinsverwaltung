@@ -13,19 +13,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\account-arrow-right-outline-custom.png" />
     <None Remove="Resources\account-circle.png" />
     <None Remove="Resources\account-clock.png" />
     <None Remove="Resources\account-group.png" />
     <None Remove="Resources\account-multiple-plus.png" />
     <None Remove="Resources\account-network.png" />
+    <None Remove="Resources\account-settings-custom.png" />
     <None Remove="Resources\account-settings.png" />
+    <None Remove="Resources\account-switch-custom.png" />
+    <None Remove="Resources\account-tag-custom.png" />
     <None Remove="Resources\add.png" />
+    <None Remove="Resources\archive-settings-outline-custom.png" />
     <None Remove="Resources\auswertungStundeTag.png" />
     <None Remove="Resources\auswertungTag.png" />
     <None Remove="Resources\auswertung_kk_monat.png" />
     <None Remove="Resources\auswertung_kk_monat_jahres.png" />
     <None Remove="Resources\bearbeiten.png" />
+    <None Remove="Resources\blinds-vertical-closed-custom.png" />
     <None Remove="Resources\cards.png" />
+    <None Remove="Resources\chart-1.png" />
+    <None Remove="Resources\chart-2.png" />
+    <None Remove="Resources\chart-3.png" />
+    <None Remove="Resources\chart-4.png" />
+    <None Remove="Resources\chart-5.png" />
+    <None Remove="Resources\chart-6.png" />
+    <None Remove="Resources\chart-7.png" />
+    <None Remove="Resources\chart-8.png" />
     <None Remove="Resources\chess-king.png" />
     <None Remove="Resources\crown.png" />
     <None Remove="Resources\entfernen.png" />
@@ -53,9 +67,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
-    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
+    <Resource Include="Resources\account-arrow-right-outline-custom.png" />
+    <Resource Include="Resources\account-switch-custom.png" />
+    <Resource Include="Resources\chart-6.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fluent.Ribbon" Version="10.0.4" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc2" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
@@ -73,14 +93,24 @@
     <Resource Include="Resources\account-group.png" />
     <Resource Include="Resources\account-multiple-plus.png" />
     <Resource Include="Resources\account-network.png" />
+    <Resource Include="Resources\account-settings-custom.png" />
     <Resource Include="Resources\account-settings.png" />
+    <Resource Include="Resources\account-tag-custom.png" />
     <Resource Include="Resources\add.png" />
+    <Resource Include="Resources\archive-settings-outline-custom.png" />
     <Resource Include="Resources\auswertungStundeTag.png" />
     <Resource Include="Resources\auswertungTag.png" />
     <Resource Include="Resources\auswertung_kk_monat.png" />
     <Resource Include="Resources\auswertung_kk_monat_jahres.png" />
     <Resource Include="Resources\bearbeiten.png" />
+    <Resource Include="Resources\blinds-vertical-closed-custom.png" />
     <Resource Include="Resources\cards.png" />
+    <Resource Include="Resources\chart-2.png" />
+    <Resource Include="Resources\chart-3.png" />
+    <Resource Include="Resources\chart-4.png" />
+    <Resource Include="Resources\chart-5.png" />
+    <Resource Include="Resources\chart-7.png" />
+    <Resource Include="Resources\chart-8.png" />
     <Resource Include="Resources\chess-king.png" />
     <Resource Include="Resources\crown.png" />
     <Resource Include="Resources\entfernen.png" />
@@ -104,6 +134,10 @@
     <Resource Include="Resources\person.png" />
     <Resource Include="Resources\person_list.png" />
     <Resource Include="Resources\table-arrow-right.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\chart-1.png" />
   </ItemGroup>
 
 </Project>

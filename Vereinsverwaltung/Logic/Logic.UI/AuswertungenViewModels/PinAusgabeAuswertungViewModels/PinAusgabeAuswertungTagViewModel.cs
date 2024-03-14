@@ -76,7 +76,7 @@ namespace Logic.UI.AuswertungenViewModels
                     {
                         Values = values,
                         Name = "Anzahl",
-                        TooltipLabelFormatter = (point) => "Anzahl " + point.PrimaryValue.ToString()
+                        TooltipLabelFormatter = (point) => "Anzahl " + point.PrimaryValue.ToString(),
                     };
 
                     XAxes.First().Labels = Labels;

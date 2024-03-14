@@ -9,7 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.101" />
+    <PackageReference Include="LiveChartsCore" Version="2.0.0-rc2" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc2" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
@@ -19,8 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Base.Logic\Base.Logic\Base.Logic.csproj" />
-    <ProjectReference Include="..\..\Data\Data.Model\Data.Model.csproj" />
-    <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj" />
     <ProjectReference Include="..\Logic.Core\Logic.Core.csproj" />
     <ProjectReference Include="..\Logic.Messages\Logic.Messages.csproj" />
   </ItemGroup>

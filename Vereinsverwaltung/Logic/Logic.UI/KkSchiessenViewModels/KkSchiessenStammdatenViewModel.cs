@@ -28,7 +28,7 @@ namespace Logic.UI.KkSchiessenViewModels
             Title = "Stammdaten KK-Schießen";
             OpenAuswahlCommand = new RelayCommand(() => ExecuteOpenAuswahlCommand());
         }
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)

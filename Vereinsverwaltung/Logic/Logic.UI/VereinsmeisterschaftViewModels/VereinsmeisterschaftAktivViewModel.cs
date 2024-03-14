@@ -28,7 +28,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         public VereinsmeisterschaftAktivViewModel()
         {
             MessageToken = "VereinsmeisterschaftAktiveVereinsmeisterschaft";
-            Title = "Aktive Vereinsmeisterscahft";
+            Title = "Aktive Vereinsmeisterschaft";
             zeigeNurOffene = true;
             _ = LoadVereinsmeisterschaft();
             SucheCommand = new DelegateCommand(ExecuteSucheCommand, CanExecuteCommand);

@@ -14,6 +14,9 @@ namespace Data.Types.MitgliederTypes
         Aktiv = 0,
         Ehemalig = 1,
         [Description("Nicht Aktiv")]
-        NichtAktiv = 2
+        NichtAktiv = 2,
+        [Description("Ehemalig - Schnurschiessen")]
+        EhemaligSchnurschiessen = 3,
+
     }
 }

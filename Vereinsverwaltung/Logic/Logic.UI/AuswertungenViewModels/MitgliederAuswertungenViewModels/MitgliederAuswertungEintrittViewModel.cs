@@ -59,10 +59,7 @@ namespace Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels
             {
                 Values = ItemList,
                 DataLabelsFormatter = (point) => point.TertiaryValue.ToString(),
-                Mapping = (model, point) => {
-                    point.PrimaryValue = model.Anzahl;
-                    point.SecondaryValue = point.Context.Index;
-                },
+                Mapping = (model, index) => new LiveChartsCore.Kernel.Coordinate(index, (double)model.Anzahl),
                 Name = "Anzahl",
                 TooltipLabelFormatter = (point) => "Eintritte im Jahr: " + point.Model.Jahr.ToString() + ": "   + point.Model.Anzahl.ToString(),
             };

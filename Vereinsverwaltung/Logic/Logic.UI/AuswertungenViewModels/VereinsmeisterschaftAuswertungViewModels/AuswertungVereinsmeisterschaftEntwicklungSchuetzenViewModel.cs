@@ -85,32 +85,27 @@ namespace Logic.UI.AuswertungenViewModels
                 frauenSeries = new LineSeries<int>
                 {
                     Values = valuesFrauen,
-                    Name = "Anzahl Frauen",
-                    TooltipLabelFormatter = (point) => "Anzahl Frauen " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Frauen"
                 };
                 maenner16_30Series = new LineSeries<int>
                 {
                     Values = valuesMaenner16_30,
-                    Name = "Anzahl Männer 16-30",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer 16-30" + point.PrimaryValue.ToString()
+                    Name = "Anzahl Männer 16-30"
                 };
                 maenner31_50Series = new LineSeries<int>
                 {
                     Values = valuesMaenner31_50,
-                    Name = "Anzahl Männer 31-50",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer 31-50 " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Männer 31-50"
                 };
                 maenner51Series = new LineSeries<int>
                 {
                     Values = valuesMaenner51,
-                    Name = "Anzahl Männer ab 50",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer ab 50 " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Männer ab 50"
                 };
                 sportschuetzenSeries = new LineSeries<int>
                 {
                     Values = valuesSportschuetzen,
-                    Name = "Anzahl Sportschützen",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Sportschützen"
                 };
 
                 XAxes.First().Labels = Labels;

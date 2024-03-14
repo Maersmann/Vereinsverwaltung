@@ -75,19 +75,16 @@ namespace Logic.UI.AuswertungenViewModels
                 {
                     Values = valuesAnzahl,
                     Name = "Veranstaltungen",
-                    TooltipLabelFormatter = (point) => "Veranstaltungen " + point.PrimaryValue.ToString()
                 };
                 getraenkeSeries = new LineSeries<int>
                 {
                     Values = valuesGetraenke,
                     Name = "Getränke",
-                    TooltipLabelFormatter = (point) => "Getränke " + point.PrimaryValue.ToString()
                 };
                 munitionSeries = new LineSeries<int>
                 {
                     Values = valuesMunition,
                     Name = "Munition",
-                    TooltipLabelFormatter = (point) => "Munition " + point.PrimaryValue.ToString()
                 };
 
                 XAxes.First().Labels = Labels;

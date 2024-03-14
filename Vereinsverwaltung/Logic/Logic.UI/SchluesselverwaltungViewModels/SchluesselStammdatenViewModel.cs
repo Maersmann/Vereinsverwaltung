@@ -28,7 +28,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Title = "Schlüssel Stammdaten";
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)

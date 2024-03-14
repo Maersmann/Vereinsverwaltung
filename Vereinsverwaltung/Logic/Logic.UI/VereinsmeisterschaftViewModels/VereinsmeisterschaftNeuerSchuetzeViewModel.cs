@@ -28,7 +28,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         }
         public int VereinsmeisterschaftID { set => Data.VereinsmeisterschaftID = value; }
 
-        public void ZeigeStammdatenAn(int id)
+        public void ZeigeStammdatenAnAsync(int id)
         {
 
         }

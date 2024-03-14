@@ -66,13 +66,8 @@ namespace Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels
             var auswertungSeries = new ColumnSeries<MitgliederAuswertungJahrzehnteModel>
             {
                 Values = ItemList,
-                DataLabelsFormatter = (point) => point.TertiaryValue.ToString(),
-                Mapping = (model, point) => {
-                    point.PrimaryValue = model.Anzahl;
-                    point.SecondaryValue = point.Context.Index;
-                },
+                Mapping = (model, index) => new LiveChartsCore.Kernel.Coordinate(index, (double)model.Anzahl),
                 Name = "Anzahl",
-                TooltipLabelFormatter = (point) => "Jahrzehnt: " + point.Model.Jahrzehnt.ToString() + ": " + point.Model.Anzahl.ToString(),
             };
 
             XAxes.First().Labels = Labels;

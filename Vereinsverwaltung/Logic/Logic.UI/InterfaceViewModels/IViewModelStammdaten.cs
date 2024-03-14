@@ -8,6 +8,6 @@ namespace Logic.UI.InterfaceViewModels
 {
     public interface IViewModelStammdaten
     {
-        void ZeigeStammdatenAn(int id);
+        void ZeigeStammdatenAnAsync(int id);
     }
 }

@@ -10,7 +10,7 @@ namespace Logic.UI
     {
         public static IList<BerechtigungTypes> Berechtigungen { set; get; }
         public static bool IsAdmin { get; set; }
-        public static bool HatBerechtigung(BerechtigungTypes berechtigung) => Berechtigungen.Any(b => b.Equals(berechtigung));
+        public static bool HatBerechtigung(BerechtigungTypes berechtigung) => IsAdmin || Berechtigungen.Any(b => b.Equals(berechtigung));
         
         public static BerechtigungTypes StringToTyp(string berechtigung)
         {
@@ -54,6 +54,8 @@ namespace Logic.UI
                 "koenigschiessenuebersicht" => BerechtigungTypes.KoenigschiessenUebersicht,
                 "koenigschiessenerstellen" => BerechtigungTypes.KoenigschiessenErstellen,
                 "koenigschiessenrundeergebnisseeintragen" => BerechtigungTypes.KoenigschiessenRundeErgebnisseEintragen,
+                "schnurschiessenverwaltung" => BerechtigungTypes.SchnurschiessenVerwaltung,
+                "schnurschiessenallgemein" => BerechtigungTypes.SchnurschiessenAllgemein,
                 _ => BerechtigungTypes.Undefiniert,
             };
         }

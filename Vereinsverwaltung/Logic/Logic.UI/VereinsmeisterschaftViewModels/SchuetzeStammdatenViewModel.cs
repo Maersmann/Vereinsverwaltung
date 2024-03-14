@@ -32,7 +32,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             DeleteMitgliedDataCommand = new DelegateCommand(ExecuteDeleteMitgliedDataCommand, CanExecuteDeleteMitgliedDataCommand);
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)

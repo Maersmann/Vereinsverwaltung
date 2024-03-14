@@ -43,7 +43,7 @@ namespace UI.Desktop.Vereinsmeisterschaft
             };
             if (view.DataContext is VereinsmeisterschaftErgebnisEintragenViewModel model)
             {
-                model.ZeigeStammdatenAn(m.SchuetzenErgebnisID);
+                model.ZeigeStammdatenAnAsync(m.SchuetzenErgebnisID);
                 view.ShowDialog();
             }
         }
