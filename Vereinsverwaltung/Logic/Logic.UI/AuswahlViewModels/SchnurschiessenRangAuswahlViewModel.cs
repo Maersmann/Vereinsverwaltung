@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Logic.UI.AuswahlViewModels
 {
-    public class SchnurschiessenRangAuswahlViewModel : ViewModelAuswahl<SchluesselAuswahlModels, StammdatenTypes>
+    public class SchnurschiessenRangAuswahlViewModel : ViewModelAuswahl<SchnurschiessenRangAuswahlModel, StammdatenTypes>
     {
         public SchnurschiessenRangAuswahlViewModel()
         {
