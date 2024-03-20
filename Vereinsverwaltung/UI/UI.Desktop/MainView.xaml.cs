@@ -260,13 +260,17 @@ namespace Vereinsverwaltung.UI.Desktop
                 case ViewType.viewSchnurschiessenMitgliederZuordnung:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchnurschiessenMitgliederZuordnungView).Name))
                         Container.NavigationService.Navigate(new SchnurschiessenMitgliederZuordnungView());
-                    break;
+                    break;                
                 case ViewType.viewExportSchnurschiessen:
                     var View = new ExportSchnurschiessenView
                     {
                         Owner = this
                     };
                     View.ShowDialog();
+                    break;
+                case ViewType.viewMitgliederAnonymisieren:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAnonymisierenView).Name))
+                        Container.NavigationService.Navigate(new MitgliederAnonymisierenView());
                     break;
                 default:         
                     Container.Content = null;

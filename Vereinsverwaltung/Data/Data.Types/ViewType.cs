@@ -49,6 +49,7 @@
         viewSchnurschiessenAuswertungEntwicklungRang,
         viewSchnurschiessenAuswertungTeilnahmeProTag,
         viewSchnurschiessenMitgliederZuordnung,
-        viewExportSchnurschiessen
+        viewExportSchnurschiessen,
+        viewMitgliederAnonymisieren
     }
 }

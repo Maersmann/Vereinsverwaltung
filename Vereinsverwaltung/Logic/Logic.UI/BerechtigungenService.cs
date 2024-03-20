@@ -56,6 +56,7 @@ namespace Logic.UI
                 "koenigschiessenrundeergebnisseeintragen" => BerechtigungTypes.KoenigschiessenRundeErgebnisseEintragen,
                 "schnurschiessenverwaltung" => BerechtigungTypes.SchnurschiessenVerwaltung,
                 "schnurschiessenallgemein" => BerechtigungTypes.SchnurschiessenAllgemein,
+                "mitgliederanonymisieren" => BerechtigungTypes.MitgliederAnonymisieren,
                 _ => BerechtigungTypes.Undefiniert,
             };
         }

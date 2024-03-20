@@ -70,6 +70,7 @@
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
                     <Fluent:Button Header="Übersicht"  Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Import" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederImport }" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Anonymisieren" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederAnonymisieren }" Command="{Binding MitgliederAnonymisierenCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 

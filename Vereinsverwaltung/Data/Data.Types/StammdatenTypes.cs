@@ -27,6 +27,7 @@ namespace Data.Types
         koenigschiessenAnmeldung,
         jugendkoenigschiessen,
         schnurschiessen,
-        schnurschiessenAuszeichnungBestand
+        schnurschiessenAuszeichnungBestand,
+        EhemaligeMitglieder
     }
 }

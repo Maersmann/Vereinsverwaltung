@@ -26,7 +26,7 @@ namespace Logic.UI
             GlobalVariables.ServerIsOnline = false;
             GlobalVariables.BackendServer_URL = "";
             GlobalVariables.Token = "";
-            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.Berechtigungen = [];
             BerechtigungenService.IsAdmin = false;
             GlobalUserVariables.UserID = 0;
 
@@ -82,7 +82,7 @@ namespace Logic.UI
             SchnurschiessenAuswertungTeilnahmeProTagCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungTeilnahmeProTag));
             SchnurschiessenMitgliederZuordnungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenMitgliederZuordnung));
             ExportSchnurschiessenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportSchnurschiessen));
-            
+            MitgliederAnonymisierenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederAnonymisieren));
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -135,6 +135,7 @@ namespace Logic.UI
         public ICommand SchnurschiessenAuswertungTeilnahmeProTagCommand { get; set; }
         public ICommand SchnurschiessenMitgliederZuordnungCommand { get; set; }
         public ICommand ExportSchnurschiessenCommand {  get; set; }
+        public ICommand MitgliederAnonymisierenCommand {  get; set; }
 
 
 
@@ -149,20 +150,20 @@ namespace Logic.UI
 
         public RelayCommand<PasswordBox> PasswordCommand { get; private set; }
 
-        private void ExecuteOpenViewCommand(ViewType viewType)
+        private static void ExecuteOpenViewCommand(ViewType viewType)
         {
             WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = viewType });
         }
 
-        private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
+        private static void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
         {
             WeakReferenceMessenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
         }
 
-        private void ExecuteAbmeldenCommand()
+        private static void ExecuteAbmeldenCommand()
         {
             GlobalVariables.Token = "";
-            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.Berechtigungen = [];
             BerechtigungenService.IsAdmin = false;
             GlobalUserVariables.UserID = 0;
             WeakReferenceMessenger.Default.Send(new AktualisiereBerechtigungenMessage { });
@@ -171,12 +172,12 @@ namespace Logic.UI
         }
 
 
-        private void ExecutePasswordAendernCommand()
+        private static void ExecutePasswordAendernCommand()
         {
             WeakReferenceMessenger.Default.Send(new OpenPasswordAendernViewMessage { });
         }
 
-        private void ExecuteOpenStartingViewCommand()
+        private static void ExecuteOpenStartingViewCommand()
         {
             var backendlogic = new BackendLogic();
             if (!backendlogic.IstINIVorhanden())
@@ -193,7 +194,7 @@ namespace Logic.UI
 
         protected override void ReceiveOpenViewMessage()
         {
-            OnPropertyChanged("MenuIsEnabled");
+            OnPropertyChanged(nameof(MenuIsEnabled));
             base.ReceiveOpenViewMessage();
         }
 

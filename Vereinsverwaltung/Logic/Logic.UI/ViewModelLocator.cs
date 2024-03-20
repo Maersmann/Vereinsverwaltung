@@ -170,6 +170,7 @@ namespace Logic.UI
         public static SchnurschiessenAuswertungTeilnahmeProTagViewModel SchnurschiessenAuswertungTeilnahmeProTag => new ();
         public static SchnurschiessenMitgliederZuordnungViewModel SchnurschiessenMitgliederZuordnung => new ();
         public static ExportSchnurschiessenViewModel ExportSchnurschiessen => new ();
+        public static MitgliederAnonymisierenViewModel MitgliederAnonymisieren => new();
         public static void OnActivated()
         {
 
