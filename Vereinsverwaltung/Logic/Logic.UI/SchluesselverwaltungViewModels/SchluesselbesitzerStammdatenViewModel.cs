@@ -1,8 +1,8 @@
 ﻿using Data.Model.MitgliederModels;
 using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
@@ -43,8 +43,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
             Name = Data.Name;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-            RaisePropertyChanged(nameof(KeinMitgliedHinterlegt));
-            RaisePropertyChanged(nameof(Mitgliedsnr));
+            OnPropertyChanged(nameof(KeinMitgliedHinterlegt));
+            OnPropertyChanged(nameof(Mitgliedsnr));
             state = State.Bearbeiten;
             RequestIsWorking = false;
 
@@ -62,7 +62,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    this.RaisePropertyChanged();
+                    this.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -85,8 +85,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 904)
                 {
@@ -101,7 +101,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExcecuteMitgliedHinterlegenCommand()
         {
-            Messenger.Default.Send(new OpenMitgliedAuswahlMessage(OpenMitgliedAuswahlCallback), messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenMitgliedAuswahlMessage(OpenMitgliedAuswahlCallback), messageToken);
         }
 
         private async void OpenMitgliedAuswahlCallback(bool confirmed, int id)
@@ -131,8 +131,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         Name = Mitglied.Data.Vorname + " " + Mitglied.Data.Name;
                         Data.MitgliedsNr = Mitglied.Data.Mitgliedsnr;
                         ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-                        RaisePropertyChanged("KeinMitgliedHinterlegt");
-                        RaisePropertyChanged("Mitgliedsnr");
+                        OnPropertyChanged(nameof(KeinMitgliedHinterlegt));
+                        OnPropertyChanged(nameof(Mitgliedsnr));
                     }
                     RequestIsWorking = false;
                 }
@@ -149,9 +149,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Data.MitgliedID = null;
             Data.MitgliedsNr = null;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-            RaisePropertyChanged(nameof(Mitgliedsnr));
+            OnPropertyChanged(nameof(Mitgliedsnr));
             Name = "";
-            RaisePropertyChanged("KeinMitgliedHinterlegt");
+            OnPropertyChanged(nameof(KeinMitgliedHinterlegt));
         }
 
         #endregion
@@ -169,7 +169,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         #endregion
 
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchluesselbesitzerModel { };
             Name = "";

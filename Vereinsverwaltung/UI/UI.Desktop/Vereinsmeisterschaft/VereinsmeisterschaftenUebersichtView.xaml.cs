@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using System;
 using System.Collections.Generic;
@@ -25,16 +25,16 @@ namespace UI.Desktop.Vereinsmeisterschaft
         {
             InitializeComponent();
             Unloaded += UserControl_Unloaded;
-            Messenger.Default.Register<OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage>(this, "VereinsmeisterschaftenUebersicht", m => ReceiveLoadVereinsmeisterschaftPlatzierungenSchuetzentypenMessage(m));
-            Messenger.Default.Register<OpenVereinsmeistschaftPlatzierungenGruppentypenMessage>(this, "VereinsmeisterschaftenUebersicht", m => ReceiveLoadVereinsmeistschaftPlatzierungenGruppentypenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage, string>(this, "VereinsmeisterschaftenUebersicht", (r,m) => ReceiveLoadVereinsmeisterschaftPlatzierungenSchuetzentypenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenVereinsmeistschaftPlatzierungenGruppentypenMessage, string>(this, "VereinsmeisterschaftenUebersicht", (r,m) => ReceiveLoadVereinsmeistschaftPlatzierungenGruppentypenMessage(m));
         }
 
-        private void ReceiveLoadVereinsmeisterschaftPlatzierungenSchuetzentypenMessage(OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage m)
+        private static void ReceiveLoadVereinsmeisterschaftPlatzierungenSchuetzentypenMessage(OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage m)
         {
-            VereinsmeisterschaftPlatzierungenSchuetzenPage page = new VereinsmeisterschaftPlatzierungenSchuetzenPage();
+            VereinsmeisterschaftPlatzierungenSchuetzenPage page = new();
             page.Initialize(m.VereinsmeisterschaftID);
 
-            Window window = new Window
+            Window window = new()
             {
                 Content = page,
                 MinHeight = 300,
@@ -47,12 +47,12 @@ namespace UI.Desktop.Vereinsmeisterschaft
             _ = window.ShowDialog();
         }
 
-        private void ReceiveLoadVereinsmeistschaftPlatzierungenGruppentypenMessage(OpenVereinsmeistschaftPlatzierungenGruppentypenMessage m)
+        private static void ReceiveLoadVereinsmeistschaftPlatzierungenGruppentypenMessage(OpenVereinsmeistschaftPlatzierungenGruppentypenMessage m)
         {
             var page = new VereinsmeisterschaftPlatzierungenGruppenPage();
             page.Initialize(m.VereinsmeisterschaftID);
 
-            Window window = new Window
+            Window window = new()
             {
                 Content = page,
                 MinHeight = 300,
@@ -67,8 +67,8 @@ namespace UI.Desktop.Vereinsmeisterschaft
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage>(this);
-            Messenger.Default.Unregister<OpenVereinsmeistschaftPlatzierungenGruppentypenMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage, string>(this, "VereinsmeisterschaftenUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenVereinsmeistschaftPlatzierungenGruppentypenMessage, string>(this, "VereinsmeisterschaftenUebersicht");
         }
     }
 }

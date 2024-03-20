@@ -1,7 +1,7 @@
 ﻿using Data.Model.SchnurrschiessenModels;
 using Data.Types;
 using Data.Types.SchnurschiessenTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
@@ -21,7 +21,7 @@ using Base.Logic.Messages;
 using Base.Logic.Wrapper;
 using System.Windows.Input;
 using System.ComponentModel.Design;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 
 namespace Logic.UI.SchnurschiessenViewModels
@@ -61,8 +61,8 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (!resp.IsSuccessStatusCode)
                 {
@@ -84,7 +84,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     ValidateBezeichnung(value);
                     Data.Bezeichnung = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -106,7 +106,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchnurschiessenAuszeichnungModel {};
             Bezeichnung = "";

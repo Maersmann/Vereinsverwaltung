@@ -4,7 +4,7 @@ using Base.Logic.Types;
 using Base.Logic.ViewModels;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
@@ -42,8 +42,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     neueVereinsmeisterschaftErstellt = true;
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Neue Vereinsmeisterschaft erstellt" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Neue Vereinsmeisterschaft erstellt" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (!resp.IsSuccessStatusCode)
                 {
@@ -65,7 +65,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     ValidateDatum(value);
                     Data.Stichttag = value.GetValueOrDefault(DateTime.Now);
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -86,7 +86,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new VereinsmeisterschaftModel();
             Stichttag = DateTime.Now;

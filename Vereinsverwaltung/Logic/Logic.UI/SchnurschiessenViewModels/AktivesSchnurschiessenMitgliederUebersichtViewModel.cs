@@ -3,7 +3,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchnurschiessenMessages;
 using Prism.Commands;
 using System;
@@ -71,7 +71,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         private void ExecuteTeilnahmeEintragenCommand()
         {
-            Messenger.Default.Send(new OpenAktivesSchnurschiessenTeilnahmeEintragenMessage { MitgliedId = SelectedItem.MitgliedID }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenAktivesSchnurschiessenTeilnahmeEintragenMessage { MitgliedId = SelectedItem.MitgliedID }, messageToken);
         }
 
         protected async override void ExecuteBearbeitenCommand()

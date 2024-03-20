@@ -6,7 +6,7 @@ using Data.Model.MitgliederModels;
 using Data.Model.SchnurrschiessenModels;
 using Data.Model.SchnurrschiessenModels.DTO;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
 using Prism.Commands;
@@ -48,7 +48,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         private void ExecuteZuordnenCommand()
         {
-            Messenger.Default.Send(new OpenMitgliedAuswahlMessage(OpenMitgliedAuswahlCallback), messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenMitgliedAuswahlMessage(OpenMitgliedAuswahlCallback), messageToken);
         }
 
         private async void OpenMitgliedAuswahlCallback(bool confirmed, int id)

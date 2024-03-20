@@ -77,9 +77,9 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
             Series = new ColumnSeries<AuswertungTagAnzahlModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings
@@ -91,7 +91,7 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(Jahr));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahr = value.GetValueOrDefault(0);
             }

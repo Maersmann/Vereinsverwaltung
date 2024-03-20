@@ -3,8 +3,8 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchnurschiessenMessages;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using Prism.Commands;
@@ -64,7 +64,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                     RequestIsWorking = false;
                     if (BerechtigungenService.HatBerechtigung(BerechtigungTypes.SchnurschiessenVerwaltung))
                     {
-                        Messenger.Default.Send(new NeuesSchnurschiessenErstellenMessage(NeuesSchnurschiessenErstellenCallback), messageToken);
+                        WeakReferenceMessenger.Default.Send(new NeuesSchnurschiessenErstellenMessage(NeuesSchnurschiessenErstellenCallback), messageToken);
                     }
                     else
                     {
@@ -89,7 +89,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 base.SelectedItem = value;
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadAktiveSchnurschiessenBestandHistorieMessage { SchnurschiessenBestandID = SelectedItem.SchnurschiessenBestandID }, messageToken);
+                    WeakReferenceMessenger.Default.Send(new LoadAktiveSchnurschiessenBestandHistorieMessage { SchnurschiessenBestandID = SelectedItem.SchnurschiessenBestandID }, messageToken);
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         private void ExecuteSchnurschiessenBeendenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll das Schnurschießen beendet werden?", Command = SchnurschiessenBeenden }, "AktiveSchnurschiessenVerwaltung");
+            WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll das Schnurschießen beendet werden?", Command = SchnurschiessenBeenden }, "AktiveSchnurschiessenVerwaltung");
 
 
         }
@@ -116,10 +116,10 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     schnurschiessenBeendet = true;
                     await LoadSchnurschiessen();
-                    Messenger.Default.Send(new LoadAktiveSchnurschiessenBestandHistorieMessage { SchnurschiessenBestandID = 0 }, messageToken);
+                    WeakReferenceMessenger.Default.Send(new LoadAktiveSchnurschiessenBestandHistorieMessage { SchnurschiessenBestandID = 0 }, messageToken);
 
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schnurschiessen beendet" }, GetStammdatenTyp());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Schnurschiessen beendet" }, GetStammdatenTyp().ToString());
                 }
                 else if (!resp.IsSuccessStatusCode)
                 {
@@ -130,7 +130,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         private void ExecuteSchnurAusgabeCommand()
         {
-            Messenger.Default.Send(new OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage { SchnurschiessenBestandID = SelectedItem.SchnurschiessenBestandID, Bezeichnung = SelectedItem.Bezeichnung }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage { SchnurschiessenBestandID = SelectedItem.SchnurschiessenBestandID, Bezeichnung = SelectedItem.Bezeichnung }, messageToken);
         }
 
 

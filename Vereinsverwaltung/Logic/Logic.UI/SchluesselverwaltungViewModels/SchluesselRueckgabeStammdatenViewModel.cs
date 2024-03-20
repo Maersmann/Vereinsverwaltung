@@ -1,8 +1,8 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
@@ -21,6 +21,7 @@ using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
 using Base.Logic.Wrapper;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
@@ -32,7 +33,6 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         public SchluesselRueckgabeStammdatenViewModel() : base()
         {
-            Cleanup();
             Title = "Schlüsselrückgabe";
             OpenAuswahlSchluesselzuteilungCommand = new RelayCommand(() => ExecuteOpenAuswahlSchluesselzuteilungCommand());
         }
@@ -60,7 +60,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     ValidateAnzahl(value, "Anzahl");
                     Data.Anzahl = value.GetValueOrDefault(0);
-                    this.RaisePropertyChanged();
+                    this.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }   
@@ -75,7 +75,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 { 
                     Data.RueckgabeAm = value.GetValueOrDefault(DateTime.Now);
                     ValidateDatum(Data.RueckgabeAm);
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -95,9 +95,9 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Rückgabe gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Rückgabe gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
                 }
                 else if ((int)resp.StatusCode == 907)
                 {
@@ -113,7 +113,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExecuteOpenAuswahlSchluesselzuteilungCommand()
         {
-            Messenger.Default.Send(new OpenSchluesselzuteilungAuswahlMessage(OpenSchluesselzuteilungAuswahlCallback, id, typ), "SchluesselRueckgabeStammdaten");
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselzuteilungAuswahlMessage(OpenSchluesselzuteilungAuswahlCallback, id, typ), "SchluesselRueckgabeStammdaten");
         }
 
         protected override bool CanExecuteSaveCommand()
@@ -138,8 +138,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         Data.Schluesselbezeichnung = resData.Data.SchluesselBezeichnung;
                         Data.SchluesselbesitzerName = resData.Data.SchluesselbesitzerName;
                         Anzahl = resData.Data.Anzahl;
-                        RaisePropertyChanged("SchluesselBez");
-                        RaisePropertyChanged("Schluesselbesitzer");
+                        OnPropertyChanged(nameof(SchluesselBez));
+                        OnPropertyChanged(nameof(Schluesselbesitzer));
                         schluesselAusgewaehlt = true;
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
@@ -172,7 +172,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchluesselRueckgabeStammdatenModel { };
             RueckgabeAm = DateTime.Now;

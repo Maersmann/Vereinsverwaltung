@@ -1,7 +1,7 @@
 ﻿using Data.Model.PinModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Messages.PinMessages;
 using Base.Logic.ViewModels;
@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Windows.Input;
 using Base.Logic.Core;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.PinViewModels
 {
@@ -37,7 +38,7 @@ namespace Logic.UI.PinViewModels
             set
             {
                 zeigeNurOffene = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
 
             }
         }
@@ -50,7 +51,7 @@ namespace Logic.UI.PinViewModels
 
         private void ExecuteOeffneAusgabeCommand()
         {
-            Messenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = SelectedItem.ID, FilterText = FilterText, ZeigeNurOffene = zeigeNurOffene }, "PinAusgabeUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenPinAusgabeMitgliederViewMessage { ID = SelectedItem.ID, FilterText = FilterText, ZeigeNurOffene = zeigeNurOffene }, "PinAusgabeUebersicht");
         }
 
         private async void ExecuteErledigeAusgabeCommand()

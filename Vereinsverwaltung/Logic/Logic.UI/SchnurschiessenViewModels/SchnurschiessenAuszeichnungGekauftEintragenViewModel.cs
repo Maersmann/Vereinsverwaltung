@@ -5,7 +5,7 @@ using Base.Logic.ViewModels;
 using Data.Model.SchnurrschiessenModels;
 using Data.Model.SchnurrschiessenModels.DTO;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Prism.Commands;
@@ -27,7 +27,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         { 
             Data.SchnurauszeichnungID = schnurauszeichnungID;
             Title = bez + " gekauft";
-            RaisePropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(Title));
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnurschiessenAuszeichnungBestand;
@@ -47,8 +47,8 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -68,7 +68,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     ValidateAnzahl(value, "Anzahl");
                     Data.Anzahl = value.GetValueOrDefault();
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -90,7 +90,7 @@ namespace Logic.UI.SchnurschiessenViewModels
       
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchnurschiessenAuszeichnungGekauftEintragenModel();
             Anzahl = null;

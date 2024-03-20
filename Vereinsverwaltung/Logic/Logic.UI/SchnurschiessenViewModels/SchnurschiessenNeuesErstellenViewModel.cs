@@ -4,7 +4,7 @@ using Base.Logic.Types;
 using Base.Logic.ViewModels;
 using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
@@ -45,8 +45,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     neuesSchnurschiessenErstellt = true;
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Neues Schnurschiessen erstellt" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Neues Schnurschiessen erstellt" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                 {
@@ -60,7 +60,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new NeuesSchnurschiessenModel();
             state = State.Neu;

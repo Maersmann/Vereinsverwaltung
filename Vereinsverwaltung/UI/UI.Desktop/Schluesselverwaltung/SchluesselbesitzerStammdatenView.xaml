@@ -6,7 +6,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:local="clr-namespace:Vereinsverwaltung.UI.Desktop.Schluesselverwaltung"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
-                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="217.85" Width="362.509"
@@ -17,7 +17,7 @@
                     DataContext="{Binding SchluesselbesitzerStammdaten ,Source={StaticResource Locator}}" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
+            <i:InvokeCommandAction Command="{Binding OnDeactivatedCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

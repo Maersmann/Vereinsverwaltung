@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -25,10 +25,10 @@ namespace UI.Desktop.Auswertungen.Schnurschiessen
         public SchnurschiessenAuswertungEntwicklungAuszeichnungView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenSchnurschiessenAuszeichungMessage>(this, "SchnurschiessenAuswertungEntwicklung", m => ReceiveOpenSchnurschiessenAuszeichungMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchnurschiessenAuszeichungMessage, string>(this, "SchnurschiessenAuswertungEntwicklung", (r,m) => ReceiveOpenSchnurschiessenAuszeichungMessage(m));
         }
 
-        private void ReceiveOpenSchnurschiessenAuszeichungMessage(OpenSchnurschiessenAuszeichungMessage m)
+        private static void ReceiveOpenSchnurschiessenAuszeichungMessage(OpenSchnurschiessenAuszeichungMessage m)
         {
             var view = new SchnurschiessenAuszeichnungAuswahlView
             {
@@ -46,7 +46,7 @@ namespace UI.Desktop.Auswertungen.Schnurschiessen
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenSchnurschiessenAuszeichungMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSchnurschiessenAuszeichungMessage, string>(this, "SchnurschiessenAuswertungEntwicklung");
         }
     }
 }

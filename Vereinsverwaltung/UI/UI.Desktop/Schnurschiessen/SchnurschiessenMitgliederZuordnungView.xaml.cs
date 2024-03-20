@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -25,14 +25,14 @@ namespace UI.Desktop.Schnurschiessen
         public SchnurschiessenMitgliederZuordnungView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenMitgliedAuswahlMessage>(this, "SchnurschiessenMitgliederZuordnung", m => ReceiveOpenMitgliedAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenMitgliedAuswahlMessage, string>(this, "SchnurschiessenMitgliederZuordnung", (r, m) => ReceiveOpenMitgliedAuswahlMessage(m));
         }
         protected void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenMitgliedAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenMitgliedAuswahlMessage, string>(this, "SchnurschiessenMitgliederZuordnung");
         }
 
-        private void ReceiveOpenMitgliedAuswahlMessage(OpenMitgliedAuswahlMessage m)
+        private static void ReceiveOpenMitgliedAuswahlMessage(OpenMitgliedAuswahlMessage m)
         {
             var view = new MitgliedAuswahlView
             {

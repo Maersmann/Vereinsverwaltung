@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Version>3.4.0</Version>
     <Authors>Märsmann</Authors>
     <Product>Vereinsverwaltung</Product>

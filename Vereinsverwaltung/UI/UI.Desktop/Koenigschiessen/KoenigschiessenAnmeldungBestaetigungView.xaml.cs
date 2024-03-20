@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace UI.Desktop.Koenigschiessen
         public KoenigschiessenAnmeldungBestaetigungView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "KoenigschiessenAnmeldungBestaetigung", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "KoenigschiessenAnmeldungBestaetigung", (r, m) => ReceivCloseViewMessage());
         }
 
         private void ReceivCloseViewMessage()

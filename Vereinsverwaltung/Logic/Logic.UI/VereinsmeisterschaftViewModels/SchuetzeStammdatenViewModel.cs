@@ -7,8 +7,8 @@ using Data.Model.MitgliederModels;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
 using Data.Types.MitgliederTypes;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.VereinsmeisterschaftViewModels
 {
@@ -49,8 +50,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             Geburtstag = Data.Geburtstag;
             Geschlecht = Data.Geschlecht;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-            RaisePropertyChanged("KeinMitgliedHinterlegt");
-            RaisePropertyChanged("Mitgliedsnr");
+            OnPropertyChanged(nameof(KeinMitgliedHinterlegt));
+            OnPropertyChanged(nameof(Mitgliedsnr));
             state = State.Bearbeiten;
             RequestIsWorking = false;
 
@@ -67,13 +68,13 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public IEnumerable<Geschlecht> Geschlechter => Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
+        public static IEnumerable<Geschlecht> Geschlechter => Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
         public Geschlecht Geschlecht
         {
             get => Data.Geschlecht;
@@ -83,7 +84,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     Data.Geschlecht = value;
                     Geburtstag = Data.Geburtstag;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -104,7 +105,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 if (RequestIsWorking || !Equals(Data.Geburtstag, value))
                 {
                     Data.Geburtstag = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
@@ -117,7 +118,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 if (RequestIsWorking || !Equals(Data.Name, value))
                 {
                     Data.Sportschuetze = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -138,8 +139,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 912)
                 {
@@ -154,7 +155,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 
         private void ExcecuteMitgliedHinterlegenCommand()
         {
-            Messenger.Default.Send(new OpenMitgliedAuswahlMessage(OpenMitgliedAuswahlCallback), messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenMitgliedAuswahlMessage(OpenMitgliedAuswahlCallback), messageToken);
         }
 
         private async void OpenMitgliedAuswahlCallback(bool confirmed, int id)
@@ -186,8 +187,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                         Geschlecht = Mitglied.Data.Geschlecht;
                         Data.MitgliedsNr = Mitglied.Data.Mitgliedsnr;
                         ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-                        RaisePropertyChanged("KeinMitgliedHinterlegt");
-                        RaisePropertyChanged(nameof(Mitgliedsnr));
+                        OnPropertyChanged(nameof(KeinMitgliedHinterlegt));
+                        OnPropertyChanged(nameof(Mitgliedsnr));
                     }
                     RequestIsWorking = false;
                 }
@@ -206,9 +207,9 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             Geburtstag = null;
             Geschlecht = Geschlecht.maennlich;
             ((DelegateCommand)DeleteMitgliedDataCommand).RaiseCanExecuteChanged();
-            RaisePropertyChanged(nameof(Mitgliedsnr));
+            OnPropertyChanged(nameof(Mitgliedsnr));
             Name = "";
-            RaisePropertyChanged("KeinMitgliedHinterlegt");
+            OnPropertyChanged(nameof( KeinMitgliedHinterlegt));
         }
 
         #endregion
@@ -237,7 +238,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         #endregion
 
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchuetzeModel { };
             Name = "";

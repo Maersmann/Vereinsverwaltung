@@ -2,7 +2,7 @@
 using Data.Model.SchnurrschiessenModels;
 using Data.Types;
 using Data.Types.SchnurschiessenTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchluesselMessages;
 using Logic.Messages.SchnurschiessenMessages;
 using System;
@@ -19,7 +19,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             MessageToken = "SchnurschiessenAuszeichnungBestandHistorie";
             Title = "Historie Bestand Auszeichnungen";
             schnurschiessenauszeichnungID = 0;
-            Messenger.Default.Register<LoadSchnurschiessenAuszeichnungBestandHistorieMessage>(this, "SchnurschiessenAuszeichnungBestandUebersicht", m => ReceiveLoadSchnurBestandHistorieMessage(m));
+            WeakReferenceMessenger.Default.Register<LoadSchnurschiessenAuszeichnungBestandHistorieMessage, string>(this, "SchnurschiessenAuszeichnungBestandUebersicht", (r,m) => ReceiveLoadSchnurBestandHistorieMessage(m));
         }
 
         protected override int GetID() { return SelectedItem.Id; }

@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchnurschiessenMessages;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using Logic.UI.SchnurschiessenViewModels;
@@ -29,13 +29,13 @@ namespace UI.Desktop.Schnurschiessen
         {
             InitializeComponent();
             RegisterMessages("AktiveSchnurschiessenVerwaltung");
-            Messenger.Default.Register<NeuesSchnurschiessenErstellenMessage>(this, "AktiveSchnurschiessenVerwaltung", m => ReceiveNeuesSchnurschiessenErstellenMessage(m));
-            Messenger.Default.Register<OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage>(this, "AktiveSchnurschiessenVerwaltung", m => ReceiveOpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage(m));
+            WeakReferenceMessenger.Default.Register<NeuesSchnurschiessenErstellenMessage, string>(this, "AktiveSchnurschiessenVerwaltung", (r, m) => ReceiveNeuesSchnurschiessenErstellenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage, string>(this, "AktiveSchnurschiessenVerwaltung", (r, m) => ReceiveOpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage(m));
 
 
         }
 
-        private void ReceiveOpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage(OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage m)
+        private static void ReceiveOpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage(OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage m)
         {
             var view = new AktivesSchnurschiessenVerwaltungAusgabeSchnurView
             {
@@ -57,15 +57,15 @@ namespace UI.Desktop.Schnurschiessen
             if (view.DataContext is SchnurschiessenNeuesErstellenViewModel model)
             {
                 view.ShowDialog();
-                Messenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage>(this);
+                WeakReferenceMessenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage, string>(this, "AktiveSchnurschiessenVerwaltung");
                 m.Callback(model.NeuesSchnurschiessenErstellt);
             }
         }
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<NeuesSchnurschiessenErstellenMessage>(this);
-            Messenger.Default.Unregister<OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<NeuesSchnurschiessenErstellenMessage, string>(this, "AktiveSchnurschiessenVerwaltung");
+            WeakReferenceMessenger.Default.Unregister<OpenAktivesSchnurschiessenVerwaltungAusgabeSchnurMessage, string>(this, "AktiveSchnurschiessenVerwaltung");
             base.Window_Unloaded(sender, e);
         }
     }

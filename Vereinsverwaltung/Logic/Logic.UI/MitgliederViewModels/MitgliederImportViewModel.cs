@@ -1,8 +1,8 @@
 ﻿using Data.Model.ImportModel;
 using Data.Model.MitgliederModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Core.ImportHelper;
 using Logic.Messages.BaseMessages;
@@ -47,14 +47,14 @@ namespace Logic.UI.MitgliederViewModels
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "MitgliederImport");
+                    WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "MitgliederImport");
                     await new ImportHelper().PostFile( openFileDialog.FileName ).ContinueWith(async task =>
                     {                      
                         if (task.Result.IsSuccessStatusCode)
                         {
                             data = await task.Result.Content.ReadAsAsync<MitgliedImportHistoryModel>();
                             Response.Data = data.Importlist;
-                            RaisePropertyChanged("ItemList");
+                            OnPropertyChanged("ItemList");
                         }
                         else
                         {
@@ -62,7 +62,7 @@ namespace Logic.UI.MitgliederViewModels
                             return;
                         }
                     });
-                    Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
+                    WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
                 }
             }         
         }
@@ -71,15 +71,15 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert" }, "MitgliederImport");
+                WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert" }, "MitgliederImport");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
-                Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
+                WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
 
                 if (resp.IsSuccessStatusCode)
                 {
                     Response.Data.Clear();
-                    RaisePropertyChanged("ItemList");
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied.ToString());
+                    OnPropertyChanged("ItemList");
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied.ToString());
                 }
                 else
                 {

@@ -1,7 +1,7 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels.MitgliederAuswertungModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -24,15 +24,15 @@ namespace Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels
         {
             Title = "Auswertung Eintritte pro Jahr";
             LoadDataCommand = new RelayCommand(() => ExcecuteLoadDataCommand());
-            YAxes = new List<Axis>
-                {
+            YAxes =
+                [
                     new Axis()
                     {
                         LabelsPaint = new SolidColorPaint{ Color = SKColors.CornflowerBlue },
                         Position = AxisPosition.Start,
                         Labeler = (value) =>  string.Format("{0}", value)
                     }
-                };
+                ];
         }
         private async void ExcecuteLoadDataCommand()
         {
@@ -58,10 +58,8 @@ namespace Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels
             var auswertungSeries = new ColumnSeries<MitgliederAuswertungEintrittModel>
             {
                 Values = ItemList,
-                DataLabelsFormatter = (point) => point.TertiaryValue.ToString(),
                 Mapping = (model, index) => new LiveChartsCore.Kernel.Coordinate(index, (double)model.Anzahl),
                 Name = "Anzahl",
-                TooltipLabelFormatter = (point) => "Eintritte im Jahr: " + point.Model.Jahr.ToString() + ": "   + point.Model.Anzahl.ToString(),
             };
 
             XAxes.First().Labels = Labels;
@@ -70,9 +68,9 @@ namespace Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels
 
             Series = new ColumnSeries<MitgliederAuswertungEintrittModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings

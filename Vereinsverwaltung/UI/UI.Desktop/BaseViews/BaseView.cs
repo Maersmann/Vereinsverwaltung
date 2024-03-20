@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
 using Logic.UI.UtilsViewModels;
 using System;
@@ -12,7 +12,7 @@ namespace UI.Desktop.BaseViews
     public class BaseView : Window
     {
         private LoadingView loadingView;
-
+        private string token;
         public BaseView()
         {
             Unloaded += Window_Unloaded;
@@ -20,13 +20,13 @@ namespace UI.Desktop.BaseViews
 
         public void RegisterMessages(string token)
         {
-            Messenger.Default.Register<OpenLoadingViewMessage>(this, token, m => ReceiveOpenLoadingViewMessage(m));
-            Messenger.Default.Register<CloseLoadingViewMessage>(this, token, m => CloseLoadingViewMessage());
-            Messenger.Default.Register<OpenBestaetigungViewMessage>(this, token, m => ReceiveOpenBestaetigungViewMessage(m));
-
+            WeakReferenceMessenger.Default.Register<OpenLoadingViewMessage, string>(this, token, (r, m) => ReceiveOpenLoadingViewMessage(m));
+            WeakReferenceMessenger.Default.Register<CloseLoadingViewMessage, string>(this, token, (r, m) => CloseLoadingViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenBestaetigungViewMessage, string>(this, token, (r, m) => ReceiveOpenBestaetigungViewMessage(m));
+            this.token = token;
         }
 
-        private void ReceiveOpenBestaetigungViewMessage(OpenBestaetigungViewMessage m)
+        private static void ReceiveOpenBestaetigungViewMessage(OpenBestaetigungViewMessage m)
         {
             var Bestaetigung = new BestaetigungView();
             if (Bestaetigung.DataContext is BestaetigungViewModel model)
@@ -53,7 +53,7 @@ namespace UI.Desktop.BaseViews
         {
             loadingView = new LoadingView
             {
-                //Owner = Application.Current.MainWindow
+                Owner = Application.Current.MainWindow
             };
 
             if (loadingView.DataContext is LoadingViewModel model)
@@ -65,9 +65,12 @@ namespace UI.Desktop.BaseViews
 
         protected virtual void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<CloseLoadingViewMessage>(this);
-            Messenger.Default.Unregister<OpenLoadingViewMessage>(this);
-            Messenger.Default.Unregister<OpenBestaetigungViewMessage>(this);
+            if (token != null)
+            {
+                WeakReferenceMessenger.Default.Unregister<CloseLoadingViewMessage, string>(this, token);
+                WeakReferenceMessenger.Default.Unregister<OpenLoadingViewMessage, string>(this, token);
+                WeakReferenceMessenger.Default.Unregister<OpenBestaetigungViewMessage, string>(this, token);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -29,10 +29,10 @@ namespace UI.Desktop.Schluesselverwaltung
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.schluesselrueckgabe);
-            Messenger.Default.Register<OpenSchluesselzuteilungAuswahlMessage>(this, "SchluesselRueckgabeStammdaten", m => ReceiveOpenSchluesselzuteilungAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchluesselzuteilungAuswahlMessage, string>(this, "SchluesselRueckgabeStammdaten", (r, m) => ReceiveOpenSchluesselzuteilungAuswahlMessage(m));
         }
 
-        private void ReceiveOpenSchluesselzuteilungAuswahlMessage(OpenSchluesselzuteilungAuswahlMessage m)
+        private static void ReceiveOpenSchluesselzuteilungAuswahlMessage(OpenSchluesselzuteilungAuswahlMessage m)
         {
             var view = new SchluesselzuteilungAuswahlView()
             {
@@ -55,7 +55,7 @@ namespace UI.Desktop.Schluesselverwaltung
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenSchluesselzuteilungAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSchluesselzuteilungAuswahlMessage, string>(this, "SchluesselRueckgabeStammdaten");
             base.Window_Unloaded(sender, e);
         }
     }

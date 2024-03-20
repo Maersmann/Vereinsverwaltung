@@ -6,7 +6,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:local="clr-namespace:UI.Desktop.Vereinsmeisterschaft"
                     xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
-                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="180" Width="362.509"
@@ -17,7 +17,7 @@
                     DataContext="{Binding VereinsmeisterschaftErgebnisEintragen ,Source={StaticResource Locator}}" Unloaded="StammdatenView_Unloaded" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
+            <i:InvokeCommandAction Command="{Binding OnDeactivatedCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

@@ -2,7 +2,7 @@
 using Base.Logic.ViewModels;
 using Data.Model.PinModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -48,7 +48,7 @@ namespace Logic.UI.PinViewModels
             set
             {
                 zeigeNurOffene = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

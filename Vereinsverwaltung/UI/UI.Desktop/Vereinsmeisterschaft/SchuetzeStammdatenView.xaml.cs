@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -25,17 +25,17 @@ namespace UI.Desktop.Vereinsmeisterschaft
         public SchuetzeStammdatenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenMitgliedAuswahlMessage>(this, "SchuetzeStammdaten", m => ReceiveOpenMitgliedAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenMitgliedAuswahlMessage, string>(this, "SchuetzeStammdaten", (r, m) => ReceiveOpenMitgliedAuswahlMessage(m));
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.schuetze);
         }
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenMitgliedAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenMitgliedAuswahlMessage, string>(this, "SchuetzeStammdaten");
         }
 
-        private void ReceiveOpenMitgliedAuswahlMessage(OpenMitgliedAuswahlMessage m)
-        {
+        private static void ReceiveOpenMitgliedAuswahlMessage(OpenMitgliedAuswahlMessage m)
+        { 
             var view = new MitgliedAuswahlView
             {
                 Owner = Application.Current.MainWindow

@@ -34,7 +34,7 @@ namespace Logic.UI.OptionenViewModels
             Info.ReleaseFronted = release;
             Info.VersionFrontend = version;
             
-            RaisePropertyChanged("Info");
+            OnPropertyChanged("Info");
         }
 
         public InfoModel Info { get; set; }

@@ -4,11 +4,10 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
 using Logic.Messages.VereinsmeisterschaftMessages;
-using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -61,28 +60,28 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 else if (resp.StatusCode.Equals(HttpStatusCode.NotFound) && !vereinsmeisterschaftAbgeschlossen)
                 {
                     RequestIsWorking = false;
-                    Messenger.Default.Send(new NeueVereinsmeisterschaftErstellenMessage(NeueVereinsmeisterschaftErstellenCallback), messageToken);
+                    WeakReferenceMessenger.Default.Send(new NeueVereinsmeisterschaftErstellenMessage(NeueVereinsmeisterschaftErstellenCallback), messageToken);
                 }                             
             }
             ((DelegateCommand)NeuerSchuetzeCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)OpenGruppenViewCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)VereinsmeisterschaftAbschliessenCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)SucheCommand).RaiseCanExecuteChanged();
-            RaisePropertyChanged(nameof(AnzahlFrauen));
-            RaisePropertyChanged(nameof(AnzahlHerren16_30));
-            RaisePropertyChanged(nameof(AnzahlHerren31_50));
-            RaisePropertyChanged(nameof(AnzahlHerren51));
-            RaisePropertyChanged(nameof(AnzahlSportschuetzen));
-            RaisePropertyChanged(nameof(AnzahlGruppen));
-            RaisePropertyChanged(nameof(AnzahlGruppenFrauen));
-            RaisePropertyChanged(nameof(Jahr));
-            RaisePropertyChanged(nameof(AnzahlGruppenMaenner));
-            RaisePropertyChanged(nameof(IsEnabled));
+            OnPropertyChanged(nameof(AnzahlFrauen));
+            OnPropertyChanged(nameof(AnzahlHerren16_30));
+            OnPropertyChanged(nameof(AnzahlHerren31_50));
+            OnPropertyChanged(nameof(AnzahlHerren51));
+            OnPropertyChanged(nameof(AnzahlSportschuetzen));
+            OnPropertyChanged(nameof(AnzahlGruppen));
+            OnPropertyChanged(nameof(AnzahlGruppenFrauen));
+            OnPropertyChanged(nameof(Jahr));
+            OnPropertyChanged(nameof(AnzahlGruppenMaenner));
+            OnPropertyChanged(nameof(IsEnabled));
         }
 
         private async void SchliesseVereinsmeisterschaftAb()
         {
-            Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Wird Abgeschlossen" }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Wird Abgeschlossen" }, messageToken);
             string URL = GlobalVariables.BackendServer_URL + $"/api/Vereinsmeisterschaften/Abschliessen?vereinsmeisterschaftID={vereinsmeisterschaft.ID}";
             HttpResponseMessage resp = await Client.GetAsync(URL);
             if (!resp.IsSuccessStatusCode)
@@ -95,7 +94,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 await LoadVereinsmeisterschaft();
                 await LoadData();
             }
-            Messenger.Default.Send(new CloseLoadingViewMessage(), messageToken);
+            WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), messageToken);
         }
 
         #region Bindings
@@ -119,7 +118,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             set
             {
                 zeigeNurOffene = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -129,11 +128,11 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         #region Commannds
         private void ExecuteNeuerSchuetzeCommand()
         {
-            Messenger.Default.Send(new NeuerSchuetzeErstellenMessage(NeuerSchuetzeErstellenCallback, vereinsmeisterschaft.ID), messageToken);
+            WeakReferenceMessenger.Default.Send(new NeuerSchuetzeErstellenMessage(NeuerSchuetzeErstellenCallback, vereinsmeisterschaft.ID), messageToken);
         }
         private void ExecuteOpenGruppenViewCommand()
         {
-            Messenger.Default.Send(new OpenVereinsmeisterschaftGruppenMitSchuetzenMessage { VereinsmeisterschaftID = vereinsmeisterschaft.ID }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenVereinsmeisterschaftGruppenMitSchuetzenMessage { VereinsmeisterschaftID = vereinsmeisterschaft.ID }, messageToken);
         }
         protected override bool CanExecuteCommand() => vereinsmeisterschaft.ID > 0;
         protected async override void ExecuteEntfernenCommand()
@@ -154,12 +153,12 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         }
         private void ExecuteErgebnisEintragenViewCommand()
         {
-            Messenger.Default.Send(new VereinsmeisterschaftErgebnisEintragenMessage { SchuetzenErgebnisID = SelectedItem.ID}, messageToken);
+            WeakReferenceMessenger.Default.Send(new VereinsmeisterschaftErgebnisEintragenMessage { SchuetzenErgebnisID = SelectedItem.ID}, messageToken);
         }
 
         private void ExecuteVereinsmeisterschaftAbschliessenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll die Vereinsmeisterschaft abgeschlossen werden?", Command = SchliesseVereinsmeisterschaftAb }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll die Vereinsmeisterschaft abgeschlossen werden?", Command = SchliesseVereinsmeisterschaftAb }, messageToken);
         }
 
         #endregion

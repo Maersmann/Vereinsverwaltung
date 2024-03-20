@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,8 @@ namespace UI.Desktop.BaseViews
 {
     public class StammdatenView : BaseView
     {
+
+        StammdatenTypes types;
         public StammdatenView() : base()
         {
     
@@ -19,7 +21,8 @@ namespace UI.Desktop.BaseViews
         
         public void RegisterStammdatenGespeichertMessage(StammdatenTypes types)
         {
-            Messenger.Default.Register<StammdatenGespeichertMessage>(this, types, m => ReceiveStmmdatenGespeichertMessage(m));
+            WeakReferenceMessenger.Default.Register<StammdatenGespeichertMessage, string>(this, types.ToString(), (r,m) => ReceiveStmmdatenGespeichertMessage(m));
+            this.types = types;
         }
 
         private void ReceiveStmmdatenGespeichertMessage(StammdatenGespeichertMessage m)
@@ -33,7 +36,7 @@ namespace UI.Desktop.BaseViews
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<StammdatenGespeichertMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<StammdatenGespeichertMessage, string>(this, types.ToString());
             base.Window_Unloaded(sender, e);
         }
     }

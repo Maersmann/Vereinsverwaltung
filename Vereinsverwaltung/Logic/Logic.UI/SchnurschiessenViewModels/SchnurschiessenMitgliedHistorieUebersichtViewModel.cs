@@ -4,8 +4,8 @@ using Base.Logic.ViewModels;
 using Data.Model.SchnurrschiessenModels;
 using Data.Model.SchnurrschiessenModels.DTO;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.SchnurschiessenMessages;
 using Logic.Messages.UserMessages;
@@ -80,7 +80,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                     SendInformationMessage("Gespeichert");
                 }
                 else if (!resp.IsSuccessStatusCode)
@@ -103,7 +103,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                     SendInformationMessage("Gespeichert");
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
@@ -130,7 +130,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                     SendInformationMessage("Gespeichert");
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
@@ -159,7 +159,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                     SendInformationMessage("Gespeichert");
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))

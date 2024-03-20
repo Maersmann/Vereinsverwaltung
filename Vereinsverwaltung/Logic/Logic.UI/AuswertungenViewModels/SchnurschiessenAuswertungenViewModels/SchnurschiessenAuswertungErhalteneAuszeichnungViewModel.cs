@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System.Linq;
 using Prism.Commands;
 using Logic.Core.Validierungen.Base;
@@ -76,9 +76,9 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
             Series = new ColumnSeries<SchnurschiessenAuswertungErhalteneAuszeichnungModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings
@@ -90,7 +90,7 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(Jahr));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahr = value.GetValueOrDefault(0);
             }

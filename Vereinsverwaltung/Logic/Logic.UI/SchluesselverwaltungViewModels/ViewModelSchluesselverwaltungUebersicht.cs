@@ -1,9 +1,10 @@
-﻿using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+﻿
+using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 using Data.Types.SchluesselverwaltungTypes;
 using Logic.Messages.SchluesselMessages;
 using Base.Logic.ViewModels;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.BaseViewModels
 {
@@ -21,12 +22,12 @@ namespace Logic.UI.BaseViewModels
 
         private void ExecuteOpenZuteilungCommand()
         {
-            Messenger.Default.Send(new OpenSchluesselzuteilungMessage { ID = GetID() }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselzuteilungMessage { ID = GetID() }, messageToken);
         }
 
         private void ExecuteOpenRueckgabeCommand()
         {
-            Messenger.Default.Send(new OpenSchluesselRueckgabeMessage { ID = GetID(), AuswahlTypes = GetSchluesselzuteilungAuswahlTyp() }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselRueckgabeMessage { ID = GetID(), AuswahlTypes = GetSchluesselzuteilungAuswahlTyp() }, messageToken);
         }
     }
 }

@@ -12,11 +12,11 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 using Data.Model.AuswertungModels.SchnurschiessenAuswertungModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System.Linq;
 using LiveChartsCore.Defaults;
 using System.Collections.ObjectModel;
-using GalaSoft.MvvmLight;
+
 
 namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 {
@@ -27,15 +27,15 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
         {
             Title = "Aktuellen Stand - Auszeichungen";
             LoadDataCommand = new RelayCommand(() => ExcecuteLoadDataCommand());
-            YAxes = new List<Axis>
-                {
+            YAxes =
+                [
                     new Axis()
                     {
                         LabelsPaint = new SolidColorPaint{ Color = SKColors.CornflowerBlue },
                         Position = AxisPosition.Start,
                         Labeler = (value) =>  string.Format("{0}", value)
                     }
-                };
+                ];
         }
         private async void ExcecuteLoadDataCommand()
         {
@@ -71,9 +71,9 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
             Series = new ColumnSeries<SchnurschiessenAuswertungAktuellenStandAuszeichnungModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings

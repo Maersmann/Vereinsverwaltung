@@ -1,6 +1,6 @@
 ﻿using Data.Types;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Messages.BaseMessages;
 using Base.Logic.ViewModels;
@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI
 {
@@ -24,14 +25,14 @@ namespace Logic.UI
         private void ExecuteCheckServerIsOnlineCommand()
         {
             new BackendHelper().CheckServerIsOnline();
-            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
+            WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
             if (GlobalVariables.ServerIsOnline)
             {
-                Messenger.Default.Send(new OpenLoginViewMessage { });
+                WeakReferenceMessenger.Default.Send(new OpenLoginViewMessage { });
             }
             else
             {
-                Messenger.Default.Send(new CloseApplicationMessage { });
+                WeakReferenceMessenger.Default.Send(new CloseApplicationMessage { });
             }
         }
 

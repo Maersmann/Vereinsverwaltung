@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.SchluesselverwaltungViewModels;
 using System;
@@ -15,10 +15,10 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Core
 
         public void RegisterMessage(string messagetoken)
         {
-            Messenger.Default.Register<OpenSchluesselzuteilungHistoryUebersichtMessage>(this, messagetoken, m => ReceiveOpenSchluesselzuteilungHistoryUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchluesselzuteilungHistoryUebersichtMessage, string>(this, messagetoken, (r, m) => ReceiveOpenSchluesselzuteilungHistoryUebersichtMessage(m));
         }
 
-        private void ReceiveOpenSchluesselzuteilungHistoryUebersichtMessage(OpenSchluesselzuteilungHistoryUebersichtMessage m)
+        private static void ReceiveOpenSchluesselzuteilungHistoryUebersichtMessage(OpenSchluesselzuteilungHistoryUebersichtMessage m)
         {
             var view = new SchluesselzuteilungHistoryUebersichtView();
             if (view.DataContext is SchluesselzuteilungHistoryUebersichtViewModel model)
@@ -26,7 +26,7 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung.Core
                 model.SetAuswahlState(m.ID, m.AuswahlTypes);
             }
 
-            Window window = new Window
+            Window window = new ()
             {
                 Content = view,
                 MinHeight = 300,

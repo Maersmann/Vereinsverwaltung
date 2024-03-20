@@ -8,9 +8,9 @@ using Base.Logic.ViewModels;
 using Base.Logic.Core;
 using System.Windows.Input;
 using System.Windows.Controls;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using Logic.Messages.PinMessages;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Data.Types.MitgliederTypes;
 using Logic.Messages.KoenigschiessenMessages;
 
@@ -59,12 +59,12 @@ namespace Logic.UI.MitgliederViewModels
 
         private void ExcecuteOpenPinsVomMitgliedCommand()
         {
-            Messenger.Default.Send(new OpenPinsVomMitgliedUebersichtMessage { ID = SelectedItem.ID }, "MitgliederUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenPinsVomMitgliedUebersichtMessage { ID = SelectedItem.ID }, "MitgliederUebersicht");
         }
 
         private void ExcecuteOpenKoenigschiessenErgebnisseVomMitgliedCommand()
         {
-            Messenger.Default.Send(new OpenKoenigschiessenErgebnisseVomMitgliedMessage { MitgliedID = SelectedItem.ID }, "MitgliederUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenKoenigschiessenErgebnisseVomMitgliedMessage { MitgliedID = SelectedItem.ID }, "MitgliederUebersicht");
         }
         #endregion
 

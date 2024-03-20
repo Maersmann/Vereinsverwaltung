@@ -1,5 +1,5 @@
 ﻿using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.KoenigschiessenMessages;
 using Logic.UI.KoenigschiessenViewModels;
 using System;
@@ -26,7 +26,7 @@ namespace UI.Desktop.Koenigschiessen
         {
             InitializeComponent();
             RegisterMessages("KoenigschiessenAnmeldungUebersicht");
-            Messenger.Default.Register<OpenKoenigschiessenBestaetigungMessage>(this, "KoenigschiessenAnmeldungUebersicht", m => ReceivOpenKoenigschiessenBestaetigungMessage( m));
+            WeakReferenceMessenger.Default.Register<OpenKoenigschiessenBestaetigungMessage, string>(this, "KoenigschiessenAnmeldungUebersicht", (r, m) => ReceivOpenKoenigschiessenBestaetigungMessage( m));
 
         }
 
@@ -34,7 +34,7 @@ namespace UI.Desktop.Koenigschiessen
         {
             if (variante.Equals(KoenigschiessenVarianten.koenigschiessen))
             {
-                KoenigschiessenAnmeldungWerteKoenigView WerteKoenigschiessen = new KoenigschiessenAnmeldungWerteKoenigView();
+                KoenigschiessenAnmeldungWerteKoenigView WerteKoenigschiessen = new();
                 Werte.NavigationService.Navigate(WerteKoenigschiessen);
                 if (DataContext is KoenigschiessenAnmeldungUebersichtViewModel model)
                 {
@@ -44,7 +44,7 @@ namespace UI.Desktop.Koenigschiessen
             }
             else
             {
-                KoenigschiessenAnmeldungWerteJugendkoenigView WerteKoenigschiessen = new KoenigschiessenAnmeldungWerteJugendkoenigView();
+                KoenigschiessenAnmeldungWerteJugendkoenigView WerteKoenigschiessen = new();
                 Werte.NavigationService.Navigate(WerteKoenigschiessen);
                 if (DataContext is KoenigschiessenAnmeldungUebersichtViewModel model)
                 {
@@ -54,9 +54,9 @@ namespace UI.Desktop.Koenigschiessen
             }
         }
 
-        private void ReceivOpenKoenigschiessenBestaetigungMessage(OpenKoenigschiessenBestaetigungMessage m)
+        private static void ReceivOpenKoenigschiessenBestaetigungMessage(OpenKoenigschiessenBestaetigungMessage m)
         {
-            KoenigschiessenAnmeldungBestaetigungView view = new KoenigschiessenAnmeldungBestaetigungView
+            KoenigschiessenAnmeldungBestaetigungView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -73,7 +73,7 @@ namespace UI.Desktop.Koenigschiessen
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenKoenigschiessenBestaetigungMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenKoenigschiessenBestaetigungMessage, string>(this, "KoenigschiessenAnmeldungUebersicht");
             base.Window_Unloaded(sender, e);
         }
     }

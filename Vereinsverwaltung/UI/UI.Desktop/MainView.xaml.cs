@@ -1,5 +1,5 @@
 ﻿using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
 using System.Windows;
@@ -48,18 +48,18 @@ namespace Vereinsverwaltung.UI.Desktop
         {
             InitializeComponent();
 
-            Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
-            Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
-            Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
-            Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
-            Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
-            Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
-            Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
-            Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
-            Messenger.Default.Register<OpenPasswordAendernViewMessage>(this, m => ReceiceOpenPasswordAendernViewMessage());       
+            WeakReferenceMessenger.Default.Register<OpenViewMessage>(this, (r, m) => ReceiveOpenViewMessage(m));
+            WeakReferenceMessenger.Default.Register<ExceptionMessage>(this, (r, m) => ReceiveExceptionMessage(m));
+            WeakReferenceMessenger.Default.Register<InformationMessage>(this, (r, m) => ReceiveInformationMessage(m));
+            WeakReferenceMessenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, (r, m) => ReceiceOpenStammdatenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenStartingViewMessage>(this, (r, m) => ReceiceOpenStartingViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenLoginViewMessage>(this, (r, m) => ReceiceOpenLoginViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseApplicationMessage>(this, (r, m) => ReceiceCloseApplicationMessage());
+            WeakReferenceMessenger.Default.Register<OpenKonfigurationViewMessage>(this, (r, m) => ReceiceOpenKonfigurationViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenPasswordAendernViewMessage>(this, (r, m) => ReceiceOpenPasswordAendernViewMessage());       
         }
 
-        private void ReceiceCloseApplicationMessage()
+        private static void ReceiceCloseApplicationMessage()
         {
             Application.Current.Shutdown();
         }
@@ -336,14 +336,14 @@ namespace Vereinsverwaltung.UI.Desktop
             view.ShowDialog();
         }
 
-        private void ReceiceOpenKonfigurationViewMessage()
+        private static void ReceiceOpenKonfigurationViewMessage()
         {
             _ = new KonfigurationView().ShowDialog();
         }
 
         private void ReceiceOpenLoginViewMessage()
         {
-            LoginView view = new LoginView
+            LoginView view = new()
             {
                 Owner = this
             };
@@ -352,14 +352,14 @@ namespace Vereinsverwaltung.UI.Desktop
 
         private void ReceiceOpenStartingViewMessage()
         {
-            StartingProgrammView view = new StartingProgrammView();
+            StartingProgrammView view = new();
             _ = view.ShowDialog();
             _ = SchnurschiessenOption.NavigationService.Navigate(new SchnurschiessenOptionPage());
         }
 
-        private void ReceiceOpenPasswordAendernViewMessage()
+        private static void ReceiceOpenPasswordAendernViewMessage()
         {
-            UserPasswordAendernView view = new UserPasswordAendernView();
+            UserPasswordAendernView view = new();
             _ = view.ShowDialog();
         }
     }

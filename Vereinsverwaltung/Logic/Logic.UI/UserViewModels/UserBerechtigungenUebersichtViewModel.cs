@@ -2,7 +2,7 @@
 using Base.Logic.ViewModels;
 using Data.Model.UserModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -68,8 +68,8 @@ namespace Logic.UI.UserViewModels
                     SelectedUserBerechtigungItem = UserBerechtigungen.ElementAt(0);
                 }
             }
-            RaisePropertyChanged(nameof(Berechtigungen));
-            RaisePropertyChanged(nameof(UserBerechtigungen));
+            OnPropertyChanged(nameof(Berechtigungen));
+            OnPropertyChanged(nameof(UserBerechtigungen));
             RequestIsWorking = false;
         }
 
@@ -85,7 +85,7 @@ namespace Logic.UI.UserViewModels
             set
             {
                 selectedUserBerechtigungItem = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -96,7 +96,7 @@ namespace Logic.UI.UserViewModels
             set
             {
                 selectedBerechtigungItem = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         #endregion

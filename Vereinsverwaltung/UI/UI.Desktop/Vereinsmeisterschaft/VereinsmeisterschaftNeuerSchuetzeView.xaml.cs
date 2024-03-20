@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using Logic.UI.AuswahlViewModels;
@@ -19,11 +19,11 @@ namespace UI.Desktop.Vereinsmeisterschaft
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.vereinsmeisterschaftSchuetzeErgebnis);
-            Messenger.Default.Register<OpenSchuetzeAuswahlMessage>(this, "VereinsmeisterschaftNeuerSchuetze", m => ReceiveOpenVereinsmeisterschaftSchuetzeAuswahlMessage(m));
-            Messenger.Default.Register<OpenVereinsmeisterschaftFreieGruppeAuswahlMessage>(this, "VereinsmeisterschaftNeuerSchuetze", m => ReceiveOpenVereinsmeisterschaftFreieGruppeAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchuetzeAuswahlMessage, string>(this, "VereinsmeisterschaftNeuerSchuetze", (r,m) => ReceiveOpenVereinsmeisterschaftSchuetzeAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenVereinsmeisterschaftFreieGruppeAuswahlMessage, string>(this, "VereinsmeisterschaftNeuerSchuetze", (r, m) => ReceiveOpenVereinsmeisterschaftFreieGruppeAuswahlMessage(m));
         }
 
-        private void ReceiveOpenVereinsmeisterschaftFreieGruppeAuswahlMessage(OpenVereinsmeisterschaftFreieGruppeAuswahlMessage m)
+        private static void ReceiveOpenVereinsmeisterschaftFreieGruppeAuswahlMessage(OpenVereinsmeisterschaftFreieGruppeAuswahlMessage m)
         {
             var view = new VereinsmeisterschaftFreieGruppeAuswahlView
             {
@@ -47,7 +47,7 @@ namespace UI.Desktop.Vereinsmeisterschaft
             }
         }
 
-        private void ReceiveOpenVereinsmeisterschaftSchuetzeAuswahlMessage(OpenSchuetzeAuswahlMessage m)
+        private static void ReceiveOpenVereinsmeisterschaftSchuetzeAuswahlMessage(OpenSchuetzeAuswahlMessage m)
         {
             var view = new VereinsmeisterschaftSchuetzeAuswahlView
             {
@@ -74,8 +74,8 @@ namespace UI.Desktop.Vereinsmeisterschaft
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenSchuetzeAuswahlMessage>(this);
-            Messenger.Default.Unregister<OpenVereinsmeisterschaftFreieGruppeAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSchuetzeAuswahlMessage, string>(this, "VereinsmeisterschaftNeuerSchuetze");
+            WeakReferenceMessenger.Default.Unregister<OpenVereinsmeisterschaftFreieGruppeAuswahlMessage, string>(this, "VereinsmeisterschaftNeuerSchuetze");
         }
     }
 }

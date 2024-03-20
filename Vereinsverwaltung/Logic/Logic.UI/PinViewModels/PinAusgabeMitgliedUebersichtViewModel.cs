@@ -1,7 +1,7 @@
 ﻿using Data.Model.PinModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.ObjectModel;
 using System.Net.Http;
@@ -10,6 +10,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Wrapper;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.PinViewModels
 {
@@ -59,7 +60,7 @@ namespace Logic.UI.PinViewModels
             set
             {
                 zeigeNurOffene = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -129,9 +130,9 @@ namespace Logic.UI.PinViewModels
             }           
         }
 
-        protected override void ExecuteCleanUpCommand()
+        protected override void ExecuteOnDeactivatedCommand()
         {
-            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe.ToString());
+            WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe.ToString());
         }
         #endregion
     }

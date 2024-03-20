@@ -2,7 +2,7 @@
 using Base.Logic.ViewModels;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using Prism.Commands;
 using System;
@@ -64,12 +64,12 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 
         private void ExecuteOpenSchuetzenCommand()
         {
-            Messenger.Default.Send(new OpenVereinsmeisterschaftSchuetzenDerGruppeMessage { SchiessgruppeID = SelectedItem.ID }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenVereinsmeisterschaftSchuetzenDerGruppeMessage { SchiessgruppeID = SelectedItem.ID }, messageToken);
         }
 
         private void ExecuteErgebnisseCommand()
         {
-            Messenger.Default.Send(new OpenVereinsmeisterschaftGruppeErgebnisseMessage { SchiessgruppeID = SelectedItem.ID }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenVereinsmeisterschaftGruppeErgebnisseMessage { SchiessgruppeID = SelectedItem.ID }, messageToken);
         }
         #endregion
     }

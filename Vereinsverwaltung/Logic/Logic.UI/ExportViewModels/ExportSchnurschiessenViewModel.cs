@@ -1,7 +1,7 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Logic.UI.ExportViewModels
         #region Commands
         private async void ExcecuteExportAktuellenStandCommand()
         {
-            Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Akutellen Stand wird heruntergeladen" }, "ExportSchnurschiessen");
+            WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Akutellen Stand wird heruntergeladen" }, "ExportSchnurschiessen");
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/schnurschiessen/AktuellenStand");
             if (resp.IsSuccessStatusCode)
             {
@@ -46,7 +46,7 @@ namespace Logic.UI.ExportViewModels
             {
                 SendExceptionMessage("Datei konnte nicht heruntergeladen werden.");
             }
-            Messenger.Default.Send(new CloseLoadingViewMessage(), "ExportSchnurschiessen");
+            WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "ExportSchnurschiessen");
         }
         #endregion
 

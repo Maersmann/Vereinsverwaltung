@@ -3,8 +3,8 @@ using Base.Logic.ViewModels;
 using Data.Model.KoenigschiessenModels;
 using Data.Model.KoenigschiessenModels.DTO;
 using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Prism.Commands;
@@ -37,7 +37,7 @@ namespace Logic.UI.KoenigschiessenViewModels
         {
             this.koenigschiessenRundeTeilnehmerUebersicht = koenigschiessenRundeTeilnehmerUebersicht;
             this.variante = variante;
-            RaisePropertyChanged(nameof(KoenigschiessenRundeTeilnehmer));
+            OnPropertyChanged(nameof(KoenigschiessenRundeTeilnehmer));
         }
 
         public bool Bestaetigt { get; private set; }
@@ -68,7 +68,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                 {
                     ValidateErgebnis(Ergebnis);
                     ergebnis = Ergebnis;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)BestaetigungCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -108,7 +108,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                     {
                         Bestaetigt = true;
                     }
-                    Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
+                    WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
                 }
             }
             catch (Exception e)
@@ -120,7 +120,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         private void ExecuteAbbrechenCommand()
         {
-            Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
+            WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
         }
 
         private bool CanExecuteBestaetigungCommand()

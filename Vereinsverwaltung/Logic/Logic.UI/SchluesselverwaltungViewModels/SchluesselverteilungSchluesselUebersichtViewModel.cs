@@ -1,8 +1,8 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.BaseViewModels;
@@ -42,7 +42,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 base.SelectedItem = value;
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadSchluesselverteilungSchluesselDetailMessage { ID = SelectedItem.SchluesselID }, messageToken);
+                    WeakReferenceMessenger.Default.Send(new LoadSchluesselverteilungSchluesselDetailMessage { ID = SelectedItem.SchluesselID }, messageToken);
                 }
             }
         }

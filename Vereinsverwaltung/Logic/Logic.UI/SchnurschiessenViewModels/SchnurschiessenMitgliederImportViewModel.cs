@@ -5,8 +5,8 @@ using Data.Model.ImportModel;
 using Data.Model.MitgliederModels;
 using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.ImportHelper;
 using Logic.Messages.UtilMessages;
 using Microsoft.Win32;
@@ -39,11 +39,11 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
+                OpenFileDialog openFileDialog = new();
                 if (openFileDialog.ShowDialog() == true)
                 {
                     bool erfolgreich = false;
-                    Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "SchnurschiessenMitgliederImport");
+                    WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "SchnurschiessenMitgliederImport");
                     await new ImportHelper().PostSchnurschiessenFile(openFileDialog.FileName).ContinueWith(async task =>
                     {
                         if (task.Result.IsSuccessStatusCode)
@@ -51,7 +51,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                             data = await task.Result.Content.ReadAsAsync<SchnurschiessenImportHistoryModel>();
                             Response.Data = data.Importlist;
                             erfolgreich = true;
-                            RaisePropertyChanged("ItemList");
+                            OnPropertyChanged("ItemList");
                         }
                         else
                         {
@@ -59,7 +59,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                             return;
                         }
                     });
-                    Messenger.Default.Send(new CloseLoadingViewMessage(), "SchnurschiessenMitgliederImport");
+                    WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "SchnurschiessenMitgliederImport");
 
                     if (!erfolgreich)
                     {   
@@ -73,20 +73,20 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert." }, "SchnurschiessenMitgliederImport");
+                WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert." }, "SchnurschiessenMitgliederImport");
                 HttpResponseMessage resp = null;
                 try
                 {
                      resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Import/schnurschiessen/Save", data);
 
-                }catch (Exception ex) { }
-                Messenger.Default.Send(new CloseLoadingViewMessage(), "SchnurschiessenMitgliederImport");
+                }catch (Exception) { }
+                WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "SchnurschiessenMitgliederImport");
 
                 if (resp.IsSuccessStatusCode)
                 {
                     Response.Data.Clear();
-                    RaisePropertyChanged("ItemList");
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schnurschiessen.ToString());
+                    OnPropertyChanged("ItemList");
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schnurschiessen.ToString());
                 }
                 else
                 {

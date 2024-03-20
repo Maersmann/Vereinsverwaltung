@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.OptionenLogic;
 using Logic.Messages.BaseMessages;
 using Base.Logic.ViewModels;
@@ -20,7 +20,7 @@ namespace Logic.UI.KonfigruationViewModels
         {
             base.ExecuteCloseWindowCommand(window);
             if (!new BackendLogic().IstINIVorhanden())
-                Messenger.Default.Send(new CloseApplicationMessage());
+                WeakReferenceMessenger.Default.Send(new CloseApplicationMessage());
         }
 
 

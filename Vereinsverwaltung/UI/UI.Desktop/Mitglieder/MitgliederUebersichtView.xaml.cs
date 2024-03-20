@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.KoenigschiessenMessages;
 using Logic.Messages.PinMessages;
 using Logic.UI.KoenigschiessenViewModels;
@@ -30,11 +30,11 @@ namespace Vereinsverwaltung.UI.Desktop.Mitglieder
         public MitgliederUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenPinsVomMitgliedUebersichtMessage>(this, "MitgliederUebersicht", m => ReceiveOpenPinsVomMitgliedUebersichtMessage(m));
-            Messenger.Default.Register<OpenKoenigschiessenErgebnisseVomMitgliedMessage>(this, "MitgliederUebersicht", m => ReceiveOpenKoenigschiessenErgebnisseVomMitgliedMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenPinsVomMitgliedUebersichtMessage, string>(this, "MitgliederUebersicht", (r, m) => ReceiveOpenPinsVomMitgliedUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenKoenigschiessenErgebnisseVomMitgliedMessage, string>(this, "MitgliederUebersicht", (r, m) => ReceiveOpenKoenigschiessenErgebnisseVomMitgliedMessage(m));
         }
 
-        private void ReceiveOpenKoenigschiessenErgebnisseVomMitgliedMessage(OpenKoenigschiessenErgebnisseVomMitgliedMessage m)
+        private static void ReceiveOpenKoenigschiessenErgebnisseVomMitgliedMessage(OpenKoenigschiessenErgebnisseVomMitgliedMessage m)
         {
             var view = new KoenigschiessenErgebnisseVonMitgliedView
             {
@@ -47,7 +47,7 @@ namespace Vereinsverwaltung.UI.Desktop.Mitglieder
             view.ShowDialog();
         }
 
-        private void ReceiveOpenPinsVomMitgliedUebersichtMessage(OpenPinsVomMitgliedUebersichtMessage m)
+        private static void ReceiveOpenPinsVomMitgliedUebersichtMessage(OpenPinsVomMitgliedUebersichtMessage m)
         {
             var view = new PinsVomMitgliedUebersichtView
             {

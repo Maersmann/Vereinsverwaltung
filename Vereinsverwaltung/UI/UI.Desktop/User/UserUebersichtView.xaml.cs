@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UserMessages;
 using Logic.UI.UserViewModels;
 using System;
@@ -24,12 +24,12 @@ namespace UI.Desktop.User
         public UserUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenUserBerechtigungenMessage>(this, "UserUebersicht", m => ReceiveOpenUserBerechtigungenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenUserBerechtigungenMessage, string>(this, "UserUebersicht", (r, m) => ReceiveOpenUserBerechtigungenMessage(m));
         }
 
-        private void ReceiveOpenUserBerechtigungenMessage(OpenUserBerechtigungenMessage m)
+        private static void ReceiveOpenUserBerechtigungenMessage(OpenUserBerechtigungenMessage m)
         {
-            UserBerechtigungenUebersichtView view = new UserBerechtigungenUebersichtView
+            UserBerechtigungenUebersichtView view = new()
             {
                 Owner = Application.Current.MainWindow
             };

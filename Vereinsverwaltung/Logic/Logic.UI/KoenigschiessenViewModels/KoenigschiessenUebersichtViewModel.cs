@@ -2,8 +2,8 @@
 using Data.Model.KoenigschiessenModels;
 using Data.Types;
 using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.KoenigschiessenMessages;
 using System;
 using System.Collections.Generic;
@@ -39,12 +39,12 @@ namespace Logic.UI.KoenigschiessenViewModels
         #region Commands
         private void ExecuteOeffneAnmeldungCommand()
         {
-            Messenger.Default.Send(new OpenKoenigschiessenAnmeldungViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen }, "KoenigschiessenUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenKoenigschiessenAnmeldungViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen }, "KoenigschiessenUebersicht");
         }
 
         private void ExecuteOeffneZahlenCommand()
         {
-            Messenger.Default.Send(new OpenKoenigschiessenZahlenMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen }, "KoenigschiessenUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenKoenigschiessenZahlenMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen }, "KoenigschiessenUebersicht");
         }
 
         private void ExecuteOeffneRundeCommand(KoenigschiessenArt art)
@@ -64,7 +64,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                 default:
                     return;
             }
-            Messenger.Default.Send(new OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen, Runde = Runde, Art = art }, "KoenigschiessenUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage { Jahr = SelectedItem.Jahr, Variante = KoenigschiessenVarianten.koenigschiessen, Runde = Runde, Art = art }, "KoenigschiessenUebersicht");
         }
         #endregion
     }

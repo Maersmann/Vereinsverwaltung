@@ -1,7 +1,7 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels.SchnurschiessenAuswertungModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System.Linq;
 
 namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
@@ -38,7 +38,7 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenSchnurschiessenRangMessage(ExcecuteLoadDataCallback), "SchnurschiessenAuswertungEntwicklungRang");
+            WeakReferenceMessenger.Default.Send(new OpenSchnurschiessenRangMessage(ExcecuteLoadDataCallback), "SchnurschiessenAuswertungEntwicklungRang");
         }
 
         private async void ExcecuteLoadDataCallback(bool confirmed, int rangID)
@@ -78,9 +78,9 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
             Series = new LineSeries<SchnurschiessenAuswertungEntwicklungRangModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings

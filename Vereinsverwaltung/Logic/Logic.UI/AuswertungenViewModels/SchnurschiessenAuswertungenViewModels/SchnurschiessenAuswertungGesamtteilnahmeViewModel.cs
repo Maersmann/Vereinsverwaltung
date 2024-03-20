@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System.Linq;
 
 namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
@@ -67,9 +67,9 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
             Series = new LineSeries<SchnurschiessenAuswertungGesamtteilnahmeModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings

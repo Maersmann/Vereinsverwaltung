@@ -5,7 +5,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
@@ -42,7 +42,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 else
                 {
                     SendExceptionMessage("Schütze konnte nicht gefunden werden.");
-                    Messenger.Default.Send(new CloseViewMessage(), "VereinsmeisterschaftErgebnisEintragen");
+                    WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "VereinsmeisterschaftErgebnisEintragen");
                 }
             }
             
@@ -74,7 +74,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 if (RequestIsWorking || !Equals(Data.Name, value))
                 {
                     Data.Name = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     ValidateErgebnis(Ergebnis);
                     Data.Ergebnis = Ergebnis;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -117,8 +117,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -142,7 +142,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         #endregion
 
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new VereinsmeisterschaftErgebnisEintragenModel();
             Name = "";

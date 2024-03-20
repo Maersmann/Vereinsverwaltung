@@ -1,6 +1,6 @@
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Base.Logic.ViewModels;
 using System;
 using System.Windows.Input;
@@ -151,12 +151,12 @@ namespace Logic.UI
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
+            WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = viewType });
         }
 
         private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
         {
-            Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
+            WeakReferenceMessenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
         }
 
         private void ExecuteAbmeldenCommand()
@@ -165,15 +165,15 @@ namespace Logic.UI
             BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
             BerechtigungenService.IsAdmin = false;
             GlobalUserVariables.UserID = 0;
-            Messenger.Default.Send(new AktualisiereBerechtigungenMessage { });
-            Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
-            Messenger.Default.Send(new OpenLoginViewMessage { });
+            WeakReferenceMessenger.Default.Send(new AktualisiereBerechtigungenMessage { });
+            WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
+            WeakReferenceMessenger.Default.Send(new OpenLoginViewMessage { });
         }
 
 
         private void ExecutePasswordAendernCommand()
         {
-            Messenger.Default.Send(new OpenPasswordAendernViewMessage { });
+            WeakReferenceMessenger.Default.Send(new OpenPasswordAendernViewMessage { });
         }
 
         private void ExecuteOpenStartingViewCommand()
@@ -181,19 +181,19 @@ namespace Logic.UI
             var backendlogic = new BackendLogic();
             if (!backendlogic.IstINIVorhanden())
             {
-                Messenger.Default.Send(new OpenKonfigurationViewMessage { });
+                WeakReferenceMessenger.Default.Send(new OpenKonfigurationViewMessage { });
             }
             backendlogic.LoadData();
             GlobalVariables.BackendServer_IP = backendlogic.GetBackendIP();
             GlobalVariables.BackendServer_URL = backendlogic.GetURL();
             GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
 
-            Messenger.Default.Send(new OpenStartingViewMessage { });
+            WeakReferenceMessenger.Default.Send(new OpenStartingViewMessage { });
         }
 
         protected override void ReceiveOpenViewMessage()
         {
-            RaisePropertyChanged("MenuIsEnabled");
+            OnPropertyChanged("MenuIsEnabled");
             base.ReceiveOpenViewMessage();
         }
 

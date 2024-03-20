@@ -1,9 +1,9 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
+using CommunityToolkit.Mvvm.Messaging;
 using Data.Model.ExportModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
 using Logic.Messages.UtilMessages;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Windows.Input;
+
 
 namespace Logic.UI.ExportViewModels
 {
@@ -49,7 +50,7 @@ namespace Logic.UI.ExportViewModels
                     detailList = new ObservableCollection<MitgliedAenderungDatenModel>();
                 }
                 
-                RaisePropertyChanged(nameof(DetailList));
+                OnPropertyChanged(nameof(DetailList));
             } 
         }
 
@@ -87,7 +88,7 @@ namespace Logic.UI.ExportViewModels
 
         private async void ExecuteSpeichernCommand()
         {
-            Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Liste wird heruntergeladen" }, "ExportMitgliederAenderungen");
+            WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Liste wird heruntergeladen" }, "ExportMitgliederAenderungen");
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/mitgliedAenderungen/Export");
             if (resp.IsSuccessStatusCode)
             {
@@ -99,9 +100,9 @@ namespace Logic.UI.ExportViewModels
 
                 await File.WriteAllBytesAsync(Path.Combine(pfad, resp.Content.Headers.ContentDisposition.FileNameStar), resp.Content.ReadAsByteArrayAsync().Result);
                 Process.Start("explorer.exe", $@"{pfad}");
-                Messenger.Default.Send(new CloseLoadingViewMessage(), "ExportMitgliederAenderungen");
+                WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "ExportMitgliederAenderungen");
                 canErledigen = true;
-                RaisePropertyChanged(nameof(CanErledigen));
+                OnPropertyChanged(nameof(CanErledigen));
             }
             else
             {

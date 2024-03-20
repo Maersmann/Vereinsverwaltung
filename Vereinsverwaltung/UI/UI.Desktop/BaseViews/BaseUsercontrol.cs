@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
 using Logic.UI.UtilsViewModels;
 using System;
@@ -13,6 +13,7 @@ namespace UI.Desktop.BaseViews
     public class BaseUsercontrol : UserControl
     {
         private LoadingView loadingView;
+        private string token;
 
         public BaseUsercontrol()
         {
@@ -21,12 +22,13 @@ namespace UI.Desktop.BaseViews
 
         public void RegisterMessages(string token)
         {
-            Messenger.Default.Register<OpenLoadingViewMessage>(this, token, m => ReceiveOpenLoadingViewMessage(m));
-            Messenger.Default.Register<CloseLoadingViewMessage>(this, token, m => CloseLoadingViewMessage());
-            Messenger.Default.Register<OpenBestaetigungViewMessage>(this, token, m => ReceiveOpenBestaetigungViewMessage(m));
+            this.token = token;
+            WeakReferenceMessenger.Default.Register<OpenLoadingViewMessage, string>(this, token, (r, m) => ReceiveOpenLoadingViewMessage(m));
+            WeakReferenceMessenger.Default.Register<CloseLoadingViewMessage, string>(this, token, (r, m) => CloseLoadingViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenBestaetigungViewMessage, string>(this, token, (r, m) => ReceiveOpenBestaetigungViewMessage(m));
         }
 
-        private void ReceiveOpenBestaetigungViewMessage(OpenBestaetigungViewMessage m)
+        private static void ReceiveOpenBestaetigungViewMessage(OpenBestaetigungViewMessage m)
         {
             var Bestaetigung = new BestaetigungView
             {
@@ -68,9 +70,9 @@ namespace UI.Desktop.BaseViews
 
         protected virtual void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<CloseLoadingViewMessage>(this);
-            Messenger.Default.Unregister<OpenLoadingViewMessage>(this);
-            Messenger.Default.Unregister<OpenBestaetigungViewMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<CloseLoadingViewMessage, string>(this, token);
+            WeakReferenceMessenger.Default.Unregister<OpenLoadingViewMessage, string>(this, token);
+            WeakReferenceMessenger.Default.Unregister<OpenBestaetigungViewMessage, string>(this, token);
         }
     }
 }

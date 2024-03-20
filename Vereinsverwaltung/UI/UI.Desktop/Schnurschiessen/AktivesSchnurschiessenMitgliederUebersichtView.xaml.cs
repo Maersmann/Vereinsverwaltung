@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchnurschiessenMessages;
 using Logic.UI.SchnurschiessenViewModels;
 using System;
@@ -24,10 +24,10 @@ namespace UI.Desktop.Schnurschiessen
         public AktivesSchnurschiessenMitgliederUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenAktivesSchnurschiessenTeilnahmeEintragenMessage>(this, "AktivesSchnurschiessenMitgliederUebersicht", m => ReceiveOpenAktivesSchnurschiessenTeilnahmeEintragenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenAktivesSchnurschiessenTeilnahmeEintragenMessage, string>(this, "AktivesSchnurschiessenMitgliederUebersicht", (r, m) => ReceiveOpenAktivesSchnurschiessenTeilnahmeEintragenMessage(m));
         }
 
-        private void ReceiveOpenAktivesSchnurschiessenTeilnahmeEintragenMessage(OpenAktivesSchnurschiessenTeilnahmeEintragenMessage m)
+        private static void ReceiveOpenAktivesSchnurschiessenTeilnahmeEintragenMessage(OpenAktivesSchnurschiessenTeilnahmeEintragenMessage m)
         {
             var view = new AktivesSchnurschiessenTeilnahmeEintragenView
             {
@@ -42,7 +42,7 @@ namespace UI.Desktop.Schnurschiessen
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenAktivesSchnurschiessenTeilnahmeEintragenMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenAktivesSchnurschiessenTeilnahmeEintragenMessage, string>(this, "AktivesSchnurschiessenMitgliederUebersicht");
         }
     }
 }

@@ -2,7 +2,7 @@
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
 using Data.Types.VereinsmeisterschaftTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.VereinsmeisterschaftMessages;
 
 namespace Logic.UI.VereinsmeisterschaftViewModels
@@ -16,7 +16,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             vereinsmeisterschaft = 0;
             typ = VereinsmeisterschaftSchuetzeTyp.maennlich16_30;
             Title = "Übersicht Schützenergebnisse";
-            Messenger.Default.Register<LoadVereinsmeisterschaftPlatzierungenVonSchuetzentypMessage>(this, "VereinsmeisterschaftPlatzierungenSchuetzenBereich", m => ReceiveLoadVereinsmeisterschaftPlatzierungenSchuetzenMessage(m));
+            WeakReferenceMessenger.Default.Register<LoadVereinsmeisterschaftPlatzierungenVonSchuetzentypMessage, string>(this, "VereinsmeisterschaftPlatzierungenSchuetzenBereich", (r, m) => ReceiveLoadVereinsmeisterschaftPlatzierungenSchuetzenMessage(m));
         }
 
         private async void ReceiveLoadVereinsmeisterschaftPlatzierungenSchuetzenMessage(LoadVereinsmeisterschaftPlatzierungenVonSchuetzentypMessage m)

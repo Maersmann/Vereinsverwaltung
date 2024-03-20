@@ -1,7 +1,7 @@
 ﻿using Base.Logic.ViewModels;
 using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchnurschiessenMessages;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             MessageToken = "AktiveSchnurschiessenBestandHistorie";
             Title = "Historie Bestand Auszeichnungen";
             schnurschiessenBestandID = 0;
-            Messenger.Default.Register<LoadAktiveSchnurschiessenBestandHistorieMessage>(this, "AktiveSchnurschiessenVerwaltung", m => ReceiveLoadAktiveSchnurschiessenBestandHistorieMessage(m));
+            WeakReferenceMessenger.Default.Register<LoadAktiveSchnurschiessenBestandHistorieMessage, string>(this, "AktiveSchnurschiessenVerwaltung", (r,m) => ReceiveLoadAktiveSchnurschiessenBestandHistorieMessage(m));
         }
 
         protected override int GetID() { return SelectedItem.ID; }
@@ -51,7 +51,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             if(m.SchnurschiessenBestandID == 0)
             {
                 ItemList.Clear();
-                RaisePropertyChanged(nameof(ItemList));
+                OnPropertyChanged(nameof(ItemList));
             }
             else
             {

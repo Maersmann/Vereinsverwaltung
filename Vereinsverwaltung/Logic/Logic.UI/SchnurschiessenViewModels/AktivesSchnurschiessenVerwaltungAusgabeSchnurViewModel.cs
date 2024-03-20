@@ -6,7 +6,7 @@ using Base.Logic.Wrapper;
 using Data.Model.SchnurrschiessenModels;
 using Data.Model.SchnurrschiessenModels.DTO;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.SchnurschiessenMessages;
@@ -31,7 +31,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             Data.SchnurschiessenBestandID = schnurschiessenBestandID;
             Title = bez + " Ausgabe";
-            RaisePropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(Title));
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schnurschiessenAuszeichnungBestand;
@@ -50,8 +50,8 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 409)
                 {
@@ -75,7 +75,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     ValidateAnzahl(value, "Bestand");
                     Data.Bestand = value.GetValueOrDefault();
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -104,7 +104,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
       
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new AktivesSchnurschiessenVerwaltungAusgabeSchnurModel();
             Anzahl = 1;

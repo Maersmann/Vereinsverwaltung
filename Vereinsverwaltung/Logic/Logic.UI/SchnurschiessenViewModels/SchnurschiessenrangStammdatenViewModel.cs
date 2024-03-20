@@ -1,6 +1,6 @@
 ﻿using Data.Model.SchnurrschiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
@@ -28,7 +28,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         private IList<SchnurschiessenAuszeichnungModel> alleAuszeichnungen;
         public SchnurschiessenrangStammdatenViewModel()
         {
-            alleAuszeichnungen = new List<SchnurschiessenAuszeichnungModel>();
+            alleAuszeichnungen = [];
             Title = "Schnurschiessen Rang Stammdaten";
             LoadAuszeichnungen();      
         }
@@ -46,7 +46,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 }
                 RequestIsWorking = false;
             }
-            RaisePropertyChanged("Auszeichnungen");
+            OnPropertyChanged(nameof(Auszeichnungen));
         }
 
         public async void ZeigeStammdatenAnAsync(int id)
@@ -80,8 +80,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 909)
                 {
@@ -103,7 +103,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     ValidateBezeichnung(value);
                     Data.Bezeichnung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -118,7 +118,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     ValidateZahl(value, "Rang");
                     Data.Rang = value.GetValueOrDefault(0);
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -132,7 +132,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (RequestIsWorking || !Equals(Data.NeueStufe, value))
                 {
                     Data.NeueStufe = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -146,7 +146,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (RequestIsWorking || !Equals(Data.DarfAuszeichnungBehalten, value))
                 {
                     Data.DarfAuszeichnungBehalten = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -172,7 +172,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (RequestIsWorking || (Data.AuszeichnungID != value.ID))
                 {
                     Data.AuszeichnungID = value.ID;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -202,7 +202,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchnurschiessenrangModel { };
             Bezeichnung = "";

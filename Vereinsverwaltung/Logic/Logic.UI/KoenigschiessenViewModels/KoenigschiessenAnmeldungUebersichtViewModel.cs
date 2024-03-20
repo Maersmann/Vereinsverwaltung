@@ -6,8 +6,8 @@ using Data.Model.KoenigschiessenModels;
 using Data.Model.KoenigschiessenModels.DTOs;
 using Data.Types;
 using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.KoenigschiessenMessages;
 using Logic.Messages.UtilMessages;
@@ -63,7 +63,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             set
             {
                 zeigeNurNichtAngemeldete = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -72,7 +72,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         private void ExecuteAnmeldeCommand()
         {
-            Messenger.Default.Send(new OpenKoenigschiessenBestaetigungMessage { KoenigschiessenAnmeldung = SelectedItem, Command = KoenigschiessenAnmeldungBestaetigt }, "KoenigschiessenAnmeldungUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenKoenigschiessenBestaetigungMessage { KoenigschiessenAnmeldung = SelectedItem, Command = KoenigschiessenAnmeldungBestaetigt }, "KoenigschiessenAnmeldungUebersicht");
         }
 
 
@@ -81,12 +81,12 @@ namespace Logic.UI.KoenigschiessenViewModels
             SelectedItem.Angemeldet = true;
             SelectedItem.AngemeldetAm = DateTime.Now;
             FilterText = "";
-            RaisePropertyChanged(nameof(FilterText));
+            OnPropertyChanged(nameof(FilterText));
             LadeUebersicht(jahr, variante);
         }
         private void ExcecuteRueckgaengigCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll die Anmeldung Rückgängig gemacht werden?", Command = KoenigschiessenAnmeldungRueckgaengig }, "KoenigschiessenAnmeldungUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll die Anmeldung Rückgängig gemacht werden?", Command = KoenigschiessenAnmeldungRueckgaengig }, "KoenigschiessenAnmeldungUebersicht");
         }
 
         private async void KoenigschiessenAnmeldungRueckgaengig()

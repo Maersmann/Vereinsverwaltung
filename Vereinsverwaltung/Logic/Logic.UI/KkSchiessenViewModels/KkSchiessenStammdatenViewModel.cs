@@ -5,8 +5,8 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.KkSchiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
@@ -44,7 +44,7 @@ namespace Logic.UI.KkSchiessenViewModels
             Datum = Data.Datum;
             Getraenke = Data.Getraenke;
             Munition = Data.PackungenMunition;
-            RaisePropertyChanged(nameof(GruppenBezeichnung));
+            OnPropertyChanged(nameof(GruppenBezeichnung));
             RequestIsWorking = false;
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.kkSchiessen;
@@ -59,8 +59,8 @@ namespace Logic.UI.KkSchiessenViewModels
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace Logic.UI.KkSchiessenViewModels
 
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenKkSchiessgruppeAuswahlMessage(OpenKkSchiessgruppeAuswahlMessageCallback), "KkSchiessenStammdaten");
+            WeakReferenceMessenger.Default.Send(new OpenKkSchiessgruppeAuswahlMessage(OpenKkSchiessgruppeAuswahlMessageCallback), "KkSchiessenStammdaten");
         }
 
         protected override bool CanExecuteSaveCommand()
@@ -94,7 +94,7 @@ namespace Logic.UI.KkSchiessenViewModels
                         Response<KkSchiessgruppeModel> resData = await resp.Content.ReadAsAsync<Response<KkSchiessgruppeModel>>();
                         Data.KkSchiessGruppeID = resData.Data.ID;
                         Data.KkSchiessGruppe = resData.Data;
-                        RaisePropertyChanged(nameof(GruppenBezeichnung));
+                        OnPropertyChanged(nameof(GruppenBezeichnung));
                         gruppeAusgewaehlt = true;
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
@@ -114,7 +114,7 @@ namespace Logic.UI.KkSchiessenViewModels
                 {
                     Data.Getraenke = value.GetValueOrDefault(0);
                     ValidateAnzahl(Data.Getraenke, nameof(Getraenke)); 
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -129,7 +129,7 @@ namespace Logic.UI.KkSchiessenViewModels
                 {
                     Data.PackungenMunition = value.GetValueOrDefault(0);
                     ValidateAnzahl(Data.PackungenMunition, nameof(Munition));
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -145,7 +145,7 @@ namespace Logic.UI.KkSchiessenViewModels
                 {
                     Data.Datum = value.GetValueOrDefault(DateTime.Now);
                     ValidateDatum(Data.Datum);
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -179,7 +179,7 @@ namespace Logic.UI.KkSchiessenViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new KkSchiessenModel { KkSchiessGruppe = new KkSchiessgruppeModel() };
             Getraenke = null;

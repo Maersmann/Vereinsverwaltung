@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using System.Linq;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 
 namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
@@ -38,7 +38,7 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenSchnurschiessenAuszeichungMessage(ExcecuteLoadDataCallback), "SchnurschiessenAuswertungEntwicklung");
+            WeakReferenceMessenger.Default.Send(new OpenSchnurschiessenAuszeichungMessage(ExcecuteLoadDataCallback), "SchnurschiessenAuswertungEntwicklung");
         }
 
         private async void ExcecuteLoadDataCallback(bool confirmed, int auszeichungID)
@@ -78,9 +78,9 @@ namespace Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels
 
             Series = new LineSeries<SchnurschiessenAuswertungEntwicklungAuszeichnungModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings

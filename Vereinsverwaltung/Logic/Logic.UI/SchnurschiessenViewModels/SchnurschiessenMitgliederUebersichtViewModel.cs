@@ -4,7 +4,7 @@ using Data.Model.SchnurrschiessenModels;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchluesselMessages;
 using Logic.Messages.SchnurschiessenMessages;
 using Logic.Messages.VereinsmeisterschaftMessages;
@@ -50,7 +50,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         private void ExecuteOpenHistorieCommand()
         {
-            Messenger.Default.Send(new OpenSchnurschiessenMitgliedHistorieUebersicht { Id = SelectedItem.Id }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenSchnurschiessenMitgliedHistorieUebersicht { Id = SelectedItem.Id }, messageToken);
         }
 
         #endregion

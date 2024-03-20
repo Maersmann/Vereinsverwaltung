@@ -92,9 +92,9 @@ namespace Logic.UI.AuswertungenViewModels
                 YAxes.First().Name = "Anzahl";
                 Series = new LineSeries<int>[3] { anzahlSeries, getraenkeSeries, munitionSeries };
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -108,7 +108,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -119,7 +119,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }

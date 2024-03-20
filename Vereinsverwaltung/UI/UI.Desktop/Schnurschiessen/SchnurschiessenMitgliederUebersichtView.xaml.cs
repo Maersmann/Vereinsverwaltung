@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.SchluesselMessages;
 using Logic.Messages.SchnurschiessenMessages;
@@ -28,10 +28,10 @@ namespace UI.Desktop.Schnurschiessen
         public SchnurschiessenMitgliederUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenSchnurschiessenMitgliedHistorieUebersicht>(this, "SchnurschiessenMitgliederUebersicht", m => ReceiveOpenSchnurschiessenMitgliedHistorieUebersicht(m));
+            WeakReferenceMessenger.Default.Register<OpenSchnurschiessenMitgliedHistorieUebersicht, string>(this, "SchnurschiessenMitgliederUebersicht", (r, m) => ReceiveOpenSchnurschiessenMitgliedHistorieUebersicht(m));
         }
 
-        private void ReceiveOpenSchnurschiessenMitgliedHistorieUebersicht(OpenSchnurschiessenMitgliedHistorieUebersicht m)
+        private static void ReceiveOpenSchnurschiessenMitgliedHistorieUebersicht(OpenSchnurschiessenMitgliedHistorieUebersicht m)
         {
             var view = new SchnurschiessenMitgliedHistorieUebersichtView
             {
@@ -46,7 +46,7 @@ namespace UI.Desktop.Schnurschiessen
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenSchnurschiessenMitgliedHistorieUebersicht>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSchnurschiessenMitgliedHistorieUebersicht, string>(this, "SchnurschiessenMitgliederUebersicht");
         }
     }
 }

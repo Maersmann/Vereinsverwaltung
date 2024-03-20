@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace UI.Desktop.Vereinsmeisterschaft
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.vereinsmeisterschaftSchuetzeErgebnis);
-            Messenger.Default.Register<CloseViewMessage>(this, "VereinsmeisterschaftErgebnisEintragen", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "VereinsmeisterschaftErgebnisEintragen", (r,m) => ReceivCloseViewMessage());
         }
 
         private void ReceivCloseViewMessage()
@@ -34,7 +34,7 @@ namespace UI.Desktop.Vereinsmeisterschaft
 
         private void StammdatenView_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<CloseViewMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "VereinsmeisterschaftErgebnisEintragen");
         }
     }
 }

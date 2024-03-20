@@ -9,8 +9,8 @@ using Data.Model.SchnurrschiessenModels.DTO;
 using Data.Types;
 using Data.Types.MitgliederTypes;
 using Data.Types.SchnurschiessenTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.SchnurschiessenMessages;
 using Logic.UI.InterfaceViewModels;
@@ -54,12 +54,12 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (resp.IsSuccessStatusCode)
                     Response = await resp.Content.ReadAsAsync<Response<AktivesSchnurschiessenTeilnahmeEintragenModel>>();
             }
-            RaisePropertyChanged(nameof(AlterRang));
-            RaisePropertyChanged(nameof(NeuerRang));
-            RaisePropertyChanged(nameof(ZuerhalteneAuszeichnung));
-            RaisePropertyChanged(nameof(Rueckgabe));
-            RaisePropertyChanged(nameof(CanAusgeben));
-            RaisePropertyChanged(nameof(CanAusgebenVisbility));
+            OnPropertyChanged(nameof(AlterRang));
+            OnPropertyChanged(nameof(NeuerRang));
+            OnPropertyChanged(nameof(ZuerhalteneAuszeichnung));
+            OnPropertyChanged(nameof(Rueckgabe));
+            OnPropertyChanged(nameof(CanAusgeben));
+            OnPropertyChanged(nameof(CanAusgebenVisbility));
             Title = "Teilname eintragen für" + Data.Name;
             RequestIsWorking = false;
         }
@@ -95,8 +95,8 @@ namespace Logic.UI.SchnurschiessenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Teilnahme eingetragen" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Teilnahme eingetragen" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                 {
@@ -112,35 +112,35 @@ namespace Logic.UI.SchnurschiessenViewModels
         private void ExecuteZurueckgegebenCommand()
         {
             selectedItem.RueckgabeTyp = SchnurrauszeichnungRueckgabeTyp.RueckgabeErfolgt;
-            RaisePropertyChanged(nameof(Rueckgabe));
-            RaisePropertyChanged(nameof(CanAusgeben));
-            RaisePropertyChanged(nameof(CanAusgebenVisbility));
+            OnPropertyChanged(nameof(Rueckgabe));
+            OnPropertyChanged(nameof(CanAusgeben));
+            OnPropertyChanged(nameof(CanAusgebenVisbility));
         }
 
         private void ExecuteBeschaedigtCommand()
         {
             selectedItem.RueckgabeTyp = SchnurrauszeichnungRueckgabeTyp.beschaedigt;
-            RaisePropertyChanged(nameof(Rueckgabe));
-            RaisePropertyChanged(nameof(CanAusgeben));
-            RaisePropertyChanged(nameof(CanAusgebenVisbility));
+            OnPropertyChanged(nameof(Rueckgabe));
+            OnPropertyChanged(nameof(CanAusgeben));
+            OnPropertyChanged(nameof(CanAusgebenVisbility));
         }
 
         private void ExecuteVerlorenCommand()
         {
             selectedItem.RueckgabeTyp = SchnurrauszeichnungRueckgabeTyp.verloren;
-            RaisePropertyChanged(nameof(Rueckgabe));
-            RaisePropertyChanged(nameof(CanAusgeben));
-            RaisePropertyChanged(nameof(CanAusgebenVisbility));
+            OnPropertyChanged(nameof(Rueckgabe));
+            OnPropertyChanged(nameof(CanAusgeben));
+            OnPropertyChanged(nameof(CanAusgebenVisbility));
         }
 
         private void ExecuteRueckgaengigCommand()
         {
             selectedItem.RueckgabeTyp = SchnurrauszeichnungRueckgabeTyp.RueckgabeOffen;
             Data.AuszeichnungAusgegeben = false;
-            RaisePropertyChanged(nameof(Rueckgabe));
-            RaisePropertyChanged(nameof(CanAusgeben));
-            RaisePropertyChanged(nameof(AuszeichnungAusgegeben));
-            RaisePropertyChanged(nameof(CanAusgebenVisbility));
+            OnPropertyChanged(nameof(Rueckgabe));
+            OnPropertyChanged(nameof(CanAusgeben));
+            OnPropertyChanged(nameof(AuszeichnungAusgegeben));
+            OnPropertyChanged(nameof(CanAusgebenVisbility));
         }
         #endregion
 
@@ -164,7 +164,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (RequestIsWorking)
                 {
                     Data.Auszeichnungen = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -177,8 +177,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (RequestIsWorking || !Equals(Data.AuszeichnungAusgegeben, value))
                 {
                     Data.AuszeichnungAusgegeben = value;
-                    base.RaisePropertyChanged();
-                    RaisePropertyChanged(nameof(Rueckgabe));
+                    base.OnPropertyChanged();
+                    OnPropertyChanged(nameof(Rueckgabe));
                 }
             }
         }
@@ -194,13 +194,13 @@ namespace Logic.UI.SchnurschiessenViewModels
             set
             {
                 selectedItem = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         #endregion
 
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new AktivesSchnurschiessenTeilnahmeEintragenModel();
             state = State.Neu;

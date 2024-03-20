@@ -2,8 +2,8 @@
 using Base.Logic.ViewModels;
 using Data.Model.KoenigschiessenModels;
 using Data.Model.KoenigschiessenModels.DTOs;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.KoenigschiessenMessages;
 using System;
@@ -30,7 +30,7 @@ namespace Logic.UI.KoenigschiessenViewModels
         public void ZeigeDatenAn(KoenigschiessenAnmeldungUebersichtModel koenigschiessenAnmeldung)
         {
             this.koenigschiessenAnmeldung = koenigschiessenAnmeldung;
-            RaisePropertyChanged(nameof(KoenigschiessenAnmeldung));
+            OnPropertyChanged(nameof(KoenigschiessenAnmeldung));
         }
 
         public bool Bestaetigt { get; private set; }
@@ -65,7 +65,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                     {
                         Bestaetigt = true;
                     }                   
-                    Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenAnmeldungBestaetigung");
+                    WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenAnmeldungBestaetigung");
                 }
             }
             catch (Exception e)
@@ -77,7 +77,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         private void ExecuteAbbrechenCommand()
         {
-            Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenAnmeldungBestaetigung");
+            WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenAnmeldungBestaetigung");
         }
         #endregion
 

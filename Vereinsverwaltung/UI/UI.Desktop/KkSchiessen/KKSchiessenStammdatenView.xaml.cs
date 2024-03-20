@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -26,10 +26,10 @@ namespace UI.Desktop.KkSchiessen
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.kkSchiessen);
-            Messenger.Default.Register<OpenKkSchiessgruppeAuswahlMessage>(this, "KkSchiessenStammdaten", m => ReceiveOpenKkSchiessgruppeAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenKkSchiessgruppeAuswahlMessage, string>(this, "KkSchiessenStammdaten", (r, m) => ReceiveOpenKkSchiessgruppeAuswahlMessage(m));
         }
 
-        private void ReceiveOpenKkSchiessgruppeAuswahlMessage(OpenKkSchiessgruppeAuswahlMessage m)
+        private static void ReceiveOpenKkSchiessgruppeAuswahlMessage(OpenKkSchiessgruppeAuswahlMessage m)
         {
             var view = new KkSchiessgruppeAuswahlView()
             {
@@ -51,7 +51,7 @@ namespace UI.Desktop.KkSchiessen
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenKkSchiessgruppeAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenKkSchiessgruppeAuswahlMessage, string>(this, "KkSchiessenStammdaten");
             base.Window_Unloaded(sender, e);
         }
     }

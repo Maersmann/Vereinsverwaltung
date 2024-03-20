@@ -1,7 +1,7 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.KoenigschiessenModels;
-using GalaSoft.MvvmLight;
+
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -29,7 +29,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
                 RequestIsWorking = false;
             }
-            RaisePropertyChanged(nameof(Werte));
+            OnPropertyChanged(nameof(Werte));
         }
 
 

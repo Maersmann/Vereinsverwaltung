@@ -1,7 +1,7 @@
 ﻿using Base.Logic.ViewModels;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 base.SelectedItem = value;
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadVereinsmeisterschaftPlatzierungenVonGruppentypMessage { GruppeTyp = SelectedItem.VereinsmeisterschaftGruppeTyp, VereinsmeisterschaftID = vereinsmeisterschaftID.Value }, messageToken);
+                    WeakReferenceMessenger.Default.Send(new LoadVereinsmeisterschaftPlatzierungenVonGruppentypMessage { GruppeTyp = SelectedItem.VereinsmeisterschaftGruppeTyp, VereinsmeisterschaftID = vereinsmeisterschaftID.Value }, messageToken);
                 }
             }
         }

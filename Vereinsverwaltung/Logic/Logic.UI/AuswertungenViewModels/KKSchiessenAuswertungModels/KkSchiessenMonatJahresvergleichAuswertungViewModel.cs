@@ -30,15 +30,15 @@ namespace Logic.UI.AuswertungenViewModels
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
-            YAxes = new List<Axis>
-                {
+            YAxes =
+                [
                     new Axis()
                     {
                         LabelsPaint = new SolidColorPaint{ Color = SKColors.CornflowerBlue },
                         Position = AxisPosition.Start,
                         Labeler = (value) =>  string.Format("{0}", value)
                     }
-                };
+                ];
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -63,11 +63,10 @@ namespace Logic.UI.AuswertungenViewModels
                 ItemList.ToList().ForEach(item =>
                 {
 
-                    ColumnSeries<int> coloumn = new ColumnSeries<int>
+                    ColumnSeries<int> coloumn = new()
                     {
                         Name = item.Jahr.ToString(),
-                        Values = new List<int>(),
-                        TooltipLabelFormatter = (point) => item.Jahr + " " + point.PrimaryValue.ToString()
+                        Values = [],
                     };
 
                     var anzahl = new List<int>();
@@ -92,9 +91,9 @@ namespace Logic.UI.AuswertungenViewModels
 
                 Series = series;
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -108,7 +107,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -119,7 +118,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -130,7 +129,7 @@ namespace Logic.UI.AuswertungenViewModels
             get => typ;
             set
             {
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 typ = value;
             }
         }

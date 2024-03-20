@@ -2,8 +2,8 @@
 using Data.Model.SchnurrschiessenModels;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchluesselMessages;
 using Logic.Messages.SchnurschiessenMessages;
 using Prism.Commands;
@@ -41,7 +41,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 base.SelectedItem = value;
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadSchnurschiessenAuszeichnungBestandHistorieMessage { schnurschiessenauszeichnungID = SelectedItem.SchnurauszeichnungId }, messageToken);
+                    WeakReferenceMessenger.Default.Send(new LoadSchnurschiessenAuszeichnungBestandHistorieMessage { schnurschiessenauszeichnungID = SelectedItem.SchnurauszeichnungId }, messageToken);
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace Logic.UI.SchnurschiessenViewModels
 
         private void ExecuteOpenGekauftCommand()
         {
-            Messenger.Default.Send(new OpenAuszeichnungGekauftEintragenMessage { SchnurauszeichnungId = SelectedItem.SchnurauszeichnungId, Bezeichnung = SelectedItem.Bezeichnung }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenAuszeichnungGekauftEintragenMessage { SchnurauszeichnungId = SelectedItem.SchnurauszeichnungId, Bezeichnung = SelectedItem.Bezeichnung }, messageToken);
         }
 
 
