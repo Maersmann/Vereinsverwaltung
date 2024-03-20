@@ -113,7 +113,6 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/VereinsmeisterschaftschuetzeErgebnisse/Ergebnis", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -124,6 +123,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     SendExceptionMessage("Ergebnis konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
 

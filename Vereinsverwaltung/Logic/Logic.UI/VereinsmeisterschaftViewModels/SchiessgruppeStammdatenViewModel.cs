@@ -85,7 +85,6 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Schiessgruppen", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -100,6 +99,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     SendExceptionMessage("Schiessgruppe konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
 

@@ -59,7 +59,7 @@ namespace Logic.UI.UserViewModels
                 {
                     resp = await Client.PutAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Users/{Data.Id}", Data);
                 }
-                RequestIsWorking = false;
+                
                 if (resp.IsSuccessStatusCode)
                 {
                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
@@ -69,6 +69,7 @@ namespace Logic.UI.UserViewModels
                 {
                     SendExceptionMessage("Benutzer konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
             }
         }
 

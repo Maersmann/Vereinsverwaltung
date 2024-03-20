@@ -135,7 +135,6 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Schuetzen", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -150,6 +149,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     SendExceptionMessage("Schütze konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
 

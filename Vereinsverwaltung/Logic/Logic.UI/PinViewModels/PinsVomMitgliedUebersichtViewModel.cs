@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace Logic.UI.PinViewModels
 {
@@ -19,8 +20,8 @@ namespace Logic.UI.PinViewModels
         {
             id = 0;
             Title = "Übersicht Pins vom Mitglied";
-            ErhaltenCommand = new RelayCommand(() => ExecuteErhaltenCommand());
-            RueckgaengigCommand = new RelayCommand(() => ExcecuteRueckgaengigCommand());
+            ErhaltenCommand = new DelegateCommand(ExecuteErhaltenCommand, CanPost);
+            RueckgaengigCommand = new DelegateCommand(ExcecuteRueckgaengigCommand, CanPost);
             zeigeNurOffene = true;
         }
         protected override int GetID() { return SelectedItem.Mitglied.ID; }
@@ -62,6 +63,7 @@ namespace Logic.UI.PinViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Rueckgaengig", SelectedItem);
                     if ((int)resp.StatusCode == 901)
                     {
@@ -76,11 +78,13 @@ namespace Logic.UI.PinViewModels
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
                     LoadData(id);
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
-                SendExceptionMessage(e.Message); ;
+                SendExceptionMessage(e.Message);
+                RequestIsWorking =false;
             }
 
         }
@@ -90,6 +94,7 @@ namespace Logic.UI.PinViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Erhalten", SelectedItem);
 
                     if (!resp.IsSuccessStatusCode)
@@ -108,14 +113,34 @@ namespace Logic.UI.PinViewModels
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
                     LoadData(id);
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
-                SendExceptionMessage(e.Message);
+                SendExceptionMessage(e.Message); 
+                RequestIsWorking = false;
             }
         }
 
+        public bool CanPost() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (ErhaltenCommand != null)
+                {
+                    ((DelegateCommand)ErhaltenCommand).RaiseCanExecuteChanged();
+                }
+                if (RueckgaengigCommand != null)
+                {
+                    ((DelegateCommand)RueckgaengigCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

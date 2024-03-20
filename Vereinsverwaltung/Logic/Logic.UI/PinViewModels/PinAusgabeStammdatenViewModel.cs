@@ -52,6 +52,7 @@ namespace Logic.UI.PinViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 Data.PinID = Data.Pin.ID;
                 if (!Data.Option.NurAktive)
                 {
@@ -73,6 +74,7 @@ namespace Logic.UI.PinViewModels
                     SendExceptionMessage("Pinausgabe konnte nicht erstellt werden.");
                 }
                 WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "PinAusgabeStammdaten");
+                RequestIsWorking = false;
             }
         }
         #endregion

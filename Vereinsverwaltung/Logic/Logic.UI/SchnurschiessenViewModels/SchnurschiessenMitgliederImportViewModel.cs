@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
@@ -25,8 +26,8 @@ namespace Logic.UI.SchnurschiessenViewModels
          public SchnurschiessenMitgliederImportViewModel()
         {
             Title = "Import Mitglieder";
-            ImportCommand = new RelayCommand(() => ExecuteImportCommand());
-            SaveCommand = new RelayCommand(() => ExecuteSaveCommand());
+            ImportCommand = new DelegateCommand(ExecuteImportCommand, CanExecuteCommand);
+            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteCommand);
         }
 
         #region Bindings
@@ -42,6 +43,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 OpenFileDialog openFileDialog = new();
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    RequestIsWorking = true;
                     bool erfolgreich = false;
                     WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "SchnurschiessenMitgliederImport");
                     await new ImportHelper().PostSchnurschiessenFile(openFileDialog.FileName).ContinueWith(async task =>
@@ -60,6 +62,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                         }
                     });
                     WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "SchnurschiessenMitgliederImport");
+                    RequestIsWorking = false;
 
                     if (!erfolgreich)
                     {   
@@ -95,6 +98,24 @@ namespace Logic.UI.SchnurschiessenViewModels
                 }
             }
         }
+        public bool CanExecuteCommand() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (ImportCommand != null)
+                {
+                    ((DelegateCommand)ImportCommand).RaiseCanExecuteChanged();
+                }
+                if (SaveCommand != null)
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

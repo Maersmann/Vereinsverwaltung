@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace Logic.UI.KoenigschiessenViewModels
 {
@@ -37,7 +38,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             ErgebnisEintragenCommand = new RelayCommand(() => ExecuteErgebnisEintragenCommand());
             ErgebnisEntfernenCommand = new RelayCommand(() => ExcecuteErgebnisEntfernenCommand());
             BesteErgebnisseCommand = new RelayCommand(() => ExcecuteBesteErgebnisseCommand());
-            RundeBeendenCommand = new RelayCommand(() => ExcecuteRundeBeendenCommand());
+            RundeBeendenCommand = new DelegateCommand(ExcecuteRundeBeendenCommand, CanPost);
         }
 
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
@@ -147,6 +148,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KoenigschiessenRunde/Abschliessen",
                         new KoenigschiessenRundeAbschliessenDTO
                         {
@@ -177,14 +179,30 @@ namespace Logic.UI.KoenigschiessenViewModels
                             LadeUebersicht(jahr, variante, runde + 1, art);
                         }
                     }
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
-                SendExceptionMessage(e.Message); ;
+                SendExceptionMessage(e.Message);
+                RequestIsWorking = false;
             }
         }
 
+        public bool CanPost() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (RundeBeendenCommand != null)
+                {
+                    ((DelegateCommand)RundeBeendenCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

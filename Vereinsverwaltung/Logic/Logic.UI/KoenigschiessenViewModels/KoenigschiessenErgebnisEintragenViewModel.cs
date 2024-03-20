@@ -90,6 +90,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KoenigschiessenErgebnis",
                         new KoenigschiessenErgebnisEintragenDTO
                         {
@@ -109,11 +110,13 @@ namespace Logic.UI.KoenigschiessenViewModels
                         Bestaetigt = true;
                     }
                     WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
-                SendExceptionMessage(e.Message); ;
+                SendExceptionMessage(e.Message);
+                RequestIsWorking = false;
             }
 
         }
@@ -125,9 +128,22 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         private bool CanExecuteBestaetigungCommand()
         {
-            return ValidationErrors.Count == 0;
+            return ValidationErrors.Count == 0 && !RequestIsWorking;
         }
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (BestaetigungCommand != null)
+                {
+                    ((DelegateCommand)BestaetigungCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #region Validierung
         private bool ValidateErgebnis(int? ergebnis)

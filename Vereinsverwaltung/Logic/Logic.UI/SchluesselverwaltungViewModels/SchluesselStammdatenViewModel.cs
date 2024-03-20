@@ -55,7 +55,6 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -70,6 +69,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     SendExceptionMessage("Schlüssel konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
         #endregion

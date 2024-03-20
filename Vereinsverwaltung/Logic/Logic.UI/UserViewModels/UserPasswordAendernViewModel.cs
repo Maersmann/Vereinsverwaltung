@@ -34,7 +34,6 @@ namespace Logic.UI.UserViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp =  await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Users/{GlobalUserVariables.UserID}/Password", Data.Password);
-                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
@@ -43,6 +42,8 @@ namespace Logic.UI.UserViewModels
                 {
                     SendExceptionMessage("Password konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
 

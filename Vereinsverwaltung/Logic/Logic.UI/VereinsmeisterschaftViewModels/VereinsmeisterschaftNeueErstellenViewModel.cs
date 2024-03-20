@@ -37,7 +37,6 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/vereinsmeisterschaften", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -49,6 +48,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     SendExceptionMessage("Neue Vereinsmeisterschaft konnte nicht erstellt werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
         #endregion

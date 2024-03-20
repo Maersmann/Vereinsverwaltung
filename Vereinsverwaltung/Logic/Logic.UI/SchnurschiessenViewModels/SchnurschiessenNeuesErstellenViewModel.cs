@@ -40,7 +40,6 @@ namespace Logic.UI.SchnurschiessenViewModels
                 RequestIsWorking = true;
                 Data.Erstelldatum = DateTime.Now;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/schnurschiessen", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -56,6 +55,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Neues Schnurschiessen konnte nicht erstellt werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
         #endregion

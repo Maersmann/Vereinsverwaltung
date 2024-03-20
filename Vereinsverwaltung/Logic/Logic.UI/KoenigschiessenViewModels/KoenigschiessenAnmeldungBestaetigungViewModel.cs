@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace Logic.UI.KoenigschiessenViewModels
 {
@@ -22,7 +23,7 @@ namespace Logic.UI.KoenigschiessenViewModels
         {
             koenigschiessenAnmeldung = new KoenigschiessenAnmeldungUebersichtModel();
             Title = "Bestästigung Anmeldung";
-            BestaetigungCommand = new RelayCommand(() => ExecuteBestaetigungCommand());
+            BestaetigungCommand = new DelegateCommand(ExecuteBestaetigungCommand, CanExecuteCommand);
             AbbrechenCommand = new RelayCommand(() => ExecuteAbbrechenCommand());
             Bestaetigt = false;
         }
@@ -41,6 +42,7 @@ namespace Logic.UI.KoenigschiessenViewModels
         public ICommand AbbrechenCommand { get; set; }
 
         public KoenigschiessenAnmeldungUebersichtModel KoenigschiessenAnmeldung => koenigschiessenAnmeldung;
+
         #endregion
 
 
@@ -52,6 +54,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KoenigschiessenAnmeldung", new KoenigschiessenAnmeldungDTO { SchuetzeID = koenigschiessenAnmeldung.ID });
                     if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                     {
@@ -66,11 +69,13 @@ namespace Logic.UI.KoenigschiessenViewModels
                         Bestaetigt = true;
                     }                   
                     WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenAnmeldungBestaetigung");
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
-                SendExceptionMessage(e.Message); ;
+                SendExceptionMessage(e.Message);
+                RequestIsWorking = false;
             }
 
         }
@@ -79,7 +84,21 @@ namespace Logic.UI.KoenigschiessenViewModels
         {
             WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenAnmeldungBestaetigung");
         }
+
+        public bool CanExecuteCommand() => !RequestIsWorking;
         #endregion
 
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (BestaetigungCommand != null)
+                {
+                    ((DelegateCommand)BestaetigungCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

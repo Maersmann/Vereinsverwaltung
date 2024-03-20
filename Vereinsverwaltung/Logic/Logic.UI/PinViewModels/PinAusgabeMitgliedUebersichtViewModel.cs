@@ -11,6 +11,7 @@ using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Wrapper;
 using CommunityToolkit.Mvvm.Input;
+using Prism.Commands;
 
 namespace Logic.UI.PinViewModels
 {
@@ -22,8 +23,8 @@ namespace Logic.UI.PinViewModels
         {
             id = 0;
             Title = "Übersicht Mitglieder für Pins";
-            ErhaltenCommand = new RelayCommand(() => ExecuteErhaltenCommand());
-            RueckgaengigCommand = new RelayCommand(() => ExcecuteRueckgaengigCommand());
+            ErhaltenCommand = new DelegateCommand(ExecuteErhaltenCommand, CanPost);
+            RueckgaengigCommand  = new DelegateCommand(ExcecuteRueckgaengigCommand, CanPost);
             zeigeNurOffene = true;
         }
         protected override int GetID() { return SelectedItem.Mitglied.ID; }
@@ -103,6 +104,7 @@ namespace Logic.UI.PinViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Pins/Ausgabe/Uebersicht/Mitglied/Erhalten", SelectedItem);
 
                     if (!resp.IsSuccessStatusCode)
@@ -122,11 +124,13 @@ namespace Logic.UI.PinViewModels
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
                     FilterText = "";
                     LoadData(id);
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
                 SendExceptionMessage(e.Message);
+                RequestIsWorking = false;
             }           
         }
 
@@ -134,6 +138,24 @@ namespace Logic.UI.PinViewModels
         {
             WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.pinAusgabe.ToString());
         }
+        public bool CanPost() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (ErhaltenCommand != null)
+                {
+                    ((DelegateCommand)ErhaltenCommand).RaiseCanExecuteChanged();
+                }
+                if (RueckgaengigCommand != null)
+                {
+                    ((DelegateCommand)RueckgaengigCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

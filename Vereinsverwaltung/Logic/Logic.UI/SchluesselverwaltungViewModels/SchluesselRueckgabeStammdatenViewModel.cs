@@ -91,7 +91,6 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/rueckgabe", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -107,6 +106,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     SendExceptionMessage("Schlüsselrückgabe konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
 

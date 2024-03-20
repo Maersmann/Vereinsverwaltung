@@ -13,14 +13,14 @@ namespace Logic.Core.ImportHelper
     {
         public async Task<HttpResponseMessage> PostFile(string filename)
         {
-            HttpRequestMessage message = new HttpRequestMessage();
-            MultipartFormDataContent content = new MultipartFormDataContent();
+            HttpRequestMessage message = new();
+            MultipartFormDataContent content = [];
             var stream = File.Open(filename, FileMode.Open, FileAccess.Read);
             content.Add(new StreamContent(stream), "file", filename);
             message.Method = HttpMethod.Post;
             message.Content = content;
             message.RequestUri = new Uri(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Loading");
-            HttpClientHandler clientHandler = new HttpClientHandler
+            HttpClientHandler clientHandler = new()
             {
                 ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
             };
@@ -31,14 +31,14 @@ namespace Logic.Core.ImportHelper
 
         public async Task<HttpResponseMessage> PostSchnurschiessenFile(string fileName)
         {
-            HttpRequestMessage message = new HttpRequestMessage();
-            MultipartFormDataContent content = new MultipartFormDataContent();
+            HttpRequestMessage message = new();
+            MultipartFormDataContent content = [];
             var stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
             content.Add(new StreamContent(stream), "file", fileName);
             message.Method = HttpMethod.Post;
             message.Content = content;
             message.RequestUri = new Uri(GlobalVariables.BackendServer_URL + $"/api/Import/schnurschiessen/Loading");
-            HttpClientHandler clientHandler = new HttpClientHandler
+            HttpClientHandler clientHandler = new()
             {
                 ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
             };

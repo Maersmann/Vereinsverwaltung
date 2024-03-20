@@ -91,7 +91,6 @@ namespace Logic.UI.SchnurschiessenViewModels
                 });
 
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Schnurschiessen/ErfolgreicheTeilnahme", DTO);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -106,6 +105,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Teilnahme konnte nicht eingetragen werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
 

@@ -57,7 +57,6 @@ namespace Logic.UI.SchnurschiessenViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Schnurschiessenauszeichnung", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -68,7 +67,9 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Auszeichznung konnte nicht gespeichert werden.");
                 }
-            }           
+                RequestIsWorking = false;
+
+            }
         }
         #endregion
 

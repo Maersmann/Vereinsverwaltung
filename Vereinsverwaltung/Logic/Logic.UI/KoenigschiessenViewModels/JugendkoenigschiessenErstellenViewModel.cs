@@ -31,6 +31,7 @@ namespace Logic.UI.KoenigschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Jugendkönigschiessen wird erstellt." }, "JugendkoenigschiessenErstellen");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Jugendkoenigschiessen", Data);
                 if (resp.IsSuccessStatusCode)
@@ -47,6 +48,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                     SendExceptionMessage("Jugendkönigschiessen konnte nicht erstellt werden.");
                 }
                 WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "JugendkoenigschiessenErstellen");
+                RequestIsWorking = false;
             }
         }
         #endregion

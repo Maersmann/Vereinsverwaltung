@@ -57,12 +57,12 @@ namespace Logic.UI.SchnurschiessenViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/SchnurschiessenMitglied/Zuordnen", new SchnurschiessenMitgliedZuordnenDTO
                     {
                         KorrektesMitgliedID = id,
                         OhneZuordnungMitgliedID = SelectedItem.MitgliedID
                     });
-                    RequestIsWorking = false;
 
                     if (resp.IsSuccessStatusCode)
                     {
@@ -77,12 +77,29 @@ namespace Logic.UI.SchnurschiessenViewModels
                     {
                         SendExceptionMessage("Konnte nicht geändert werden.");
                     }
+                    RequestIsWorking = false;
+
                 }
             }
         }
-
-
+        protected override bool CanExecuteCommand()
+        {
+            return base.CanExecuteCommand() && !RequestIsWorking;
+        }
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (ZuordnenCommand != null)
+                {
+                    ((DelegateCommand)ZuordnenCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
     }
 }

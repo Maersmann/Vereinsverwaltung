@@ -17,6 +17,7 @@ using System.Windows.Input;
 using Base.Logic.Messages;
 using Logic.Messages.BaseMessages;
 using System.Net.Http.Json;
+using Prism.Commands;
 
 namespace Logic.UI.MitgliederViewModels
 {
@@ -27,7 +28,7 @@ namespace Logic.UI.MitgliederViewModels
         {
             Title = "Übersicht Ehemailige Mitglieder";
             RegisterAktualisereViewMessage(StammdatenTypes.EhemaligeMitglieder.ToString());
-            AnonymisierenCommand = new RelayCommand(() => ExcecuteAnonymisierenCommand());
+            AnonymisierenCommand = new DelegateCommand(ExcecuteAnonymisierenCommand, CanPost);
         }
 
 
@@ -49,19 +50,34 @@ namespace Logic.UI.MitgliederViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsync(GlobalVariables.BackendServer_URL + $"/api/Mitglieder/anonymisieren", null);
-                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
                     await LoadData();
                 }
                 else
-                {
+                {   
                     SendExceptionMessage("Mitglied konnte nicht gespeichert werden.");
+                }
+                RequestIsWorking = false;
+            }
+        }
+
+        public bool CanPost() => !RequestIsWorking;
+        #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (AnonymisierenCommand != null)
+                {
+                    ((DelegateCommand)AnonymisierenCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-        #endregion
 
     }
 }

@@ -81,8 +81,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/besitzer", Data);
-                RequestIsWorking = false;
-
+                
                 if (resp.IsSuccessStatusCode)
                 {
                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
@@ -96,6 +95,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     SendExceptionMessage("Besitzer konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
             }
         }
 

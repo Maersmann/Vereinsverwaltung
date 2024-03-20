@@ -76,7 +76,6 @@ namespace Logic.UI.SchnurschiessenViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Schnurschiessenrang", Data);
-                RequestIsWorking = false;
                 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -87,6 +86,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Rang ist schon vorhanden");
                 }
+                RequestIsWorking = false;
 
             }
         }

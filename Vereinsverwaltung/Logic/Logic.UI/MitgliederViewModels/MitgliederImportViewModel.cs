@@ -21,6 +21,7 @@ using System.Windows.Input;
 using Base.Logic.ViewModels;
 using Base.Logic.Core;
 using Base.Logic.Messages;
+using Prism.Commands;
 
 namespace Logic.UI.MitgliederViewModels
 {
@@ -30,8 +31,8 @@ namespace Logic.UI.MitgliederViewModels
         public MitgliederImportViewModel()
         {
             Title = "Import Mitglieder";
-            ImportCommand = new RelayCommand(() => ExecuteImportCommand());
-            SaveCommand = new RelayCommand(() => ExecuteSaveCommand());
+            ImportCommand = new DelegateCommand(ExecuteImportCommand, CanExecuteCommand);
+            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteCommand);
         }
 
         #region Bindings
@@ -47,6 +48,7 @@ namespace Logic.UI.MitgliederViewModels
                 OpenFileDialog openFileDialog = new();
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    RequestIsWorking = true;
                     WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "MitgliederImport");
                     await new ImportHelper().PostFile( openFileDialog.FileName ).ContinueWith(async task =>
                     {                      
@@ -63,6 +65,7 @@ namespace Logic.UI.MitgliederViewModels
                         }
                     });
                     WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
+                    RequestIsWorking = false;
                 }
             }         
         }
@@ -88,7 +91,26 @@ namespace Logic.UI.MitgliederViewModels
                 }
             }
         }
+
+        public bool CanExecuteCommand() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (ImportCommand != null)
+                {
+                    ((DelegateCommand)ImportCommand).RaiseCanExecuteChanged();
+                }
+                if (SaveCommand != null)
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
     }
 }

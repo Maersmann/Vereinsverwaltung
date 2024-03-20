@@ -96,7 +96,7 @@ namespace Logic.UI.SchnurschiessenViewModels
         #endregion
         #region Commands
 
-        protected override bool CanExecuteCommand() => aktiveSchnurschiessen.ID > 0;
+        protected override bool CanExecuteCommand() => aktiveSchnurschiessen.ID > 0 && !RequestIsWorking;
 
         private void ExecuteSchnurschiessenBeendenCommand()
         {
@@ -110,7 +110,7 @@ namespace Logic.UI.SchnurschiessenViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/schnurschiessen/abschliessen", new SchnurschiessenAbschliessenDTO { ID = aktiveSchnurschiessen.ID });
-                RequestIsWorking = false;
+               
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -125,6 +125,7 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Schnurschiessen konnte nicht beendet werden.");
                 }
+                RequestIsWorking = false;
             }
         }
 
@@ -145,5 +146,22 @@ namespace Logic.UI.SchnurschiessenViewModels
             }
         }
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (SchnurAusgabeCommand != null)
+                {
+                    ((DelegateCommand)SchnurAusgabeCommand).RaiseCanExecuteChanged();
+                }
+                if (SchnurschiessenBeendenCommand != null)
+                {
+                    ((DelegateCommand)SchnurschiessenBeendenCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
+using Prism.Commands;
 
 namespace Logic.UI.SchnurschiessenViewModels
 {
@@ -27,10 +28,10 @@ namespace Logic.UI.SchnurschiessenViewModels
             MessageToken = "SchnurschiessenMitgliedHistorieUebersicht";
             Title = "Historie Mtiglied";
             schnurschiessenStandId = 0;
-            RueckgabeCommand = new RelayCommand(() => ExecuteRueckgabeCommand());
-            AusgabeCommand = new RelayCommand(() => ExecuteAusgabeCommand());
-            VerlorenCommand = new RelayCommand(() => ExecuteVerlorenCommand());
-            BeschaedigtCommand = new RelayCommand(() => ExecuteBeschaedigtCommand());
+            RueckgabeCommand = new RelayCommand(() => new DelegateCommand(ExecuteRueckgabeCommand, CanPost));
+            AusgabeCommand = new RelayCommand(() => new DelegateCommand(ExecuteAusgabeCommand, CanPost)); 
+            VerlorenCommand = new RelayCommand(() => new DelegateCommand(ExecuteVerlorenCommand, CanPost)); 
+            BeschaedigtCommand = new RelayCommand(() => new DelegateCommand(ExecuteBeschaedigtCommand, CanPost));
             RegisterAktualisereViewMessage(StammdatenTypes.schnurschiessen.ToString());
 
         }
@@ -76,7 +77,6 @@ namespace Logic.UI.SchnurschiessenViewModels
                     MitgliedID = SelectedItem.MitgliedID, 
                     RangID = SelectedItem.SchnurschiessenrangID 
                 });
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -87,7 +87,9 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Konnte nicht gespeichert werden");
                 }
-            }  
+                RequestIsWorking = false;
+
+            }
         }
 
         private async void ExecuteVerlorenCommand()
@@ -99,7 +101,6 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     RangID = SelectedItem.SchnurschiessenrangID
                 });
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -114,6 +115,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Konnte nicht gespeichert werden");
                 }
+                RequestIsWorking = false;
+
             }
         }
 
@@ -126,7 +129,6 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     RangID = SelectedItem.SchnurschiessenrangID
                 });
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -141,6 +143,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Konnte nicht gespeichert werden");
                 }
+                RequestIsWorking = false;
+
             }
         }
 
@@ -155,7 +159,6 @@ namespace Logic.UI.SchnurschiessenViewModels
                     MitgliedID = SelectedItem.MitgliedID,
                     RangID = SelectedItem.SchnurschiessenrangID
                 });
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -170,9 +173,37 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Konnte nicht gespeichert werden");
                 }
+                RequestIsWorking = false;
+
             }
         }
+        public bool CanPost() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (RueckgabeCommand != null)
+                {
+                    ((DelegateCommand)RueckgabeCommand).RaiseCanExecuteChanged();
+                }
+                if (AusgabeCommand != null)
+                {
+                    ((DelegateCommand)AusgabeCommand).RaiseCanExecuteChanged();
+                }
+                if (VerlorenCommand != null)
+                {
+                    ((DelegateCommand)VerlorenCommand).RaiseCanExecuteChanged();
+                }
+                if (BeschaedigtCommand != null)
+                {
+                    ((DelegateCommand)BeschaedigtCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
     }
 }

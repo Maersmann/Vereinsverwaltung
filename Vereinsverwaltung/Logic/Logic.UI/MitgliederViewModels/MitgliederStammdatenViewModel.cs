@@ -53,8 +53,7 @@ namespace Logic.UI.MitgliederViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", Data);
-                RequestIsWorking = false;
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", Data); 
                 if (resp.IsSuccessStatusCode)
                 {
                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
@@ -67,7 +66,8 @@ namespace Logic.UI.MitgliederViewModels
                 else
                 {
                     SendExceptionMessage("Mitglied konnte nicht gespeichert werden.");
-                }           
+                }
+                RequestIsWorking = false;
             }
         }
         #endregion

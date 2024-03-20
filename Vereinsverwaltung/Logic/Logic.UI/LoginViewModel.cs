@@ -41,7 +41,6 @@ namespace Logic.UI
 
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Users/authenticate", authenticate);
 
-                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
                     AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
@@ -66,12 +65,13 @@ namespace Logic.UI
                 { 
                     SendExceptionMessage("User oder Passwort ist falsch");
                 }
+                RequestIsWorking = false;
             }
         }
 
         protected bool CanExecuteCommand()
         {
-            return ValidationErrors.Count == 0;
+            return ValidationErrors.Count == 0 && !RequestIsWorking;
         }
 
         protected override void ExecuteOnDeactivatedCommand()
@@ -80,6 +80,19 @@ namespace Logic.UI
             if ( string.IsNullOrEmpty(GlobalVariables.Token))
             {
                 WeakReferenceMessenger.Default.Send(new CloseApplicationMessage());
+            }
+        }
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (LoginCommand != null)
+                {
+                    ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
+                }
             }
         }
 

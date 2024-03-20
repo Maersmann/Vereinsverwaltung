@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Windows.Input;
 using Base.Logic.Core;
 using CommunityToolkit.Mvvm.Input;
+using Prism.Commands;
 
 namespace Logic.UI.PinViewModels
 {
@@ -21,7 +22,7 @@ namespace Logic.UI.PinViewModels
             Title = "Übersicht Pin Ausgaben";
             RegisterAktualisereViewMessage(StammdatenTypes.pinAusgabe.ToString());
             OeffneAusgabeCommand = new RelayCommand(() => ExecuteOeffneAusgabeCommand());
-            ErledigeAusgabeCommand = new RelayCommand(() => ExecuteErledigeAusgabeCommand());
+            ErledigeAusgabeCommand = new DelegateCommand(ExecuteErledigeAusgabeCommand, CanPost);
             zeigeNurOffene = true;
             _ = LoadData();
         }
@@ -70,6 +71,20 @@ namespace Logic.UI.PinViewModels
 
             await LoadData();
         }
+        public bool CanPost() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (ErledigeAusgabeCommand != null)
+                {
+                    ((DelegateCommand)ErledigeAusgabeCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

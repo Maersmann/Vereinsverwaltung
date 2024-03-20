@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace Logic.UI.UserViewModels
 {
@@ -23,12 +24,12 @@ namespace Logic.UI.UserViewModels
         private int userID;
         public UserBerechtigungenUebersichtViewModel()
         {
-            userBerechtigungen = new List<UserBerechtigungModel>();
-            berechtigungen = new ObservableCollection<BerechtigungTypes>();
+            userBerechtigungen = [];
+            berechtigungen = [];
             userID = 0;
             Title = "Übersicht Userberechtigungen";
-            BerechtigungEntfernenCommand = new RelayCommand(() => ExecuteBerechtigungEntfernenCommand());
-            BerechtigungHinzufuegenCommand = new RelayCommand(() => ExecuteBerechtigungHinzufuegenCommand());
+            BerechtigungEntfernenCommand = new RelayCommand(() => new DelegateCommand(ExecuteBerechtigungEntfernenCommand, CanPost));
+            BerechtigungHinzufuegenCommand = new RelayCommand(() => new DelegateCommand(ExecuteBerechtigungHinzufuegenCommand, CanPost));
         }
 
         protected override int GetID() { return SelectedItem.ID; }
@@ -53,7 +54,7 @@ namespace Logic.UI.UserViewModels
             if (resp.IsSuccessStatusCode)
             {
                 berechtigungen = await resp.Content.ReadAsAsync<ObservableCollection<BerechtigungTypes>>();
-                if (Berechtigungen.Count() > 0)
+                if (Berechtigungen.Count > 0)
                 {
                     SelectedBerechtigungItem = Berechtigungen.ElementAt(0);
                 }
@@ -63,7 +64,7 @@ namespace Logic.UI.UserViewModels
             if (resp.IsSuccessStatusCode)
             {
                 userBerechtigungen = await resp.Content.ReadAsAsync<IList<UserBerechtigungModel>>();
-                if (UserBerechtigungen.Count() > 0)
+                if (UserBerechtigungen.Count > 0)
                 {
                     SelectedUserBerechtigungItem = UserBerechtigungen.ElementAt(0);
                 }
@@ -128,6 +129,24 @@ namespace Logic.UI.UserViewModels
                 UserID = userID;
             }
         }
+        public bool CanPost() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (BerechtigungEntfernenCommand != null)
+                {
+                    ((DelegateCommand)BerechtigungEntfernenCommand).RaiseCanExecuteChanged();
+                }
+                if (BerechtigungHinzufuegenCommand != null)
+                {
+                    ((DelegateCommand)BerechtigungHinzufuegenCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

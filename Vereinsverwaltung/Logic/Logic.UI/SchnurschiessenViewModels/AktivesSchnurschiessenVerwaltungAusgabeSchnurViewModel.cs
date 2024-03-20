@@ -46,7 +46,6 @@ namespace Logic.UI.SchnurschiessenViewModels
                     Anzahl = Data.Bestand, 
                     SchnurschiessenBestandID = Data.SchnurschiessenBestandID
                 });
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -61,6 +60,8 @@ namespace Logic.UI.SchnurschiessenViewModels
                 {
                     SendExceptionMessage("Ausgabe konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
         #endregion
