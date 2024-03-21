@@ -83,6 +83,9 @@ namespace Logic.UI
             SchnurschiessenMitgliederZuordnungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenMitgliederZuordnung));
             ExportSchnurschiessenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportSchnurschiessen));
             MitgliederAnonymisierenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederAnonymisieren));
+            SchuetzenfestZahlenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchuetzenfestZahlenUebersicht));
+            SchuetzenfestZahlenAuswertungBaendchenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchuetzenfestZahlenAuswertungBaendchen));
+            SchuetzenfestZahlenAuswertungUmzugCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchuetzenfestZahlenAuswertungUmzug));
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -136,6 +139,9 @@ namespace Logic.UI
         public ICommand SchnurschiessenMitgliederZuordnungCommand { get; set; }
         public ICommand ExportSchnurschiessenCommand {  get; set; }
         public ICommand MitgliederAnonymisierenCommand {  get; set; }
+        public ICommand SchuetzenfestZahlenUebersichtCommand { get; set; }
+        public ICommand SchuetzenfestZahlenAuswertungBaendchenCommand {  get; set; }
+        public ICommand SchuetzenfestZahlenAuswertungUmzugCommand {  get; set; }
 
 
 

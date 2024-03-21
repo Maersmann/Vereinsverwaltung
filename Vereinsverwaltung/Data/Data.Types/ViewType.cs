@@ -50,6 +50,9 @@
         viewSchnurschiessenAuswertungTeilnahmeProTag,
         viewSchnurschiessenMitgliederZuordnung,
         viewExportSchnurschiessen,
-        viewMitgliederAnonymisieren
+        viewMitgliederAnonymisieren,
+        viewSchuetzenfestZahlenUebersicht,
+        viewSchuetzenfestZahlenAuswertungUmzug,
+        viewSchuetzenfestZahlenAuswertungBaendchen
     }
 }

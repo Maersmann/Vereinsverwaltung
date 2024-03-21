@@ -31,6 +31,9 @@ using Logic.UI.UserViewModels;
 using Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels;
 using Logic.UI.KoenigschiessenViewModels;
 using Logic.UI.AuswertungenViewModels.SchnurschiessenAuswertungenViewModels;
+using Logic.UI.SchuetzenfestViewModels;
+using Logic.UI.AuswertungenViewModels.SchuetzenfestAuswertungenViewModels;
+using System.Diagnostics;
 
 namespace Logic.UI
 {
@@ -171,6 +174,10 @@ namespace Logic.UI
         public static SchnurschiessenMitgliederZuordnungViewModel SchnurschiessenMitgliederZuordnung => new ();
         public static ExportSchnurschiessenViewModel ExportSchnurschiessen => new ();
         public static MitgliederAnonymisierenViewModel MitgliederAnonymisieren => new();
+        public static SchuetzenfestZahlenStammdatenViewModel SchuetzenfestZahlenStammdaten => new();
+        public static SchuetzenfestZahlenUebersichtViewModel SchuetzenfestZahlenUebersicht => new();
+        public static SchuetzenfestZahlenAuswertungUmzugViewModel SchuetzenfestZahlenAuswertungUmzug => new();
+        public static SchuetzenfestZahlenAuswertungBaendchenViewModel SchuetzenfestZahlenAuswertungBaendchen => new();
         public static void OnActivated()
         {
 

@@ -28,6 +28,7 @@ namespace Data.Types
         jugendkoenigschiessen,
         schnurschiessen,
         schnurschiessenAuszeichnungBestand,
-        EhemaligeMitglieder
+        EhemaligeMitglieder,
+        schuetzenfestZahlen
     }
 }

@@ -27,6 +27,8 @@ using Logic.Messages.UserMessages;
 using UI.Desktop.Koenigschiessen;
 using UI.Desktop.Schnurschiessen.Pages;
 using UI.Desktop.Auswertungen.Schnurschiessen;
+using UI.Desktop.Schuetzenfest;
+using UI.Desktop.Auswertungen.Schuetzenfestzahlen;
 
 namespace Vereinsverwaltung.UI.Desktop
 {
@@ -272,6 +274,18 @@ namespace Vereinsverwaltung.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(MitgliederAnonymisierenView).Name))
                         Container.NavigationService.Navigate(new MitgliederAnonymisierenView());
                     break;
+                case ViewType.viewSchuetzenfestZahlenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchuetzenfestZahlenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new SchuetzenfestZahlenUebersichtView());
+                    break;
+                case ViewType.viewSchuetzenfestZahlenAuswertungBaendchen:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchuetzenfestZahlenAuswertungBaendchenView).Name))
+                        Container.NavigationService.Navigate(new SchuetzenfestZahlenAuswertungBaendchenView());
+                    break;
+                case ViewType.viewSchuetzenfestZahlenAuswertungUmzug:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SchuetzenfestZahlenAuswertungUmzugView).Name))
+                        Container.NavigationService.Navigate(new SchuetzenfestZahlenAuswertungUmzugView());
+                    break;
                 default:         
                     Container.Content = null;
                     Container.NavigationService.RemoveBackEntry();
@@ -323,6 +337,9 @@ namespace Vereinsverwaltung.UI.Desktop
                     break;
                 case StammdatenTypes.jugendkoenigschiessen:
                     view = new JugendkoenigschiessenErstellenView();
+                    break;
+                case StammdatenTypes.schuetzenfestZahlen:
+                    view = new SchuetzenfestZahlenStammdatenView();
                     break;
                 default:
                     break;

@@ -91,6 +91,8 @@ namespace Data.Types
         [Description("Schnurschießen - Verwaltung")]
         SchnurschiessenVerwaltung = 39,
         [Description("Mitglieder Anonymisieren")]
-        MitgliederAnonymisieren = 40
+        MitgliederAnonymisieren = 40,
+        [Description("Schützenfestzahlen")]
+        Schuetzenfestzahlenuebersicht = 41
     }
 }

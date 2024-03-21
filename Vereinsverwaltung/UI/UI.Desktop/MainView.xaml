@@ -70,7 +70,7 @@
                 <Fluent:RibbonGroupBox Header="Mitglieder" >
                     <Fluent:Button Header="Übersicht"  Command="{Binding OpenMitgliederUebersichtCommand}" Width="60"  LargeIcon="Resources/person_list.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Import" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederImport }" Command="{Binding OpenMitgliederImportCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
-                    <Fluent:Button Header="Anonymisieren" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederAnonymisieren }" Command="{Binding MitgliederAnonymisierenCommand}" Width="60"  LargeIcon="Resources/import.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Anonymisieren"  Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=MitgliederAnonymisieren }" Command="{Binding MitgliederAnonymisierenCommand}" Width="90"  LargeIcon="Resources/account-circle-outline-custom.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -101,6 +101,9 @@
                 <Fluent:RibbonGroupBox Header="Jugendkönigschiessen" >
                     <Fluent:Button Header="Neu" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=jugenkoenigschiessenerstellen }" Command="{Binding JugendkoenigschiessenErstellenCommand}" Width="60"  LargeIcon="Resources/new-box.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Übersicht" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=jugendkoenigschiessenuebersicht }" Command="{Binding JugendkoenigschiessenUebersichtCommand}" Width="60"  LargeIcon="Resources/chess-king.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Zahlen" >
+                    <Fluent:Button Header="Übersicht" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=schuetzenfestzahlenuebersicht }" Command="{Binding SchuetzenfestZahlenUebersichtCommand}" Width="60"  LargeIcon="Resources/chart-3.png"  IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -167,6 +170,10 @@
                     <Fluent:Button Header="Jahre im Verein" Command="{Binding AuswertungMitgliederAuswertungJahreImVereinCommand}" Width="90"  LargeIcon="Resources/account-clock.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Jahrgang" Command="{Binding AuswertungMitgliederAuswertungJahrgangCommand}" Width="90"  LargeIcon="Resources/account-settings.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Jahrzehnt" Command="{Binding AuswertungMitgliederAuswertungJahrzehntCommand}" Width="90"  LargeIcon="Resources/account-network.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Schützenfest" Visibility="{Binding Path=BerechtigungVisibility , Converter={StaticResource BoolToVisConverter}, ConverterParameter=schuetzenfestzahlenuebersicht }">
+                    <Fluent:Button Header="Bändchen" Command="{Binding SchuetzenfestZahlenAuswertungBaendchenCommand}" Width="80"  LargeIcon="Resources/chart-5.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Umzug" Command="{Binding SchuetzenfestZahlenAuswertungUmzugCommand}" Width="90"  LargeIcon="Resources/chart-4.png" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 

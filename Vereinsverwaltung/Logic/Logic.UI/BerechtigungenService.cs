@@ -57,6 +57,7 @@ namespace Logic.UI
                 "schnurschiessenverwaltung" => BerechtigungTypes.SchnurschiessenVerwaltung,
                 "schnurschiessenallgemein" => BerechtigungTypes.SchnurschiessenAllgemein,
                 "mitgliederanonymisieren" => BerechtigungTypes.MitgliederAnonymisieren,
+                "schuetzenfestzahlenuebersicht" => BerechtigungTypes.Schuetzenfestzahlenuebersicht,
                 _ => BerechtigungTypes.Undefiniert,
             };
         }
