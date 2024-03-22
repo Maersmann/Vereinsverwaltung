@@ -3,8 +3,8 @@ using Base.Logic.ViewModels;
 using Data.Model.KoenigschiessenModels;
 using Data.Model.KoenigschiessenModels.DTO;
 using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Prism.Commands;
@@ -37,7 +37,7 @@ namespace Logic.UI.KoenigschiessenViewModels
         {
             this.koenigschiessenRundeTeilnehmerUebersicht = koenigschiessenRundeTeilnehmerUebersicht;
             this.variante = variante;
-            RaisePropertyChanged(nameof(KoenigschiessenRundeTeilnehmer));
+            OnPropertyChanged(nameof(KoenigschiessenRundeTeilnehmer));
         }
 
         public bool Bestaetigt { get; private set; }
@@ -68,7 +68,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                 {
                     ValidateErgebnis(Ergebnis);
                     ergebnis = Ergebnis;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)BestaetigungCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -90,6 +90,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KoenigschiessenErgebnis",
                         new KoenigschiessenErgebnisEintragenDTO
                         {
@@ -108,26 +109,41 @@ namespace Logic.UI.KoenigschiessenViewModels
                     {
                         Bestaetigt = true;
                     }
-                    Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
+                    WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
-                SendExceptionMessage(e.Message); ;
+                SendExceptionMessage(e.Message);
+                RequestIsWorking = false;
             }
 
         }
 
         private void ExecuteAbbrechenCommand()
         {
-            Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
+            WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenErgebnisEintragen");
         }
 
         private bool CanExecuteBestaetigungCommand()
         {
-            return ValidationErrors.Count == 0;
+            return ValidationErrors.Count == 0 && !RequestIsWorking;
         }
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (BestaetigungCommand != null)
+                {
+                    ((DelegateCommand)BestaetigungCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #region Validierung
         private bool ValidateErgebnis(int? ergebnis)

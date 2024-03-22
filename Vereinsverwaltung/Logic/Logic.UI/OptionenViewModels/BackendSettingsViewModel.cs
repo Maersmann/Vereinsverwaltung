@@ -1,6 +1,6 @@
 ﻿using Data.Model.OptionenModels;
 using Data.Types.OptionTypes;
-using GalaSoft.MvvmLight.Command;
+
 using Logic.Core;
 using Logic.Core.OptionenLogic;
 using Base.Logic.ViewModels;
@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.OptionenViewModels
 {
@@ -27,7 +28,7 @@ namespace Logic.UI.OptionenViewModels
 
         public void SetModelData()
         {
-            BackendLogic backendLogic = new BackendLogic();
+            BackendLogic backendLogic = new ();
             if (backendLogic.IstINIVorhanden())
             {
                 backendLogic.LoadData();
@@ -47,7 +48,7 @@ namespace Logic.UI.OptionenViewModels
             set
             {
                 model.Backend_IP = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public string Backend_URL
@@ -56,7 +57,7 @@ namespace Logic.UI.OptionenViewModels
             set
             {
                 model.Backend_URL = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public string Port
@@ -65,18 +66,18 @@ namespace Logic.UI.OptionenViewModels
             set
             {
                 model.Port = value.Equals("") ? null : (int?)int.Parse(value);
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
-        public IEnumerable<BackendProtokollTypes> BackendProtokollTypes => Enum.GetValues(typeof(BackendProtokollTypes)).Cast<BackendProtokollTypes>();
+        public static IEnumerable<BackendProtokollTypes> BackendProtokollTypes => Enum.GetValues(typeof(BackendProtokollTypes)).Cast<BackendProtokollTypes>();
         public BackendProtokollTypes BackendProtokollTyp
         {
             get => model.ProtokollTyp;
             set
             {
                 model.ProtokollTyp = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -92,8 +93,8 @@ namespace Logic.UI.OptionenViewModels
             GlobalVariables.BackendServer_URL = backendlogic.GetURL();
             GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
             new BackendHelper().CheckServerIsOnline();
-            ViewModelLocator locator = new ViewModelLocator();
-            locator.Main.RaisePropertyChanged("MenuIsEnabled");
+            _ = new ViewModelLocator();
+            //locator.Main.Onp("MenuIsEnabled");
         }
 
         private void ExecuteTestConnectionCommand()

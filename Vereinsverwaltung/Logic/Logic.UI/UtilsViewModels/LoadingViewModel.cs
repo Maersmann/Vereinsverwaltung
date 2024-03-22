@@ -16,7 +16,7 @@ namespace Logic.UI.UtilsViewModels
             set
             {
                 beschreibung = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
     }

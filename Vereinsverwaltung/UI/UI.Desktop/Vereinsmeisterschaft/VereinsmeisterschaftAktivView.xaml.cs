@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using Logic.UI.UtilsViewModels;
@@ -28,14 +28,14 @@ namespace UI.Desktop.Vereinsmeisterschaft
         {
             RegisterMessages("VereinsmeisterschaftAktiveVereinsmeisterschaft");
             InitializeComponent();
-            Messenger.Default.Register<NeueVereinsmeisterschaftErstellenMessage>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", m => ReceiveNeueVereinsmeisterschaftErstellenMessage(m));
-            Messenger.Default.Register<NeuerSchuetzeErstellenMessage>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", m => ReceiveNeuerSchuetzeErstellenMessage(m));
-            Messenger.Default.Register<OpenVereinsmeisterschaftGruppenMitSchuetzenMessage>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", m => ReceiveOpenVereinsmeisterschaftGruppenMitSchuetzenMessage(m));
-            Messenger.Default.Register<VereinsmeisterschaftErgebnisEintragenMessage>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", m => ReceiveVereinsmeisterschaftErgebnisEintragenMessage(m));
+            WeakReferenceMessenger.Default.Register<NeueVereinsmeisterschaftErstellenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", (r, m) => ReceiveNeueVereinsmeisterschaftErstellenMessage(m));
+            WeakReferenceMessenger.Default.Register<NeuerSchuetzeErstellenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", (r, m) => ReceiveNeuerSchuetzeErstellenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenVereinsmeisterschaftGruppenMitSchuetzenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", (r, m) => ReceiveOpenVereinsmeisterschaftGruppenMitSchuetzenMessage(m));
+            WeakReferenceMessenger.Default.Register<VereinsmeisterschaftErgebnisEintragenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft", (r, m) => ReceiveVereinsmeisterschaftErgebnisEintragenMessage(m));
             
         }
 
-        private void ReceiveVereinsmeisterschaftErgebnisEintragenMessage(VereinsmeisterschaftErgebnisEintragenMessage m)
+        private static void ReceiveVereinsmeisterschaftErgebnisEintragenMessage(VereinsmeisterschaftErgebnisEintragenMessage m)
         {
             var view = new VereinsmeisterschaftErgebnisEintragenView()
             {
@@ -43,12 +43,12 @@ namespace UI.Desktop.Vereinsmeisterschaft
             };
             if (view.DataContext is VereinsmeisterschaftErgebnisEintragenViewModel model)
             {
-                model.ZeigeStammdatenAn(m.SchuetzenErgebnisID);
+                model.ZeigeStammdatenAnAsync(m.SchuetzenErgebnisID);
                 view.ShowDialog();
             }
         }
 
-        private void ReceiveOpenVereinsmeisterschaftGruppenMitSchuetzenMessage(OpenVereinsmeisterschaftGruppenMitSchuetzenMessage m)
+        private static void ReceiveOpenVereinsmeisterschaftGruppenMitSchuetzenMessage(OpenVereinsmeisterschaftGruppenMitSchuetzenMessage m)
         {
             var view = new VereinsmeisterschaftGruppenMitSchuetzenView()
             {
@@ -61,7 +61,7 @@ namespace UI.Desktop.Vereinsmeisterschaft
             }
         }
 
-        private void ReceiveNeuerSchuetzeErstellenMessage(NeuerSchuetzeErstellenMessage m)
+        private static void ReceiveNeuerSchuetzeErstellenMessage(NeuerSchuetzeErstellenMessage m)
         {
             var view = new VereinsmeisterschaftNeuerSchuetzeView()
             {
@@ -84,17 +84,17 @@ namespace UI.Desktop.Vereinsmeisterschaft
             if (view.DataContext is VereinsmeisterschaftNeueErstellenViewModel model)
             {
                 view.ShowDialog();
-                Messenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage>(this);
+                WeakReferenceMessenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft");
                 m.Callback(model.NeueVereinsmeisterschaftErstellt);
             }        
         }
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<NeuerSchuetzeErstellenMessage>(this);
-            Messenger.Default.Unregister<OpenVereinsmeisterschaftGruppenMitSchuetzenMessage>(this);
-            Messenger.Default.Unregister<VereinsmeisterschaftErgebnisEintragenMessage>(this); 
-            Messenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<NeuerSchuetzeErstellenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft");
+            WeakReferenceMessenger.Default.Unregister<OpenVereinsmeisterschaftGruppenMitSchuetzenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft");
+            WeakReferenceMessenger.Default.Unregister<VereinsmeisterschaftErgebnisEintragenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft"); 
+            WeakReferenceMessenger.Default.Unregister<NeueVereinsmeisterschaftErstellenMessage, string>(this, "VereinsmeisterschaftAktiveVereinsmeisterschaft");
 
             base.Window_Unloaded(sender, e);
         }

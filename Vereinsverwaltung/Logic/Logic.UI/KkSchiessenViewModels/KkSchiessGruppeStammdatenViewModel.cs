@@ -5,7 +5,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.KkSchiessenModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
@@ -24,7 +24,7 @@ namespace Logic.UI.KkSchiessenViewModels
             Title = "Stammdaten KK-Schießgruppe";
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
@@ -48,8 +48,8 @@ namespace Logic.UI.KkSchiessenViewModels
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace Logic.UI.KkSchiessenViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -89,7 +89,7 @@ namespace Logic.UI.KkSchiessenViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new KkSchiessgruppeModel();
             Name = "";

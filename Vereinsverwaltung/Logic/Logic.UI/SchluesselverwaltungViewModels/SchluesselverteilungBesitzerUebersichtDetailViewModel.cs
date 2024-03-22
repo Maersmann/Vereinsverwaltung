@@ -1,6 +1,6 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.SchluesselMessages;
@@ -20,7 +20,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             MessageToken = "SchluesselzuteilungBesitzerSchluesselUebersicht";
             Title = "Vorhandene Schlüssel des Besitzer";
             RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
-            Messenger.Default.Register<LoadSchluesselverteilungBesitzerDetailMessage>(this, "SchluesselverteilungBesitzerUebersicht", m => ReceiveLoadSchluesselverteilungBesitzerDetailMessage(m));
+            WeakReferenceMessenger.Default.Register<LoadSchluesselverteilungBesitzerDetailMessage, string>(this, "SchluesselverteilungBesitzerUebersicht", (r,m) => ReceiveLoadSchluesselverteilungBesitzerDetailMessage(m));
         }
 
         protected override bool WithPagination() { return true; }
@@ -53,7 +53,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 }
             }
             SendInformationMessage("Eintrag gelöscht");
-            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
+            WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
             base.ExecuteEntfernenCommand();
             RequestIsWorking = false;
         }

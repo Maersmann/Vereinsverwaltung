@@ -1,8 +1,8 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Types.AuswahlTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.UtilMessages;
 using Prism.Commands;
@@ -43,7 +43,7 @@ namespace Logic.UI.ExportViewModels
         #region Commands
         private async void ExcecuteExportErgebnisseCommand()
         {
-            Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Zuteilung wird heruntergeladen" }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Zuteilung wird heruntergeladen" }, messageToken);
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/vereinsverwaltung/Ergebnisse?vereinsmeisterschaftID={vereinsmeisterschaftID.Value}");
             if (resp.IsSuccessStatusCode)
             {
@@ -60,11 +60,11 @@ namespace Logic.UI.ExportViewModels
             {
                 SendExceptionMessage("Datei konnte nicht heruntergeladen werden.");
             }
-            Messenger.Default.Send(new CloseLoadingViewMessage(), messageToken);
+            WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), messageToken);
         }
         private async void ExcecuteExportMedaillenCommand()
         {
-            Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Schlüsselliste wird heruntergeladen" }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Schlüsselliste wird heruntergeladen" }, messageToken);
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/vereinsverwaltung/Medaillen?vereinsmeisterschaftID={vereinsmeisterschaftID.Value}");
             if (resp.IsSuccessStatusCode)
             {
@@ -80,11 +80,11 @@ namespace Logic.UI.ExportViewModels
             {
                 SendExceptionMessage("Datei konnte nicht heruntergeladen werden.");
             }
-            Messenger.Default.Send(new CloseLoadingViewMessage(), messageToken);
+            WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), messageToken);
         }
         private void ExcecuteAuswahlVereinsmeisterschaftCommand()
         {
-            Messenger.Default.Send(new OpenVereinsmeisterschaftAuswahlMessage(OpenVereinsmeisterschatAuswahlCallback){ AuswahlTyp = AuswahlVereinsmeisterschaftTypes.nurAbgeschlossene }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenVereinsmeisterschaftAuswahlMessage(OpenVereinsmeisterschatAuswahlCallback){ AuswahlTyp = AuswahlVereinsmeisterschaftTypes.nurAbgeschlossene }, messageToken);
         }
 
 
@@ -99,7 +99,7 @@ namespace Logic.UI.ExportViewModels
             {
                 vereinsmeisterschaftID = id;
                 this.jahr = jahr;
-                RaisePropertyChanged(nameof(Vereinsmeisterschaft));
+                OnPropertyChanged(nameof(Vereinsmeisterschaft));
             }
             ((DelegateCommand)ExportMedaillenCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)ExportErgebnisseCommand).RaiseCanExecuteChanged();

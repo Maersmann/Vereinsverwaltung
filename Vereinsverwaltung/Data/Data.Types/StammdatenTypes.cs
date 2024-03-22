@@ -13,8 +13,8 @@ namespace Data.Types
         schluessel,
         schluesselzuteilung,
         schluesselrueckgabe,
-        schnur,
-        schnurauszeichnung,
+        schnurschiessenAuszeichnung,
+        schnurschiessenRang,
         pinAusgabe,
         kkSchiessgruppe,
         kkSchiessen,
@@ -25,6 +25,10 @@ namespace Data.Types
         user,
         koenigschiessen,
         koenigschiessenAnmeldung,
-        jugendkoenigschiessen
+        jugendkoenigschiessen,
+        schnurschiessen,
+        schnurschiessenAuszeichnungBestand,
+        EhemaligeMitglieder,
+        schuetzenfestZahlen
     }
 }

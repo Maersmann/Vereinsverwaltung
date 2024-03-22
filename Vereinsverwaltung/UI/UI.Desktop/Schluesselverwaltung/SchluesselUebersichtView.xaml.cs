@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.SchluesselverwaltungViewModels;
 using System;
@@ -29,13 +29,13 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
         public SchluesselUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenSchluesselzuteilungMessage>(this, "SchluesselUebersicht", m => ReceiveOpenSchluesselzuteilungMessage(m));
-            Messenger.Default.Register<OpenSchluesselRueckgabeMessage>(this, "SchluesselUebersicht", m => ReceiveOpenSchluesselRueckgabeMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchluesselzuteilungMessage, string>(this, "SchluesselUebersicht", (r, m) => ReceiveOpenSchluesselzuteilungMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchluesselRueckgabeMessage, string>(this, "SchluesselUebersicht", (r, m) => ReceiveOpenSchluesselRueckgabeMessage(m));
             helper = new SchluesselzuteilungHistoryUebersichtHelper();
             helper.RegisterMessage("SchluesselUebersicht");
         }
 
-        private void ReceiveOpenSchluesselRueckgabeMessage(OpenSchluesselRueckgabeMessage m)
+        private static void ReceiveOpenSchluesselRueckgabeMessage(OpenSchluesselRueckgabeMessage m)
         {
             var view = new SchluesselRueckgabeStammdatenView()
             {
@@ -48,7 +48,7 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
             view.ShowDialog();
         }
 
-        private void ReceiveOpenSchluesselzuteilungMessage(OpenSchluesselzuteilungMessage m)
+        private static void ReceiveOpenSchluesselzuteilungMessage(OpenSchluesselzuteilungMessage m)
         {
             var view = new SchluesselzuteilungStammdatenView()
             {

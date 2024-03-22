@@ -4,7 +4,7 @@ using Base.Logic.ViewModels;
 using Data.Model.KoenigschiessenModels;
 using Data.Types;
 using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.UtilMessages;
@@ -34,12 +34,13 @@ namespace Logic.UI.KoenigschiessenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Königschiessen wird erstellt." }, "KoenigschiessenErstellen");
+                RequestIsWorking = true;
+                WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Königschiessen wird erstellt." }, "KoenigschiessenErstellen");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Koenigschiessen", Data);
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                 {
@@ -49,7 +50,8 @@ namespace Logic.UI.KoenigschiessenViewModels
                 {
                     SendExceptionMessage("Königschiessen konnte nicht erstellt werden.");
                 }
-                Messenger.Default.Send(new CloseLoadingViewMessage(), "KoenigschiessenErstellen");
+                WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "KoenigschiessenErstellen"); 
+                RequestIsWorking = false;
             }
         }
         #endregion
@@ -66,7 +68,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                 {
                     ValidateStichtag(value);
                     Data.Stichtag = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -81,7 +83,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                 if (RequestIsWorking || (Data.Intervall != value))
                 {
                     Data.Intervall = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }

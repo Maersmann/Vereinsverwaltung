@@ -1,6 +1,6 @@
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Base.Logic.ViewModels;
 using System;
 using System.Windows.Input;
@@ -26,7 +26,7 @@ namespace Logic.UI
             GlobalVariables.ServerIsOnline = false;
             GlobalVariables.BackendServer_URL = "";
             GlobalVariables.Token = "";
-            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.Berechtigungen = [];
             BerechtigungenService.IsAdmin = false;
             GlobalUserVariables.UserID = 0;
 
@@ -34,7 +34,7 @@ namespace Logic.UI
             PasswordAendernCommand = new RelayCommand(() => ExecutePasswordAendernCommand());
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederUebersicht));
-            OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewMitgliederImport));
+            OpenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederImport));
             OpenSchluesselUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchluesselUebersicht));
             OpenSchluesselbesitzerUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchluesselbesitzerUebersicht));
             OpenZuteilungSchluesselbesitzerUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZuteilungSchluesselbesitzerUebersicht));
@@ -47,7 +47,7 @@ namespace Logic.UI
             ExportSchluesselCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportSchluessel));
             ExportMitgliederAenderungenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportMitgliederAenderungen));
             KkSchiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessenUebersicht));
-            KkSchiessgruppeUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessgruppeUebersicht)); 
+            KkSchiessgruppeUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewKkSchiessgruppeUebersicht));
             AuswertungKkSchiessenMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonat));
             AuswertungKkSchiessenMonatJahresvergleichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAuswertungKkSchiessenMonatJahresvergleich));
             VereinsmeisterschaftOffenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewVereinsmeisterschaftAktiveVereinsmeisterschaft));
@@ -67,6 +67,25 @@ namespace Logic.UI
             KoenigschiessenErstellenCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.koenigschiessen));
             JugendkoenigschiessenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewJugendkoenigschiessenUebersicht));
             JugendkoenigschiessenErstellenCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.jugendkoenigschiessen));
+            SchnurschiessenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenMitgliederUebersicht));
+            SchnurBestandHistorieCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuszeichnungBestandHistorie));
+            AktiveSchnurschiessenVerwaltungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAktiveSchnurschiessenVerwaltung));
+            AktivesSchnurschiessenMitgliederUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewAktivesSchnurschiessenMitgliederUebersicht));
+            SchnurschiessenMitgliederImportCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenMitgliederImport));
+            SchnurschiessenAuswertungAktuellenStandAuszeichnungCommmand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungAktuellenStandAuszeichnung));
+            SchnurschiessenAuswertungAktuellenStandRangCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungAktuellenStandRang));
+            SchnurschiessenAuswertungEntwicklungAuszeichnungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungEntwicklungAuszeichnung));
+            SchnurschiessenAuswertungEntwicklungRangCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungEntwicklungRang));
+            SchnurschiessenAuswertungGesamtteilnahmeCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungGesamtteilnahme));
+            SchnurschiessenAuswertungErhalteneAuszeichnungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungErhalteneAuszeichnung));
+            SchnurschiessenAuswertungNeuerRangCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungNeuerRang));
+            SchnurschiessenAuswertungTeilnahmeProTagCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenAuswertungTeilnahmeProTag));
+            SchnurschiessenMitgliederZuordnungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchnurschiessenMitgliederZuordnung));
+            ExportSchnurschiessenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewExportSchnurschiessen));
+            MitgliederAnonymisierenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewMitgliederAnonymisieren));
+            SchuetzenfestZahlenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchuetzenfestZahlenUebersicht));
+            SchuetzenfestZahlenAuswertungBaendchenCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchuetzenfestZahlenAuswertungBaendchen));
+            SchuetzenfestZahlenAuswertungUmzugCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSchuetzenfestZahlenAuswertungUmzug));
         }
 
         public ICommand OpenMitgliederImportCommand { get; private set; }
@@ -104,6 +123,28 @@ namespace Logic.UI
         public ICommand KoenigschiessenErstellenCommand { get; set; }
         public ICommand JugendkoenigschiessenUebersichtCommand { get; set; }
         public ICommand JugendkoenigschiessenErstellenCommand { get; set; }
+        public ICommand SchnurschiessenMitgliederUebersichtCommand { get; set; }
+        public ICommand SchnurBestandHistorieCommand { get; set; }
+        public ICommand AktiveSchnurschiessenVerwaltungCommand { get; set; }
+        public ICommand AktivesSchnurschiessenMitgliederUebersichtCommand { get; set; }
+        public ICommand SchnurschiessenMitgliederImportCommand { get; set; }
+        public ICommand SchnurschiessenAuswertungAktuellenStandAuszeichnungCommmand { get; set; }
+        public ICommand SchnurschiessenAuswertungAktuellenStandRangCommand { get; set; }
+        public ICommand SchnurschiessenAuswertungEntwicklungAuszeichnungCommand { get; set; }
+        public ICommand SchnurschiessenAuswertungEntwicklungRangCommand { get; set; }
+        public ICommand SchnurschiessenAuswertungGesamtteilnahmeCommand {get;set;}
+        public ICommand SchnurschiessenAuswertungErhalteneAuszeichnungCommand { get; set; }
+        public ICommand SchnurschiessenAuswertungNeuerRangCommand { get; set; }
+        public ICommand SchnurschiessenAuswertungTeilnahmeProTagCommand { get; set; }
+        public ICommand SchnurschiessenMitgliederZuordnungCommand { get; set; }
+        public ICommand ExportSchnurschiessenCommand {  get; set; }
+        public ICommand MitgliederAnonymisierenCommand {  get; set; }
+        public ICommand SchuetzenfestZahlenUebersichtCommand { get; set; }
+        public ICommand SchuetzenfestZahlenAuswertungBaendchenCommand {  get; set; }
+        public ICommand SchuetzenfestZahlenAuswertungUmzugCommand {  get; set; }
+
+
+
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
         
@@ -115,51 +156,51 @@ namespace Logic.UI
 
         public RelayCommand<PasswordBox> PasswordCommand { get; private set; }
 
-        private void ExecuteOpenViewCommand(ViewType viewType)
+        private static void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
+            WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = viewType });
         }
 
-        private void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
+        private static void ExecuteStammdatenViewCommand(StammdatenTypes stammdaten)
         {
-            Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
+            WeakReferenceMessenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> {Stammdaten  = stammdaten, State = State.Neu});
         }
 
-        private void ExecuteAbmeldenCommand()
+        private static void ExecuteAbmeldenCommand()
         {
             GlobalVariables.Token = "";
-            BerechtigungenService.Berechtigungen = new List<BerechtigungTypes>();
+            BerechtigungenService.Berechtigungen = [];
             BerechtigungenService.IsAdmin = false;
             GlobalUserVariables.UserID = 0;
-            Messenger.Default.Send(new AktualisiereBerechtigungenMessage { });
-            Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
-            Messenger.Default.Send(new OpenLoginViewMessage { });
+            WeakReferenceMessenger.Default.Send(new AktualisiereBerechtigungenMessage { });
+            WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
+            WeakReferenceMessenger.Default.Send(new OpenLoginViewMessage { });
         }
 
 
-        private void ExecutePasswordAendernCommand()
+        private static void ExecutePasswordAendernCommand()
         {
-            Messenger.Default.Send(new OpenPasswordAendernViewMessage { });
+            WeakReferenceMessenger.Default.Send(new OpenPasswordAendernViewMessage { });
         }
 
-        private void ExecuteOpenStartingViewCommand()
+        private static void ExecuteOpenStartingViewCommand()
         {
             var backendlogic = new BackendLogic();
             if (!backendlogic.IstINIVorhanden())
             {
-                Messenger.Default.Send(new OpenKonfigurationViewMessage { });
+                WeakReferenceMessenger.Default.Send(new OpenKonfigurationViewMessage { });
             }
             backendlogic.LoadData();
             GlobalVariables.BackendServer_IP = backendlogic.GetBackendIP();
             GlobalVariables.BackendServer_URL = backendlogic.GetURL();
             GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
 
-            Messenger.Default.Send(new OpenStartingViewMessage { });
+            WeakReferenceMessenger.Default.Send(new OpenStartingViewMessage { });
         }
 
         protected override void ReceiveOpenViewMessage()
         {
-            RaisePropertyChanged("MenuIsEnabled");
+            OnPropertyChanged(nameof(MenuIsEnabled));
             base.ReceiveOpenViewMessage();
         }
 

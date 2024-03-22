@@ -1,6 +1,6 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
@@ -28,7 +28,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Title = "Schlüssel Stammdaten";
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
@@ -55,12 +55,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/schluessel", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 906)
                 {
@@ -70,6 +69,8 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     SendExceptionMessage("Schlüssel konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
         #endregion
@@ -84,7 +85,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     ValidateAnzahl(value, "Nummer");
                     Data.Nummer = value.GetValueOrDefault();
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -98,7 +99,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 if (RequestIsWorking || !Equals(Data.Beschreibung, value))
                 {
                     Data.Beschreibung = value;
-                    this.RaisePropertyChanged();
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -111,7 +112,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     ValidateBezeichnung(value);
                     Data.Bezeichnung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -125,7 +126,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 if (RequestIsWorking || !Equals(Data.Bestand, value))
                 {
                     Data.Bestand = value.GetValueOrDefault(0);
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -153,7 +154,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchluesselModel();
             Nummer = null;

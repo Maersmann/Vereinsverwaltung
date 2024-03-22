@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Desktop.Auswahl"
         x:Name="Auswahl"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MinWidth="250"
@@ -16,7 +15,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
+            <i:InvokeCommandAction Command="{Binding OnDeactivatedCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

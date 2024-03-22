@@ -3,8 +3,8 @@ using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Data.Model.UserModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
@@ -41,7 +41,6 @@ namespace Logic.UI
 
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Users/authenticate", authenticate);
 
-                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
                     AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
@@ -58,28 +57,42 @@ namespace Logic.UI
                         });
                     }
 
-                    Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
-                    Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
-                    Messenger.Default.Send(new CloseViewMessage(), "Login");
+                    WeakReferenceMessenger.Default.Send(new AktualisiereBerechtigungenMessage());
+                    WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewNothing });
+                    WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "Login");
                 }
                 else if (resp.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 { 
                     SendExceptionMessage("User oder Passwort ist falsch");
                 }
+                RequestIsWorking = false;
             }
         }
 
         protected bool CanExecuteCommand()
         {
-            return ValidationErrors.Count == 0;
+            return ValidationErrors.Count == 0 && !RequestIsWorking;
         }
 
-        protected override void ExecuteCleanUpCommand()
+        protected override void ExecuteOnDeactivatedCommand()
         {
-            base.ExecuteCleanUpCommand();
+            base.ExecuteOnDeactivatedCommand();
             if ( string.IsNullOrEmpty(GlobalVariables.Token))
             {
-                Messenger.Default.Send(new CloseApplicationMessage());
+                WeakReferenceMessenger.Default.Send(new CloseApplicationMessage());
+            }
+        }
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (LoginCommand != null)
+                {
+                    ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -96,7 +109,7 @@ namespace Logic.UI
                 {
                     ValidateName(value);
                     authenticate.Username = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -111,7 +124,7 @@ namespace Logic.UI
                 {
                     ValidatePassword(value);
                     authenticate.Password = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
                 }
             }

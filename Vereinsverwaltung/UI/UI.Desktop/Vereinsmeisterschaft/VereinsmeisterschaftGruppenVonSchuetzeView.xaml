@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Desktop.Vereinsmeisterschaft"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"      
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"      
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d"  Width="530" Height="450"
              MinHeight="450" MinWidth="530" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"

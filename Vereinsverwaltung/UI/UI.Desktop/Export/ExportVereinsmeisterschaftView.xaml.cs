@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -26,12 +26,12 @@ namespace UI.Desktop.Export
         {
             InitializeComponent();
             RegisterMessages("ExportVereinsmeisterschaft");
-            Messenger.Default.Register<OpenVereinsmeisterschaftAuswahlMessage>(this, "ExportVereinsmeisterschaft", m => ReceiveOpenVereinsmeisterschaftAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenVereinsmeisterschaftAuswahlMessage, string>(this, "ExportVereinsmeisterschaft", (r, m) => ReceiveOpenVereinsmeisterschaftAuswahlMessage(m));
         }
 
-        private void ReceiveOpenVereinsmeisterschaftAuswahlMessage(OpenVereinsmeisterschaftAuswahlMessage m)
+        private static void ReceiveOpenVereinsmeisterschaftAuswahlMessage(OpenVereinsmeisterschaftAuswahlMessage m)
         {
-            VereinsmeisterschaftAuswahlView view = new VereinsmeisterschaftAuswahlView
+            VereinsmeisterschaftAuswahlView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -54,7 +54,7 @@ namespace UI.Desktop.Export
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenVereinsmeisterschaftAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenVereinsmeisterschaftAuswahlMessage, string>(this, "ExportVereinsmeisterschaft");
         }
     }
 }

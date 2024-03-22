@@ -1,7 +1,7 @@
 ﻿using Base.Logic.ViewModels;
 using Data.Model.KoenigschiessenModels.DTOs;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace Logic.UI.KoenigschiessenViewModels
         public void ZeigeDatenAn(KoenigschiessenAbschlussDTO koenigschiessenAbschluss)
         {
             this.koenigschiessenAbschluss = koenigschiessenAbschluss;
-            RaisePropertyChanged(nameof(KoenigschiessenAbschluss));
+            OnPropertyChanged(nameof(KoenigschiessenAbschluss));
         }
 
         public bool Bestaetigt { get; private set; }
@@ -41,7 +41,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         private void ExecuteNaechsteRundeCommand()
         {
-            Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenRundeAbschluss");
+            WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenRundeAbschluss");
         }
         #endregion
 

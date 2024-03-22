@@ -85,6 +85,14 @@ namespace Data.Types
         [Description("Königschiessen Übersicht")]
         KoenigschiessenUebersicht = 36,
         [Description("Königschiessen Ergebnisse Eintragen")]
-        KoenigschiessenRundeErgebnisseEintragen = 37
+        KoenigschiessenRundeErgebnisseEintragen = 37 ,
+        [Description("Schnurschießen - Allgemein")]
+        SchnurschiessenAllgemein = 38,
+        [Description("Schnurschießen - Verwaltung")]
+        SchnurschiessenVerwaltung = 39,
+        [Description("Mitglieder Anonymisieren")]
+        MitgliederAnonymisieren = 40,
+        [Description("Schützenfestzahlen")]
+        Schuetzenfestzahlenuebersicht = 41
     }
 }

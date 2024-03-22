@@ -2,7 +2,7 @@
 using Base.Logic.ViewModels;
 using Data.Model.UserModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UserMessages;
 using Prism.Commands;
 using System;
@@ -46,7 +46,7 @@ namespace Logic.UI.UserViewModels
 
         private void ExecuteBereichtigungCommand()
         {
-            Messenger.Default.Send(new OpenUserBerechtigungenMessage { UserID = SelectedItem.Id }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenUserBerechtigungenMessage { UserID = SelectedItem.Id }, messageToken);
         }
 
         protected async override void ExecuteEntfernenCommand()

@@ -4,8 +4,8 @@ using Data.Model.KoenigschiessenModels;
 using Data.Model.KoenigschiessenModels.DTOs;
 using Data.Types;
 using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.KoenigschiessenMessages;
 using Logic.Messages.UtilMessages;
@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace Logic.UI.KoenigschiessenViewModels
 {
@@ -37,7 +38,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             ErgebnisEintragenCommand = new RelayCommand(() => ExecuteErgebnisEintragenCommand());
             ErgebnisEntfernenCommand = new RelayCommand(() => ExcecuteErgebnisEntfernenCommand());
             BesteErgebnisseCommand = new RelayCommand(() => ExcecuteBesteErgebnisseCommand());
-            RundeBeendenCommand = new RelayCommand(() => ExcecuteRundeBeendenCommand());
+            RundeBeendenCommand = new DelegateCommand(ExcecuteRundeBeendenCommand, CanPost);
         }
 
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.mitglied; }
@@ -74,7 +75,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             set
             {
                 zeigeNurOhneErgebnis = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -83,7 +84,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         private void ExecuteErgebnisEintragenCommand()
         {
-            Messenger.Default.Send(new OpenKoenigschiessenErgebnisEintragenMessage { KoenigschiessenRundeTeilnehmer = SelectedItem, Command = KoenigschiessenErgebnisEingetragen, variante = variante}, "KoenigschiessenRundeTeilnehmerUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenKoenigschiessenErgebnisEintragenMessage { KoenigschiessenRundeTeilnehmer = SelectedItem, Command = KoenigschiessenErgebnisEingetragen, variante = variante}, "KoenigschiessenRundeTeilnehmerUebersicht");
         }
 
 
@@ -92,12 +93,12 @@ namespace Logic.UI.KoenigschiessenViewModels
             SelectedItem.ErgebnisAbgegeben = true;
             SelectedItem.ErgebnissVom = DateTime.Now;
             FilterText = "";
-            RaisePropertyChanged(nameof(FilterText));
+            OnPropertyChanged(nameof(FilterText));
             LadeUebersicht(jahr, variante, runde, art);
         }
         private void ExcecuteErgebnisEntfernenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll das Ergebnis entfernt werden?", Command = ErgebnisEntfernen }, "KoenigschiessenRundeTeilnehmerUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll das Ergebnis entfernt werden?", Command = ErgebnisEntfernen }, "KoenigschiessenRundeTeilnehmerUebersicht");
         }
 
         private async void ErgebnisEntfernen()
@@ -133,12 +134,12 @@ namespace Logic.UI.KoenigschiessenViewModels
 
         private void ExcecuteBesteErgebnisseCommand()
         {
-            Messenger.Default.Send(new OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage { Art = art, Jahr = jahr, Runde = runde }, "KoenigschiessenRundeTeilnehmerUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage { Art = art, Jahr = jahr, Runde = runde }, "KoenigschiessenRundeTeilnehmerUebersicht");
         }
 
         private void ExcecuteRundeBeendenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll die Runde beendet werden?", Command = RundeBeenden }, "KoenigschiessenRundeTeilnehmerUebersicht");
+            WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage { Beschreibung = "Soll die Runde beendet werden?", Command = RundeBeenden }, "KoenigschiessenRundeTeilnehmerUebersicht");
         }
 
         private async void RundeBeenden()
@@ -147,6 +148,7 @@ namespace Logic.UI.KoenigschiessenViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/KoenigschiessenRunde/Abschliessen",
                         new KoenigschiessenRundeAbschliessenDTO
                         {
@@ -165,26 +167,42 @@ namespace Logic.UI.KoenigschiessenViewModels
                     else
                     {
                         KoenigschiessenAbschlussDTO koenigschiessenAbschluss = await resp.Content.ReadAsAsync<KoenigschiessenAbschlussDTO>();
-                        Messenger.Default.Send(new KoenigschiessenRundeBeendetMessage { KoenigschiessenAbschluss = koenigschiessenAbschluss }, "KoenigschiessenRundeTeilnehmerUebersicht");
+                        WeakReferenceMessenger.Default.Send(new KoenigschiessenRundeBeendetMessage { KoenigschiessenAbschluss = koenigschiessenAbschluss }, "KoenigschiessenRundeTeilnehmerUebersicht");
                         RundeBeendet = true;
 
                         if (koenigschiessenAbschluss.KoenigschiessenBeendet)
                         {
-                            Messenger.Default.Send(new CloseViewMessage(), "KoenigschiessenRundeTeilnehmerUebersicht");
+                            WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "KoenigschiessenRundeTeilnehmerUebersicht");
                         }
                         else
                         {
                             LadeUebersicht(jahr, variante, runde + 1, art);
                         }
                     }
+                    RequestIsWorking = false;
                 }
             }
             catch (Exception e)
             {
-                SendExceptionMessage(e.Message); ;
+                SendExceptionMessage(e.Message);
+                RequestIsWorking = false;
             }
         }
 
+        public bool CanPost() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (RundeBeendenCommand != null)
+                {
+                    ((DelegateCommand)RundeBeendenCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
     }
 }

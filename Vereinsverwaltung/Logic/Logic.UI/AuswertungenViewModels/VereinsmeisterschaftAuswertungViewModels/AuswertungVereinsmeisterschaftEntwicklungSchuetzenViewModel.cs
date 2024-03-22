@@ -85,32 +85,27 @@ namespace Logic.UI.AuswertungenViewModels
                 frauenSeries = new LineSeries<int>
                 {
                     Values = valuesFrauen,
-                    Name = "Anzahl Frauen",
-                    TooltipLabelFormatter = (point) => "Anzahl Frauen " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Frauen"
                 };
                 maenner16_30Series = new LineSeries<int>
                 {
                     Values = valuesMaenner16_30,
-                    Name = "Anzahl Männer 16-30",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer 16-30" + point.PrimaryValue.ToString()
+                    Name = "Anzahl Männer 16-30"
                 };
                 maenner31_50Series = new LineSeries<int>
                 {
                     Values = valuesMaenner31_50,
-                    Name = "Anzahl Männer 31-50",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer 31-50 " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Männer 31-50"
                 };
                 maenner51Series = new LineSeries<int>
                 {
                     Values = valuesMaenner51,
-                    Name = "Anzahl Männer ab 50",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer ab 50 " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Männer ab 50"
                 };
                 sportschuetzenSeries = new LineSeries<int>
                 {
                     Values = valuesSportschuetzen,
-                    Name = "Anzahl Sportschützen",
-                    TooltipLabelFormatter = (point) => "Anzahl Männer " + point.PrimaryValue.ToString()
+                    Name = "Anzahl Sportschützen"
                 };
 
                 XAxes.First().Labels = Labels;
@@ -118,9 +113,9 @@ namespace Logic.UI.AuswertungenViewModels
                 YAxes.First().Name = "Anzahl";
                 Series = new LineSeries<int>[5] { maenner16_30Series, maenner31_50Series, maenner51Series, frauenSeries, sportschuetzenSeries };
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
 
             }
             RequestIsWorking = false;
@@ -135,7 +130,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -146,7 +141,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -158,7 +153,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 maenner16_30Series.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
 
@@ -168,7 +163,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 maenner31_50Series.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
 
@@ -178,7 +173,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 maenner51Series.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
 
@@ -188,7 +183,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 frauenSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
 
@@ -198,7 +193,7 @@ namespace Logic.UI.AuswertungenViewModels
             set
             {
                 sportschuetzenSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
         #endregion

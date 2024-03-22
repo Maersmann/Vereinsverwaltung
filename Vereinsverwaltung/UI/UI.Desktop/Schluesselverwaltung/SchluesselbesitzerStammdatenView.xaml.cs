@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -27,16 +27,16 @@ namespace UI.Desktop.Schluesselverwaltung
         public SchluesselbesitzerStammdatenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenMitgliedAuswahlMessage>(this, "SchluesselbesitzerStammdaten", m => ReceiveOpenMitgliedAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenMitgliedAuswahlMessage, string>(this, "SchluesselbesitzerStammdaten", (r, m) => ReceiveOpenMitgliedAuswahlMessage(m));
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.schluesselbesitzer);
         }
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenMitgliedAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenMitgliedAuswahlMessage, string>(this, "SchluesselbesitzerStammdaten");
         }
 
-        private void ReceiveOpenMitgliedAuswahlMessage(OpenMitgliedAuswahlMessage m)
+        private static void ReceiveOpenMitgliedAuswahlMessage(OpenMitgliedAuswahlMessage m)
         {
             var view = new MitgliedAuswahlView
             {

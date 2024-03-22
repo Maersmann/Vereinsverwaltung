@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -25,10 +25,10 @@ namespace UI.Desktop.Auswertungen
         public PinAusgabeAuswertungTagStundeView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenPinAusgabeAuswahlMessage>(this, "PinAusgabeAuswertungTagStunde", m => ReceiveOpenPinAusgabeAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenPinAusgabeAuswahlMessage, string>(this, "PinAusgabeAuswertungTagStunde", (r, m) => ReceiveOpenPinAusgabeAuswahlMessage(m));
         }
 
-        private void ReceiveOpenPinAusgabeAuswahlMessage(OpenPinAusgabeAuswahlMessage m)
+        private static void ReceiveOpenPinAusgabeAuswahlMessage(OpenPinAusgabeAuswahlMessage m)
         {
             var view = new PinAusgabeAuswahlView
             {
@@ -46,7 +46,7 @@ namespace UI.Desktop.Auswertungen
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenPinAusgabeAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenPinAusgabeAuswahlMessage, string>(this, "PinAusgabeAuswertungTagStunde");
         }
     }
 }

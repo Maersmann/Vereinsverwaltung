@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.KoenigschiessenMessages;
 using Logic.UI.KoenigschiessenViewModels;
 using System;
@@ -24,14 +24,14 @@ namespace UI.Desktop.Koenigschiessen
         public JugendkoenigschiessenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenKoenigschiessenAnmeldungViewMessage>(this, "JugendkoenigUebersicht", m => ReceiveOpenKoenigschiessenViewMessage(m));
-            Messenger.Default.Register<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage>(this, "JugendkoenigUebersicht", m => ReceiveOpenKoenigschiessenErgebnisViewMessage(m));
-            Messenger.Default.Register<OpenKoenigschiessenZahlenMessage>(this, "JugendkoenigUebersicht", m => ReceiveOpenKoenigschiessenZahlenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenKoenigschiessenAnmeldungViewMessage, string>(this, "JugendkoenigUebersicht", (r, m) => ReceiveOpenKoenigschiessenViewMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage, string>(this, "JugendkoenigUebersicht", (r, m) => ReceiveOpenKoenigschiessenErgebnisViewMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenKoenigschiessenZahlenMessage, string>(this, "JugendkoenigUebersicht", (r, m) => ReceiveOpenKoenigschiessenZahlenMessage(m));
         }
 
         private async void ReceiveOpenKoenigschiessenErgebnisViewMessage(OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage m)
         {
-            KoenigschiessenRundeTeilnehmerUebersichtView view = new KoenigschiessenRundeTeilnehmerUebersichtView
+            KoenigschiessenRundeTeilnehmerUebersichtView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -49,9 +49,9 @@ namespace UI.Desktop.Koenigschiessen
             }
         }
 
-        private void ReceiveOpenKoenigschiessenViewMessage(OpenKoenigschiessenAnmeldungViewMessage m)
+        private static void ReceiveOpenKoenigschiessenViewMessage(OpenKoenigschiessenAnmeldungViewMessage m)
         {
-            KoenigschiessenAnmeldungUebersichtView view = new KoenigschiessenAnmeldungUebersichtView
+            KoenigschiessenAnmeldungUebersichtView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -63,9 +63,9 @@ namespace UI.Desktop.Koenigschiessen
             }
         }
 
-        private void ReceiveOpenKoenigschiessenZahlenMessage(OpenKoenigschiessenZahlenMessage m)
+        private static void ReceiveOpenKoenigschiessenZahlenMessage(OpenKoenigschiessenZahlenMessage m)
         {
-            KoenigschiessenRundenZahlenView view = new KoenigschiessenRundenZahlenView
+            KoenigschiessenRundenZahlenView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -78,9 +78,9 @@ namespace UI.Desktop.Koenigschiessen
 
         private void WindowUnloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenKoenigschiessenAnmeldungViewMessage>(this);
-            Messenger.Default.Unregister<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage>(this);
-            Messenger.Default.Unregister<OpenKoenigschiessenZahlenMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenKoenigschiessenAnmeldungViewMessage, string>(this, "JugendkoenigUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenKoenigschiessenRundeTeilnehmerUebersichtViewMessage, string>(this, "JugendkoenigUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenKoenigschiessenZahlenMessage, string>(this, "JugendkoenigUebersicht");
         }
     }
 }

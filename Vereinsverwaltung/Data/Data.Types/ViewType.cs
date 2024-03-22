@@ -34,6 +34,25 @@
         viewAuswertungMitgliederAuswertungJahrgang,
         viewAuswertungMitgliederAuswertungJahrzehnt,
         viewKoenigschiessenUebersicht,
-        viewJugendkoenigschiessenUebersicht
+        viewJugendkoenigschiessenUebersicht,
+        viewSchnurschiessenMitgliederUebersicht,
+        viewSchnurschiessenAuszeichnungBestandHistorie,
+        viewAktiveSchnurschiessenVerwaltung,
+        viewAktivesSchnurschiessenMitgliederUebersicht,
+        viewSchnurschiessenMitgliederImport,
+        viewSchnurschiessenAuswertungAktuellenStandAuszeichnung,
+        viewSchnurschiessenAuswertungEntwicklungAuszeichnung,
+        viewSchnurschiessenAuswertungAktuellenStandRang,
+        viewSchnurschiessenAuswertungNeuerRang,
+        viewSchnurschiessenAuswertungErhalteneAuszeichnung,
+        viewSchnurschiessenAuswertungGesamtteilnahme,
+        viewSchnurschiessenAuswertungEntwicklungRang,
+        viewSchnurschiessenAuswertungTeilnahmeProTag,
+        viewSchnurschiessenMitgliederZuordnung,
+        viewExportSchnurschiessen,
+        viewMitgliederAnonymisieren,
+        viewSchuetzenfestZahlenUebersicht,
+        viewSchuetzenfestZahlenAuswertungUmzug,
+        viewSchuetzenfestZahlenAuswertungBaendchen
     }
 }

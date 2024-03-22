@@ -1,7 +1,7 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels.MitgliederAuswertungModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -66,13 +66,8 @@ namespace Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels
             var auswertungSeries = new ColumnSeries<MitgliederAuswertungJahrzehnteModel>
             {
                 Values = ItemList,
-                DataLabelsFormatter = (point) => point.TertiaryValue.ToString(),
-                Mapping = (model, point) => {
-                    point.PrimaryValue = model.Anzahl;
-                    point.SecondaryValue = point.Context.Index;
-                },
+                Mapping = (model, index) => new LiveChartsCore.Kernel.Coordinate(index, (double)model.Anzahl),
                 Name = "Anzahl",
-                TooltipLabelFormatter = (point) => "Jahrzehnt: " + point.Model.Jahrzehnt.ToString() + ": " + point.Model.Anzahl.ToString(),
             };
 
             XAxes.First().Labels = Labels;
@@ -81,9 +76,9 @@ namespace Logic.UI.AuswertungenViewModels.MitgliederAuswertungenViewModels
 
             Series = new ColumnSeries<MitgliederAuswertungJahrzehnteModel>[1] { auswertungSeries };
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings

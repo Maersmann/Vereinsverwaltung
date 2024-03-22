@@ -1,9 +1,8 @@
 ﻿using Base.Logic.Core;
 using Base.Logic.ViewModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,7 +31,7 @@ namespace Logic.UI.ExportViewModels
         #region Commands
         private async void ExcecuteExportZuteilungCommand()
         {
-            Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Zuteilung wird heruntergeladen"}, "ExportSchluessel");
+            WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Zuteilung wird heruntergeladen"}, "ExportSchluessel");
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/schluesselverwaltung/Zuteilung");
             if (resp.IsSuccessStatusCode)
             {
@@ -49,12 +48,12 @@ namespace Logic.UI.ExportViewModels
             {
                 SendExceptionMessage("Datei konnte nicht heruntergeladen werden.");
             }
-            Messenger.Default.Send(new CloseLoadingViewMessage(), "ExportSchluessel");
+            WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "ExportSchluessel");
         }
 
         private async void ExcecuteExportSchluesselCommand()
         {
-            Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Schlüsselliste wird heruntergeladen"}, "ExportSchluessel");
+            WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Schlüsselliste wird heruntergeladen"}, "ExportSchluessel");
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/export/schluesselverwaltung/Schluessel");
             if (resp.IsSuccessStatusCode)
             {
@@ -70,7 +69,7 @@ namespace Logic.UI.ExportViewModels
             {
                 SendExceptionMessage("Datei konnte nicht heruntergeladen werden.");
             }
-            Messenger.Default.Send(new CloseLoadingViewMessage(), "ExportSchluessel");
+            WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "ExportSchluessel");
         }
         #endregion
     }

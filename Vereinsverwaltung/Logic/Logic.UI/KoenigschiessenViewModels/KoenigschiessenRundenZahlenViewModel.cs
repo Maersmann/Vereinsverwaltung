@@ -44,7 +44,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<KoenigschiessenRundenZahlenModel>>();
-                    RaisePropertyChanged(nameof(ItemList));
+                    OnPropertyChanged(nameof(ItemList));
                     if (itemList.Count > 0 )
                     {
                         SelectedItem = ItemList.First();
@@ -79,7 +79,7 @@ namespace Logic.UI.KoenigschiessenViewModels
                     detailList = new ObservableCollection<KoenigschiessenRundenZahlenDetailModel>();
                 }
 
-                RaisePropertyChanged(nameof(DetailList));
+                OnPropertyChanged(nameof(DetailList));
             }
         }
         #endregion

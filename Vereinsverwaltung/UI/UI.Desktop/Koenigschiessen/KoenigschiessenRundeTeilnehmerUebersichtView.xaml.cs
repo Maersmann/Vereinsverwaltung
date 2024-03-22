@@ -1,5 +1,5 @@
 ﻿using Data.Types.KoenigschiessenTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.KoenigschiessenMessages;
 using Logic.UI.KoenigschiessenViewModels;
@@ -27,12 +27,12 @@ namespace UI.Desktop.Koenigschiessen
         {
             InitializeComponent();
             RegisterMessages("KoenigschiessenRundeTeilnehmerUebersicht");
-            Messenger.Default.Register<OpenKoenigschiessenErgebnisEintragenMessage>(this, "KoenigschiessenRundeTeilnehmerUebersicht", m => ReceiveOpenKoenigschiessenBestaetigungMessage(m));
-            Messenger.Default.Register<OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage>(this, "KoenigschiessenRundeTeilnehmerUebersicht", m => ReceiveOpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage(m));
-            Messenger.Default.Register<KoenigschiessenRundeBeendetMessage>(this, "KoenigschiessenRundeTeilnehmerUebersicht", m => ReceiveKoenigschiessenRundeBeendetMessage(m));
-            Messenger.Default.Register<CloseViewMessage>(this, "KoenigschiessenRundeTeilnehmerUebersicht", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenKoenigschiessenErgebnisEintragenMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht", (r, m) => ReceiveOpenKoenigschiessenBestaetigungMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht", (r, m) => ReceiveOpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage(m));
+            WeakReferenceMessenger.Default.Register<KoenigschiessenRundeBeendetMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht", (r, m) => ReceiveKoenigschiessenRundeBeendetMessage(m));
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht", (r, m) => ReceivCloseViewMessage());
 
-            KoenigschiessenRundeTeilnehmerWerteView WerteKoenigschiessen = new KoenigschiessenRundeTeilnehmerWerteView();
+            KoenigschiessenRundeTeilnehmerWerteView WerteKoenigschiessen = new();
             Werte.NavigationService.Navigate(WerteKoenigschiessen);
             if (DataContext is KoenigschiessenRundeTeilnehmerUebersichtViewModel model)
             {
@@ -42,11 +42,11 @@ namespace UI.Desktop.Koenigschiessen
            
         }
 
-        private void ReceiveKoenigschiessenRundeBeendetMessage(KoenigschiessenRundeBeendetMessage m)
+        private static void ReceiveKoenigschiessenRundeBeendetMessage(KoenigschiessenRundeBeendetMessage m)
         {
             if (m.KoenigschiessenAbschluss.KoenigschiessenBeendet)
             {
-                KoenigschiessenRundeAbschlussBeendetView view = new KoenigschiessenRundeAbschlussBeendetView
+                KoenigschiessenRundeAbschlussBeendetView view = new()
                 {
                     Owner = Application.Current.MainWindow
                 };
@@ -58,7 +58,7 @@ namespace UI.Desktop.Koenigschiessen
             }
             else
             {
-                KoenigschiessenRundeAbschlussNaechsteRundeView NaechsteRundeview = new KoenigschiessenRundeAbschlussNaechsteRundeView
+                KoenigschiessenRundeAbschlussNaechsteRundeView NaechsteRundeview = new()
                 {
                     Owner = Application.Current.MainWindow
                 };
@@ -75,9 +75,9 @@ namespace UI.Desktop.Koenigschiessen
             GetWindow(this).Close();
         }
 
-        private void ReceiveOpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage(OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage m)
+        private static void ReceiveOpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage(OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage m)
         {
-            KoenigschiessenHoechsteErgebnisSchuetzenUebersichtView view = new KoenigschiessenHoechsteErgebnisSchuetzenUebersichtView
+            KoenigschiessenHoechsteErgebnisSchuetzenUebersichtView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -88,9 +88,9 @@ namespace UI.Desktop.Koenigschiessen
             }
         }
 
-        private void ReceiveOpenKoenigschiessenBestaetigungMessage(OpenKoenigschiessenErgebnisEintragenMessage m)
+        private static void ReceiveOpenKoenigschiessenBestaetigungMessage(OpenKoenigschiessenErgebnisEintragenMessage m)
         {
-            KoenigschiessenErgebnisEintragenView view = new KoenigschiessenErgebnisEintragenView
+            KoenigschiessenErgebnisEintragenView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -107,9 +107,11 @@ namespace UI.Desktop.Koenigschiessen
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenKoenigschiessenErgebnisEintragenMessage>(this);
-            Messenger.Default.Unregister<OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage>(this);
-            Messenger.Default.Unregister<CloseViewMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenKoenigschiessenErgebnisEintragenMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenKoenigschiessenHoechsteErgebnisSchuetzenUebersichtViewMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht");
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht");
+            WeakReferenceMessenger.Default.Unregister<KoenigschiessenRundeBeendetMessage, string>(this, "KoenigschiessenRundeTeilnehmerUebersicht");
+
             base.Window_Unloaded(sender, e);
         }
     }

@@ -29,7 +29,7 @@ namespace Logic.UI.KoenigschiessenViewModels
 
                 RequestIsWorking = false;
             }
-            RaisePropertyChanged(nameof(Werte));
+            OnPropertyChanged(nameof(Werte));
         }
 
 

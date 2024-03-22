@@ -83,12 +83,12 @@ namespace Logic.Core.OptionenLogic
             this.url = url;
 
             iniData = new IniData();
-            iniData.Sections.AddSection("Backend-Settings");
+            iniData.Sections.Add("Backend-Settings");
 
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("IP", ip);
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("URL", url);
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Protokoll", Convert.ToString(Convert.ToInt32(protokollTyp)));
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Port", Convert.ToString(port));
+            iniData["Backend-Settings"]["IP"] =ip;
+            iniData["Backend-Settings"]["URL"] = url;
+            iniData["Backend-Settings"]["Protokoll"] = Convert.ToString(Convert.ToInt32(protokollTyp));
+            iniData["Backend-Settings"]["Port"] = Convert.ToString(port);
 
             parser.WriteFile(iniPath, iniData);
         }
@@ -97,14 +97,14 @@ namespace Logic.Core.OptionenLogic
         private void LoadBackendSettings()
         {
             if (IsFieldVorhanden("Backend-Settings", "IP"))
-                ip = iniData.Sections["Backend-Settings"].GetKeyData("IP").Value;
+                ip = iniData["Backend-Settings"]["IP"];
             if (IsFieldVorhanden("Backend-Settings", "URL"))
-                url = iniData.Sections["Backend-Settings"].GetKeyData("URL").Value;
+                url = iniData["Backend-Settings"]["URL"];
 
             if ((IsFieldVorhanden("Backend-Settings", "Protokoll")) && int.TryParse(iniData.Sections["Backend-Settings"].GetKeyData("Protokoll").Value, out _))
-                typ = (BackendProtokollTypes)int.Parse(iniData.Sections["Backend-Settings"].GetKeyData("Protokoll").Value);
+                typ = (BackendProtokollTypes)int.Parse(iniData["Backend-Settings"]["Protokoll"]);
             if ((IsFieldVorhanden("Backend-Settings", "Port")) && int.TryParse(iniData.Sections["Backend-Settings"].GetKeyData("Port").Value, out _))
-                port = int.Parse(iniData.Sections["Backend-Settings"].GetKeyData("Port").Value);
+                port = int.Parse(iniData["Backend-Settings"]["Port"]);
         }
 
         public int? GetBackendPort()

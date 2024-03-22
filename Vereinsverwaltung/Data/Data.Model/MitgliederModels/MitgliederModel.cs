@@ -18,6 +18,8 @@ namespace Data.Model.MitgliederModels
         public MitgliedStatus MitgliedStatus { get; set; }
         public Geschlecht Geschlecht { get; set; }
         public DateTime? Austrittsdatum { get; set; }
+        public int? KoenigImJahr { get; set; }
+        public int? SchnurschiessenRangID { get; set; }
 
         public int? Alter
         {

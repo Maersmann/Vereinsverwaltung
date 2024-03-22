@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.PinMessages;
 using Logic.UI.PinViewModels;
 using System;
@@ -24,12 +24,12 @@ namespace UI.Desktop.Pin
         public PinAusgabeUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenPinAusgabeMitgliederViewMessage>(this, "PinAusgabeUebersicht", m => ReceiveOpenPinAusgabeMitgliederViewMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenPinAusgabeMitgliederViewMessage, string>(this, "PinAusgabeUebersicht", (r, m) => ReceiveOpenPinAusgabeMitgliederViewMessage(m));
         }
 
-        private void ReceiveOpenPinAusgabeMitgliederViewMessage(OpenPinAusgabeMitgliederViewMessage m)
+        private static void ReceiveOpenPinAusgabeMitgliederViewMessage(OpenPinAusgabeMitgliederViewMessage m)
         {
-            PinAusgabeMitgliedUebersichtView view = new PinAusgabeMitgliedUebersichtView
+            PinAusgabeMitgliedUebersichtView view = new()
             {
                 Owner = Application.Current.MainWindow
             };

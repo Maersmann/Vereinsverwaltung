@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using Logic.UI.VereinsmeisterschaftViewModels;
 using System;
@@ -24,11 +24,11 @@ namespace UI.Desktop.Vereinsmeisterschaft
         public SchiessgruppenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenVereinsmeisterschaftSchuetzenDerGruppeMessage>(this, "SchiessgruppenUebersicht", m => ReceiveOpenVereinsmeisterschaftSchuetzenDerGruppeMessage(m));
-            Messenger.Default.Register<OpenVereinsmeisterschaftGruppeErgebnisseMessage>(this, "SchiessgruppenUebersicht", m => ReceiveOpenVereinsmeisterschaftGruppeErgebnisseMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenVereinsmeisterschaftSchuetzenDerGruppeMessage, string>(this, "SchiessgruppenUebersicht", (r, m) => ReceiveOpenVereinsmeisterschaftSchuetzenDerGruppeMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenVereinsmeisterschaftGruppeErgebnisseMessage, string>(this, "SchiessgruppenUebersicht", (r, m) => ReceiveOpenVereinsmeisterschaftGruppeErgebnisseMessage(m));
         }
 
-        private void ReceiveOpenVereinsmeisterschaftGruppeErgebnisseMessage(OpenVereinsmeisterschaftGruppeErgebnisseMessage m)
+        private static void ReceiveOpenVereinsmeisterschaftGruppeErgebnisseMessage(OpenVereinsmeisterschaftGruppeErgebnisseMessage m)
         {
             var view = new VereinsmeisterschaftGruppeErgebnisseView()
             {
@@ -41,7 +41,7 @@ namespace UI.Desktop.Vereinsmeisterschaft
             }
         }
 
-        private void ReceiveOpenVereinsmeisterschaftSchuetzenDerGruppeMessage(OpenVereinsmeisterschaftSchuetzenDerGruppeMessage m)
+        private static void ReceiveOpenVereinsmeisterschaftSchuetzenDerGruppeMessage(OpenVereinsmeisterschaftSchuetzenDerGruppeMessage m)
         {
             var view = new VereinsmeisterschaftSchuetzenDerGruppeView()
             {
@@ -56,8 +56,8 @@ namespace UI.Desktop.Vereinsmeisterschaft
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenVereinsmeisterschaftSchuetzenDerGruppeMessage>(this);
-            Messenger.Default.Unregister<OpenVereinsmeisterschaftGruppeErgebnisseMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenVereinsmeisterschaftSchuetzenDerGruppeMessage, string>(this, "SchiessgruppenUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenVereinsmeisterschaftGruppeErgebnisseMessage, string>(this, "SchiessgruppenUebersicht");
         }
     }
 }

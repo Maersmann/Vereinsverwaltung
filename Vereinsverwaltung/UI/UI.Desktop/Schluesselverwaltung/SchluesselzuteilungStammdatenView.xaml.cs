@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.UI.AuswahlViewModels;
 using System;
@@ -27,13 +27,13 @@ namespace UI.Desktop.Schluesselverwaltung
         public SchluesselzuteilungStammdatenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenSchluesselbesitzerAuswahlMessage>(this, "SchluesselzuteilungStammdaten", m => ReceiveOpenSchluesselbesitzerAuswahlMessage(m));
-            Messenger.Default.Register<OpenSchluesselAuswahlMessage>(this, "SchluesselzuteilungStammdaten", m => ReceiveOpenSchluesselAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchluesselbesitzerAuswahlMessage, string>(this, "SchluesselzuteilungStammdaten", (r, m) => ReceiveOpenSchluesselbesitzerAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchluesselAuswahlMessage, string>(this, "SchluesselzuteilungStammdaten", (r, m) => ReceiveOpenSchluesselAuswahlMessage(m));
            
             RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.schluesselzuteilung);
         }
 
-        private void ReceiveOpenSchluesselAuswahlMessage(OpenSchluesselAuswahlMessage m)
+        private static void ReceiveOpenSchluesselAuswahlMessage(OpenSchluesselAuswahlMessage m)
         {
             var view = new SchluesselAuswahlView()
             {
@@ -49,7 +49,7 @@ namespace UI.Desktop.Schluesselverwaltung
             }
         }
 
-        private void ReceiveOpenSchluesselbesitzerAuswahlMessage(OpenSchluesselbesitzerAuswahlMessage m)
+        private static void ReceiveOpenSchluesselbesitzerAuswahlMessage(OpenSchluesselbesitzerAuswahlMessage m)
         {
             var view = new SchluesselbesitzerAuswahlView()
             {
@@ -67,8 +67,8 @@ namespace UI.Desktop.Schluesselverwaltung
 
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenSchluesselbesitzerAuswahlMessage>(this);
-            Messenger.Default.Unregister<OpenSchluesselAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSchluesselbesitzerAuswahlMessage, string>(this, "SchluesselzuteilungStammdaten");
+            WeakReferenceMessenger.Default.Unregister<OpenSchluesselAuswahlMessage, string>(this, "SchluesselzuteilungStammdaten");
             base.Window_Unloaded(sender, e);
         }
     }

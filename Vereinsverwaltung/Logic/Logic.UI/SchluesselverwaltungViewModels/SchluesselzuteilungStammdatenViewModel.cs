@@ -1,7 +1,7 @@
 ﻿using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
@@ -28,7 +28,6 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Title = "Schlüsselzuteilung";
             OpenAuswahlSchluesselCommand = new DelegateCommand(this.ExecuteOpenAuswahlSchluesselCommand, this.CanExecuteOpenAuswahlSchluesselCommand);
             OpenAuswahlBesitzerCommand = new DelegateCommand(this.ExecuteOpenAuswahlBesitzerCommand, this.CanOpenAuswahlBesitzerCommand);
-            Cleanup();
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.schluesselzuteilung;
@@ -48,7 +47,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
                     ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Besitzer");
-                    RaisePropertyChanged("SchluesselBez");
+                    OnPropertyChanged(nameof(SchluesselBez));
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
                 RequestIsWorking = false;
@@ -70,7 +69,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                     ((DelegateCommand)OpenAuswahlSchluesselCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)OpenAuswahlBesitzerCommand).RaiseCanExecuteChanged();
                     ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
-                    RaisePropertyChanged("Schluesselbesitzer");
+                    OnPropertyChanged(nameof(Schluesselbesitzer));
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
                 RequestIsWorking = false;
@@ -90,7 +89,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     ValidateAnzahl(value, "Anzahl");
                     Data.Anzahl = value.GetValueOrDefault(0);
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -105,7 +104,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     Data.ErhaltenAm = value.GetValueOrDefault(DateTime.Now);
                     ValidateEintrittsdatum(Data.ErhaltenAm);
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -122,11 +121,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/schluesselverwaltung/zuteilung/new", Data);
-                RequestIsWorking = false;
+
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 908)
                 {
@@ -136,7 +135,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                 {
                     SendExceptionMessage("Schlüsselzuteilung konnte nicht gespeichert werden.");
                 }
-                
+                RequestIsWorking = false;
 
             }
         }
@@ -152,12 +151,12 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExecuteOpenAuswahlSchluesselCommand()
         {
-            Messenger.Default.Send(new OpenSchluesselAuswahlMessage(OpenSchluesselAuswahlCallback), "SchluesselzuteilungStammdaten");
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselAuswahlMessage(OpenSchluesselAuswahlCallback), "SchluesselzuteilungStammdaten");
         }
 
         private void ExecuteOpenAuswahlBesitzerCommand()
         {
-            Messenger.Default.Send(new OpenSchluesselbesitzerAuswahlMessage(OpenSchluesselbesitzerAuswahlCallback), "SchluesselzuteilungStammdaten");
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselbesitzerAuswahlMessage(OpenSchluesselbesitzerAuswahlCallback), "SchluesselzuteilungStammdaten");
         }
         #endregion
 
@@ -176,7 +175,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         Data.SchluesselbesitzerID = resData.Data.ID;
                         Data.SchluesselbesitzerName = resData.Data.Name;
                         ValidateBezeichnung(Schluesselbesitzer, "Schluesselbesitzer", "Schlüssel");
-                        RaisePropertyChanged("Schluesselbesitzer");
+                        OnPropertyChanged(nameof(Schluesselbesitzer));
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
                     RequestIsWorking = false;
@@ -197,7 +196,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
                         Data.SchluesselID = resData.Data.ID;
                         Data.SchluesselBezeichnung = resData.Data.Bezeichnung;
                         ValidateBezeichnung(SchluesselBez, "SchluesselBez", "Schlüssel");
-                        RaisePropertyChanged("SchluesselBez");
+                        OnPropertyChanged(nameof(SchluesselBez));
                         ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     }
                     RequestIsWorking = false;
@@ -238,7 +237,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchluesselzuteilungModel();
             ErhaltenAm = DateTime.Now;

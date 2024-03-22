@@ -5,8 +5,8 @@ using Base.Logic.Wrapper;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
 using Data.Types.AuswahlTypes;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.AuswahlMessages;
 using Logic.Messages.BaseMessages;
 using Logic.Messages.VereinsmeisterschaftMessages;
@@ -14,6 +14,7 @@ using Logic.UI.InterfaceViewModels;
 using Prism.Commands;
 using System.Net.Http;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.VereinsmeisterschaftViewModels
 {
@@ -28,7 +29,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         }
         public int VereinsmeisterschaftID { set => Data.VereinsmeisterschaftID = value; }
 
-        public void ZeigeStammdatenAn(int id)
+        public void ZeigeStammdatenAnAsync(int id)
         {
 
         }
@@ -43,7 +44,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 if (RequestIsWorking || !Equals(Data.SchuetzenName, value))
                 {
                     Data.SchuetzenName = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -57,7 +58,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 if (RequestIsWorking || !Equals(Data.Gruppenname, value))
                 {
                     Data.Gruppenname = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -74,27 +75,28 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/VereinsmeisterschaftschuetzeErgebnisse", Data);
-                RequestIsWorking = false;                                                                     
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
                 }
                 else
                 {
                     SendExceptionMessage("Schütze konnte nicht gespeichert werden."+ await resp.Content.ReadAsStringAsync());
                 }
+                RequestIsWorking = false;
+
             }
         }
 
         private void ExcecuteSchuetzeHinterlegenCommand()
         {
-            Messenger.Default.Send(new OpenSchuetzeAuswahlMessage(OpenSchuetzeHinterlegenCommandCallback, AuswahlVereinsmeisterschaftSchuetzeTypes.nurFreieFuerVereinsmeisterschaft) { VereinsmeisterschaftID = Data.VereinsmeisterschaftID, Geschlecht = Data.Geschlecht }, messageToken) ;
+            WeakReferenceMessenger.Default.Send(new OpenSchuetzeAuswahlMessage(OpenSchuetzeHinterlegenCommandCallback, AuswahlVereinsmeisterschaftSchuetzeTypes.nurFreieFuerVereinsmeisterschaft) { VereinsmeisterschaftID = Data.VereinsmeisterschaftID, Geschlecht = Data.Geschlecht }, messageToken) ;
         }
 
         private void ExcecuteGruppeHinterlegenCommand()
         {
-            Messenger.Default.Send(new OpenVereinsmeisterschaftFreieGruppeAuswahlMessage(OpenGruppeHinterlegenCommandCallback, Data.VereinsmeisterschaftID, Data.Geschlecht), messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenVereinsmeisterschaftFreieGruppeAuswahlMessage(OpenGruppeHinterlegenCommandCallback, Data.VereinsmeisterschaftID, Data.Geschlecht), messageToken);
         }
 
         private async void OpenSchuetzeHinterlegenCommandCallback(bool confirmed, int id)
@@ -151,7 +153,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
 
         protected override bool CanExecuteSaveCommand() => base.CanExecuteSaveCommand() && Data.SchuetzeID > 0;
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new VereinsmeisterschaftschuetzeErgebnisModel { Geschlecht = null };
         }

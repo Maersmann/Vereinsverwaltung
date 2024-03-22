@@ -6,7 +6,7 @@ using Base.Logic.Wrapper;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
 using Data.Types.MitgliederTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
@@ -26,7 +26,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             Title = "Schiessgruppen Stammdaten";
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
@@ -56,13 +56,13 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public IEnumerable<Geschlecht> Geschlechter => Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
+        public static IEnumerable<Geschlecht> Geschlechter => Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
         public Geschlecht Geschlecht
         {
             get => Data.Geschlecht;
@@ -71,7 +71,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 if (RequestIsWorking || (Data.Geschlecht != value))
                 {
                     Data.Geschlecht = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -85,12 +85,11 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
             {
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Schiessgruppen", Data);
-                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 911)
                 {
@@ -100,6 +99,8 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
                 {
                     SendExceptionMessage("Schiessgruppe konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
+
             }
         }
 
@@ -118,7 +119,7 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         #endregion
 
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new SchiessgruppeModel();
             Name = "";

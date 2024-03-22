@@ -1,8 +1,8 @@
 ﻿using Base.Logic.ViewModels;
 using Data.Model.VereinsmeisterschaftModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.VereinsmeisterschaftMessages;
 using System;
 using System.Collections.Generic;
@@ -32,12 +32,12 @@ namespace Logic.UI.VereinsmeisterschaftViewModels
         #region Commands
         private void ExecuteErgebnisSchuetzenCommand()
         {
-            Messenger.Default.Send(new OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage { VereinsmeisterschaftID = SelectedItem.ID }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenVereinsmeisterschaftPlatzierungenSchuetzentypenMessage { VereinsmeisterschaftID = SelectedItem.ID }, messageToken);
         }
 
         private void ExecuteErgebnisGruppenCommand()
         {
-            Messenger.Default.Send(new OpenVereinsmeistschaftPlatzierungenGruppentypenMessage { VereinsmeisterschaftID = SelectedItem.ID }, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenVereinsmeistschaftPlatzierungenGruppentypenMessage { VereinsmeisterschaftID = SelectedItem.ID }, messageToken);
         }
         #endregion
     }

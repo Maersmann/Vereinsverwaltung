@@ -1,6 +1,6 @@
 ﻿using Data.Model.PinModels;
 using Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Base.Logic.ViewModels;
@@ -25,13 +25,12 @@ namespace Logic.UI.PinViewModels
         private IList<PinModel> pins;
         public PinAusgabeStammdatenViewModel()
         {
-            Cleanup();
-            pins = new List<PinModel>();
+            pins = [];
             Title = "Neue Pin Ausgabe";
             LoadArten();
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true; 
             if (GlobalVariables.ServerIsOnline)
@@ -53,17 +52,18 @@ namespace Logic.UI.PinViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 Data.PinID = Data.Pin.ID;
                 if (!Data.Option.NurAktive)
                 {
                     Data.Option.Stichtag = null;
                 }
-                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Liste wird erstellt." }, "PinAusgabeStammdaten");
+                WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Liste wird erstellt." }, "PinAusgabeStammdaten");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Pins/Ausgabe/new", Data);
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.UnprocessableEntity))
                 {
@@ -73,7 +73,8 @@ namespace Logic.UI.PinViewModels
                 {
                     SendExceptionMessage("Pinausgabe konnte nicht erstellt werden.");
                 }
-                Messenger.Default.Send(new CloseLoadingViewMessage(), "PinAusgabeStammdaten");
+                WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "PinAusgabeStammdaten");
+                RequestIsWorking = false;
             }
         }
         #endregion
@@ -92,7 +93,7 @@ namespace Logic.UI.PinViewModels
                 {
                     ValidateBezeichnung(value);
                     Data.Bezeichnung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -106,7 +107,7 @@ namespace Logic.UI.PinViewModels
                 if (RequestIsWorking || !Equals(Data.Option.Stichtag, value))
                 {
                     Data.Option.Stichtag = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -120,8 +121,8 @@ namespace Logic.UI.PinViewModels
                 if (RequestIsWorking || !Equals(Data.Option.NurAktive, value))
                 {
                     Data.Option.NurAktive = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(nameof(Stichtag));
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Stichtag));
                 }
             }
         }
@@ -135,7 +136,7 @@ namespace Logic.UI.PinViewModels
                 if (RequestIsWorking || (Data.Pin != value))
                 {
                     Data.Pin = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -173,14 +174,14 @@ namespace Logic.UI.PinViewModels
                 RequestIsWorking = false;
             }
 
-            RaisePropertyChanged(nameof(Pins));
+            OnPropertyChanged(nameof(Pins));
             if (pins.Count > 0)
             {
                 Pin = pins.First();
             }
         }
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new PinAusgabeModel { Option = new PinAusgabeOptionModel(), Pin = new PinModel() };
             Bezeichnung = "";

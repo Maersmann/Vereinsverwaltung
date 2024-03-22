@@ -1,8 +1,8 @@
 ﻿using Data.Model.ImportModel;
 using Data.Model.MitgliederModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Core.ImportHelper;
 using Logic.Messages.BaseMessages;
@@ -21,6 +21,7 @@ using System.Windows.Input;
 using Base.Logic.ViewModels;
 using Base.Logic.Core;
 using Base.Logic.Messages;
+using Prism.Commands;
 
 namespace Logic.UI.MitgliederViewModels
 {
@@ -30,8 +31,8 @@ namespace Logic.UI.MitgliederViewModels
         public MitgliederImportViewModel()
         {
             Title = "Import Mitglieder";
-            ImportCommand = new RelayCommand(() => ExecuteImportCommand());
-            SaveCommand = new RelayCommand(() => ExecuteSaveCommand());
+            ImportCommand = new DelegateCommand(ExecuteImportCommand, CanExecuteCommand);
+            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteCommand);
         }
 
         #region Bindings
@@ -44,17 +45,18 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
+                OpenFileDialog openFileDialog = new();
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "MitgliederImport");
+                    RequestIsWorking = true;
+                    WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden importiert" }, "MitgliederImport");
                     await new ImportHelper().PostFile( openFileDialog.FileName ).ContinueWith(async task =>
                     {                      
                         if (task.Result.IsSuccessStatusCode)
                         {
                             data = await task.Result.Content.ReadAsAsync<MitgliedImportHistoryModel>();
                             Response.Data = data.Importlist;
-                            RaisePropertyChanged("ItemList");
+                            OnPropertyChanged("ItemList");
                         }
                         else
                         {
@@ -62,7 +64,8 @@ namespace Logic.UI.MitgliederViewModels
                             return;
                         }
                     });
-                    Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
+                    WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
+                    RequestIsWorking = false;
                 }
             }         
         }
@@ -71,15 +74,15 @@ namespace Logic.UI.MitgliederViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                Messenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert" }, "MitgliederImport");
+                WeakReferenceMessenger.Default.Send(new OpenLoadingViewMessage { Beschreibung = "Mitglieder werden gespeichert" }, "MitgliederImport");
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Import/Mitglieder/Save", data);
-                Messenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
+                WeakReferenceMessenger.Default.Send(new CloseLoadingViewMessage(), "MitgliederImport");
 
                 if (resp.IsSuccessStatusCode)
                 {
                     Response.Data.Clear();
-                    RaisePropertyChanged("ItemList");
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied.ToString());
+                    OnPropertyChanged("ItemList");
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.mitglied.ToString());
                 }
                 else
                 {
@@ -88,7 +91,26 @@ namespace Logic.UI.MitgliederViewModels
                 }
             }
         }
+
+        public bool CanExecuteCommand() => !RequestIsWorking;
         #endregion
+
+        public override bool RequestIsWorking
+        {
+            get => base.RequestIsWorking;
+            set
+            {
+                base.RequestIsWorking = value;
+                if (ImportCommand != null)
+                {
+                    ((DelegateCommand)ImportCommand).RaiseCanExecuteChanged();
+                }
+                if (SaveCommand != null)
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
     }
 }

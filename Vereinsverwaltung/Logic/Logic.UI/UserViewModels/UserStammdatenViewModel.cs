@@ -5,8 +5,8 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.UserModels;
 using Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen.Base;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
@@ -27,7 +27,7 @@ namespace Logic.UI.UserViewModels
             PasswordCommand = new RelayCommand<PasswordBox>(ExecutePasswordChangedCommand);
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
@@ -59,16 +59,17 @@ namespace Logic.UI.UserViewModels
                 {
                     resp = await Client.PutAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Users/{Data.Id}", Data);
                 }
-                RequestIsWorking = false;
+                
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
                     SendExceptionMessage("Benutzer konnte nicht gespeichert werden.");
                 }
+                RequestIsWorking = false;
             }
         }
 
@@ -89,7 +90,7 @@ namespace Logic.UI.UserViewModels
                 if (RequestIsWorking || !Equals(Data.LastName, value))
                 {
                     Data.LastName = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -102,7 +103,7 @@ namespace Logic.UI.UserViewModels
                 if (RequestIsWorking || !Equals(Data.FirstName, value))
                 {
                     Data.FirstName = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -117,7 +118,7 @@ namespace Logic.UI.UserViewModels
                     Data.Username = value;
                     ValidateUsername(value);
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -132,7 +133,7 @@ namespace Logic.UI.UserViewModels
                     Data.Password = value;
                     ValidatePassword(value);
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -162,10 +163,10 @@ namespace Logic.UI.UserViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new UserModel();
-            RaisePropertyChanged();
+            OnPropertyChanged();
             ValidatePassword("");
             ValidateUsername("");
             state = State.Neu;

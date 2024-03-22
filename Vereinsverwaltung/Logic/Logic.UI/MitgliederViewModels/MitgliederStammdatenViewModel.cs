@@ -1,7 +1,7 @@
 ﻿using Data.Model.MitgliederModels;
 using Data.Types;
 using Data.Types.MitgliederTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.Validierungen;
 using Logic.Messages.BaseMessages;
 using Logic.UI.InterfaceViewModels;
@@ -25,7 +25,7 @@ namespace Logic.UI.MitgliederViewModels
             Title = "Stammdaten Mitglied";
         }
 
-        public async void ZeigeStammdatenAn(int id)
+        public async void ZeigeStammdatenAnAsync(int id)
         {
             RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
@@ -53,12 +53,11 @@ namespace Logic.UI.MitgliederViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", Data);
-                RequestIsWorking = false;
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Mitglieder", Data); 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                    WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 902)
                 {
@@ -67,7 +66,8 @@ namespace Logic.UI.MitgliederViewModels
                 else
                 {
                     SendExceptionMessage("Mitglied konnte nicht gespeichert werden.");
-                }           
+                }
+                RequestIsWorking = false;
             }
         }
         #endregion
@@ -83,7 +83,7 @@ namespace Logic.UI.MitgliederViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -98,7 +98,7 @@ namespace Logic.UI.MitgliederViewModels
                 {
                     ValidateVorName(value);
                     Data.Vorname = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -112,7 +112,7 @@ namespace Logic.UI.MitgliederViewModels
                 if (RequestIsWorking || !Equals(Data.Ort, value))
                 {
                     Data.Ort = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace Logic.UI.MitgliederViewModels
                 if (RequestIsWorking || !Equals(Data.Straße, value))
                 {
                     Data.Straße = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -137,7 +137,7 @@ namespace Logic.UI.MitgliederViewModels
                 if (RequestIsWorking || !Equals(Data.Mitgliedsnr, value))
                 {
                     Data.Mitgliedsnr = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -151,7 +151,7 @@ namespace Logic.UI.MitgliederViewModels
                 {
                     ValidateEintrittsdatum(value);
                     Data.Eintrittsdatum = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -165,7 +165,7 @@ namespace Logic.UI.MitgliederViewModels
                 if (RequestIsWorking || !Equals(Data.Austrittsdatum, value))
                 {
                     Data.Austrittsdatum = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                 }
             }
         }
@@ -179,13 +179,13 @@ namespace Logic.UI.MitgliederViewModels
                 {
                     ValidateGeburtstag(value);
                     Data.Geburtstag = value;
-                    base.RaisePropertyChanged();
+                    base.OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public IEnumerable<Geschlecht> Geschlechter => Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
+        public static IEnumerable<Geschlecht> Geschlechter => Enum.GetValues(typeof(Geschlecht)).Cast<Geschlecht>();
         public Geschlecht Geschlecht
         {
             get => Data.Geschlecht;
@@ -194,7 +194,7 @@ namespace Logic.UI.MitgliederViewModels
                 if (RequestIsWorking || (Data.Geschlecht != value))
                 {
                     Data.Geschlecht = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -242,16 +242,17 @@ namespace Logic.UI.MitgliederViewModels
             return isValid;
         }
         #endregion
-        
-        public override void Cleanup()
+
+        protected override void OnActivated()
         {
             Data = new MitgliederModel();
-            RaisePropertyChanged();
+            OnPropertyChanged();
             ValidateEintrittsdatum(null);
             ValidateGeburtstag(null);
             ValidateName("");
-            ValidateVorName(""); 
+            ValidateVorName("");
             state = State.Neu;
+            base.OnActivated();
         }
     }
 }

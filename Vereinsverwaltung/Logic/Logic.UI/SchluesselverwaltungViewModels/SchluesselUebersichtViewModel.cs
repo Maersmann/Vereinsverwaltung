@@ -2,7 +2,7 @@
 using Data.Model.SchluesselverwaltungModels;
 using Data.Types;
 using Data.Types.SchluesselverwaltungTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core;
 using Logic.Messages.SchluesselMessages;
 using Logic.UI.BaseViewModels;
@@ -67,7 +67,7 @@ namespace Logic.UI.SchluesselverwaltungViewModels
 
         private void ExecuteOpenHistorieCommand()
         {
-            Messenger.Default.Send(new OpenSchluesselzuteilungHistoryUebersichtMessage { AuswahlTypes = SchluesselzuteilungTypes.Schluessel, ID = SelectedItem.ID}, messageToken);
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselzuteilungHistoryUebersichtMessage { AuswahlTypes = SchluesselzuteilungTypes.Schluessel, ID = SelectedItem.ID}, messageToken);
         }
 
         #endregion

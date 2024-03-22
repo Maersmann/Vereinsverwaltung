@@ -1,6 +1,4 @@
 ﻿using Data.Model.AuswertungModels.PinAusgabeAuswertungModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Logic.Core;
 using Logic.Messages.AuswahlMessages;
 using Base.Logic.ViewModels;
@@ -15,6 +13,8 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using LiveChartsCore.Measure;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.AuswertungenViewModels
 {
@@ -27,20 +27,20 @@ namespace Logic.UI.AuswertungenViewModels
             SecondTitle = "";
             Title = "Auswertung Tag/Stunde";
             AuswahlCommand = new RelayCommand(() => ExcecuteAuswahlCommand());
-            YAxes = new List<Axis>
-                {
+            YAxes =
+                [
                     new Axis()
                     {
                         LabelsPaint = new SolidColorPaint{ Color = SKColors.CornflowerBlue },
                         Position = AxisPosition.Start,
                         Labeler = (value) =>  string.Format("{0}", value)
                     }
-                };
+                ];
         }
 
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenPinAusgabeAuswahlMessage(LoadAuswertungCallback), "PinAusgabeAuswertungTagStunde");
+            WeakReferenceMessenger.Default.Send(new OpenPinAusgabeAuswahlMessage(LoadAuswertungCallback), "PinAusgabeAuswertungTagStunde");
         }
 
         public async void LoadAuswertungCallback(bool confirmed, int id)
@@ -53,28 +53,26 @@ namespace Logic.UI.AuswertungenViewModels
                 {
                     Data = await resp.Content.ReadAsAsync<PinAusgabeAuswertungTagModel>();
                     SecondTitle = "Auswertung von: " + Data.Bezeichnung;
-                    RaisePropertyChanged(nameof(SecondTitle));
-                    RaisePropertyChanged(nameof(Data));
-                    RaisePropertyChanged(nameof(Pin));
-                    RaisePropertyChanged(nameof(Abgeschlossen));
-                    RaisePropertyChanged(nameof(Verteilt));
-                    RaisePropertyChanged(nameof(Offen));
-
-                    IList<int> values = new List<int>();
+                    OnPropertyChanged(nameof(SecondTitle));
+                    OnPropertyChanged(nameof(Data));
+                    OnPropertyChanged(nameof(Pin));
+                    OnPropertyChanged(nameof(Abgeschlossen));
+                    OnPropertyChanged(nameof(Verteilt));
+                    OnPropertyChanged(nameof(Offen));
+                    IList<int> list = [];
                     Labels = new string[Data.Auswertung.Count];
                     int index = 0;
                     Data.Auswertung.OrderBy(s => s.Tag).ToList().ForEach(a =>
                     {
-                        values.Add(a.Anzahl);
+                        list.Add(a.Anzahl);
                         Labels[index] = a.Tag.ToString("dd.MM HH:mm");
                         index++;
                     });
 
                     var auswertungSeries = new ColumnSeries<int>
                     {
-                        Values = values,
+                        Values = list,
                         Name = "Anzahl",
-                        TooltipLabelFormatter = (point) => "Anzahl " + point.PrimaryValue.ToString()
                     };
 
                     XAxes.First().Labels = Labels;
@@ -83,9 +81,9 @@ namespace Logic.UI.AuswertungenViewModels
 
                     Series = new ColumnSeries<int>[1] { auswertungSeries };
 
-                    RaisePropertyChanged(nameof(Series));
-                    RaisePropertyChanged(nameof(XAxes));
-                    RaisePropertyChanged(nameof(YAxes));             
+                    OnPropertyChanged(nameof(Series));
+                    OnPropertyChanged(nameof(XAxes));
+                    OnPropertyChanged(nameof(YAxes));             
                 }
                 RequestIsWorking = false;
             }

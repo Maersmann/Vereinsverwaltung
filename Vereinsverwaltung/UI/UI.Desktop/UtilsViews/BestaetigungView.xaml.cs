@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.BaseMessages;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace UI.Desktop.UtilsViews
         public BestaetigungView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "Bestaetigung", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "Bestaetigung", (r, m) => ReceivCloseViewMessage());
         }
 
         private void ReceivCloseViewMessage()
