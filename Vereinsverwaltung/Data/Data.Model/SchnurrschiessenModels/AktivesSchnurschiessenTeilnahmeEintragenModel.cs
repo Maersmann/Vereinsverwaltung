@@ -14,6 +14,7 @@ namespace Data.Model.SchnurrschiessenModels
         public string ZuerhalteneAuszeichung {  get; set; }
         public int NeuerRangID {  get; set; }
         public bool AuszeichnungAusgegeben {  get; set; }
+        public bool AuszeichnungNichtAusgegeben { get; set; }
         public bool DarfNaechstenAusgeben { get; set; }
 
         public ObservableCollection<AktivesSchnurschiessenTeilnahmeEintragenRueckgabeModel> Auszeichnungen { get; set; }

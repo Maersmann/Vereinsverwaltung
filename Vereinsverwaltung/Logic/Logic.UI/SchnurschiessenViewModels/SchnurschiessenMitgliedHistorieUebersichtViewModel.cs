@@ -28,10 +28,10 @@ namespace Logic.UI.SchnurschiessenViewModels
             MessageToken = "SchnurschiessenMitgliedHistorieUebersicht";
             Title = "Historie Mtiglied";
             schnurschiessenStandId = 0;
-            RueckgabeCommand = new RelayCommand(() => new DelegateCommand(ExecuteRueckgabeCommand, CanPost));
-            AusgabeCommand = new RelayCommand(() => new DelegateCommand(ExecuteAusgabeCommand, CanPost)); 
-            VerlorenCommand = new RelayCommand(() => new DelegateCommand(ExecuteVerlorenCommand, CanPost)); 
-            BeschaedigtCommand = new RelayCommand(() => new DelegateCommand(ExecuteBeschaedigtCommand, CanPost));
+            RueckgabeCommand = new DelegateCommand(ExecuteRueckgabeCommand, CanPost);
+            AusgabeCommand =  new DelegateCommand(ExecuteAusgabeCommand, CanPost); 
+            VerlorenCommand =  new DelegateCommand(ExecuteVerlorenCommand, CanPost); 
+            BeschaedigtCommand  = new DelegateCommand(ExecuteBeschaedigtCommand, CanPost);
             RegisterAktualisereViewMessage(StammdatenTypes.schnurschiessen.ToString());
 
         }

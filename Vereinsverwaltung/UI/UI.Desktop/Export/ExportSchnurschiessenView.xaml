@@ -50,6 +50,8 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Margin="25" Content="Aktuellen Stand" Command="{Binding ExportAktuellenStandCommand}" Cursor="Hand"/>
+            <Button Grid.Column="1" Margin="25" Content="Alle mit Stand" Command="{Binding ExportAlleMitStandCommand}" Cursor="Hand"/>
+
         </Grid>
 
 
