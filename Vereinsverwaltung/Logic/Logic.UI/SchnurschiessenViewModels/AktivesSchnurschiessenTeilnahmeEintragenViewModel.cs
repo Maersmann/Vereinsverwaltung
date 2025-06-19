@@ -73,6 +73,13 @@ namespace Logic.UI.SchnurschiessenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
+
+                if (!Data.AuszeichnungNichtAusgegeben && !Data.AuszeichnungAusgegeben)
+                {
+                    SendInformationMessage("Information ob die Schnur ausgegegeben/nicht ausgegeben wurde fehlt!");
+                    RequestIsWorking = false;
+                    return;
+                }
                 
                 var DTO = new SchnurschiessenErfolgreicheTeilnahmeDTO
                 {
@@ -138,9 +145,11 @@ namespace Logic.UI.SchnurschiessenViewModels
         {
             selectedItem.RueckgabeTyp = SchnurrauszeichnungRueckgabeTyp.RueckgabeOffen;
             Data.AuszeichnungAusgegeben = false;
+            Data.AuszeichnungNichtAusgegeben = false;
             OnPropertyChanged(nameof(Rueckgabe));
             OnPropertyChanged(nameof(CanAusgeben));
             OnPropertyChanged(nameof(AuszeichnungAusgegeben));
+            OnPropertyChanged(nameof(AuszeichnungNichtAusgegeben));
             OnPropertyChanged(nameof(CanAusgebenVisbility));
         }
         #endregion
@@ -178,11 +187,32 @@ namespace Logic.UI.SchnurschiessenViewModels
                 if (RequestIsWorking || !Equals(Data.AuszeichnungAusgegeben, value))
                 {
                     Data.AuszeichnungAusgegeben = value;
+                    Data.AuszeichnungNichtAusgegeben = !value;
                     base.OnPropertyChanged();
                     OnPropertyChanged(nameof(Rueckgabe));
+                    OnPropertyChanged(nameof(AuszeichnungNichtAusgegeben));
                 }
             }
         }
+
+        public bool AuszeichnungNichtAusgegeben
+        {
+            get => Data.AuszeichnungNichtAusgegeben;
+            set
+            {
+
+                if (RequestIsWorking || !Equals(Data.AuszeichnungNichtAusgegeben, value))
+                {
+                    Data.AuszeichnungNichtAusgegeben = value;
+                    Data.AuszeichnungAusgegeben = !value;
+                    base.OnPropertyChanged();
+                    OnPropertyChanged(nameof(Rueckgabe));
+                    OnPropertyChanged(nameof(AuszeichnungAusgegeben));
+
+                }
+            }
+        }
+
         public bool CanAusgebenVisbility => Data.Auszeichnungen != null && Data.Auszeichnungen.FirstOrDefault(ausz => ausz.RueckgabeTyp.Equals(SchnurrauszeichnungRueckgabeTyp.RueckgabeOffen)) != null;
 
         public bool CanAusgeben => Data.DarfNaechstenAusgeben && Data.Auszeichnungen != null && Data.Auszeichnungen.FirstOrDefault(ausz => ausz.RueckgabeTyp.Equals(SchnurrauszeichnungRueckgabeTyp.RueckgabeOffen)) == null;

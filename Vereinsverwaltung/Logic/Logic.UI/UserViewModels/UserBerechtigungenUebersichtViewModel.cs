@@ -28,8 +28,8 @@ namespace Logic.UI.UserViewModels
             berechtigungen = [];
             userID = 0;
             Title = "Übersicht Userberechtigungen";
-            BerechtigungEntfernenCommand = new DelegateCommand(ExecuteBerechtigungEntfernenCommand, CanPost);
-            BerechtigungHinzufuegenCommand = new DelegateCommand(ExecuteBerechtigungHinzufuegenCommand, CanPost);
+            BerechtigungEntfernenCommand =  new DelegateCommand(ExecuteBerechtigungEntfernenCommand, CanPost);
+            BerechtigungHinzufuegenCommand =  new DelegateCommand(ExecuteBerechtigungHinzufuegenCommand, CanPost);
         }
 
         protected override int GetID() { return SelectedItem.ID; }
