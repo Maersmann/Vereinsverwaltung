@@ -145,7 +145,7 @@
                     <Label Grid.Column="0" Content="Erhält:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <Label Grid.Column="1" Content="{Binding ZuerhalteneAuszeichnung, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,20,0"/>
                     <RadioButton  Grid.Column="2" Content="Ausgeben" Foreground="White" IsEnabled="{Binding CanAusgeben}" IsChecked="{Binding AuszeichnungAusgegeben}" GroupName="Auszeichnung" Margin="0,0,10,0" />
-                    <RadioButton Grid.Column="3" Content="Nicht Ausgeben" Foreground="White" IsEnabled="{Binding CanAusgeben}" IsChecked="{Binding AuszeichnungNichtAusgegeben}" GroupName="Auszeichnung" Margin="0,0,0,0" />
+                    <RadioButton Grid.Column="3" Content="Nicht Ausgegeben" Foreground="White" IsChecked="{Binding AuszeichnungNichtAusgegeben}" GroupName="Auszeichnung" Margin="0,0,10,0" />
                 </Grid>
 
                 <Label Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Content="Es sind nicht alle Schnüre/Eicheln zurückgegeben!" FontSize="17"  Visibility="{Binding Path=CanAusgebenVisbility , Converter={StaticResource BoolToVisConverter} }"  />
