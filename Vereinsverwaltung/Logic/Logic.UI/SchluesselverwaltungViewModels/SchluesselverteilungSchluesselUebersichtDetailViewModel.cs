@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Base.Logic.Messages;
 using Base.Logic.Core;
+using Prism.Commands;
+using System.Windows.Input;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
@@ -27,21 +29,39 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             Title = "Übersicht der Besitzer";
             RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
             WeakReferenceMessenger.Default.Register<LoadSchluesselverteilungSchluesselDetailMessage, string>(this, "SchluesselverteilungSchluesselUebersicht", (r,m) => ReceiveLoadSchluesselverteilungSchluesselDetailMessage(m));
+            OpenKennungEintragenCommand = new DelegateCommand(ExecuteOpenKennungEintragenCommand, CanExecuteOpenKennungEintragenCommand);
         }
 
+        public ICommand OpenKennungEintragenCommand { get; set; }
+
+        private bool CanExecuteOpenKennungEintragenCommand()
+        {
+            return ItemList.Count > 0;
+        }
         protected override bool WithPagination() { return true; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/zuteilung/schluessel/{LoadDataID}/besitzer"; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schluesselzuteilung; }
 
-        private void ReceiveLoadSchluesselverteilungSchluesselDetailMessage(LoadSchluesselverteilungSchluesselDetailMessage m)
+        public override async Task LoadData(int id)
         {
-            schluesselid = m.ID;
-            LoadData(schluesselid);
+            await base.LoadData(id);
+            ((DelegateCommand)OpenKennungEintragenCommand).RaiseCanExecuteChanged();
         }
 
-        protected override void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
+        private async void ReceiveLoadSchluesselverteilungSchluesselDetailMessage(LoadSchluesselverteilungSchluesselDetailMessage m)
         {
-            LoadData(schluesselid);
+            schluesselid = m.ID;
+            await LoadData(schluesselid);
+        }
+
+        protected async override void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
+        {
+            await LoadData(schluesselid);
+        }
+
+        private void ExecuteOpenKennungEintragenCommand()
+        {
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselKennungEintragenMessage { Command = async () => await LoadData(schluesselid), ID = SelectedItem.ID }, messageToken);
         }
 
 

@@ -179,6 +179,7 @@ namespace Logic.UI
         public static SchuetzenfestZahlenAuswertungUmzugViewModel SchuetzenfestZahlenAuswertungUmzug => new();
         public static SchuetzenfestZahlenAuswertungBaendchenViewModel SchuetzenfestZahlenAuswertungBaendchen => new();
         public static SchluesselverteilungDokumentationViewModel SchluesselverteilungDokumentation => new();
+        public static SchluesselverteilungKennungEintragenViewModel SchluesselverteilungKennungEintragen => new();
         public static void OnActivated()
         {
 

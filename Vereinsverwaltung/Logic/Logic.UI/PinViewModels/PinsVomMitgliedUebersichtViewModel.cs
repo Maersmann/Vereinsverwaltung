@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 using Prism.Commands;
+using System.Threading.Tasks;
 
 namespace Logic.UI.PinViewModels
 {
@@ -31,7 +32,7 @@ namespace Logic.UI.PinViewModels
 
         protected override bool LoadingOnCreate() => false;
 
-        public override async void LoadData(int id)
+        public override async Task LoadData(int id)
         {
             this.id = id;
             await LoadData();
@@ -77,7 +78,7 @@ namespace Logic.UI.PinViewModels
                     PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
-                    LoadData(id);
+                    await LoadData(id);
                     RequestIsWorking = false;
                 }
             }
@@ -112,7 +113,7 @@ namespace Logic.UI.PinViewModels
                     PinAusgabeMitgliedUebersichtModel content = await resp.Content.ReadAsAsync<PinAusgabeMitgliedUebersichtModel>();
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
-                    LoadData(id);
+                    await LoadData(id);
                     RequestIsWorking = false;
                 }
             }

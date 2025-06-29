@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="540"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
-             DataContext="{Binding SchluesselverteilungSchluesselUebersichtDetail, Source={StaticResource Locator}}">
+             DataContext="{Binding SchluesselverteilungSchluesselUebersichtDetail, Source={StaticResource Locator}}" Unloaded="UserControl_Unloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
@@ -39,6 +39,8 @@
                 <DataGridTextColumn Header="Name" Binding="{Binding SchluesselbesitzerName}" Width="auto"/>
                 <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl }" Width="auto"/>
                 <DataGridTextColumn Header="Erhalten Am" Binding="{Binding ErhaltenAm, StringFormat=dd.MM.yyyy}" Width="auto"/>
+                <DataGridTextColumn Header="Kennung" Binding="{Binding Kennung }" Width="auto"/>
+
             </DataGrid.Columns>
         </DataGrid>
 
@@ -70,6 +72,8 @@
 
         <materialDesign:Card  Grid.Row="3">
             <DockPanel  LastChildFill="False" >
+                <Button DockPanel.Dock="Left" Width="160" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding OpenKennungEintragenCommand}" Content="Kennung eintragen" HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="Hand"/>
+
             </DockPanel>
         </materialDesign:Card>
 
