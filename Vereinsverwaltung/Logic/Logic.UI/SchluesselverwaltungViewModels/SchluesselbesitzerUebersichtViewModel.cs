@@ -64,6 +64,18 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             }
         }
 
+        protected override void ExecuteOpenDokumentationCommand()
+        {
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselzuteilungDokumentationMessage { 
+                ID = GetID(), 
+                DokumentationRueckgabeAbgeschlossen = SelectedItem.DokumentationRueckgabeAbgeschlossen, 
+                DokumentationRueckgabeErstellt = SelectedItem.DokumentationRueckgabeErstellt,
+                DokumentationZuteilungAbgeschlossen = SelectedItem.DokumentationZuteilungAbgeschlossen,
+                DokumentationZuteilungErstellt = SelectedItem.DokumentationZuteilungErstellt,
+                Command = async () => await LoadData()
+            }, messageToken);
+        }
+
         private void ExecuteOpenHistorieCommand()
         {
             WeakReferenceMessenger.Default.Send(new OpenSchluesselzuteilungHistoryUebersichtMessage { AuswahlTypes = SchluesselzuteilungTypes.Besitzer, ID = SelectedItem.ID }, messageToken);

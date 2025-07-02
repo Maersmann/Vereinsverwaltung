@@ -14,11 +14,14 @@ namespace Logic.UI.BaseViewModels
         {
             OpenZuteilungCommand = new RelayCommand(() => ExecuteOpenZuteilungCommand());
             OpenRueckgabeCommand = new RelayCommand(() => ExecuteOpenRueckgabeCommand());
+            OpenDokumentationCommand = new RelayCommand(() => ExecuteOpenDokumentationCommand());
         }
         protected virtual SchluesselzuteilungTypes GetSchluesselzuteilungAuswahlTyp() { return 0; }
 
         public ICommand OpenZuteilungCommand { get; private set; }
         public ICommand OpenRueckgabeCommand { get; private set; }
+        public ICommand OpenDokumentationCommand { get; private set; }
+
 
         private void ExecuteOpenZuteilungCommand()
         {
@@ -28,6 +31,11 @@ namespace Logic.UI.BaseViewModels
         private void ExecuteOpenRueckgabeCommand()
         {
             WeakReferenceMessenger.Default.Send(new OpenSchluesselRueckgabeMessage { ID = GetID(), AuswahlTypes = GetSchluesselzuteilungAuswahlTyp() }, messageToken);
+        }
+
+        protected virtual void ExecuteOpenDokumentationCommand()
+        {
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselzuteilungDokumentationMessage { ID = GetID() }, messageToken);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace Logic.UI.OptionenViewModels
             GlobalVariables.BackendServer_IP = backendlogic.GetBackendIP();
             GlobalVariables.BackendServer_URL = backendlogic.GetURL();
             GlobalVariables.BackendServer_Port = backendlogic.GetBackendPort();
-            new BackendHelper().CheckServerIsOnline();
+            BackendHelper.CheckServerIsOnline();
             _ = new ViewModelLocator();
             //locator.Main.Onp("MenuIsEnabled");
         }
@@ -101,9 +101,9 @@ namespace Logic.UI.OptionenViewModels
         {
             bool isOnline;
             if (model.Port.HasValue)
-                isOnline = new BackendHelper().TestCheckServerIsOnline(model.Backend_IP, model.Port.Value);
+                isOnline = BackendHelper.TestCheckServerIsOnline(model.Backend_IP, model.Port.Value);
             else
-                isOnline = new BackendHelper().TestCheckServerIsOnline(model.Backend_IP);
+                isOnline = BackendHelper.TestCheckServerIsOnline(model.Backend_IP);
 
             if (isOnline)
             {
