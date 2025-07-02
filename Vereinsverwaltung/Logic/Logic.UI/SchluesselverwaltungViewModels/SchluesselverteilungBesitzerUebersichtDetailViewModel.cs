@@ -9,6 +9,10 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using Base.Logic.Messages;
 using Base.Logic.Core;
+using System.Windows.Input;
+using Prism.Commands;
+using Data.Types.SchluesselverwaltungTypes;
+using System.Threading.Tasks;
 
 namespace Logic.UI.SchluesselverwaltungViewModels
 {
@@ -17,25 +21,40 @@ namespace Logic.UI.SchluesselverwaltungViewModels
         private int besitzerid;
         public SchluesselverteilungBesitzerUebersichtDetailViewModel()
         {
-            MessageToken = "SchluesselzuteilungBesitzerSchluesselUebersicht";
+            MessageToken = "SchluesselverteilungBesitzerUebersichtDetail";
             Title = "Vorhandene Schlüssel des Besitzer";
             RegisterAktualisereViewMessage(StammdatenTypes.schluesselzuteilung.ToString());
             WeakReferenceMessenger.Default.Register<LoadSchluesselverteilungBesitzerDetailMessage, string>(this, "SchluesselverteilungBesitzerUebersicht", (r,m) => ReceiveLoadSchluesselverteilungBesitzerDetailMessage(m));
+            OpenKennungEintragenCommand = new DelegateCommand(ExecuteOpenKennungEintragenCommand, CanExecuteOpenKennungEintragenCommand);
         }
+        private bool CanExecuteOpenKennungEintragenCommand()
+        {
+            return ItemList.Count > 0;
+        }
+
+        public ICommand OpenKennungEintragenCommand { get; set; }
 
         protected override bool WithPagination() { return true; }
         protected override string GetREST_API() { return $"/api/schluesselverwaltung/zuteilung/besitzer/{LoadDataID}/schluessel"; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.schluesselzuteilung; }
 
-        private void ReceiveLoadSchluesselverteilungBesitzerDetailMessage(LoadSchluesselverteilungBesitzerDetailMessage m)
+        public override async Task LoadData(int id)
         {
-            besitzerid = m.ID;
-            LoadData(besitzerid);
+            await base.LoadData(id);
+            ((DelegateCommand)OpenKennungEintragenCommand).RaiseCanExecuteChanged();
         }
 
-        protected override void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
+
+
+        private async void ReceiveLoadSchluesselverteilungBesitzerDetailMessage(LoadSchluesselverteilungBesitzerDetailMessage m)
         {
-            LoadData(besitzerid);
+            besitzerid = m.ID;
+            await LoadData(besitzerid);
+        }
+
+        protected async override void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
+        {
+            await LoadData(besitzerid);
         }
 
         #region Commands
@@ -56,6 +75,11 @@ namespace Logic.UI.SchluesselverwaltungViewModels
             WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.schluesselzuteilung.ToString());
             base.ExecuteEntfernenCommand();
             RequestIsWorking = false;
+        }
+
+        private void ExecuteOpenKennungEintragenCommand()
+        {
+            WeakReferenceMessenger.Default.Send(new OpenSchluesselKennungEintragenMessage { Command = async () => await LoadData(besitzerid), ID = SelectedItem.ID }, messageToken);
         }
         #endregion
     }

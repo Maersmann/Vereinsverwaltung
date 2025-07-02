@@ -31,8 +31,28 @@ namespace Vereinsverwaltung.UI.Desktop.Schluesselverwaltung
             InitializeComponent();
             WeakReferenceMessenger.Default.Register<OpenSchluesselzuteilungMessage, string>(this, "SchluesselbesitzerUebersicht", (r, m) => ReceiveOpenSchluesselzuteilungMessage(m));
             WeakReferenceMessenger.Default.Register<OpenSchluesselRueckgabeMessage, string>(this, "SchluesselbesitzerUebersicht", (r, m) => ReceiveOpenSchluesselRueckgabeMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSchluesselzuteilungDokumentationMessage, string>(this, "SchluesselbesitzerUebersicht", (r, m) => ReceiveOpenSchluesselzuteilungDokumentationMessage(m));
             helper = new SchluesselzuteilungHistoryUebersichtHelper();
             helper.RegisterMessage("SchluesselbesitzerUebersicht");
+        }
+
+        private static void ReceiveOpenSchluesselzuteilungDokumentationMessage(OpenSchluesselzuteilungDokumentationMessage m)
+        {
+            var view = new SchluesselverteilungDokumentationView
+            {
+                Owner = Application.Current.MainWindow
+            };
+            if (view.DataContext is SchluesselverteilungDokumentationViewModel model)
+            {
+                model.SetSchluesselbesitzerId(
+                    m.ID,
+                    m.DokumentationRueckgabeErstellt,
+                    m.DokumentationRueckgabeAbgeschlossen,
+                    m.DokumentationZuteilungErstellt,
+                    m.DokumentationZuteilungAbgeschlossen);
+            }
+            view.ShowDialog();
+            m.Command();
         }
 
         private static void ReceiveOpenSchluesselRueckgabeMessage(OpenSchluesselRueckgabeMessage m)

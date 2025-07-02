@@ -12,6 +12,7 @@ using Base.Logic.Messages;
 using Base.Logic.Wrapper;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Commands;
+using System.Threading.Tasks;
 
 namespace Logic.UI.PinViewModels
 {
@@ -43,7 +44,7 @@ namespace Logic.UI.PinViewModels
 
         protected override bool LoadingOnCreate() => false;
 
-        public override async void LoadData(int id)
+        public override async Task LoadData(int id)
         {
             this.id = id;
             await LoadData();
@@ -89,7 +90,7 @@ namespace Logic.UI.PinViewModels
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
                     FilterText = "";
-                    LoadData(id);
+                    await LoadData(id);
                 }
             }
             catch (Exception e)
@@ -123,7 +124,7 @@ namespace Logic.UI.PinViewModels
                     SelectedItem.Erhalten = content.Erhalten;
                     SelectedItem.ErhaltenAm = content.ErhaltenAm;
                     FilterText = "";
-                    LoadData(id);
+                    await LoadData(id);
                     RequestIsWorking = false;
                 }
             }

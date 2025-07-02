@@ -24,7 +24,7 @@ namespace Logic.UI
 
         private void ExecuteCheckServerIsOnlineCommand()
         {
-            new BackendHelper().CheckServerIsOnline();
+            BackendHelper.CheckServerIsOnline();
             WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
             if (GlobalVariables.ServerIsOnline)
             {
